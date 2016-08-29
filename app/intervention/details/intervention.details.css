@@ -1,0 +1,76 @@
+div.intervention_details
+{
+    /*margin: 30px 10px 10px 5%;*/
+    width: 100%;
+    margin: 0px 0px 0px 0px;
+}
+
+div.title
+{
+    /*position: relative;*/
+    /*top: 200px;*/
+
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    background: linear-gradient( to right, var( --dark-bg-color ), var( --main-bg-color ) );
+    font-weight: bold;
+    margin: 0;
+    padding: 5px 10px 5px 10px;
+    border: transparent solid 1px;
+}
+
+div.title:hover
+{
+    background-color : var( --main-bg-color )
+}
+
+div.formulaire
+{
+    margin: 5px 10px 5px 20px;
+
+}
+
+input-textbox, textarea, .from_elem
+{
+    display: inline-block;
+    vertical-align: top;
+    margin: 10px 25px 5px 0px;
+}
+
+div.section
+{
+    width: 100%;
+    padding-left: 0;
+    /*margin-bottom: 20px;*/
+}
+
+div.intervenant {
+    color: hsl( var(--intervenant_hue), var( --saturation ), var( --lightness ));
+}
+
+div.intervenant:hover {
+    border: hsl(var(--intervenant_hue), var(--saturation), var(--lightness)) solid 1px;
+}
+
+div.operateur {
+    color: hsl( var(--operateur_hue), var( --saturation ), var( --lightness ));
+}
+
+div.operateur:hover {
+    border: hsl(var(--operateur_hue), var(--saturation), var(--lightness)) solid 1px;
+}
+
+div.maincourante {
+    color: hsl( var(--maincourante_hue), var( --saturation ), var( --lightness ));
+}
+
+div.maincourante:hover {
+    border: hsl(var(--maincourante_hue), var(--saturation), var(--lightness)) solid 1px;
+}
+
+/*#InterventionAdresseInput {   width: 300px; }*/
+
+/*#CreationDate {   width: 80px; }*/
+
+/*#CreationHeure {   width: 80px; }*/
+

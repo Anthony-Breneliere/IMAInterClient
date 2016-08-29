@@ -1,0 +1,7 @@
+{
+  "directory": "app/bower_components",
+  "registry": "http://bower.herokuapp.com",
+	"proxy":"http://ep.threatpulse.net:80",
+	"https-proxy":"http://ep.threatpulse.net:80"
+	
+}

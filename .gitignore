@@ -1,0 +1,7 @@
+#ignore thumbnails created by windows
+Thumbs.db
+
+#Ignore files build by Visual Studio
+node_modules/**
+app/**/*.js
+app/**/*.js.map

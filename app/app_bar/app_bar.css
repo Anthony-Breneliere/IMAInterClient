@@ -1,0 +1,93 @@
+
+.connexion {
+    width: 6em;
+}
+
+.server{
+    font-weight: 500;
+}
+
+.server_connected{
+    color: lawngreen;
+    text-shadow:  0 0px 15px lawngreen;
+}
+
+.server_disconnected{
+    color: orangered;
+    text-shadow:  0 0px 15px orangered;
+}
+
+.menu {
+    font-size: 2em;
+}
+
+.menu:hover, .connexion:hover {
+    color: hsl( 0, 0%, var( --hover-lightness ))
+}
+
+.app-bar {
+    background-color: hsl( var( --color1 ), var( --saturation ), var( --lightness ) );
+    color: hsl( 0 , 0%, var( --selected-lightness ) );
+    margin: 0px 0px 0px 0px;
+    padding: 10px 10px 10px 10px;
+    box-shadow: rgba( 0, 0, 0, 0.5) 0px 0px 5px 0px
+}
+
+.title{
+    font-size: 2em;
+}
+
+.icon {
+    font-size: 2em;
+}
+
+.app-bar-right {
+    font-size: 1.5em;
+    width: 28%;
+}
+
+.app-bar-divider {
+    display: block;
+    float: left;
+    line-height: 2rem;
+    height: 2rem;
+    width: 1px;
+    background-color: hsl(0, 0%, var( --font-lightness ));
+    padding: 0;
+}
+
+.row_justify_content
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center
+}
+
+div.connection_panel
+{
+    position: absolute;
+    top: 60px;
+    right: 0px;
+    background-color: hsla( 0, 0%, 100%, 0.3);
+    box-shadow: 3px 3px 5px 5px hsla( 0, 0%, 0%, 0.4);
+
+    display: flex;
+    flex-direction: column;
+    flex-flow: column;
+    /*width: 300px;*/
+    /*height: 200px;*/
+}
+
+div.connection_panel label
+{
+    margin: 20px 10px 3px 10px;
+    color: var( --color1 );
+    font-size: 0.8em;
+}
+
+div.connection_panel input
+{
+    margin: 0px 10px 10px 10px;
+}
+

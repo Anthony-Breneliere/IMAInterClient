@@ -1,0 +1,2 @@
+proxy=http://ep.threatpulse.net:80
+rejectUnauthorized=false

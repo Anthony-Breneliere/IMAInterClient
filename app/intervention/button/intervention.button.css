@@ -1,0 +1,25 @@
+.bouton_intervention
+{
+
+    padding: 15px 15px;
+    /*margin: 2px;*/
+    border: 1px solid hsl(var( --color1 ), var( --saturation ), var( --lightness ));
+    cursor: pointer;
+}
+
+.bouton_intervention:hover
+{
+    border: 1px solid hsl(var( --color1 ), var( --saturation ), var( --hover-lightness ) );
+    background-color: hsl( 0, 0%, var( --bg-hover-lightness ) );
+    /*color : hsl( 0, 0%, var( --hover-lightness ) );*/
+    /*outline: 5px solid hsla(var( --color1 ), var( --saturation ), var( --hover-lightness ), 0.2);*/
+    box-shadow: 0 0 15px grey;
+}
+
+.selected, .selected:hover
+{
+    background: hsl(0, 0%, var( --bg-selected-lightness ) );
+    color : hsl( 0, 0%, var( --selected-lightness ) );
+    /*box-shadow: 4px 4px 4px black inset;*/
+}
+

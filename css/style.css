@@ -1,0 +1,131 @@
+:root {
+    --hover_shadow: hsl( 0, 100%, 100%);
+    --main-bg-color: hsl( 0, 0%, 20%);
+    --input-bg-color: hsl( 0, 0%, 30%);
+    --dark-bg-color: hsl( 0, 0%, 10%);
+    --saturation: 50%;
+    --lightness: 35%;
+    --font-lightness: 70%;
+    --hover-lightness: 100%;
+    --bg-hover-lightness: 30%;
+    --selected-lightness: 100%;
+    --bg-selected-lightness: 40%;
+    --operateur_hue : 30;
+    --intervenant_hue : 300;
+    --maincourante_hue : 145;
+    --color1 : 220;
+    --color2 : 180
+}
+
+
+h1, h2, h3, h4, h5, h6
+{
+    /*margin-top: 0.5rem;*/
+    /*margin-bottom: 0.5rem;*/
+}
+
+
+body {
+    background: var( --main-bg-color );
+    margin: 0 0 0 0;
+    height:100%;
+}
+
+body, * {
+
+    font-family: Candara, Verdana, Sans-serif;
+    color: hsl( 0, 0%, var( --font-lightness ) );
+    cursor: default;
+
+}
+
+div
+{
+    display:block;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+label
+{
+    display: block; /* permet d'avoir le label au dessus de la textbox car par défaut le label est inline */
+    margin: 0px 0px 5px 0px;
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+input, textarea
+{
+    background-color: var( --input-bg-color ) ;
+    padding: 0.5rem;
+    resize: none;
+}
+
+input, .bordered, textarea
+{
+    border: 1px solid hsl( var( --color1 ), var( --saturation ), var( --lightness ) );
+    font-size: 0.9em;
+    /*border-radius: 0.4rem;*/
+}
+
+button
+{
+    border: 1px solid hsl( var( --color1 ), var( --saturation ), var( --lightness ) );
+    /*font-weight: bold;*/
+    font-size: 1.2em;
+    padding: 10px;
+    transition: border 1s, color 1s, box-shadow 1s, text-shadow 1s;
+    /*align-items: center;*/
+    /*align-content: center;*/
+    /*alignment: center;*/
+}
+
+button svg {
+    fill: white;
+    width: 20px;
+    height: 20px;
+    margin: 5px 5px 0px 5px;
+    /*position: s;*/
+    /*top:-50%;*/
+    /*align-items: center;*/
+    /*align-content: center;*/
+    /*alignment: center;*/
+
+}
+
+button:hover {
+    border: 1px solid hsl( var( --color1 ), var( --saturation ), var( --hover-lightness ) );
+}
+
+button:active {
+    background-color: var( --input-bg-color ) ;
+}
+
+input:disabled, textarea:disabled, button
+{
+    background-color: var( --main-bg-color ) ;
+}
+
+.transition_1s
+{
+    transition: border 1s, color 1s, box-shadow 1s, text-shadow 1s;
+}
+
+.row_justify_content
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: hsl( var( --color1 ), var( --saturation ), var( --lightness ) );
+    border-color: hsl( var( --color1 ), var( --saturation ), var( --lightness ) );
+    border-width: 1px;
+}
+

@@ -1,0 +1,22 @@
+
+.app_component
+{
+    height: 100%;
+    /*background-color: red; !* red color must not be seen *!*/
+}
+
+intervention-main-display {
+    display: flex;
+    flex-flow: column;
+
+}
+
+app-bar
+{
+    height: 7%;
+}
+
+intervention-main-display
+{
+    height: 93%;
+}

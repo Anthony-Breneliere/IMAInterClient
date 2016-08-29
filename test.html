@@ -1,0 +1,80 @@
+<html>
+<head>
+    <title>Try resizing this window</title>
+    <style>
+        body{
+            margin: 0;
+            color: white;
+            height: 100%;
+        }
+        div#myapp
+        {
+            display: flex;
+            flex-direction: column;
+            background-color: red; /* <-- painful color for your eyes ! */
+            height: 100%;
+        }
+        div#main /* parent div for sidebar and content */
+        {
+            display: flex;
+            width: 100%;
+            height: 90%; /* <-- if you remove this line, the parent div has no limited height */
+        }
+        div#header {
+            background-color: #333;
+            height: 5%;
+        }
+        div#footer {
+            background-color: #222;
+            height: 5%;
+        }
+        div#sidebar {
+            background-color: #666;
+            width: 20%;
+            overflow-y: auto;
+         }
+        div#content {
+            background-color: #888;
+            width: 80%;
+            overflow-y: auto;
+        }
+        div.fized_size_element {
+            background-color: #AAA;
+            display: block;
+            width: 100px;
+            height: 50px;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+<div id="myapp">
+    <div id="header">
+        HEADER
+        <div class="fized_size_element"></div>
+
+    </div>
+    <div id="main">
+        <div id="sidebar">
+            SIDEBAR
+            <div class="fized_size_element"></div>
+            <div class="fized_size_element"></div>
+            <div class="fized_size_element"></div>
+            <div class="fized_size_element"></div>
+            <div class="fized_size_element"></div>
+            <div class="fized_size_element"></div>
+            <div class="fized_size_element"></div>
+            <div class="fized_size_element"></div>
+        </div>
+        <div id="content">
+            CONTENT
+        </div>
+    </div>
+    <div id="footer">
+        FOOTER
+    </div>
+</div>
+</body>
+
+</html>

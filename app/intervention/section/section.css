@@ -1,0 +1,31 @@
+div.section
+{
+
+}
+
+div.formulaire
+{
+    margin: 5px 10px 5px 20px;
+
+}
+
+div.operateur {
+    color: hsl( var(--operateur_hue), var( --saturation ), var( --lightness ));
+}
+
+div.operateur:hover {
+    border: hsl(var(--operateur_hue), var(--saturation), var(--lightness)) solid 1px;
+}
+
+div.title
+{
+    /*position: relative;*/
+    /*top: 200px;*/
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    background: linear-gradient( to right, var( --dark-bg-color ), var( --main-bg-color ) );
+    font-weight: bold;
+    margin: 0;
+    padding: 5px 10px 5px 10px;
+    border: transparent solid 1px;
+}

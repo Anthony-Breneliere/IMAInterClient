@@ -1,0 +1,74 @@
+<div class="intervention_details" *ngIf="intervention">
+
+    <!--<div>-->
+        <!--<div class="from_elem" style="background-color: #00b8d4; width: 100px; height: 50px">-->
+            <!--<div  class="from_elem" style="background-color: #fca600; width: 20px; height: 10px">X</div>-->
+            <!--<div  class="from_elem" style="background-color: khaki; width: 20px; height: 10px">XS</div>-->
+            <!--<div   style="background-color: lightgreen; width: 20px; height: 10px">XS</div>-->
+        <!--</div>-->
+        <!--<div class="from_elem" style="background-color: #fca600; width: 100px; height: 50px" >-->
+
+        <!--</div>-->
+        <!--<div class="from_elem" style="background-color: lightgreen; width: 100px; height: 50px">-->
+
+        <!--</div>-->
+        <!--<div class="from_elem" style="background-color: khaki; width: 100px; height: 50px" >-->
+
+        <!--</div>-->
+    <!--</div>-->
+    <div class="section">
+        <div (click)="displayOperator = !displayOperator" class="title transition_1s operateur">Operateur</div>
+        <div *ngIf="displayOperator === true" class="formulaire">
+            <input-textbox label="Creation" width="140px" id="CreationDate" value="{{intervention.creation | date:'MM/dd/yyyy hh:mm:ss'}}" ></input-textbox>
+            <input-textbox label="Etat" width="100px" id="Etat" value="{{intervention.etat}}" ></input-textbox>
+            <input-textbox label="Lancement" width="140px" id="LancementDate" value="{{intervention.lancement | date:'MM/dd/yyyy hh:mm:ss'}}" ></input-textbox>
+            <input-textbox label="Clôture" width="140px" id="ClotureDate" value="{{intervention.cloture | date:'MM/dd/yyyy hh:mm:ss'}}" ></input-textbox>
+            <input-textbox label="Operateur" width="100px" id="Operateur" value="{{intervention.operateur}}" ></input-textbox>
+            <input-textbox label="Origine" width="140px" id="Origine" value="{{intervention.OrigineLabel()}}" ></input-textbox>
+            <input-textbox label="Type" width="140px" id="Type" value="{{intervention.TypeFicheLabel()}}" ></input-textbox>
+        </div>
+    </div>
+
+    <div class="section">
+        <div (click)="displayIntervenant = !displayIntervenant" class="title transition_1s intervenant">Intervenant</div>
+        <div *ngIf="displayIntervenant === true" class="formulaire">
+            <input-textbox label="Site" width="220px" id="Site" lineNb="5" value="{{intervention.adresseSite}}" ></input-textbox>
+
+            <!--<input-textbox *ngFor="let tel of intervention.telephone" label="Telephones" width="150px" id="Telephones" value="{{tel}}" ></input-textbox>-->
+            <div class="from_elem">
+                <label>Telephones Site</label>
+                <div *ngFor="let tel of intervention.telephonesSite" >
+                    <input style="margin: 0 0 0 0; width: 50px" disabled="true" type="text" value="{{tel[0]}}" />
+                    <input style="margin: 0 0 0 0; width: 120px" disabled="true" type="text" value="{{tel[1]}}" />
+                </div>
+            </div>
+
+            <input-textbox label="Intervenant" width="220px" id="Intervenant" lineNb="8" value="{{intervention.adresseIntervenant}}" ></input-textbox>
+
+            <div class="from_elem">
+                <label>Telephones Intervenant</label>
+                <div *ngFor="let tel of intervention.telephonesIntervenant" >
+                    <input style="margin: 0 0 0 0; width: 50px" disabled="true" type="text" value="{{tel[0]}}" />
+                    <input style="margin: 0 0 0 0; width: 120px" disabled="true" type="text" value="{{tel[1]}}" />
+                </div>
+            </div>
+
+            <input-textbox label="Moment appel intervenant" width="140px" id="MomentAppel" value="{{intervention.momentAppel | date:'MM/dd/yyyy hh:mm:ss'}}" ></input-textbox>
+            <input-textbox label="Date d'arrivée" width="140px" id="DateArrivee" value="{{intervention.dateArrivee | date:'MM/dd/yyyy hh:mm:ss'}}" ></input-textbox>
+            <input-textbox label="Date de départ" width="140px" id="DateDepart" value="{{intervention.dateDepart | date:'MM/dd/yyyy hh:mm:ss'}}" ></input-textbox>
+            <input-textbox label="Nom de l'intervenant" width="140px" id="NomIntervenant" value="{{intervention.nomIntervenant}}" ></input-textbox>
+            <input-textbox label="Matricule" width="140px" id="Matricule" value="{{intervention.matriculeIntervenant}}" ></input-textbox>
+            <input-textbox label="Code PEC" width="140px" id="CodePEC" value="{{intervention.codePEC}}" ></input-textbox>
+
+        </div>
+    </div>
+
+    <div class="section">
+        <div (click)="displayMaincourante = !displayMaincourante" class="title transition_1s maincourante">Maincourante</div>
+        <div *ngIf="displayMaincourante === true" class="formulaire">
+
+            <input-textbox label="Maincourante" width="600px" id="MainCourante" lineNb="5" value="{{intervention.maincourante}}" ></input-textbox>
+        </div>
+    </div>
+
+</div>

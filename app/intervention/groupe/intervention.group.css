@@ -1,0 +1,31 @@
+.interventionGroupHeader
+{
+    /*border: 1px solid hsl(var( --color1 ), var( --saturation ), var( --lightness ) );*/
+    font-size: 1.2em;
+    margin: 10px 10px 10px 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between
+}
+
+.interventionGroupHeader:hover
+{
+    color: hsl( 0, 0%, 100% );
+    text-shadow: 0 0 15px var( --hover_shadow );
+}
+
+.interventionGroup
+{
+}
+
+.expand-icon{
+    font-size: 2rem;
+    text-align: right;
+    color: inherit;
+}
+
+div.interventionGroup button
+{
+    margin: auto;
+}
+
