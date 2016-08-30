@@ -88,6 +88,12 @@ div.connection_panel label
 
 div.connection_panel input
 {
-    margin: 0px 10px 10px 10px;
+    margin: 10px 10px 5px 10px;
 }
 
+div.connection_panel button
+{
+    margin: 10px 10px 10px 10px;
+    width: auto;
+    font-size: 0.7em;
+}

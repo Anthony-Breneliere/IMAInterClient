@@ -3,6 +3,7 @@
  */
 
 import {Component, OnInit} from '@angular/core';
+import { ApplicationService } from '../application.service';
 
 @Component({
     selector: 'app-bar',
@@ -12,6 +13,29 @@ import {Component, OnInit} from '@angular/core';
 
 export class AppBar {
 
+    constructor( private appService: ApplicationService )
+    {
+    }
+
+    m1State() : string {
+        return this.appService.m1Connected ? 'connected' : 'disconnected';
+
+    }
+
+    plottiState() : string {
+        return this.appService.plottiConnected ? 'connected' : 'disconnected';
+
+    }
+
     public ConnectionPanelDisplayed: boolean = false;
 
+    public TSLogin : string = "";
+
+    public TSPassword : string = "";
+
+    connect() : void
+    {
+        if ( this.appService.connect( this.TSLogin, this.TSPassword ) )
+            this.ConnectionPanelDisplayed = false;
+    }
 }

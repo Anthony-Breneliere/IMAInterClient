@@ -4,19 +4,20 @@
         <div class="title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IMA Interventions</div>
     </div>
     <div class="row_justify_content app-bar-right">
-        <div class="server server_connected">M1</div>
+        <div class="server server_{{m1State()}}">M1</div>
         <div class="app-bar-divider"></div>
-        <div class="server server_disconnected">Plotti</div>
+        <div class="server server_{{plottiState()}}">Plotti</div>
         <div class="app-bar-divider"></div>
         <div (click)="ConnectionPanelDisplayed = !ConnectionPanelDisplayed" class="transition_1s row_justify_content connexion">
             Connexion
             <i class="material-icons">account_circle</i>
         </div>
         <div *ngIf="ConnectionPanelDisplayed" class="connection_panel">
-            <label for="login">Login télétransmetteur</label>
-            <input id="login" (ngModel)="TSLogin" />
-            <label for="password">Mot de passe</label>
-            <input id="password" (ngModel)="TSPassword" />
+            <!--<label for="login">Login télétransmetteur</label>-->
+            <input id="login" placeholder="Login" [(ngModel)]="TSLogin" />
+            <!--<label for="password">Mot de passe</label>-->
+            <input id="password" type="password"  placeholder="Password" [(ngModel)]="TSPassword" />
+            <button (click)="connect()">Connecter</button>
         </div>
     </div>
 

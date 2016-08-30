@@ -8,13 +8,14 @@ import { FormsModule }   from '@angular/forms';
 
 import { InterventionAppComponent }  from './app.component';
 import { InterventionService } from './intervention/intervention.service';
+import { ApplicationService } from './application.service';
 
 @NgModule({
     imports:      [
         BrowserModule,
         FormsModule ],
     declarations: [ InterventionAppComponent ],
-    providers:    [  InterventionService ],
+    providers:    [ ApplicationService, InterventionService ],
     bootstrap:    [ InterventionAppComponent ]
 })
-export class AppModule { }
+export class AppModule {}
