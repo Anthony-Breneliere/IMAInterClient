@@ -1,4 +1,5 @@
-<div class="bouton_intervention transition_1s" *ngIf="intervention" [class.selected]="intervention.selected === true">
+<div class="bouton_intervention transition_1s" *ngIf="intervention" [class.selected]="selected === true"
+    (click)="onClick()" >
     {{intervention.numeroBon}}<br>
     {{intervention.client}}<br>
     {{intervention.etat}}<br>

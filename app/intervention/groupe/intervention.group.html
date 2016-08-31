@@ -1,4 +1,4 @@
-<div class="interventionGroup">
+<div class="interventionGroup" >
 
     <div class="interventionGroupHeader transition_1s" (click)="onClickHeader()">
         {{GroupName}}
@@ -8,17 +8,17 @@
 
     <div style="list-style-type:none" *ngIf="expanded === true">
 
-        <button *ngIf="GroupType == GroupTypeEnum.mesInterventions">
-            <svg viewBox="0 0 463.307 463.307">
-                <use xlink:href="app/icons/new-file.svg#Capa_1"></use>
-            </svg>
+        <!--<button *ngIf="GroupType == GroupTypeEnum.mesInterventions">-->
+            <!--<svg viewBox="0 0 463.307 463.307">-->
+                <!--<use xlink:href="app/icons/new-file.svg#Capa_1"></use>-->
+            <!--</svg>-->
 
-            Nouvelle intervention
-        </button>
+            <!--Nouvelle intervention-->
+        <!--</button>-->
 
-        <div *ngFor="let intervention of interventions"
+        <div *ngFor="let intervention of groupInterventions()"
             (click)="onClick(intervention)">
-            <intervention-button [intervention]="intervention"></intervention-button>
+            <intervention-button (onSelected)="onSelected($event)" [intervention]="intervention"></intervention-button>
         </div>
     </div>
 </div>

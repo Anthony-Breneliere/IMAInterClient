@@ -1,9 +1,9 @@
-<div class="interventionMainDisplay">
+<div class="interventionMainDisplay" >
 
-    <div class="interventionNavigation" >
-        <intervention-group GroupType="{{GroupTypeEnum.mesInterventions}}" GroupName="Mes Interventions en cours"></intervention-group>
-        <intervention-group GroupType="{{GroupTypeEnum.autresInterventions}}" GroupName="Autres Interventions en cours"></intervention-group>
-        <intervention-group GroupType="{{GroupTypeEnum.interventionsCloses}}" GroupName="Interventions closes"></intervention-group>
+    <div class="interventionNavigation"  >
+        <intervention-group (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.mesInterventions" GroupName="Mes Interventions en cours"></intervention-group>
+        <intervention-group (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.autresInterventions" GroupName="Autres Interventions en cours"></intervention-group>
+        <intervention-group (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.interventionsCloses" GroupName="Interventions closes"></intervention-group>
     </div>
 
     <intervention-details></intervention-details>

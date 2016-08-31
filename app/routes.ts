@@ -1,13 +1,19 @@
 /**
  * Created by abreneli on 04/07/2016.
  */
-import { provideRouter, RouterConfig }  from '@angular/router';
+import { ModuleWithProviders }  from '@angular/core';
+import { Routes, RouterModule }  from '@angular/router';
 
 import { InterventionAppComponent } from './app.component';
 
-export const routes: RouterConfig = [
+export const appRoutes: Routes = [
+    // {
+    //     path: '',
+    //     redirectTo: '/dashboard',
+    //     pathMatch: 'full'
+    // },
     {
-        path: 'interapp',
+        path: 'dashboard',
         component: InterventionAppComponent
     },
     {
@@ -16,13 +22,4 @@ export const routes: RouterConfig = [
     }
 ];
 
-export const APP_ROUTER_PROVIDERS = [
-    provideRouter(routes)
-];
-
-
-/*
- Copyright 2016 Google Inc. All Rights Reserved.
- Use of this source code is governed by an MIT-style license that
- can be found in the LICENSE file at http://angular.io/license
- */
+export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);
