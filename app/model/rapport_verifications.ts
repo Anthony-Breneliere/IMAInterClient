@@ -2,7 +2,7 @@
  * Created by abreneli on 09/08/2016.
  */
 
-export class rapport_verifications
+export class RapportVerifications
 {
     public effraction : boolean;
     public detailEffraction : string;

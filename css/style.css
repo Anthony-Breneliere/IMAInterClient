@@ -10,11 +10,21 @@
     --bg-hover-lightness: 30%;
     --selected-lightness: 100%;
     --bg-selected-lightness: 40%;
-    --operateur_hue : 30;
-    --intervenant_hue : 300;
-    --maincourante_hue : 145;
+
+    --operateur_hue : 0;
+    --intervenant_hue : 20;
+    --maincourante_hue : 40;
+    --alarme_hue : 60;
+    --rapport_hue : 80;
+    --presence_hue : 100;
+    --verification_hue : 120;
+
     --color1 : 220;
-    --color2 : 180
+    --color2 : 180;
+    --color3 : 100;
+
+    --main-color: hsl( var( --color1), var( --saturation ), var( --lightness));
+    --selected-main-color: hsl( var( --color1), var( --saturation ), var( --selected-lightness));
 }
 
 
@@ -27,15 +37,14 @@ h1, h2, h3, h4, h5, h6
 
 body {
     background: var( --main-bg-color );
+    color: hsl( 0, 0%, var( --font-lightness ) );
     margin: 0 0 0 0;
+    cursor: default;
     height:100%;
 }
 
 body, * {
-
     font-family: Candara, Verdana, Sans-serif;
-    color: hsl( 0, 0%, var( --font-lightness ) );
-    cursor: default;
 
 }
 
@@ -46,17 +55,12 @@ div
     overflow-y: hidden;
 }
 
-label
-{
-    display: block; /* permet d'avoir le label au dessus de la textbox car par défaut le label est inline */
-    margin: 0px 0px 5px 0px;
-    font-weight: bold;
-    font-size: 0.8em;
-}
+
 
 input, textarea
 {
     background-color: var( --input-bg-color ) ;
+    color: hsl( 0, 0%, var( --font-lightness ) );
     padding: 0.5rem;
     resize: none;
 }
@@ -64,33 +68,14 @@ input, textarea
 input, .bordered, textarea
 {
     border: 1px solid hsl( var( --color1 ), var( --saturation ), var( --lightness ) );
-    font-size: 0.9em;
-    /*border-radius: 0.4rem;*/
 }
 
 button
 {
     border: 1px solid hsl( var( --color1 ), var( --saturation ), var( --lightness ) );
-    /*font-weight: bold;*/
+    color: hsl( 0, 0%, var( --font-lightness ) );
     font-size: 1.2em;
     padding: 10px;
-    transition: border 1s, color 1s, box-shadow 1s, text-shadow 1s;
-    /*align-items: center;*/
-    /*align-content: center;*/
-    /*alignment: center;*/
-}
-
-button svg {
-    fill: white;
-    width: 20px;
-    height: 20px;
-    margin: 5px 5px 0px 5px;
-    /*position: s;*/
-    /*top:-50%;*/
-    /*align-items: center;*/
-    /*align-content: center;*/
-    /*alignment: center;*/
-
 }
 
 button:hover {
@@ -106,22 +91,14 @@ input:disabled, textarea:disabled, button
     background-color: var( --main-bg-color ) ;
 }
 
-input:hover:enabled {
-    border: 1px solid hsl( var( --color1 ), var( --saturation ), var( --hover-lightness ) );
-    transition: border 1s;
-}
-
 .transition_1s
 {
     transition: border 1s, color 1s, box-shadow 1s, text-shadow 1s;
 }
 
-.row_justify_content
-{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center
+input:hover:enabled {
+    border: 1px solid hsl( var( --color1 ), var( --saturation ), var( --hover-lightness ) );
+    transition: border 1s;
 }
 
 ::-webkit-scrollbar {

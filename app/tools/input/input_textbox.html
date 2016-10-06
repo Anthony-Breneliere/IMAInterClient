@@ -1,5 +1,6 @@
 <div class="input_text">
 <label attr.for="{{id}}">{{label}}</label>
-<input *ngIf="lineNb === 1" id="{{id}}" [ngStyle]="setStyle()" disabled="true" type="text" value="{{value}}" />
-<textarea *ngIf="lineNb > 1" id="{{id}}" [ngStyle]="setStyle()" disabled="true" type="text" cols="{{lineNb}}" value="{{value}}"></textarea>
+    <ng-content></ng-content>
+<input *ngIf="lineNb === 1" id="{{id}}" [ngStyle]="setStyle()"  type="text" [(ngModel)]="value" (blur)="onBlur()" class="form-control" />
+<textarea *ngIf="lineNb > 1" id="{{id}}" [ngStyle]="setStyle()"  type="text" cols="{{lineNb}}" [(ngModel)]="value" (blur)="onBlur()" class="form-control"></textarea>
 </div>

@@ -8,16 +8,23 @@
         <div class="app-bar-divider"></div>
         <div class="server server_{{plottiState()}}">Plotti</div>
         <div class="app-bar-divider"></div>
-        <div (click)="ConnectionPanelDisplayed = !ConnectionPanelDisplayed" class="transition_1s row_justify_content connexion">
-            Connexion
+        <div (click)="clickConnectionPanel()" class="transition_1s row_align_right connexion">
+            <span [ngSwitch]="appService.m1Connected">
+                <span *ngSwitchCase="true">Profil</span>
+                <span *ngSwitchCase="false">Connecter</span>
+            </span>
             <i class="material-icons">account_circle</i>
         </div>
-        <div *ngIf="ConnectionPanelDisplayed" class="connection_panel">
-            <!--<label for="login">Login télétransmetteur</label>-->
-            <input id="login" placeholder="Login" [(ngModel)]="TSLogin" />
-            <!--<label for="password">Mot de passe</label>-->
+        <div *ngIf="ConnectionPanelDisplayed && ! appService.m1Connected" class="connection_panel">
+            <div>
+                <!--<iron-icon icon="icons:perm-identity"></iron-icon>-->
+                <input id="login" placeholder="Login" [(ngModel)]="TSLogin" />
+            </div>
             <input id="password" type="password"  placeholder="Password" [(ngModel)]="TSPassword" />
             <button (click)="connect()">Connecter</button>
+        </div>
+        <div *ngIf="ConnectionPanelDisplayed && appService.m1Connected" class="connection_panel">
+            <button (click)="disconnect()">Déconnecter</button>
         </div>
     </div>
 

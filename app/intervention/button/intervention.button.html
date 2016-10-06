@@ -1,7 +1,8 @@
-<div class="bouton_intervention transition_1s" *ngIf="intervention" [class.selected]="selected === true"
+<div  class="bouton_intervention transition_1s"  [class.unselected]="selected !== true" [class.selected]="selected === true" *ngIf="intervention"
     (click)="onClick()" >
-    {{intervention.numeroBon}}<br>
-    {{intervention.client}}<br>
-    {{intervention.etat}}<br>
-    {{intervention.operateur}}&nbsp;&nbsp;&#8594;&nbsp;&nbsp;{{intervention.nomIntervenant}}
+    <div class="numero_bon">{{intervention.numeroBon}}</div>
+    <div><iron-icon icon="icons:perm-identity"></iron-icon>{{intervention.client}}</div>
+    <div *ngIf="intervention.etat !== 'Close'"><iron-icon icon="icons:history"></iron-icon>{{intervention.etat}}</div>
+    <div><iron-icon icon="notification:airline-seat-recline-normal"></iron-icon>{{intervention.operateur}}</div>
+    <div><iron-icon icon="maps:directions-run"></iron-icon>{{intervention.nomIntervenant}}</div>
 </div>

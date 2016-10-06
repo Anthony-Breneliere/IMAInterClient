@@ -1,33 +1,42 @@
-/**
- * Created by abreneli on 01/07/2016.
- */
-
-import {Component, Input, forwardRef} from '@angular/core';
+// /**
+//  * Created by abreneli on 01/07/2016.
+//  */
+//
+import { Component, Input, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, DefaultValueAccessor   } from '@angular/forms';
 
 const noop = () => {};
 
-export const INPUTBOX_CONTROL_VALUE_ACCESSOR: any = {
+export const CHECKBOX_CONTROL_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => InputTextbox),
+    useExisting: forwardRef(() => Checkbox),
     multi: true
 };
 
 @Component({
-    selector: 'input-textbox',
-    templateUrl: 'app/tools/input/input_textbox.html',
-    styleUrls: ['app/tools/input/input_textbox.css'],
-    providers: [INPUTBOX_CONTROL_VALUE_ACCESSOR]
+    selector: 'checkbox',
+    templateUrl: 'app/tools/checkbox/checkbox.html',
+    styleUrls: ['app/tools/checkbox/checkbox.css'],
+    providers: [CHECKBOX_CONTROL_VALUE_ACCESSOR]
 })
 
-export class InputTextbox implements ControlValueAccessor
+export class Checkbox implements ControlValueAccessor
 {
-    private innerValue: any = "";
+    private innerValue: any;
 
-    @Input() public id: string;
     @Input() public label: string;
     @Input() public width: string;
-    @Input() public lineNb: number;
+    @Input() public checked: boolean;
+
+    constructor()
+    {
+        this.checked = false;
+    }
+
+    public setStyle(): any
+    {
+        return    { 'width' : this.width };
+    }
 
     //Placeholders for the callbacks which are later providesd
     //by the Control Value Accessor
@@ -47,12 +56,6 @@ export class InputTextbox implements ControlValueAccessor
         }
     }
 
-    constructor()
-    {
-        this.lineNb = 1;
-    }
-
-
     writeValue(value: any): void
     {
         if (value !== this.innerValue) {
@@ -60,7 +63,6 @@ export class InputTextbox implements ControlValueAccessor
         }
     }
 
-    //Set touched on blur
     onBlur() {
         this.onTouchedCallback();
     }
@@ -75,12 +77,5 @@ export class InputTextbox implements ControlValueAccessor
     {
         this.onTouchedCallback = fn;
 
-    }
-
-    public setStyle(): any
-    {
-        return  this.lineNb == 1 ?
-        { 'width' : this.width }
-        : { 'width' : this.width, 'height' : this.lineNb + 'em' };
     }
 }

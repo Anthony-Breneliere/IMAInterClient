@@ -1,0 +1,22 @@
+// Placez vos paramètres dans ce fichier pour remplacer les paramètres par défaut et les paramètres utilisateur.
+{
+    "http.proxy": "http://ep.threatpulse.net:80/",
+    "http.proxyStrictSSL": false,
+
+    // Spécifie le chemin de dossier contenant les fichiers tsserver et lib*.d.ts à utiliser.
+    "typescript.tsdk": "C:\\Users\\abreneli\\AppData\\Roaming\\npm\\node_modules\\typescript\\lib",
+
+    // Active la build automatique expérimentale. Nécessite la version 1.9 dev ou 2.x tsserver et le redémarrage du code VS une fois celui-ci modifié.
+    "typescript.tsserver.experimentalAutoBuild": true,
+
+
+    "files.exclude": {
+        "**/*.js": { "when": "$(basename).ts" },
+        "**/*.js.map": { "when": "$(basename)" },
+        ".idea": true,
+        "node_modules": true
+
+
+    }
+
+}

@@ -5,9 +5,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { InputTextbox } from '../../tools/input/input_textbox';
+import { Checkbox } from '../../tools/checkbox/checkbox';
+
 import { Section } from '../section/section';
 import { Intervention } from '../../model/intervention';
-import { OrigineFiche, TypeFiche } from '../../model/enums';
+import { OrigineFiche, TypeFiche, Trajet, MotifIntervention, TypePresence, DepotBonIntervention} from '../../model/enums';
+import { InterventionService } from "../intervention.service";
 
 export class Cucu
 {
@@ -22,49 +25,58 @@ export class Cucu
     selector: 'intervention-details',
     templateUrl: 'app/intervention/details/intervention.details.html',
     styleUrls: ['app/intervention/details/intervention.details.css'],
-    directives: [InputTextbox, Section]
+    directives: [InputTextbox, Section, Checkbox]
 })
-
 
 
 export class InterventionDetails implements  OnInit
 {
+    private MotifIntervention = MotifIntervention;
+    private MotifInterventionValues = Object.values(MotifIntervention).filter( e => typeof( e ) == "number" );
+
+    private Trajet = Trajet;
+    private TrajetValues = Object.values(Trajet).filter( e => typeof( e ) == "number" );
+
+    private TypePresence = TypePresence;
+    private TypePresenceValues = Object.values(TypePresence).filter( e => typeof( e ) == "number" );
+
+    private DepotBonIntervention = DepotBonIntervention;
+    private DepotBonInterventionValues = Object.values(DepotBonIntervention).filter( e => typeof( e ) == "number" );
+
     // l'intervention est passée en paramètre du composant
-    @Input() intervention: Intervention;
+    private intervention: Intervention;
 
+    private motifChoices: any[] = [];
 
-    cucu: Cucu;
-    constructor()
+    // private autreMotif: boolean = false;
+
+    private radioValue : MotifIntervention;
+
+    MotifInterventionLit( value ) : string
     {
-        // DEMO data:
-        let i = this.intervention = new Intervention();
-        i.id = 1;
-        i.numeroBon = 108570;
-        i.client = "Jonathan Pryce";
-        i.etat = "Transmise";
-        i.operateur = "Hubert";
-        i.nomIntervenant = "Dalbert";
-        i.creation = new Date("2010-05-06T06:05:38");
-        i.lancement = new Date("2010-05-06T06:30:01");
-        i.cloture = null;
-        i.adresseSite = "3. rue de la Fontaine\n44280 Fierru";
-        i.adresseIntervenant = "LD Securite\n7 Impasse des Jardins de la Caradouère\n44210 Pornic";
-        i.telephonesIntervenant = [ ["Tel", "0151707070"], ["Tel", "0618551261"], ["Fax", "0140580220"] ];
-        i.telephonesSite = [ ["Pro", "0240565780"], ["Mobile", "0618124595"], ["email", "jojo65@wanadoo.fr"] ];
-        i.momentAppel= new Date("2016-08-01T10:15:50");
-        i.dateArrivee = new Date("2016-08-01T16:15:50");
-        i.dateDepart = new Date("2016-08-01T16:35:15");
-        i.matriculeIntervenant = "1654665dsf";
-        i.codePEC = "4565FG";
-        i.maincourante= [];
-        i.origine = OrigineFiche.TraitementAlarme;
-        i.typeFiche = TypeFiche.Intervention;
-        i.selected = false;
+        return MotifIntervention[ value ];
+    }
+
+    constructor( private interService: InterventionService )
+    {
+        // on transforme l'enum MotifIntervention en une structure clé/valeur qu'on peut binder
+        this.motifChoices = Object.values(MotifIntervention).filter( e => typeof( e ) == "number" );
+
+        this.motifChoices.forEach( e =>
+        {
+            console.log( MotifIntervention[ e ] );
+            console.log( MotifIntervention.Autre );
+        });
+    }
+
+    isChecked( value : MotifIntervention ) : boolean
+    {
+        return this.intervention.rapport.motifIntervention == value;
     }
 
     ngOnInit()
     {
-        console.log( "origine de l''intervention: "  + this.intervention.OrigineLabel() );
+        this.intervention = this.interService.getIntervention();
     }
 
 }

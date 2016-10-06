@@ -1,19 +1,34 @@
-.bouton_intervention
+div.bouton_intervention
 {
-
     padding: 15px 15px;
-    /*margin: 2px;*/
     border: 1px solid hsl(var( --color1 ), var( --saturation ), var( --lightness ));
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
 
-.bouton_intervention:hover
+div.bouton_intervention:hover
 {
     border: 1px solid hsl(var( --color1 ), var( --saturation ), var( --hover-lightness ) );
-    background-color: hsl( 0, 0%, var( --bg-hover-lightness ) );
-    /*color : hsl( 0, 0%, var( --hover-lightness ) );*/
+    color : hsl( 0, 0%, var( --hover-lightness ) );
+    fill-color : hsl( 0, 0%, var( --hover-lightness ) );
     /*outline: 5px solid hsla(var( --color1 ), var( --saturation ), var( --hover-lightness ), 0.2);*/
     box-shadow: 0 0 15px grey;
+}
+
+div.bouton_intervention div
+{
+    color: inherit;
+    fill-color: inherit;
+    display: inline-block;
+    vertical-align: bottom;
+    height: 1.6em;
+}
+
+iron-icon
+{
+    margin: 0px 10px 0px 3px;
 }
 
 .selected, .selected:hover
@@ -23,3 +38,19 @@
     /*box-shadow: 4px 4px 4px black inset;*/
 }
 
+.selected div iron-icon
+{
+    fill-color : hsl( 0, 0%, var( --selected-lightness ) );
+}
+
+.unselected:hover
+{
+    background-color: hsl( 0, 0%, var( --bg-hover-lightness ) );
+}
+
+
+div.numero_bon
+{
+    font-weight: bold;
+    font-size: 2em;
+}

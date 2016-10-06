@@ -9,6 +9,7 @@ import {InterventionDetails} from '../details/intervention.details';
 import {Intervention} from "../../model/intervention";
 import {InterventionButton} from "../button/intervention.button";
 
+
 @Component({
     selector: 'intervention-main-display',
     templateUrl: 'app/intervention/main_display/intervention.main_display.html',
@@ -29,7 +30,7 @@ export class InterventionMainDisplay {
     }
 
     onSelectedButton(newSelectedButton: InterventionButton) {
-        console.log("InterventionMainDisplay reçoi événement onSelected");
+
         if (  this.selectedButton != newSelectedButton)
         {
             if ( this.selectedButton )

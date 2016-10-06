@@ -37,6 +37,14 @@ export class ApplicationService {
         return false;
     }
 
+    public disconnect() : boolean
+    {
+        this.m1Connected = false;
+        this.plottiConnected = false;
+
+        return true;
+    }
+
     private handleError(error: any) {
         console.error('An error occurred', error);
         return Promise.reject(error.message || error);

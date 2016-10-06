@@ -1,7 +1,9 @@
 import {inherits} from "util";
 import {InterventionLight} from "./interventionLight";
+import {Rapport} from "./rapport";
 import {OrigineFiche} from "./enums";
 import {TypeFiche} from "./enums";
+import {Alarme} from "./alarme";
 
 /**
  * Created by abreneli on 01/07/2016.
@@ -36,5 +38,9 @@ export class Intervention extends InterventionLight
     maincourante: string[];
     origine : OrigineFiche;
     typeFiche : TypeFiche;
+    alarme : Alarme;
+
+    // lien sur le rapport
+    rapport: Rapport;
 }
 

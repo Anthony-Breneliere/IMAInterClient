@@ -1,6 +1,8 @@
 
+
 .connexion {
-    width: 6em;
+    margin-right: 0.3em;
+    width: 7em; /* largeur fixée pour éviter var variable selon le contenu sinon */
 }
 
 .server{
@@ -27,7 +29,7 @@
 
 .app-bar {
     background-color: hsl( var( --color1 ), var( --saturation ), var( --lightness ) );
-    color: hsl( 0 , 0%, var( --selected-lightness ) );
+    color: hsl( 0 , 0%, var( --font-lightness ) );
     margin: 0px 0px 0px 0px;
     padding: 10px 10px 10px 10px;
     box-shadow: rgba( 0, 0, 0, 0.5) 0px 0px 5px 0px
@@ -64,6 +66,14 @@
     align-items: center
 }
 
+.row_align_right
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
 div.connection_panel
 {
     position: absolute;
@@ -71,24 +81,16 @@ div.connection_panel
     right: 0px;
     background-color: hsla( 0, 0%, 100%, 0.3);
     box-shadow: 3px 3px 5px 5px hsla( 0, 0%, 0%, 0.4);
-
     display: flex;
     flex-direction: column;
     flex-flow: column;
-    /*width: 300px;*/
-    /*height: 200px;*/
-}
-
-div.connection_panel label
-{
-    margin: 20px 10px 3px 10px;
-    color: var( --color1 );
-    font-size: 0.8em;
 }
 
 div.connection_panel input
 {
     margin: 10px 10px 5px 10px;
+    font-size: 0.8em;
+
 }
 
 div.connection_panel button
@@ -96,4 +98,18 @@ div.connection_panel button
     margin: 10px 10px 10px 10px;
     width: auto;
     font-size: 0.7em;
+}
+
+div.connection_panel div iron-icon
+{
+    position: relative;
+    float: left;
+    left: 30px;
+    height: 32px;
+    width: 32px;
+}
+
+.material-icons
+{
+    margin: 0px 10px 0px 10px;
 }

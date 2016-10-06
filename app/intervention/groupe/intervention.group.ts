@@ -36,7 +36,6 @@ export class InterventionGroup implements OnInit {
 
     ngOnInit() : void
     {
-        console.log(this.GroupType)
     }
 
     groupInterventions(): InterventionLight[]
@@ -76,7 +75,6 @@ export class InterventionGroup implements OnInit {
     };
 
     onSelected(newSelectedButton: InterventionButton) {
-        console.log("InterventionGroup reçoit événement onSelected");
         this.onSelectedButton.emit( newSelectedButton );
     }
 }

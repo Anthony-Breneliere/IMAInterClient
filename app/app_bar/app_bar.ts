@@ -30,12 +30,22 @@ export class AppBar {
     public ConnectionPanelDisplayed: boolean = false;
 
     public TSLogin : string = "";
-
     public TSPassword : string = "";
 
     connect() : void
     {
         if ( this.appService.connect( this.TSLogin, this.TSPassword ) )
             this.ConnectionPanelDisplayed = false;
+    }
+
+    disconnect() : void
+    {
+        if ( this.appService.disconnect() )
+            this.ConnectionPanelDisplayed = false;
+    }
+
+    clickConnectionPanel() : void
+    {
+        this.ConnectionPanelDisplayed = !this.ConnectionPanelDisplayed;
     }
 }

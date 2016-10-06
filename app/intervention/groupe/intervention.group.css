@@ -1,12 +1,13 @@
-.interventionGroupHeader
+div.interventionGroupHeader
 {
     /*border: 1px solid hsl(var( --color1 ), var( --saturation ), var( --lightness ) );*/
     font-size: 1.2em;
     margin: 10px 10px 10px 10px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between
+    justify-content: space-between;
 }
+
 
 .interventionGroupHeader:hover
 {
@@ -14,14 +15,11 @@
     text-shadow: 0 0 15px var( --hover_shadow );
 }
 
-.interventionGroup
+div.interventionGroupHeader i
 {
-}
-
-.expand-icon{
+    margin: 0px 10px 0px 10px;
     font-size: 2rem;
-    text-align: right;
-    color: inherit;
+    /*color: inherit;*/
 }
 
 div.interventionGroup button
@@ -29,3 +27,25 @@ div.interventionGroup button
     margin: auto;
 }
 
+div.interventionGroup div
+{
+    width: 100%;
+}
+
+.search {
+
+    margin-left: 10px;
+    width: 100%;
+}
+
+.search input {
+    padding-right: 30px;
+    width: 90%;
+}
+
+.search iron-icon
+{
+    position: relative;
+    top: 0px;
+    right: 30px;
+}

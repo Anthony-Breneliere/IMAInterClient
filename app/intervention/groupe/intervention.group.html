@@ -2,11 +2,13 @@
 
     <div class="interventionGroupHeader transition_1s" (click)="onClickHeader()">
         {{GroupName}}
-        <div *ngIf="expanded === true" class="expand-icon"><i class="material-icons">expand_less</i></div>
-        <div *ngIf="expanded === false" class="expand-icon"><i class="material-icons expand-icon">expand_more</i></div>
+        <i *ngIf="expanded === false" class="material-icons expand-icon">expand_less</i>
+        <i *ngIf="expanded === true"  class="material-icons expand-icon">expand_more</i>
+        <!--<iron-icon *ngIf="expanded === false" icon="icons:expand-less" class="expand-icon transition_1s"></iron-icon>-->
+        <!--<iron-icon *ngIf="expanded === true" icon="icons:expand-more" class="expand-icon transition_1s"></iron-icon>-->
     </div>
 
-    <div style="list-style-type:none" *ngIf="expanded === true">
+    <div  *ngIf="expanded === true">
 
         <!--<button *ngIf="GroupType == GroupTypeEnum.mesInterventions">-->
             <!--<svg viewBox="0 0 463.307 463.307">-->
@@ -16,9 +18,15 @@
             <!--Nouvelle intervention-->
         <!--</button>-->
 
+        <div class="search" *ngIf="GroupType == GroupTypeEnum.interventionsCloses">
+            <input   placeholder="Rechercher" />
+            <iron-icon icon="icons:search"></iron-icon>
+        </div>
+
         <div *ngFor="let intervention of groupInterventions()"
             (click)="onClick(intervention)">
             <intervention-button (onSelected)="onSelected($event)" [intervention]="intervention"></intervention-button>
         </div>
+
     </div>
 </div>

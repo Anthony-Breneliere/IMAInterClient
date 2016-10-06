@@ -32,9 +32,9 @@
     <div class="section">
         <div (click)="displayIntervenant = !displayIntervenant" class="title transition_1s intervenant">Intervenant</div>
         <div *ngIf="displayIntervenant === true" class="formulaire">
+
             <input-textbox label="Site" width="220px" id="Site" lineNb="5" value="{{intervention.adresseSite}}" ></input-textbox>
 
-            <!--<input-textbox *ngFor="let tel of intervention.telephone" label="Telephones" width="150px" id="Telephones" value="{{tel}}" ></input-textbox>-->
             <div class="from_elem">
                 <label>Telephones Site</label>
                 <div *ngFor="let tel of intervention.telephonesSite" >
@@ -67,7 +67,107 @@
         <div (click)="displayMaincourante = !displayMaincourante" class="title transition_1s maincourante">Maincourante</div>
         <div *ngIf="displayMaincourante === true" class="formulaire">
 
-            <input-textbox label="Maincourante" width="600px" id="MainCourante" lineNb="5" value="{{intervention.maincourante}}" ></input-textbox>
+            <input-textbox label="Maincourante" width="600px" id="MainCourante" lineNb="5" [(ngModel)]="intervention.maincourante" ></input-textbox>
+        </div>
+    </div>
+
+    <div *ngIf="intervention.alarme != null" class="section">
+        <div (click)="displayAlarme = !displayAlarme" class="title transition_1s alarme">Alarme</div>
+        <div *ngIf="displayAlarme === true" class="formulaire">
+
+            <input-textbox label="Evenement" width="120px" id="Evenement" [(ngModel)]="intervention.alarme.evenement" ></input-textbox>
+            <input-textbox label="Code canal" width="80px" id="CodeCanal" [(ngModel)]="intervention.alarme.codeCanal" ></input-textbox>
+            <input-textbox label="Heure" width="80px" id="HeureAlarme" [value]="intervention.alarme.heure | date:'hh:mm:ss'" ></input-textbox>
+        </div>
+    </div>
+
+    <div *ngIf="intervention.rapport != null" class="section">
+        <div (click)="displayRapport = !displayRapport" class="title transition_1s rapport">Rapport</div>
+        <div *ngIf="displayRapport === true" class="formulaire">
+
+            <input-textbox label="N° bon" width="60px" id="NumeroBon" [(ngModel)]="intervention.rapport.numeroBon" ></input-textbox>
+
+            <checkbox label="Dépôt du bon d'intervention" width="20px" [(ngModel)]="intervention.rapport.depotBonIntervention" ></checkbox>
+
+            <div class="from_elem">
+                <label>Motif</label><br>
+                <div *ngFor="let choice of MotifInterventionValues">
+                    <input type="radio"
+                           [(ngModel)]="intervention.rapport.motifIntervention"
+                           [checked]="intervention.rapport.motifIntervention==choice"
+                           [value]="choice" />
+                    {{MotifIntervention[choice]}}<br>
+                </div>
+            </div>
+
+
+            <input-textbox  *ngIf="intervention.rapport.motifIntervention == MotifIntervention.Autre"
+                label="Autre motif" width="250px" id="AutreMotif" [(ngModel)]="intervention.rapport.autreMotif" ></input-textbox>
+
+             <p>Dépôt du bons d'intervention: {{intervention.rapport.depotBonIntervention}}</p>
+
+            <div class="from_elem">
+                <label>Trajet</label><br>
+                <div *ngFor="let choice of TrajetValues">
+                    <input type="radio"
+                           [(ngModel)]="intervention.rapport.trajet"
+                           [checked]="intervention.rapport.trajet==choice"
+                           [value]="choice" />
+                    {{Trajet[choice]}}<br>
+                </div>
+            </div>
+
+            <input-textbox *ngIf="intervention.rapport.trajet == Trajet.Intemperies"
+                           label="Détail intempéries" width="250px" id="DetailIntemperie" [(ngModel)]="intervention.rapport.detailIntemperies" ></input-textbox>
+
+            <input-textbox *ngIf="intervention.rapport.trajet == Trajet.Autre"
+                           label="Circonstances trajet" width="250px" id="Autres circonstances" [(ngModel)]="intervention.rapport.autreCirconstanceTrajet" ></input-textbox>
+
+            <div class="from_elem">
+                <label>Présence(s) sur site</label><br>
+                <div *ngFor="let choice of TypePresenceValues">
+                    <input type="radio"
+                           [(ngModel)]="intervention.rapport.presence.typePresence"
+                           [checked]="intervention.rapport.presence.typePresence==choice"
+                           [value]="choice" />
+                    {{TypePresence[choice]}}<br>
+                </div>
+            </div>
+
+            <div class="from_elem">
+            <input-textbox *ngIf="intervention.rapport.presence.typePresence == TypePresence.Client"
+                           label="Nom du client" width="150px" id="NomClient" [(ngModel)]="intervention.rapport.presence.presenceContact1Nom" style="display:block"></input-textbox>
+
+            <input-textbox *ngIf="intervention.rapport.presence.typePresence == TypePresence.Client"
+                           label="Arrivée du client" width="150px" id="ArriveeClient" [value]="intervention.rapport.presence.presenceClientArrivee" style="display:block"></input-textbox></div>
+
+            <div class="from_elem">
+            <input-textbox *ngIf="intervention.rapport.presence.typePresence == TypePresence.Contacts"
+                           label="Nom du premier contact" width="150px" id="NomContact1" [(ngModel)]="intervention.rapport.presence.presenceContact1Nom" style="display:block"></input-textbox>
+
+            <input-textbox *ngIf="intervention.rapport.presence.typePresence == TypePresence.Contacts"
+                           label="Arrivée du premier contact" width="150px" id="ArriveeContact1" [value]="intervention.rapport.presence.presenceContact1Arrivee" style="display:block"></input-textbox></div>
+
+            <div class="from_elem">
+            <input-textbox *ngIf="intervention.rapport.presence.typePresence == TypePresence.Contacts"
+                           label="Nom du second contact" width="150px" id="NomContact2" [(ngModel)]="intervention.rapport.presence.presenceContact2Nom" style="display:block"></input-textbox>
+
+            <input-textbox *ngIf="intervention.rapport.presence.typePresence == TypePresence.Contacts"
+                           label="Arrivée du second contact" width="150px" id="ArriveeContact2" [value]="intervention.rapport.presence.presenceContact2Arrivee" style="display:block"></input-textbox></div>
+
+            <checkbox label="Presence d'animaux" width="20px" [(ngModel)]="intervention.rapport.presence.presenceAnimale" ></checkbox>
+
+            <input-textbox *ngIf="intervention.rapport.presence.presenceAnimale == true"
+                           label="Précision animaux" width="150px" id="PrecisionAnimaux" [value]="intervention.rapport.presence.precisionAnimaux"></input-textbox>
+
+            <checkbox label="Gendarmerie" width="20px" [(ngModel)]="intervention.rapport.presence.gendarmerie" ></checkbox>
+
+            <checkbox label="Police" width="20px" [(ngModel)]="intervention.rapport.presence.police" ></checkbox>
+
+            <checkbox label="Pompier" width="20px" [(ngModel)]="intervention.rapport.presence.pompiers" ></checkbox>
+
+            <checkbox label="Pompier" width="20px" [(ngModel)]="intervention.rapport.presence.pompiers" ></checkbox>
+
         </div>
     </div>
 

@@ -30,7 +30,7 @@ div.formulaire
 
 }
 
-input-textbox, textarea, .from_elem
+checkbox, input-textbox, textarea, .from_elem
 {
     display: inline-block;
     vertical-align: top;
@@ -66,6 +66,38 @@ div.maincourante {
 
 div.maincourante:hover {
     border: hsl(var(--maincourante_hue), var(--saturation), var(--lightness)) solid 1px;
+}
+
+div.alarme {
+    color: hsl( var(--alarme_hue), var( --saturation ), var( --lightness ));
+}
+
+div.alarme:hover {
+    border: hsl(var(--alarme_hue), var(--saturation), var(--lightness)) solid 1px;
+}
+
+div.rapport {
+    color: hsl( var(--rapport_hue), var( --saturation ), var( --lightness ));
+}
+
+div.rapport:hover {
+    border: hsl(var(--rapport_hue), var(--saturation), var(--lightness)) solid 1px;
+}
+
+div.presence {
+    color: hsl( var(--presence_hue), var( --saturation ), var( --lightness ));
+}
+
+div.presence:hover {
+    border: hsl(var(--presence_hue), var(--saturation), var(--lightness)) solid 1px;
+}
+
+div.verification {
+    color: hsl( var(--verification_hue), var( --saturation ), var( --lightness ));
+}
+
+div.verification:hover {
+    border: hsl(var(--verification_hue), var(--saturation), var(--lightness)) solid 1px;
 }
 
 /*#InterventionAdresseInput {   width: 300px; }*/
