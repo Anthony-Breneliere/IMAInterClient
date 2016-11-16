@@ -6,15 +6,25 @@
  * importé individuellement au niveau de chaque composant de InterventionAppComponent
  */
 
+/* Liste des modules */
 import { HttpModule } from '@angular/http';
-import { NgModule }      from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 
+/* Liste des composants */
 import { InterventionAppComponent }  from './app.component';
 import { InterventionService } from './intervention/intervention.service';
 import { ApplicationService } from './application.service';
 import { appRoutes } from './routes';
+import { InputTextbox } from './tools/input/input_textbox';
+import { Checkbox } from './tools/checkbox/checkbox';
+import { Section } from './intervention/section/section';
+import { InterventionGroup } from './intervention/groupe/intervention.group';
+import { InterventionDetails } from './intervention/details/intervention.details';
+import { InterventionButton } from './intervention/button/intervention.button';
+import { AppBar } from './app_bar/app_bar';
+import { InterventionMainDisplay } from './intervention/main_display/intervention.main_display';
 
 @NgModule({
     imports:      [
@@ -27,7 +37,16 @@ import { appRoutes } from './routes';
        on les rend disponibles pour chaque composant du module sans avoir à les déclarer en tant
        que directive du composant.
      */
-    declarations: [ InterventionAppComponent ],
+    declarations: [ 
+        InterventionAppComponent,
+        InterventionMainDisplay,
+        InputTextbox,
+        Section,
+        Checkbox,
+        InterventionGroup,
+        InterventionDetails,
+        InterventionButton,
+        AppBar ],
 
     /*
        Liste des services utilisés par le module. Les services sont injectés dans les composants.
@@ -39,6 +58,10 @@ import { appRoutes } from './routes';
     /*
      * Composant affiché par le module.
      */
-    bootstrap:    [ InterventionAppComponent ]
+    bootstrap:    [ InterventionAppComponent ],
+
+    /* Permet d'utiliser dans le module des composants qui sont pas Angular, comme les composants Polymer
+     */ 
+    schemas:    [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class AppModule {}

@@ -3,9 +3,7 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {InterventionGroup} from '../groupe/intervention.group';
 import {GroupTypeEnum} from '../groupe/intervention.group';
-import {InterventionDetails} from '../details/intervention.details';
 import {Intervention} from "../../model/intervention";
 import {InterventionButton} from "../button/intervention.button";
 
@@ -14,7 +12,6 @@ import {InterventionButton} from "../button/intervention.button";
     selector: 'intervention-main-display',
     templateUrl: 'app/intervention/main_display/intervention.main_display.html',
     styleUrls:  ['app/intervention/main_display/intervention.main_display.css'],
-    directives: [ InterventionGroup, InterventionDetails]
 })
 
 export class InterventionMainDisplay {

@@ -20,8 +20,8 @@
         {
             "name": "Git page",
             "type": "chrome",
-            "request": "attach",
-            "url": "C:\\Projets\\WebstormProjects\\IMAInter\\git.html",
+            "request": "launch",
+            "url": "file:///C://Projets//WebstormProjects//IMAInter//git.html",
             "port": 9222,
             "sourceMaps": true,
             "webRoot": "${workspaceRoot}"

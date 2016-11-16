@@ -17,8 +17,7 @@ export enum GroupTypeEnum
 @Component({
     selector: 'intervention-group',
     templateUrl: 'app/intervention/groupe/intervention.group.html',
-    styleUrls:  ['app/intervention/groupe/intervention.group.css'],
-    directives: [InterventionButton]
+    styleUrls:  ['app/intervention/groupe/intervention.group.css']
 })
 
 export class InterventionGroup implements OnInit {

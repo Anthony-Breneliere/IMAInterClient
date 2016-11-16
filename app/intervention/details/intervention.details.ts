@@ -4,10 +4,6 @@
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { InputTextbox } from '../../tools/input/input_textbox';
-import { Checkbox } from '../../tools/checkbox/checkbox';
-
-import { Section } from '../section/section';
 import { Intervention } from '../../model/intervention';
 import { OrigineFiche, TypeFiche, Trajet, MotifIntervention, TypePresence, DepotBonIntervention} from '../../model/enums';
 import { InterventionService } from "../intervention.service";
@@ -24,8 +20,7 @@ export class Cucu
 @Component({
     selector: 'intervention-details',
     templateUrl: 'app/intervention/details/intervention.details.html',
-    styleUrls: ['app/intervention/details/intervention.details.css'],
-    directives: [InputTextbox, Section, Checkbox]
+    styleUrls: ['app/intervention/details/intervention.details.css']
 })
 
 
@@ -51,11 +46,6 @@ export class InterventionDetails implements  OnInit
     // private autreMotif: boolean = false;
 
     private radioValue : MotifIntervention;
-
-    MotifInterventionLit( value ) : string
-    {
-        return MotifIntervention[ value ];
-    }
 
     constructor( private interService: InterventionService )
     {
