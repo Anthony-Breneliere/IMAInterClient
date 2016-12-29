@@ -1,31 +1,40 @@
-<div class="app-bar row_justify_content">
-    <div class="row_justify_content">
-        <div class="transition_1s menu"><i class="material-icons ">menu</i></div>
-        <div class="title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IMA Interventions</div>
+<div id="app_bar">
+
+    <!--Bouton liste des interventions-->
+    <div id="menu">
+        <div class="transition_1s hoverable"><i class="material-icons">menu</i></div>
     </div>
-    <div class="row_justify_content app-bar-right">
-        <div class="server server_{{m1State()}}">M1</div>
-        <div class="app-bar-divider"></div>
-        <div class="server server_{{plottiState()}}">Plotti</div>
-        <div class="app-bar-divider"></div>
-        <div (click)="clickConnectionPanel()" class="transition_1s row_align_right connexion">
-            <span [ngSwitch]="appService.m1Connected">
-                <span *ngSwitchCase="true">Profil</span>
-                <span *ngSwitchCase="false">Connecter</span>
+
+    <!--Titre de l'application-->
+    <div id="title">IMA Interventions</div>
+
+    <!--Etat de connexion-->
+    <div id="server_{{connectedState}}">{{connectedLabel}}</div>
+
+    <!--Séparateur-->
+    <div id="app-bar-divider"></div>
+
+    <!--bouton de log/delog-->
+    <div id="login">
+        <div (click)="clickConnectionPanel()" class="transition_1s hoverable">
+            <span [ngSwitch]="interService.Logged">
+        <span *ngSwitchCase="true">Profil</span>
+            <span *ngSwitchCase="false">Login</span>
             </span>
             <i class="material-icons">account_circle</i>
         </div>
-        <div *ngIf="ConnectionPanelDisplayed && ! appService.m1Connected" class="connection_panel">
-            <div>
-                <!--<iron-icon icon="icons:perm-identity"></iron-icon>-->
-                <input id="login" placeholder="Login" [(ngModel)]="TSLogin" />
-            </div>
-            <input id="password" type="password"  placeholder="Password" [(ngModel)]="TSPassword" />
-            <button (click)="connect()">Connecter</button>
-        </div>
-        <div *ngIf="ConnectionPanelDisplayed && appService.m1Connected" class="connection_panel">
-            <button (click)="disconnect()">Déconnecter</button>
-        </div>
     </div>
 
+</div>
+
+<!--Panneau de logging affiché si on clique le bouton de log/delog-->
+<div *ngIf="ConnectionPanelDisplayed && ! interService.Logged" id="connection_panel">
+    <div>
+        <input id="login" placeholder="Login" [(ngModel)]="TSLogin" />
+    </div>
+    <input id="password" type="password" placeholder="Password" [(ngModel)]="TSPassword" />
+    <button (click)="connect()">Connecter</button>
+</div>
+<div *ngIf="ConnectionPanelDisplayed && interService.Logged">
+    <button (click)="disconnect()">Déconnecter</button>
 </div>

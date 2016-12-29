@@ -3,23 +3,32 @@
  */
 import { ModuleWithProviders }  from '@angular/core';
 import { Routes, RouterModule }  from '@angular/router';
-
 import { InterventionAppComponent } from './app.component';
+import { InterventionMainDisplay } from './intervention/main_display/intervention.main_display';
 
 export const appRoutes: Routes = [
-    // {
-    //     path: '',
-    //     redirectTo: '/dashboard',
-    //     pathMatch: 'full'
-    // },
     {
-        path: 'dashboard',
-        component: InterventionAppComponent
+        path: 'intervention/:id',
+        component: InterventionMainDisplay
+            // <router-outlet></router-outlet>
+            /*
+        path: '',
+        component: InterventionAppComponent,
+        children: [ 
+        {
+            path: ':id',
+            component: InterventionMainDisplay
+        },
+        {
+            path: '',
+            component: InterventionMainDisplay
+        }]*/
     },
     {
-        path: 'interapp/:id',
-        component: InterventionAppComponent
+        path: 'intervention',
+        component: InterventionMainDisplay
     }
+
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);

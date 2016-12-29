@@ -3,12 +3,16 @@
  * Created by abreneli on 09/08/2016.
  */
 
-export class fiche_qualite
+export class FicheQualite
 {
-    public delaiPriseEnCompte : boolean;
-    public respectDelai : boolean;
+    public DelaiPrisEnCompte : boolean;
+    public RespectDelai : boolean;
+    public AppelSiITVBloque : boolean;
+    public VehiculeSerigraphie : boolean;
 
-    public vehiculeSerigraphie : boolean;
-
+    constructor( jsonData : Object )
+    {
+        $.extend( this, jsonData);
+    }
 }
 

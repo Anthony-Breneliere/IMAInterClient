@@ -2,10 +2,14 @@
  * Created by abreneli on 02/09/2016.
  */
 
-
 export class Alarme
 {
-    public heure: Date;
-    public evenement : string;
-    public codeCanal : string;
+    public Heure: Date;
+    public Evenement : string;
+    public CodeCanal : string;
+
+    constructor( jsonData : Object )
+    {
+        $.extend( this, jsonData);
+    }
 }

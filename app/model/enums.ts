@@ -2,14 +2,29 @@
  * Created by abreneli on 09/08/2016.
  */
 
+export enum Etat {
+    Creee,
+    Transmise,
+    Acceptee,
+    Dispatchee,
+    Affectee,
+    Rejetee,
+    Programmee,
+    ASL,
+    Traitee,
+    Statique,
+    Annulee,
+    Close
+}
+
 export enum OrigineFiche {
-    AppelTelephonique = 1,
+    AppelTelephonique,
     Essai,
     TraitementAlarme
 }
 
 export enum TypeFiche {
-    Intervention = 1,
+    Intervention,
     Gardiennage,
     Ronde,
     GardiennageALaDemande
@@ -41,4 +56,19 @@ export enum DepotBonIntervention {
     PC,
     Garage,
     Autre
+}
+
+export enum TypeSite
+{
+    Pavillon,
+    CollectifImmeuble,
+    CommercePro
+}
+
+export enum CircuitVerification
+{
+    InterieurSite,
+    InterieurEnceinte,
+    ExterieurSite,
+    VerificationKO
 }

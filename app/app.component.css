@@ -1,22 +1,8 @@
-
-.app_component
-{
-    height: 100%;
-    /*background-color: red; !* red color must not be seen *!*/
+#app_component {
+    overflow-y: hidden;
+    background-color: red;
+    max-height: 100%;
+    overflow-y: hidden
 }
 
-intervention-main-display {
-    display: flex;
-    flex-flow: column;
-
-}
-
-app-bar
-{
-    height: 7%;
-}
-
-intervention-main-display
-{
-    height: 93%;
-}
+intervention-main-display {}

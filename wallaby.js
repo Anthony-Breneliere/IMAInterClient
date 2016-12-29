@@ -1,48 +1,53 @@
+<html>
+
+<head>
+    <title>IMA Intervention</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- choice of w3schools library -->
+    <!--<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">-->
+    <!-- global site style -->
+
+    <link href="css/style.css" rel="stylesheet">
+
+    <link rel="import" href="node_modules/@polymer/iron-icons/iron-icons.html">
+    <link rel="import" href="node_modules/@polymer/iron-icons/maps-icons.html">
+    <link rel="import" href="node_modules/@polymer/iron-icons/notification-icons.html">
+
+    <link href="css/icons.css" rel="stylesheet">
+
+    <!-- jquery -->
+    <script src="jquery/jquery.min.js"></script>
+    <!-- bootstrap -->
+    <!--<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">-->
+    <!-- 1. Load libraries -->
+    <!-- Polyfill(s) for older browsers -->
+    <script src="node_modules/core-js/client/shim.min.js"></script>
+    <script src="node_modules/zone.js/dist/zone.js"></script>
+    <script src="node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <!-- 2. Configure SystemJS -->
+    <!--<script src="jspm_packages/system.js"></script>-->
+    <!--<script src="config.js"></script>-->
+    <!--<script>-->
+    <!--System.import('app/main.js');-->
+    <!--</script>-->
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('app').catch(function(err) {
+            console.error(err);
+        });
+    </script>
 
 
+</head>
+<!-- 3. Display the application -->
 
+<body>
+    <intervention-app>Loading...</intervention-app>
+</body>
 
-<!DOCTYPE html>
-<html lang="en" class=" is-copy-enabled is-u2f-enabled">
-  <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#">
-    <meta charset='utf-8'>
-    
-
-    <link crossorigin="anonymous" href="https://assets-cdn.github.com/assets/frameworks-ea1cd882e31ea744f5d62483c7f7117f973459ec55fa37b6d3652ee70efc923f.css" integrity="sha256-6hzYguMep0T11iSDx/cRf5c0WexV+je202Uu5w78kj8=" media="all" rel="stylesheet" />
-    <link crossorigin="anonymous" href="https://assets-cdn.github.com/assets/github-b47d399ea95e9cb921b1706a8fac98426703f49c12f7e306ab52e8f52d4c887e.css" integrity="sha256-tH05nqlenLkhsXBqj6yYQmcD9JwS9+MGq1Lo9S1MiH4=" media="all" rel="stylesheet" />
-    
-    
-    <link crossorigin="anonymous" href="https://assets-cdn.github.com/assets/site-9e04af73ed9cabf1eb577117611306e88644e59ee7b7b4494d008406599cc7a8.css" integrity="sha256-ngSvc+2cq/HrV3EXYRMG6IZE5Z7nt7RJTQCEBlmcx6g=" media="all" rel="stylesheet" />
-    
-
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="Content-Language" content="en">
-    <meta name="viewport" content="width=device-width">
-    
-    <title>quickstart/wallaby.js at master · angular/quickstart · GitHub</title>
-    <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="GitHub">
-    <link rel="fluid-icon" href="https://github.com/fluidicon.png" title="GitHub">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
-    <meta property="fb:app_id" content="1401488693436528">
-
-      <meta content="https://avatars0.githubusercontent.com/u/139426?v=3&amp;s=400" name="twitter:image:src" /><meta content="@github" name="twitter:site" /><meta content="summary" name="twitter:card" /><meta content="angular/quickstart" name="twitter:title" /><meta content="quickstart - Angular 2 QuickStart - source from the documentation" name="twitter:description" />
-      <meta content="https://avatars0.githubusercontent.com/u/139426?v=3&amp;s=400" property="og:image" /><meta content="GitHub" property="og:site_name" /><meta content="object" property="og:type" /><meta content="angular/quickstart" property="og:title" /><meta content="https://github.com/angular/quickstart" property="og:url" /><meta content="quickstart - Angular 2 QuickStart - source from the documentation" property="og:description" />
-      <meta name="browser-stats-url" content="https://api.github.com/_private/browser/stats">
-    <meta name="browser-errors-url" content="https://api.github.com/_private/browser/errors">
-    <link rel="assets" href="https://assets-cdn.github.com/">
-    
-    <meta name="pjax-timeout" content="1000">
-    
-    <meta name="request-id" content="2EEB9910:08A6:4B42F30:58209CB4" data-pjax-transient>
+</html>ta name="request-id" content="2EEB9910:08A6:4B42F30:58209CB4" data-pjax-transient>
 
     <meta name="msapplication-TileImage" content="/windows-tile.png">
     <meta name="msapplication-TileColor" content="#ffffff">

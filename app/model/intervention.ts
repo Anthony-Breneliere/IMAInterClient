@@ -1,46 +1,81 @@
+import { FicheQualite } from './fiche_qualite';
 import {inherits} from "util";
-import {InterventionLight} from "./interventionLight";
 import {Rapport} from "./rapport";
-import {OrigineFiche} from "./enums";
-import {TypeFiche} from "./enums";
+import {OrigineFiche, Etat, TypeFiche} from "./enums";
 import {Alarme} from "./alarme";
+import {MainCourante} from "./main_courante";
+import {Intervenant} from "./intervenant";
+import {Site} from "./site";
+
 
 /**
  * Created by abreneli on 01/07/2016.
  */
-// import {Directive} from '@angular/core'
-//
-// @Directive( selector='')
-export class Intervention extends InterventionLight
+
+
+export class Intervention 
 {
-    OrigineLabel(): string
+    Id : number;
+    Etat : Etat;
+    Operateur : string;
+    Origine : OrigineFiche;
+    TypeFiche : TypeFiche;
+
+    Creation : Date;
+    MomentAppel : Date;
+    DateArrivee : Date;
+    DateAnnulation : Date;
+    DateDepart : Date;
+    Lancement : Date;
+    Cloture : Date;
+    
+    Site : Site;
+    Alarme : Alarme;
+    FicheQualite : FicheQualite;
+    Intervenant: Intervenant;
+    Rapport: Rapport;
+
+    Maincourantes: MainCourante[]; 
+
+    constructor( jsonData : any )
     {
-        return OrigineFiche[this.origine];
+        $.extend( this, jsonData);
+
+        if ( jsonData.Intervenant )
+            this.Intervenant = new Intervenant( jsonData.Intervenant );
+
+        if ( jsonData.Alarme )
+            this.Alarme = new Alarme( jsonData.Alarme );
+
+        if ( jsonData.Rapport )
+            this.Rapport = new Rapport( jsonData.Rapport );
+
+        if ( jsonData.MainCourante ) 
+            this.Maincourantes = $.map( jsonData.MainCourante, (mc) => {
+                return new MainCourante( mc );
+            });
     }
 
-    TypeFicheLabel(): string
+    // propriétés permettant d'afficher le label des énumérations
+    public get EtatLabel() : string
     {
-        return TypeFiche[this.typeFiche];
+        if ( this.Etat != null )
+            return Etat[this.Etat];
+        else return null;
     }
 
-    creation : Date;
-    lancement : Date;
-    cloture: Date;
-    adresseSite: string;
-    adresseIntervenant: string;
-    telephonesIntervenant: [string,string][];
-    telephonesSite: [string,string][];
-    momentAppel: Date;
-    dateArrivee : Date;
-    dateDepart : Date;
-    matriculeIntervenant : string;
-    codePEC: string;
-    maincourante: string[];
-    origine : OrigineFiche;
-    typeFiche : TypeFiche;
-    alarme : Alarme;
+    get OrigineLabel(): string
+    {
+        if ( this.Origine != null )
+            return OrigineFiche[this.Origine];
+        else return null;
+    }
 
-    // lien sur le rapport
-    rapport: Rapport;
+    get TypeFicheLabel(): string
+    {
+        if ( this.TypeFiche )
+            return TypeFiche[this.TypeFiche];
+        else return null;
+    }
 }
 

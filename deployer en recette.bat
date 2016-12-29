@@ -1,2 +1,2 @@
-robocopy /MIR . \\svtlsre01-pic\web\IMAInter /XF imaconfig.json
+robocopy /MIR . \\svtlsre01-pic\web\IMAInter /XF imainter.json
 pause

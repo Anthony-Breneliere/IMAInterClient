@@ -2,10 +2,10 @@
  * Created by abreneli on 04/07/2016.
  */
 
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChildren, Input, Output, EventEmitter } from '@angular/core';
 import { InterventionButton } from '../button/intervention.button';
-import { InterventionLight } from '../../model/interventionLight';
-import { InterventionService } from '../intervention.service';
+import { Intervention } from '../../model/intervention';
+import { InterventionService } from '../../services/intervention.service';
 
 export enum GroupTypeEnum
 {
@@ -20,11 +20,14 @@ export enum GroupTypeEnum
     styleUrls:  ['app/intervention/groupe/intervention.group.css']
 })
 
-export class InterventionGroup implements OnInit {
+export class InterventionGroup  {
 
     @Input() public GroupName: string;
     @Input() public GroupType: GroupTypeEnum;
+    @Input() public SelectedIntervention: Intervention;
     @Output() onSelectedButton = new EventEmitter<InterventionButton>();
+
+    @ViewChildren( "buttons" ) childrenButtons : InterventionButton[];
 
     public GroupTypeEnum = GroupTypeEnum; // <- using enum in html
 
@@ -33,47 +36,32 @@ export class InterventionGroup implements OnInit {
         this.expanded = false;
     }
 
-    ngOnInit() : void
-    {
-    }
-
-    groupInterventions(): InterventionLight[]
+    groupInterventions(): Intervention[]
     {
         switch( this.GroupType )
         {
             case GroupTypeEnum.interventionsCloses:
-                return this.interService.getCloseInterventions();
+                return this.interService.CloseInterventions;
 
             case GroupTypeEnum.autresInterventions:
-                return this.interService.getOtherInterventions();
+                return this.interService.OtherInterventions;
 
             default:
-                return this.interService.getMyInterventions();
+                return this.interService.MyInterventions;
         }
     }
 
-    public selectedIntervention: InterventionLight;
-    private expanded: boolean;
+    public expanded: boolean;
 
     public onClickHeader() : void
     {
         this.expanded = ! this.expanded;
     }
 
-    public onClick(intervention: InterventionLight ) : void
+    onSelected(newSelectedButton: InterventionButton)
     {
-        if ( this.selectedIntervention != null )
-            this.selectedIntervention.selected = false;
-
-        intervention.selected = ! intervention.selected;
-
-        if ( intervention.selected )
-            this.selectedIntervention = intervention;
-        else
-            this.selectedIntervention = null;
-    };
-
-    onSelected(newSelectedButton: InterventionButton) {
+        // on relaie le bouton sélectionné au composant parent:
         this.onSelectedButton.emit( newSelectedButton );
     }
+
 }

@@ -4,9 +4,12 @@
             "name": "Launch Chrome against localhost, with sourcemaps",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost:3000",
+            "url": "http://localhost:3000/#/intervention/1239817",
             "sourceMaps": true,
-            "webRoot": "${workspaceRoot}"
+            "webRoot": "${workspaceRoot}",
+            "experimentalSkipFiles": [
+                "zone.js"
+            ]
         },
         {
             "name": "Attach to Chrome, with sourcemaps",

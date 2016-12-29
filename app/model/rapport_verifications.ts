@@ -1,21 +1,32 @@
+
+import { RapportLumieres } from './rapport_lumieres';
+import { RapportIssuesConcernees } from './rapport_issues_concernees';
+
 /**
  * Created by abreneli on 09/08/2016.
  */
 
 export class RapportVerifications
 {
-    public effraction : boolean;
-    public detailEffraction : string;
-    public fenetreOuverte : boolean;
-    public detailFenetreOuverte : string;
-    public porteOuverte : boolean;
-    public detailPorteOuverte : string;
-    public baieVitreeOuverte : boolean;
-    public detailBaieVitreOuverte : string;
-    public lumiereAllumee : boolean;
-    public detailLumiereAllumee : string;
-    public verifToutesLesIssues : boolean;
-    public raisonNonVerifIssues : string;
-    public description : string;
+    RapportLumieres: RapportLumieres;
+    RapportIssuesOuvertes: RapportIssuesConcernees;
+    RapportEffraction: RapportIssuesConcernees;
+     
+    Sirene: boolean;
+    SystemeEnService: boolean;
+
+    constructor( jsonData : any )
+    {
+        $.extend( this, jsonData);
+
+        if ( jsonData.RapportLumieres )
+            this.RapportLumieres = new RapportLumieres( jsonData.RapportLumieres );
+
+        if ( jsonData.RapportIssuesOuvertes )
+            this.RapportIssuesOuvertes = new RapportIssuesConcernees( jsonData.RapportIssuesOuvertes );
+
+        if ( jsonData.RapportEffraction )
+            this.RapportEffraction = new RapportIssuesConcernees( jsonData.RapportEffraction );
+    }
 }
 

@@ -11,11 +11,11 @@ import { HttpModule } from '@angular/http';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
+import { RouterModule }   from '@angular/router';
 
 /* Liste des composants */
 import { InterventionAppComponent }  from './app.component';
-import { InterventionService } from './intervention/intervention.service';
-import { ApplicationService } from './application.service';
+import { InterventionService } from './services/intervention.service';
 import { appRoutes } from './routes';
 import { InputTextbox } from './tools/input/input_textbox';
 import { Checkbox } from './tools/checkbox/checkbox';
@@ -25,12 +25,14 @@ import { InterventionDetails } from './intervention/details/intervention.details
 import { InterventionButton } from './intervention/button/intervention.button';
 import { AppBar } from './app_bar/app_bar';
 import { InterventionMainDisplay } from './intervention/main_display/intervention.main_display';
+import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 @NgModule({
     imports:      [
         BrowserModule,
         FormsModule,
-        HttpModule ],
+        HttpModule, 
+        RouterModule.forRoot (appRoutes) ],
 
     /*
        Déclaration des composants et des directives utilisées par le module. En les ajoutant ici
@@ -53,7 +55,7 @@ import { InterventionMainDisplay } from './intervention/main_display/interventio
        Pour qu'un composant du module puisse utilise le service, il faut que celui soit ajouté
        en paramètre du constructeur. Une seule instance est créée pour chaque service.
      */
-    providers:    [ ApplicationService, InterventionService ],
+    providers:    [ InterventionService,  {provide: LocationStrategy, useClass: HashLocationStrategy }],
 
     /*
      * Composant affiché par le module.

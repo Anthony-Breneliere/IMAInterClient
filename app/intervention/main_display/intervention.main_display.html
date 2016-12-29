@@ -1,14 +1,11 @@
-<div class="interventionMainDisplay" >
+<div id="interventionMainDisplay">
 
-    <div class="interventionNavigation"  >
-        <intervention-group (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.mesInterventions" GroupName="Mes Interventions en cours"></intervention-group>
-        <intervention-group (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.autresInterventions" GroupName="Autres Interventions en cours"></intervention-group>
-        <intervention-group (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.interventionsCloses" GroupName="Interventions closes"></intervention-group>
+    <div #interventionNavigation id="interventionNavigation">
+        <intervention-group #myGroup [SelectedIntervention]="selectedIntervention" (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.mesInterventions" GroupName="Mes Interventions en cours"></intervention-group>
+        <intervention-group #othersGroup [SelectedIntervention]="selectedIntervention" (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.autresInterventions" GroupName="Autres Interventions en cours"></intervention-group>
+        <intervention-group #searchGroup [SelectedIntervention]="selectedIntervention" (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.interventionsCloses" GroupName="Interventions closes"></intervention-group>
     </div>
 
-    <intervention-details></intervention-details>
-
-    <!--<div style="background-color: peru; width: 500px; flex: 1">XXXXX</div>-->
-    <!--<div style="background-color: #fca600; width: 500px; flex: 1">XXXXX</div>-->
+    <intervention-details [intervention]="selectedIntervention"></intervention-details>
 
 </div>

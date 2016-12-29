@@ -3,7 +3,7 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import { ApplicationService } from '../application.service';
+import { InterventionService } from '../services/intervention.service';
 
 @Component({
     selector: 'app-bar',
@@ -13,18 +13,26 @@ import { ApplicationService } from '../application.service';
 
 export class AppBar {
 
-    constructor( private appService: ApplicationService )
+    constructor( private interService: InterventionService )
     {
     }
 
     m1State() : string {
-        return this.appService.m1Connected ? 'connected' : 'disconnected';
+        return this.interService.m1Connected ? 'connected' : 'disconnected';
 
     }
 
     plottiState() : string {
-        return this.appService.plottiConnected ? 'connected' : 'disconnected';
+        return this.interService.plottiConnected ? 'connected' : 'disconnected';
 
+    }
+
+    get connectedState() : string {
+        return this.interService.Connected ? 'connected' : 'disconnected';
+    }
+
+    get connectedLabel() : string {
+        return this.interService.Connected ? 'Connected' : 'Disconnected';
     }
 
     public ConnectionPanelDisplayed: boolean = false;
@@ -34,13 +42,13 @@ export class AppBar {
 
     connect() : void
     {
-        if ( this.appService.connect( this.TSLogin, this.TSPassword ) )
+        if ( this.interService.connect( this.TSLogin, this.TSPassword ) )
             this.ConnectionPanelDisplayed = false;
     }
 
     disconnect() : void
     {
-        if ( this.appService.disconnect() )
+        if ( this.interService.disconnect() )
             this.ConnectionPanelDisplayed = false;
     }
 

@@ -14,6 +14,4 @@ export class Section
 {
     @Input() title: string;
     @Input() color: string;
-
-
 }
