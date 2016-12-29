@@ -1,7 +1,7 @@
 // Placez vos paramètres dans ce fichier pour remplacer les paramètres par défaut et les paramètres utilisateur.
 {
-    "http.proxy": "http://ep.threatpulse.net:80/",
-    "http.proxyStrictSSL": false,
+    // "http.proxy": "http://ep.threatpulse.net:80/",
+    // "http.proxyStrictSSL": false,
 
     // Spécifie le chemin de dossier contenant les fichiers tsserver et lib*.d.ts à utiliser.
     // "typescript.tsdk": "C:\\Users\\abreneli\\AppData\\Roaming\\npm\\node_modules\\typescript\\lib",
