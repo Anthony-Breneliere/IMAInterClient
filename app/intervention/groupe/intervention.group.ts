@@ -2,7 +2,7 @@
  * Created by abreneli on 04/07/2016.
  */
 
-import { Component, ViewChildren, Input, Output, EventEmitter } from '@angular/core';
+import { Component,  Input, Output, EventEmitter } from '@angular/core';
 import { InterventionButton } from '../button/intervention.button';
 import { Intervention } from '../../model/intervention';
 import { InterventionService } from '../../services/intervention.service';
@@ -15,9 +15,10 @@ export enum GroupTypeEnum
 }
 
 @Component({
+    moduleId: module.id,
     selector: 'intervention-group',
-    templateUrl: 'app/intervention/groupe/intervention.group.html',
-    styleUrls:  ['app/intervention/groupe/intervention.group.css']
+    templateUrl: './intervention.group.html',
+    styleUrls:  ['./intervention.group.css']
 })
 
 export class InterventionGroup  {
@@ -27,7 +28,7 @@ export class InterventionGroup  {
     @Input() public SelectedIntervention: Intervention;
     @Output() onSelectedButton = new EventEmitter<InterventionButton>();
 
-    @ViewChildren( "buttons" ) childrenButtons : InterventionButton[];
+//    @ViewChildren( "buttons" ) childrenButtons : InterventionButton[];
 
     public GroupTypeEnum = GroupTypeEnum; // <- using enum in html
 

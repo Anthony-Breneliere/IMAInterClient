@@ -5,9 +5,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
+    moduleId: module.id,
     selector: 'section',
-    templateUrl: 'app/intervention/section/section.html',
-    styleUrls: ['app/intervention/section/section.css']
+    templateUrl: './section.html',
+    styleUrls: ['./section.css']
 })
 
 export class Section

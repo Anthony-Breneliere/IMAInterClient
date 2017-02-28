@@ -27,7 +27,16 @@ export const appRoutes: Routes = [
     {
         path: 'intervention',
         component: InterventionMainDisplay
+    },
+    {
+        path: '',
+        component: InterventionMainDisplay
+    },
+    {
+        path: 'aot',
+        redirectTo: '/aot'
     }
+
 
 ];
 

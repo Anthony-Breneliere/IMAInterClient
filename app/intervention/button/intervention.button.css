@@ -25,7 +25,8 @@ div.bouton_intervention div {
     padding: 1 0 1 0/* espace entre les lignes */
 }
 
-iron-icon {
+i {
+    padding: 2px;
     margin: 0px 5px 0px 3px;
 }
 

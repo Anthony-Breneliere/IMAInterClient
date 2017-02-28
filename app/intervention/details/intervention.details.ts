@@ -14,9 +14,10 @@ import { InterventionService } from "../../services/intervention.service";
 
 
 @Component({
+    moduleId: module.id,
     selector: 'intervention-details',
-    templateUrl: 'app/intervention/details/intervention.details.html',
-    styleUrls: ['app/intervention/details/intervention.details.css']
+    templateUrl: './intervention.details.html',
+    styleUrls: ['./intervention.details.css']
 })
 
 
@@ -30,16 +31,16 @@ export class InterventionDetails implements  OnInit
     private get rapport() : Rapport { return this.intervention.Rapport; };
 
     private MotifIntervention = MotifIntervention;
-    private MotifInterventionValues = Object.values(MotifIntervention).filter( e => typeof( e ) == "number" );
+    private MotifInterventionValues = (<any> Object).values(MotifIntervention).filter( (e : any) => typeof( e ) == "number" );
 
     private Trajet = Trajet;
-    private TrajetValues = Object.values(Trajet).filter( e => typeof( e ) == "number" );
+    private TrajetValues = (<any> Object).values(Trajet).filter( (e : any) => typeof( e ) == "number" );
 
     private TypePresence = TypePresence;
-    private TypePresenceValues = Object.values(TypePresence).filter( e => typeof( e ) == "number" );
+    private TypePresenceValues = (<any> Object).values(TypePresence).filter( (e : any) => typeof( e ) == "number" );
 
     private DepotBonIntervention = DepotBonIntervention;
-    private DepotBonInterventionValues = Object.values(DepotBonIntervention).filter( e => typeof( e ) == "number" );
+    private DepotBonInterventionValues = (<any> Object).values(DepotBonIntervention).filter( (e : any) => typeof( e ) == "number" );
 
     private motifChoices: any[] = [];
 
@@ -50,7 +51,7 @@ export class InterventionDetails implements  OnInit
     constructor( private interService: InterventionService )
     {
         // on transforme l'enum MotifIntervention en une structure clé/valeur qu'on peut binder
-        this.motifChoices = Object.values(MotifIntervention).filter( e => typeof( e ) == "number" );
+        this.motifChoices = (<any> Object).values(MotifIntervention).filter( (e : any) => typeof( e ) == "number" );
     }
 
     isChecked( value : MotifIntervention ) : boolean

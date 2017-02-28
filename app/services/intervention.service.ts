@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 
 import { OrigineFiche, TypeFiche, MotifIntervention, Trajet, TypePresence, DepotBonIntervention, Etat } from '../model/enums';
-import Collections = require('typescript-collections');
+import * as Collections from 'typescript-collections';
 import {Rapport} from "../model/rapport";
 import {Alarme} from "../model/alarme";
 import {RapportPresence} from "../model/rapport_presence";
@@ -57,7 +57,7 @@ export class InterventionService {
      */
     constructor(private http: Http) {
 
-        this.http.get("imainter.json").toPromise().then( response => { this.onConfigFileLoaded ( response ); } );
+        this.http.get("data/imainter.json").toPromise().then( response => { this.onConfigFileLoaded ( response ); } );
      }
      
      /**
@@ -396,7 +396,7 @@ export class InterventionService {
      */
     private getDemoData()
     {
-        this.http.get("demoData.json").toPromise()
+        this.http.get("data/demoData.json").toPromise()
         .then( response => {
             this.demoData = response.json();
         }) 

@@ -1,0 +1,41 @@
+<html>
+
+<!-- Version AOT -->
+
+<head>
+    <title>IMA Intervention</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="css/icons.css">
+    <link rel="import" href="node_modules/@polymer/iron-icons/iron-icons.html">
+    <link rel="import" href="node_modules/@polymer/iron-icons/maps-icons.html">
+    <link rel="import" href="node_modules/@polymer/iron-icons/hardware-icons.html">
+    <link rel="import" href="node_modules/@polymer/iron-icons/device-icons.html">
+    <link rel="import" href="node_modules/@polymer/iron-icons/notification-icons.html">
+
+
+    <!-- Polyfill(s) for older browsers -->
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/signalr/jquery.signalR.min.js"></script>
+    <script src="node_modules/core-js/client/shim.min.js"></script>
+    <script src="node_modules/zone.js/dist/zone.min.js"></script>
+    <script src="node_modules/systemjs/dist/system.js"></script>
+
+    <script>
+        window.module = 'aot';
+    </script>
+
+</head>
+<!-- 3. Display the application -->
+
+<body>
+    <intervention-app>Loading...</intervention-app>
+</body>
+
+<script src="dist/build.js"></script>
+
+</html>

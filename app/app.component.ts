@@ -7,9 +7,10 @@ import {AppBar} from './app_bar/app_bar';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 
 @Component({
+    moduleId: module.id,
     selector: 'intervention-app',
-    templateUrl: 'app/app.component.html',
-    styles: [ 'app/app.component.css']
+    templateUrl: './app.component.html',
+    styles: [ './app.component.css']
 })
 
 export class InterventionAppComponent { 

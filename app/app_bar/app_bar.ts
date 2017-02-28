@@ -6,14 +6,15 @@ import {Component, OnInit} from '@angular/core';
 import { InterventionService } from '../services/intervention.service';
 
 @Component({
+    moduleId: module.id,
     selector: 'app-bar',
-    templateUrl: 'app/app_bar/app_bar.html',
-    styleUrls:  ['app/app_bar/app_bar.css']
+    templateUrl: './app_bar.html',
+    styleUrls:  ['./app_bar.css']
 })
 
 export class AppBar {
 
-    constructor( private interService: InterventionService )
+    constructor( public interService: InterventionService )
     {
     }
 

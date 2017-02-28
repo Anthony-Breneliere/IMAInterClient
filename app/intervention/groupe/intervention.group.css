@@ -1,39 +1,32 @@
-div.interventionGroupHeader
-{
+div.interventionGroupHeader {
     /*border: 1px solid hsl(var( --color1 ), var( --saturation ), var( --lightness ) );*/
-    font-size: 1.2em;
-    margin: 10px 10px 10px 10px;
+    font-size: 1.0em;
+    margin: 10px 0px 10px 10px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-
-.interventionGroupHeader:hover
-{
-    color: hsl( 0, 0%, 100% );
-    text-shadow: 0 0 15px var( --hover_shadow );
+.interventionGroupHeader:hover {
+    color: hsl( 0, 0%, 100%);
+    text-shadow: 0 0 15px var( --hover_shadow);
 }
 
-div.interventionGroupHeader i
-{
+div.interventionGroupHeader i {
     margin: 0px 10px 0px 10px;
     font-size: 2rem;
     /*color: inherit;*/
 }
 
-div.interventionGroup button
-{
+div.interventionGroup button {
     margin: auto;
 }
 
-div.interventionGroup div
-{
+div.interventionGroup div {
     width: 100%;
 }
 
 .search {
-
     margin-left: 10px;
     width: 100%;
 }
@@ -43,8 +36,7 @@ div.interventionGroup div
     width: 90%;
 }
 
-.search iron-icon
-{
+.search iron-icon {
     position: relative;
     top: 0px;
     right: 30px;

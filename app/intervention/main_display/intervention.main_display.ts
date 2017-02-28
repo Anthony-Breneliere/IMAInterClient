@@ -12,9 +12,10 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 
 @Component({
+    moduleId: module.id,
     selector: 'intervention-main-display',
-    templateUrl: 'app/intervention/main_display/intervention.main_display.html',
-    styleUrls:  ['app/intervention/main_display/intervention.main_display.css'],
+    templateUrl: './intervention.main_display.html',
+    styleUrls:  ['./intervention.main_display.css'],
 })
 
 export class InterventionMainDisplay implements OnInit, AfterViewInit {
@@ -38,7 +39,8 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
 
     ngOnInit() {
 
-        // we just save the id passed in the url, or undefined
+        // a l'initialisation du composant, le paramètre id de l'url est lue de manière à charger
+        // puis à afficher l'intervention correspondante.
         this.route.params
             .switchMap( (params: Params) => [+params['id']] )
             .subscribe( (id) => { 

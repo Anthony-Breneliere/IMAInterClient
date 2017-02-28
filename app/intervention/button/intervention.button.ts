@@ -9,9 +9,10 @@ import { Router } from '@angular/router';
 import { Intervention } from '../../model/intervention';
 
 @Component({
+    moduleId: module.id,
     selector: 'intervention-button',
-    templateUrl: 'app/intervention/button/intervention.button.html',
-    styleUrls: ['app/intervention/button/intervention.button.css']
+    templateUrl: './intervention.button.html',
+    styleUrls: ['./intervention.button.css']
 })
 
 export class InterventionButton

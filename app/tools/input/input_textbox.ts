@@ -14,9 +14,10 @@ export const INPUTBOX_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
+    moduleId: module.id,
     selector: 'input-textbox',
-    templateUrl: 'app/tools/input/input_textbox.html',
-    styleUrls: ['app/tools/input/input_textbox.css'],
+    templateUrl: './input_textbox.html',
+    styleUrls: ['./input_textbox.css'],
     providers: [INPUTBOX_CONTROL_VALUE_ACCESSOR]
 })
 

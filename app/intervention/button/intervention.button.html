@@ -1,12 +1,12 @@
 <div class="bouton_intervention transition_1s" [class.unselected]="selected !== true" [class.selected]="selected === true" *ngIf="intervention" (click)="onClick()">
     <div *ngIf="intervention.Site" class="client">
-        <iron-icon icon="icons:perm-identity"></iron-icon>{{intervention.Site.Client}}</div>
+        <i class="material-icons">perm_identity</i>{{intervention.Site.Client}}</div>
     <div *ngIf="intervention.EtatLabel != 'Close'">
-        <iron-icon icon="hardware:keyboard-tab"></iron-icon>{{intervention.EtatLabel}}</div>
+        <i class="material-icons">keyboard_tab</i>{{intervention.EtatLabel}}</div>
     <div>
-        <iron-icon icon="notification:airline-seat-recline-normal"></iron-icon>{{intervention.Operateur}}</div>
+        <i class="material-icons">airline_seat_recline_normal</i>{{intervention.Operateur}}</div>
     <div>
-        <iron-icon icon="maps:directions-run"></iron-icon>{{intervention.Intervenant?.Nom}}</div>
+        <i class="material-icons">directions_run</i>{{intervention.Intervenant?.Nom}}</div>
     <div>
-        <iron-icon icon="device:access-time"></iron-icon>{{intervention.Creation | date:'dd/MM/yyyy HH:mm:ss'}}</div>
+        <i class="material-icons">access_time</i>{{intervention.Creation | date:'dd/MM/yyyy HH:mm:ss'}}</div>
 </div>

@@ -1,0 +1,17 @@
+ [
+     { "source": "css/styles.css" },
+     { "source": "css/icons.css" },
+     { "source": "data/imainter.json" },
+     { "source": "data/demoData.json" },
+     { "source": "dist" },
+     { "source": "index-aot.html", "dest": "index.html" },
+     { "source": "node_modules/core-js/client/shim.min.js" },
+     { "source": "node_modules/core-js/client/shim.min.js.map" },
+     { "source": "node_modules/zone.js/dist/zone.min.js" },
+     { "source": "node_modules/systemjs/dist/system.js" },
+     { "source": "node_modules/systemjs/dist/system.js.map" },
+     { "source": "node_modules/jquery/dist/jquery.min.js" },
+     { "source": "node_modules/signalr/jquery.signalR.min.js" },
+     { "source": "node_modules/material-design-icon-fonts" },
+     { "source": "node_modules/typescript-collections/dist/lib/umd.min.js" }
+ ]

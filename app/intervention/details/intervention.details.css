@@ -1,28 +1,60 @@
 div.intervention_details {
-    /*margin: 30px 10px 10px 5%;*/
     width: 100%;
     margin: 0px 0px 0px 0px;
+    display: inline-flex;
+}
+
+div.section {
+    padding-left: 0;
+    margin: 5 5 2 5;
+    /*margin-bottom: 20px;*/
 }
 
 div.title {
-    /*position: relative;*/
-    /*top: 200px;*/
     font-size: 1.2rem;
     margin-bottom: 10px;
     background-color: var( --input-bg-color);
-    /* linear-gradient( to right, var( --dark-bg-color), var( --main-bg-color)); */
     font-weight: bold;
-    margin: 5 5 2 5;
     padding: 5 10 5 10;
+    margin: 0 0 0 0;
     border: transparent solid 1px;
 }
 
 div.title:hover {
-    background-color: var( --main-bg-color)
+    /*background-color: var( --main-bg-color);*/
+    border: var(--hover_shadow) solid 1px;
 }
 
 div.formulaire {
-    margin: 5px 10px 5px 20px;
+    margin: 0 0 0 0;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td {
+    /*border: 2px solid var(--main-bg-color);*/
+    background-color: var(--input-bg-color);
+    padding: 0 4 0 4;
+    vertical-align: middle/* permet de conserver les retours à la ligne, par exemple pour les adresses */
+}
+
+tr {
+    border-top: 2px solid var(--main-bg-color);
+}
+
+td.label {
+    font-weight: bold;
+    text-align: right;
+    font-size: 0.9em;
+    margin: 0 4 0 0;
+}
+
+td.label+td {
+    white-space: pre-line;
+    margin: 0 0 0 4;
+    border-left: 2px solid var(--main-bg-color);
 }
 
 checkbox,
@@ -32,28 +64,6 @@ textarea,
     display: inline-block;
     vertical-align: top;
     margin: 10px 25px 5px 0px;
-}
-
-div.section {
-    padding-left: 0;
-    /*margin-bottom: 20px;*/
-}
-
-table {
-    border-collapse: collapse;
-}
-
-th,
-td,
-tr {
-    border: 2px solid var(--main-bg-color);
-    background-color: var(--input-bg-color);
-    padding: 4 12 4 4;
-    margin: 0 0 0 0;
-}
-
-td.label {
-    font-weight: bold;
 }
 
 

@@ -1,0 +1,107 @@
+:root {
+    --hover_shadow: hsl( 0, 100%, 100%);
+    --main-bg-color: hsl( 0, 0%, 20%);
+    --input-bg-color: hsl( 0, 0%, 30%);
+    --dark-bg-color: hsl( 0, 0%, 10%);
+    --saturation: 50%;
+    --lightness: 35%;
+    --font-lightness: 70%;
+    --hover-lightness: 100%;
+    --bg-hover-lightness: 30%;
+    --selected-lightness: 100%;
+    --bg-selected-lightness: 40%;
+    --operateur_hue: 0;
+    --intervenant_hue: 20;
+    --maincourante_hue: 40;
+    --alarme_hue: 60;
+    --rapport_hue: 80;
+    --presence_hue: 100;
+    --verification_hue: 120;
+    --color1: 220;
+    --color2: 180;
+    --color3: 100;
+    --main-color: hsl( var( --color1), var( --saturation), var( --lightness));
+    --selected-main-color: hsl( var( --color1), var( --saturation), var( --selected-lightness));
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    /*margin-top: 0.5rem;*/
+    /*margin-bottom: 0.5rem;*/
+}
+
+body {
+    background: var( --main-bg-color);
+    color: hsl( 0, 0%, var( --font-lightness));
+    margin: 0 0 0 0;
+    cursor: default;
+    height: 100%;
+}
+
+body,
+* {
+    font-family: Candara, Verdana, Sans-serif;
+}
+
+div {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+input,
+textarea {
+    background-color: var( --input-bg-color);
+    color: hsl( 0, 0%, var( --font-lightness));
+    padding: 0.5rem;
+    resize: none;
+}
+
+input,
+.bordered,
+textarea {
+    border: 1px solid hsl( var( --color1), var( --saturation), var( --lightness));
+}
+
+button {
+    border: 1px solid hsl( var( --color1), var( --saturation), var( --lightness));
+    color: hsl( 0, 0%, var( --font-lightness));
+    font-size: 1.2em;
+    padding: 10px;
+}
+
+button:hover {
+    border: 1px solid hsl( var( --color1), var( --saturation), var( --hover-lightness));
+}
+
+button:active {
+    background-color: var( --input-bg-color);
+}
+
+input:disabled,
+textarea:disabled,
+button {
+    background-color: var( --main-bg-color);
+}
+
+.transition_1s {
+    transition: border 1s, color 1s, box-shadow 1s, text-shadow 1s;
+}
+
+input:hover:enabled {
+    border: 1px solid hsl( var( --color1), var( --saturation), var( --hover-lightness));
+    transition: border 1s;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: hsl( var( --color1), var( --saturation), var( --lightness));
+    border-color: hsl( var( --color1), var( --saturation), var( --lightness));
+    border-width: 1px;
+}

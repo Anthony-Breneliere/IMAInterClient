@@ -1,0 +1,9 @@
+{
+    "browser": "chrome.exe",
+    "//": "lancemande chrome à la place de IE à la nommande npm run lite",
+    "open": false,
+    "port": 8888,
+    "server": {
+        "baseDir": "aot"
+    }
+}

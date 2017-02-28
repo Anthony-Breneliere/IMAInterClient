@@ -14,9 +14,10 @@ export const CHECKBOX_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
+    moduleId: module.id,
     selector: 'checkbox',
-    templateUrl: 'app/tools/checkbox/checkbox.html',
-    styleUrls: ['app/tools/checkbox/checkbox.css'],
+    templateUrl: './checkbox.html',
+    styleUrls: ['./checkbox.css'],
     providers: [CHECKBOX_CONTROL_VALUE_ACCESSOR]
 })
 
