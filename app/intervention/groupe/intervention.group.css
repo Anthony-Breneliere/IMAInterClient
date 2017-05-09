@@ -12,14 +12,10 @@ div.interventionGroupHeader {
     text-shadow: 0 0 15px var( --hover_shadow);
 }
 
-div.interventionGroupHeader i {
-    margin: 0px 10px 0px 10px;
+i {
+    margin: 5px 5px 5px 5px;
     font-size: 2rem;
     /*color: inherit;*/
-}
-
-div.interventionGroup button {
-    margin: auto;
 }
 
 div.interventionGroup div {
@@ -32,12 +28,6 @@ div.interventionGroup div {
 }
 
 .search input {
-    padding-right: 30px;
-    width: 90%;
-}
-
-.search iron-icon {
-    position: relative;
-    top: 0px;
-    right: 30px;
+    padding: 0.8em;
+    width: 100%;
 }

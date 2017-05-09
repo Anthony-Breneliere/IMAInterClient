@@ -25,6 +25,7 @@ export default {
                 'node_modules/zone.js/dist/**',
                 'node_modules/systemjs/dist/**',
                 'node_modules/jquery/dist/**',
+                'node_modules/lodash/lodash.js',
                 'node_modules/signalr/jquery.signalR.min.js',
                 'node_modules/typescript-collections/dist/lib/**',
                 'node_modules/angular2-contextmenu/**',
@@ -37,7 +38,8 @@ export default {
                 // relative to the current directory, or the name
                 // of a module in node_modules
                 // 'node_modules/angular2-contextmenu/src/contextMenu.component.js': ['ContextMenuComponent']
-                'node_modules/angular2-contextmenu/angular2-contextmenu.js': ['ContextMenuComponent']
+                'node_modules/angular2-contextmenu/angular2-contextmenu.js': ['ContextMenuComponent'],
+                'node_modules/lodash/lodash.js': ['merge']
             }
         }),
         uglify()

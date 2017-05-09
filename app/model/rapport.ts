@@ -22,31 +22,25 @@ export class Rapport
     NumeroBon : string;
     AutreCirconstanceTrajet : string;
 
-    RapportArriveeSurLieux: RapportArriveeSurLieux;
+    ArriveeSurLieux: RapportArriveeSurLieux;
     Verifications : RapportVerifications;
-    RapportMiseEnSecurite: RapportMiseEnSecurite;
+    MiseEnSecurite: RapportMiseEnSecurite;
     Presence : RapportPresence;
-    RapportTrajet : RapportTrajet;
+    Trajet : RapportTrajet;
 
-    constructor( jsonData : any )
+    get ArriveeSurLieuxN() : RapportArriveeSurLieux { return this.ArriveeSurLieux ? this.ArriveeSurLieux : this.ArriveeSurLieux = new RapportArriveeSurLieux() }
+    get VerificationsN() : RapportVerifications { return this.Verifications ? this.Verifications : this.Verifications = new RapportVerifications() }
+    get MiseEnSecuriteN() : RapportMiseEnSecurite { return this.MiseEnSecurite ? this.MiseEnSecurite : this.MiseEnSecurite = new RapportMiseEnSecurite() }
+    get PresenceN() : RapportPresence { return this.Presence ? this.Presence : this.Presence = new RapportPresence() }
+    get TrajetN() : RapportTrajet { return this.Trajet ? this.Trajet : this.Trajet = new RapportTrajet() }
+
+    constructor()
     {
-        $.extend( this, jsonData);
-
-        if ( jsonData.RapportPresence )
-            this.Presence = new RapportPresence( jsonData.RapportPresence );
-
-        if ( jsonData.RapportVerifications )
-            this.Verifications = new RapportVerifications( jsonData.RapportVerifications );
-
-        if ( jsonData.RapportArriveeSurLieux )
-            this.RapportArriveeSurLieux = new RapportArriveeSurLieux( jsonData.RapportArriveeSurLieux );
-
-        if ( jsonData.RapportMiseEnSecurite )
-            this.RapportMiseEnSecurite = new RapportMiseEnSecurite( jsonData.RapportMiseEnSecurite );
-
-        if ( jsonData.RapportTrajet )
-            this.RapportTrajet = new RapportTrajet( jsonData.RapportTrajet );
-
+        this.ArriveeSurLieux = new RapportArriveeSurLieux();
+        this.Verifications = new RapportVerifications();
+        this.MiseEnSecurite = new RapportMiseEnSecurite();
+        this.Presence = new RapportPresence();
+        this.Trajet = new RapportTrajet();
     }
 }
 

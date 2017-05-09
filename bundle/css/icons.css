@@ -4,10 +4,7 @@
     font-weight: 400;
     src: url(../node_modules/material-design-icon-fonts/iconfont/MaterialIcons-Regular.eot);
     /* For IE6-8 */
-    src: local('Material Icons'), local('MaterialIcons-Regular'),
-    url(../node_modules/material-design-icon-fonts/iconfont/MaterialIcons-Regular.woff2) format('woff2'),
-    url(../node_modules/material-design-icon-fonts/iconfont/MaterialIcons-Regular.woff) format('woff'),
-    url(../node_modules/material-design-icon-fonts/iconfont/MaterialIcons-Regular.ttf) format('truetype');
+    src: local('Material Icons'), local('MaterialIcons-Regular'), url(../node_modules/material-design-icon-fonts/iconfont/MaterialIcons-Regular.woff2) format('woff2'), url(../node_modules/material-design-icon-fonts/iconfont/MaterialIcons-Regular.woff) format('woff'), url(../node_modules/material-design-icon-fonts/iconfont/MaterialIcons-Regular.ttf) format('truetype');
 }
 
 .material-icons {
@@ -23,7 +20,7 @@
     /*white-space: nowrap;*/
     /*direction: ltr;*/
     color: inherit;
-    /*vertical-align:middle;*/
+    vertical-align: middle;
     /* Support for all WebKit browsers. */
     -webkit-font-smoothing: antialiased;
     /* Support for Safari and Chrome. */

@@ -8,8 +8,4 @@ export class Alarme
     public Evenement : string;
     public CodeCanal : string;
 
-    constructor( jsonData : Object )
-    {
-        $.extend( this, jsonData);
-    }
 }

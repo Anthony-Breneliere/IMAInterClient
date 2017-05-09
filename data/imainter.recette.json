@@ -1,0 +1,6 @@
+{
+    "imainter": {
+        "server": "http://svtlsre01-pic/IMAInterService",
+        "useDemoData": false
+    }
+}

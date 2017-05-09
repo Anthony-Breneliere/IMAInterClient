@@ -1,21 +1,24 @@
-export class RapportLumieres
+export class RapportLumieresAllumees
 {
     Buanderie: boolean;
     Bureau: boolean;
     Cellier: boolean;
-    Couloir: boolean;
     Chambre: boolean;
+    Couloir: boolean;
     Cuisine: boolean;
-    Etages: number[];
+    Etage1: boolean;
+    Etage2: boolean;
     Exterieur: boolean;
     Garage: boolean;
     SalleDeBain: boolean;
     SalonOuSalleAManger: boolean;
     Toilettes: boolean;
+    AutrePiece: boolean;
     Autre: string; 
 
-    constructor( jsonData : any )
+    constructor()
     {
-        $.extend( this, jsonData);
     }
+
+
 }

@@ -12,15 +12,19 @@ export class RapportPresence
     // public PresenceContact1Arrivee : Date;
     // public PresenceContact2Nom : string;
     // public PresenceContact2Arrivee : Date;
+
+    // présence sur site:
     public PresenceAnimale : boolean;
     public PrecisionAnimaux : string;
-    public Gendarmerie : boolean;
-    public Police : boolean;
-    public Pompiers : boolean;
 
-    constructor( jsonData : any )
-    {
-        $.extend( this, jsonData);
-    }
+    public Gendarmerie : boolean;
+    public Pompiers : boolean;
+    public Client : boolean;
+    public Contacts : boolean;
+    public AutrePresence : string;
+
+    public TypeVehicule : string;
+    public CouleurVehicule : string;
+    public PlaqueVehicule : string;
 }
 

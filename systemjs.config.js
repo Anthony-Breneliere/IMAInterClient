@@ -29,8 +29,14 @@
 
             // other libraries
             'rxjs': 'npm:rxjs',
+            'lodash': 'npm:lodash/lodash.js',
             'typescript-collections': 'npm:typescript-collections',
-            'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js'
+            'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
+            'angular2-contextmenu': 'npm:angular2-contextmenu',
+            'jquery': 'npm:jquery',
+            'signalr': 'npm:signalr',
+            'jquery-ui': 'npm:jquery-ui/ui',
+            'gridstack': 'npm:gridstack'
         },
 
         // packages tells the System loader how to load when no filename and/or no extension
@@ -39,6 +45,11 @@
             'rxjs': { defaultExtension: 'js' },
             'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
             'typescript-collections': { main: './dist/lib/index.js', defaultExtension: 'js' },
+            'angular2-contextmenu': { main: './angular2-contextmenu.js', defaultExtension: 'js' },
+            'jquery': { main: './dist/jquery.js', defaultExtension: 'js' },
+            'jquery-ui': { main: '../../jquery-ui-dist/jquery-ui.js', defaultExtension: 'js' },
+            'signalr': { main: './jquery.signalr.js', defaultExtension: 'js' },
+            'gridstack': { main: './dist/gridstack.js', defaultExtension: 'js' }
         }
     });
 })

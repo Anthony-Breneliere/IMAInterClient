@@ -34,30 +34,30 @@ export class Intervention
     FicheQualite : FicheQualite;
     Intervenant: Intervenant;
     Rapport: Rapport;
+    MainCourantes: MainCourante[]; 
 
-    Maincourantes: MainCourante[]; 
+    get SiteN() : Site { return this.Site ? this.Site : this.Site = new Site() };
+    get AlarmeN() : Alarme { return this.Alarme ? this.Alarme : this.Alarme = new Alarme() };
+    get FicheQualiteN() : FicheQualite { return this.FicheQualite ? this.FicheQualite : this.FicheQualite = new FicheQualite() };
+    get IntervenantN() : Intervenant { return this.Intervenant ? this.Intervenant : this.Intervenant = new Intervenant() };
+    get RapportN(): Rapport { return this.Rapport ? this.Rapport : this.Rapport = new Rapport() };
+    get MainCourantesN(): MainCourante[] { return this.MainCourantes ? this.MainCourantes : this.MainCourantes = new Array<MainCourante>()  };
 
-    constructor( jsonData : any )
+    /**
+     * 
+     * @param jsonData Données d'intervention
+     */
+    constructor()
     {
-        $.extend( this, jsonData);
-
-        if ( jsonData.Intervenant )
-            this.Intervenant = new Intervenant( jsonData.Intervenant );
-
-        if ( jsonData.Alarme )
-            this.Alarme = new Alarme( jsonData.Alarme );
-
-        if ( jsonData.Rapport )
-            this.Rapport = new Rapport( jsonData.Rapport );
-
-        if ( jsonData.MainCourante ) 
-            this.Maincourantes = $.map( jsonData.MainCourante, (mc) => {
-                return new MainCourante( mc );
-            });
+        this.Site = new Site();
+        this.Alarme = new Alarme();
+        this.FicheQualite = new FicheQualite();
+        this.Intervenant = new Intervenant();
+        this.Rapport = new Rapport();
     }
 
     // propriétés permettant d'afficher le label des énumérations
-    public get EtatLabel() : string
+    get EtatLabel() : string
     {
         if ( this.Etat != null )
             return Etat[this.Etat];
@@ -77,5 +77,11 @@ export class Intervention
             return TypeFiche[this.TypeFiche];
         else return null;
     }
+
+    // ajoute des setters pour éviter les exceptions lors de la recopie automatique
+    set EtatLabel( value : string ) {}
+    set OrigineLabel( value : string ) {}
+    set TypeFicheLabel( value : string ) {}
+
 }
 

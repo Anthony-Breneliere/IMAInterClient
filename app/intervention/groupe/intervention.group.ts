@@ -6,6 +6,7 @@ import { Component,  Input, Output, EventEmitter } from '@angular/core';
 import { InterventionButton } from '../button/intervention.button';
 import { Intervention } from '../../model/intervention';
 import { InterventionService } from '../../services/intervention.service';
+import { SortInterventionByDateTime } from './sortInterPipe';
 
 export enum GroupTypeEnum
 {
@@ -26,15 +27,13 @@ export class InterventionGroup  {
     @Input() public GroupName: string;
     @Input() public GroupType: GroupTypeEnum;
     @Input() public SelectedIntervention: Intervention;
+    @Input() public Expanded: boolean;
     @Output() onSelectedButton = new EventEmitter<InterventionButton>();
-
-//    @ViewChildren( "buttons" ) childrenButtons : InterventionButton[];
 
     public GroupTypeEnum = GroupTypeEnum; // <- using enum in html
 
     constructor( private interService : InterventionService )
     {
-        this.expanded = false;
     }
 
     groupInterventions(): Intervention[]
@@ -52,17 +51,21 @@ export class InterventionGroup  {
         }
     }
 
-    public expanded: boolean;
-
     public onClickHeader() : void
     {
-        this.expanded = ! this.expanded;
+        this.Expanded = ! this.Expanded;
     }
 
     onSelected(newSelectedButton: InterventionButton)
     {
         // on relaie le bouton sélectionné au composant parent:
         this.onSelectedButton.emit( newSelectedButton );
+
+    }
+
+    searchInterventions( queryString : string )
+    {
+        this.interService.searchInterventions( queryString );
     }
 
 }

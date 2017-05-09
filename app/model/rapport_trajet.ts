@@ -8,11 +8,10 @@ export class RapportTrajet
     DetailMeteo: string;
     ProblemeCirculation: boolean;
 
-    constructor( jsonData : any )
-    {
-        $.extend( this, jsonData);
+    get MeteoN() : RapportMeteo { return this.Meteo ? this.Meteo : this.Meteo = new RapportMeteo() }
 
-        if ( jsonData.Meteo )
-            this.Meteo = new RapportMeteo( jsonData.Meteo );
+    constructor()
+    {
+        this.Meteo = new RapportMeteo();
     }
 }

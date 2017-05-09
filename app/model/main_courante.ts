@@ -7,10 +7,7 @@ export class MainCourante
     Id: number;
     Type: number;
     Date: Date;
+    Operateur: string;
     Commentaire: string;
 
-    constructor( jsonData : Object )
-    {
-        $.extend( this, jsonData);
-    }
 }

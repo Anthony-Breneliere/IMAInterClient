@@ -6,9 +6,4 @@ export class RapportMeteo
     Orage: boolean;
     Brouillard: boolean;
     Neige: boolean;
-
-    constructor( jsonData : any )
-    {
-        $.extend( this, jsonData);
-    }
 }

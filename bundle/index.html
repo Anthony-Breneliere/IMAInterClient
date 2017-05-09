@@ -11,12 +11,6 @@
 
     <!-- Icons -->
     <link rel="stylesheet" href="css/icons.css">
-    <link rel="import" href="node_modules/@polymer/iron-icons/iron-icons.html">
-    <link rel="import" href="node_modules/@polymer/iron-icons/maps-icons.html">
-    <link rel="import" href="node_modules/@polymer/iron-icons/hardware-icons.html">
-    <link rel="import" href="node_modules/@polymer/iron-icons/device-icons.html">
-    <link rel="import" href="node_modules/@polymer/iron-icons/notification-icons.html">
-
 
     <!-- Polyfill(s) for older browsers -->
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
@@ -24,6 +18,9 @@
     <script src="node_modules/core-js/client/shim.min.js"></script>
     <script src="node_modules/zone.js/dist/zone.min.js"></script>
     <script src="node_modules/systemjs/dist/system.js"></script>
+
+    <!-- not imported automatically by es2015 javascript -->
+    <script src="node_modules/lodash/lodash.min.js"></script>
 
     <script>
         window.module = 'aot';

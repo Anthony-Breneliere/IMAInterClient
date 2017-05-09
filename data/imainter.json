@@ -1,10 +1,6 @@
 {
     "imainter": {
-
-        "server": "http://localhost:58126/",
-        "server1": "http://svtlsre01-pic/SentinelService/",
-        "server2": "http://localhost:58126/",
-
+        "server": "http://localhost:58126",
         "useDemoData": false
     }
 }

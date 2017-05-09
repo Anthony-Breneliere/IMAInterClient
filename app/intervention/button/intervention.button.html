@@ -1,4 +1,5 @@
-<div class="bouton_intervention transition_1s" [class.unselected]="selected !== true" [class.selected]="selected === true" *ngIf="intervention" (click)="onClick()">
+<div routerLink="/intervention/{{intervention.Id}}" class="bouton_intervention transition_1s" [ngClass]="{buttonMenu:buttonMenu.isShown}" [contextMenu]="buttonMenu" [contextMenuSubject]="intervention" [class.unselected]="selected !== true" [class.selected]="selected === true"
+    *ngIf="intervention" (click)="onClick()">
     <div *ngIf="intervention.Site" class="client">
         <i class="material-icons">perm_identity</i>{{intervention.Site.Client}}</div>
     <div *ngIf="intervention.EtatLabel != 'Close'">
@@ -10,3 +11,16 @@
     <div>
         <i class="material-icons">access_time</i>{{intervention.Creation | date:'dd/MM/yyyy HH:mm:ss'}}</div>
 </div>
+
+
+<context-menu>
+    <template [visible]="canSubmit" contextMenuItem let-item (execute)="submit()">
+        Transmettre
+    </template>
+    <template [visible]="canClose" contextMenuItem let-item (execute)="close()">
+        Clôturer
+    </template>
+    <template [visible]="canCancel" contextMenuItem let-item (execute)="cancel()">
+        Annuler
+    </template>
+</context-menu>

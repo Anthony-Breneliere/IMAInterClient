@@ -10,19 +10,6 @@ export const appRoutes: Routes = [
     {
         path: 'intervention/:id',
         component: InterventionMainDisplay
-            // <router-outlet></router-outlet>
-            /*
-        path: '',
-        component: InterventionAppComponent,
-        children: [ 
-        {
-            path: ':id',
-            component: InterventionMainDisplay
-        },
-        {
-            path: '',
-            component: InterventionMainDisplay
-        }]*/
     },
     {
         path: 'intervention',

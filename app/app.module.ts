@@ -12,6 +12,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 import { RouterModule }   from '@angular/router';
+import { ContextMenuModule } from 'angular2-contextmenu';
 
 /* Liste des composants */
 import { InterventionAppComponent }  from './app.component';
@@ -20,20 +21,25 @@ import { appRoutes } from './routes';
 import { InputTextbox } from './tools/input/input_textbox';
 import { Checkbox } from './tools/checkbox/checkbox';
 import { Section } from './intervention/section/section';
+import { Field } from './intervention/section/field';
 import { InterventionGroup } from './intervention/groupe/intervention.group';
 import { InterventionDetails } from './intervention/details/intervention.details';
 import { InterventionButton } from './intervention/button/intervention.button';
 import { AppBar } from './app_bar/app_bar';
 import { InterventionMainDisplay } from './intervention/main_display/intervention.main_display';
 import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { DraggableDirective } from './tools/draggable'; 
+import { SortInterventionByDateTime } from './intervention/groupe/sortInterPipe';
+
 
 @NgModule({
     imports:      [
         BrowserModule,
+        ContextMenuModule,
         FormsModule,
         HttpModule, 
-        RouterModule.forRoot (appRoutes) ],
-
+        RouterModule.forRoot (appRoutes)
+    ],
     /*
        Déclaration des composants et des directives utilisées par le module. En les ajoutant ici
        on les rend disponibles pour chaque composant du module sans avoir à les déclarer en tant
@@ -43,11 +49,14 @@ import { Location, LocationStrategy, HashLocationStrategy } from '@angular/commo
         InterventionAppComponent,
         InterventionMainDisplay,
         InputTextbox,
+        Field,
         Section,
         Checkbox,
         InterventionGroup,
         InterventionDetails,
         InterventionButton,
+        DraggableDirective,
+        SortInterventionByDateTime,
         AppBar ],
 
     /*

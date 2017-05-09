@@ -45,9 +45,9 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
             .switchMap( (params: Params) => [+params['id']] )
             .subscribe( (id) => { 
                 this.urlInterventionId = id;
-                if ( null != this.urlInterventionId )
+                if ( this.urlInterventionId > 0 )
                 {
-                    this.interventionService.loadIntervention( this.urlInterventionId )
+                    this.interventionService.connectAndLoadIntervention( this.urlInterventionId )
                     .then( (inter : Intervention) => { this.selectedIntervention =  inter; this.deployGroup( inter ); } )
                     .catch( (reason : any) => { console.error( "erreur de chargement de l'intervention: " + reason ); })
                 }
@@ -81,13 +81,13 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
         if ( inter.Etat != Etat.Close )
         {
             if ( inter.Operateur == this.interventionService.login )
-                this.myGroup.expanded = true;
+                this.myGroup.Expanded = true;
             else
-                this.othersGroup.expanded = true;
+                this.othersGroup.Expanded = true;
         }
         else
         {
-            this.searchGroup.expanded = true;
+            this.searchGroup.Expanded = true;
         }
     }
 
@@ -99,12 +99,10 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
             this.selectedIntervention = newSelectedButton.intervention;
 
             // un bouton d'intervention a été cliqué, je charge l'intervention si elle n'est pas chargée
-            let idSelectedI = this.selectedButton.intervention.Id;
-            if ( ! this.interventionService.getInterventionState( idSelectedI ).Loaded )
-            {
-                // récupération de l'intervention auprès des services de sa majesté IMAInter
-                this.interventionService.getIntervention( idSelectedI );
-            }
+            let interSelected = this.selectedButton.intervention;
+
+            // récupération de l'intervention auprès des services de sa majesté IMAInter
+            this.interventionService.getFullIntervention( interSelected.Id, interSelected.Site ? interSelected.Site.Id : null);
         }
     }
 }

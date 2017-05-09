@@ -7,9 +7,4 @@ export class RapportIssuesConcernees
     Portillon: boolean;
     RideauMetallique: boolean;
     Autre: string;
-
-    constructor( jsonData : any )
-    {
-        $.extend( this, jsonData);
-    }
 }

@@ -6,10 +6,6 @@ export class RapportNonAccesAuSite
     AbsenceMoyensAcces: boolean;
     AbsenceDigicode: boolean;
     NonAccesPortePalliere: boolean;
-    AutreRaison: string;
-
-    constructor( jsonData : any )
-    {
-        $.extend( this, jsonData);
-    }
+    AutreRaison: boolean;
+    DetailsAutreRaison: string;
 }

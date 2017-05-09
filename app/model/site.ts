@@ -5,12 +5,16 @@ import {Telephone} from "./telephone";
  */
 export class Site
 {
+    Id: number;
+    Contrat : string;
     Client : string;
     Adresse : string;
     Telephones : Telephone[];
-    
-    constructor( jsonData : any )
+
+    get TelephonesN() : Telephone[] { return this.Telephones ? this.Telephones : this.Telephones = new Array<Telephone>() }
+
+    costructor()
     {
-        $.extend( this, jsonData);
+        this.Telephones = new Array<Telephone>();
     }
 }

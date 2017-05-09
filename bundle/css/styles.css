@@ -1,7 +1,7 @@
 :root {
     --hover_shadow: hsl( 0, 100%, 100%);
     --main-bg-color: hsl( 0, 0%, 20%);
-    --input-bg-color: hsl( 0, 0%, 30%);
+    --input-bg-color: hsl( 0, 0%, 23%);
     --dark-bg-color: hsl( 0, 0%, 10%);
     --saturation: 50%;
     --lightness: 35%;
@@ -24,16 +24,6 @@
     --selected-main-color: hsl( var( --color1), var( --saturation), var( --selected-lightness));
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    /*margin-top: 0.5rem;*/
-    /*margin-bottom: 0.5rem;*/
-}
-
 body {
     background: var( --main-bg-color);
     color: hsl( 0, 0%, var( --font-lightness));
@@ -42,7 +32,6 @@ body {
     height: 100%;
 }
 
-body,
 * {
     font-family: Candara, Verdana, Sans-serif;
 }
@@ -52,25 +41,24 @@ div {
     overflow-y: hidden;
 }
 
+select,
 input,
 textarea {
     background-color: var( --input-bg-color);
     color: hsl( 0, 0%, var( --font-lightness));
-    padding: 0.5rem;
     resize: none;
 }
 
+select,
 input,
 .bordered,
-textarea {
+textarea,
+button {
     border: 1px solid hsl( var( --color1), var( --saturation), var( --lightness));
 }
 
 button {
-    border: 1px solid hsl( var( --color1), var( --saturation), var( --lightness));
     color: hsl( 0, 0%, var( --font-lightness));
-    font-size: 1.2em;
-    padding: 10px;
 }
 
 button:hover {
@@ -91,7 +79,10 @@ button {
     transition: border 1s, color 1s, box-shadow 1s, text-shadow 1s;
 }
 
-input:hover:enabled {
+input:hover:enabled,
+select:hover:enabled,
+textarea:hover:enabled,
+button:hover:enabled {
     border: 1px solid hsl( var( --color1), var( --saturation), var( --hover-lightness));
     transition: border 1s;
 }

@@ -52,7 +52,7 @@ export enum TypePresence {
 }
 
 export enum DepotBonIntervention {
-    BoiteAuxLettre,
+    BoiteAuxLettres,
     PC,
     Garage,
     Autre
@@ -61,14 +61,14 @@ export enum DepotBonIntervention {
 export enum TypeSite
 {
     Pavillon,
-    CollectifImmeuble,
-    CommercePro
+    Collectif_Immeuble,
+    Commerce_Pro
 }
 
 export enum CircuitVerification
 {
-    InterieurSite,
-    InterieurEnceinte,
-    ExterieurSite,
-    VerificationKO
+    Interieur_Site,
+    Interieur_Enceinte,
+    Exterieur_Site,
+    Verification_KO
 }

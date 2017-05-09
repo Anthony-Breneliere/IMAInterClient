@@ -5,22 +5,21 @@ export class RapportArriveeSurLieux
 {
 
     NumeroDeRue: string;
-    NomSurLaPosteBAL: string;
+    NomSurLaPorteBAL: string;
     TypeDeSite: TypeSite;
-    CircuitVerification: CircuitVerification;
-
-    NonAccesAuSite: RapportNonAccesAuSite;
-    UtilisationMoyensAccess: boolean;
-
+    UtilisationMoyensAcces: boolean;
     VerifIntegraleIssues: boolean;
     RaisonNonVerificationIssues: string;
+    SituationAnormale: boolean
+    CircuitVerification: CircuitVerification; // (enum)
 
-    constructor( jsonData : any )
+    NonAccesAuSite: RapportNonAccesAuSite;
+
+    get RapportNonAccesAuSiteN() : RapportNonAccesAuSite { return this.NonAccesAuSite ? this.NonAccesAuSite : this.NonAccesAuSite = new RapportNonAccesAuSite() }
+
+    constructor()
     {
-        $.extend( this, jsonData);
-
-        if ( jsonData.NonAccesAuSite )
-            this.NonAccesAuSite = new RapportNonAccesAuSite( jsonData.NonAccesAuSite );
+         this.NonAccesAuSite = new RapportNonAccesAuSite();
     }
 
 }

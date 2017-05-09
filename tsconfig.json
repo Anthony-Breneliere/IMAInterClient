@@ -12,9 +12,11 @@
         "suppressImplicitAnyIndexErrors": true,
         "typeRoots": [
             "node_modules/@types"
-        ]
+        ],
+        "allowSyntheticDefaultImports": true
     },
     "compileOnSave": true,
+
 
     "files": [
         "app/app.module.ts",

@@ -49,7 +49,7 @@ export class AppBar {
 
     disconnect() : void
     {
-        if ( this.interService.disconnect() )
+        if ( this.interService.delog() )
             this.ConnectionPanelDisplayed = false;
     }
 

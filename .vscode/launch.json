@@ -1,34 +1,38 @@
 {
     "version": "0.2.0",
     "configurations": [{
-            "name": "Launch Chrome against localhost, with sourcemaps",
+            "name": "Chrome DEBUG 1239817",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost:3000/#/intervention/1239817",
+            "url": "http://localhost:8888/#/intervention/1239817",
             "sourceMaps": true,
             "webRoot": "${workspaceRoot}",
-            "experimentalSkipFiles": [
+            "skipFiles": [
                 "zone.js"
             ]
         },
         {
-            "name": "Attach to Chrome, with sourcemaps",
-            "type": "chrome",
-            "request": "attach",
-            "url": "http://localhost:3000",
-            "port": 9222,
-            "sourceMaps": true,
-            "webRoot": "${workspaceRoot}"
-        },
-        {
-            "name": "Git page",
+            "name": "Chrome DEBUG",
             "type": "chrome",
             "request": "launch",
-            "url": "file:///C://Projets//WebstormProjects//IMAInter//git.html",
+            "url": "http://localhost:8888/#/",
+            "sourceMaps": true,
+            "webRoot": "${workspaceRoot}",
+            "skipFiles": [
+                "zone.js"
+            ]
+        },
+        {
+            "name": "Chrome RELEASE",
+            "type": "chrome",
+            "request": "attach",
+            "url": "http://localhost:8888/#/intervention/1239817",
             "port": 9222,
             "sourceMaps": true,
-            "webRoot": "${workspaceRoot}"
-
+            "webRoot": "${workspaceRoot}/bundle",
+            "skipFiles": [
+                "zone.js"
+            ]
         }
     ]
 }

@@ -1,0 +1,28 @@
+td {
+    /*border: 2px solid var(--main-bg-color);*/
+    background-color: var(--input-bg-color);
+    padding: 4 4 4 4;
+    font-size: 0.9em;
+    vertical-align: middle;
+    /* permet de conserver les retours à la ligne, par exemple pour les adresses */
+    user-select: text
+}
+
+td.label {
+    font-weight: bold;
+    text-align: right;
+    max-width: 10em;
+    padding: 0 4 0 4;
+    background-color: inherit;
+    user-select: text;
+}
+
+td.input {
+    background-color: inherit;
+}
+
+td.display {
+    white-space: pre-line;
+    padding: 2 4 2 4;
+    border-left: 2px solid var(--main-bg-color);
+}

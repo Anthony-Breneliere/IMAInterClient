@@ -5,11 +5,13 @@ export class Intervenant
     Adresse: string;
     Email: string;
     Matricule : string;
-    NomIntervenant : string;
+    Nom : string;
     Telephones: Telephone[];
 
-    constructor( jsonData : Object )
+    get TelephonesN() : Telephone[] { return this.Telephones ? this.Telephones : this.Telephones = new Array<Telephone>() }
+
+    constructor()
     {
-        $.extend( this, jsonData);
+        this.Telephones = new Array<Telephone>();
     }
 }

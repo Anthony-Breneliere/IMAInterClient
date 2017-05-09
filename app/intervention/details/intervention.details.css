@@ -1,77 +1,79 @@
 div.intervention_details {
+    padding: 10 10 10 10;
+    width: 100%;
+    margin: 0px 0px 0px 0px;
+    width: 100%;
+    display: flex;
+    flex-flow: wrap
+}
+
+
+/*.grid-stack-item {
+    width: 300px;
+    height: 300px
+}
+
+.grid-stack-item-content {
+    width: 300px;
+    height: 100px
+}*/
+
+section {
+    position: relative
+}
+
+tr {
+    border-top: 2px solid var(--main-bg-color);
+    user-select: text;
+}
+
+tr {
+    padding: 2 4 2 4;
+    border-left: 2px solid var(--main-bg-color);
+}
+
+button,
+input,
+select {
+    padding: 0 0 0 0;
+}
+
+.cellinput {
+    width: 100%;
+    height: 100%;
+    padding: 4 4 4 4
+}
+
+.extensible {
+    resize: both
+}
+
+td.table {
+    white-space: unset;
+    margin: 2 4 2 4;
+    padding: 2 4 2 4;
+    border-left: 2px solid var(--main-bg-color);
+}
+
+
+/*checkbox,
+input-textbox,
+.from_elem {
+    display: inline-block;
+    vertical-align: top;
+    margin: 10px 25px 5px 0px;
+}*/
+
+
+/*
+div.intervenant {
     width: 100%;
     margin: 0px 0px 0px 0px;
     display: inline-flex;
 }
 
-div.section {
-    padding-left: 0;
-    margin: 5 5 2 5;
-    /*margin-bottom: 20px;*/
-}
-
-div.title {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    background-color: var( --input-bg-color);
-    font-weight: bold;
-    padding: 5 10 5 10;
-    margin: 0 0 0 0;
-    border: transparent solid 1px;
-}
-
-div.title:hover {
-    /*background-color: var( --main-bg-color);*/
-    border: var(--hover_shadow) solid 1px;
-}
-
-div.formulaire {
-    margin: 0 0 0 0;
-}
-
-table {
-    border-collapse: collapse;
-}
-
-td {
-    /*border: 2px solid var(--main-bg-color);*/
-    background-color: var(--input-bg-color);
-    padding: 0 4 0 4;
-    vertical-align: middle/* permet de conserver les retours à la ligne, par exemple pour les adresses */
-}
-
-tr {
-    border-top: 2px solid var(--main-bg-color);
-}
-
-td.label {
-    font-weight: bold;
-    text-align: right;
-    font-size: 0.9em;
-    margin: 0 4 0 0;
-}
-
-td.label+td {
-    white-space: pre-line;
-    margin: 0 0 0 4;
-    border-left: 2px solid var(--main-bg-color);
-}
-
-checkbox,
-input-textbox,
-textarea,
-.from_elem {
-    display: inline-block;
-    vertical-align: top;
-    margin: 10px 25px 5px 0px;
-}
-
 
 /*
-div.intervenant {
-    color: hsl( var(--intervenant_hue), var( --saturation), var( --lightness));
-}
-
 div.intervenant:hover {
     border: hsl(var(--intervenant_hue), var(--saturation), var(--lightness)) solid 1px;
 }
@@ -132,3 +134,35 @@ div.verification:hover {
 
 
 /*#CreationHeure {   width: 80px; }*/
+
+table {
+    border-collapse: collapse;
+}
+
+div.section {
+    padding-left: 0;
+    margin: 10 10 10 10;
+    box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.5);
+    /*  position: relative; */
+    background-color: var( --main-bg-color)
+    /*margin-bottom: 20px;*/
+}
+
+div.title {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+    padding: 5 10 5 10;
+    margin: 0 0 0 0;
+    border: var( --main-color) solid 1px;
+}
+
+div.title:hover {
+    /*background-color: var( --main-bg-color);*/
+    border: var(--hover_shadow) solid 1px;
+}
+
+div.formulaire {
+    margin: 0 0 0 0;
+}

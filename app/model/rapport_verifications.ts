@@ -1,5 +1,5 @@
 
-import { RapportLumieres } from './rapport_lumieres';
+import { RapportLumieresAllumees } from './rapport_lumieres';
 import { RapportIssuesConcernees } from './rapport_issues_concernees';
 
 /**
@@ -8,25 +8,26 @@ import { RapportIssuesConcernees } from './rapport_issues_concernees';
 
 export class RapportVerifications
 {
-    RapportLumieres: RapportLumieres;
-    RapportIssuesOuvertes: RapportIssuesConcernees;
-    RapportEffraction: RapportIssuesConcernees;
-     
+    LumieresAllumees: boolean;
+    IssuesOuvertes: boolean;
+    Effraction: boolean;
     Sirene: boolean;
     SystemeEnService: boolean;
+    RemiseEnService: boolean;
 
-    constructor( jsonData : any )
+    QuellesLumieresAllumees : RapportLumieresAllumees;
+    QuellesIssuesOuvertes: RapportIssuesConcernees;
+    QuellesEffractions: RapportIssuesConcernees;
+
+    get QuellesLumieresAllumeesN() : RapportLumieresAllumees { return this.QuellesLumieresAllumees ? this.QuellesLumieresAllumees : this.QuellesLumieresAllumees = new RapportLumieresAllumees() }
+    get QuellesIssuesOuvertesN() : RapportIssuesConcernees { return this.QuellesIssuesOuvertes ? this.QuellesIssuesOuvertes : this.QuellesIssuesOuvertes = new RapportIssuesConcernees() }
+    get QuellesEffractionsN() : RapportIssuesConcernees { return this.QuellesEffractions ? this.QuellesEffractions : this.QuellesEffractions = new RapportIssuesConcernees() }
+
+    constructor()
     {
-        $.extend( this, jsonData);
-
-        if ( jsonData.RapportLumieres )
-            this.RapportLumieres = new RapportLumieres( jsonData.RapportLumieres );
-
-        if ( jsonData.RapportIssuesOuvertes )
-            this.RapportIssuesOuvertes = new RapportIssuesConcernees( jsonData.RapportIssuesOuvertes );
-
-        if ( jsonData.RapportEffraction )
-            this.RapportEffraction = new RapportIssuesConcernees( jsonData.RapportEffraction );
+        this.QuellesLumieresAllumees = new RapportLumieresAllumees();
+        this.QuellesIssuesOuvertes = new RapportIssuesConcernees();
+        this.QuellesEffractions = new RapportIssuesConcernees();
     }
 }
 

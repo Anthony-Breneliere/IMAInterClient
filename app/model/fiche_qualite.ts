@@ -10,9 +10,5 @@ export class FicheQualite
     public AppelSiITVBloque : boolean;
     public VehiculeSerigraphie : boolean;
 
-    constructor( jsonData : Object )
-    {
-        $.extend( this, jsonData);
-    }
 }
 
