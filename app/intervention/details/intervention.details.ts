@@ -13,8 +13,8 @@ import {Alarme} from "../../model/alarme";
 import {RapportMiseEnSecurite} from '../../model/rapport_mise_en_securite';
 import {RapportArriveeSurLieux} from '../../model/rapport_arrivee_sur_lieux';
 import * as Lodash from 'lodash';
-import 'jquery-ui';
-import 'gridstack';
+// import 'jquery-ui';
+//import 'gridstack';
 
 /**
  * Created by abreneli on 01/07/2016.
@@ -277,6 +277,7 @@ export class InterventionDetails implements  OnInit
 
     public changeRapport( data : any )
     {
+        /*
         var p = new Promise<void>( (resolve) => {
 
             Lodash.merge( this.rapport, data);
@@ -284,10 +285,11 @@ export class InterventionDetails implements  OnInit
             // envoi du changement dans le rapport
             this.interService.sendInterChange( { Id:this.intervention.Id, Rapport:data } );
 
-                        console.log("Récupère data sur " + this.intervention.Id);
+             console.log("Récupère data sur " + this.intervention.Id);
         } );
 
         console.log("changeRapport appelé sur " + this.intervention.Id);
+        */
     }
 
 }

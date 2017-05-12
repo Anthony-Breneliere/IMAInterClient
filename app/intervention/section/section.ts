@@ -4,8 +4,8 @@
 
 import { Directive, Component, Input, AfterContentInit, AfterViewInit, ContentChildren, QueryList, ViewChild, ViewChildren, ElementRef  } from '@angular/core';
 import { DraggableDirective } from '../../tools/draggable'; 
-import 'jquery-ui';
-import 'gridstack';
+// import 'jquery-ui';
+// import 'gridstack';
 
 
 @Component({

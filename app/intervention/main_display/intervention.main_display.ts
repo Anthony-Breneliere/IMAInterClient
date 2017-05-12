@@ -102,7 +102,8 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
             let interSelected = this.selectedButton.intervention;
 
             // récupération de l'intervention auprès des services de sa majesté IMAInter
-            this.interventionService.getFullIntervention( interSelected.Id, interSelected.Site ? interSelected.Site.Id : null);
+            // chargement de l'intervention complètege effectué dans le ngOnInit, on désactive celle-ci:
+            // this.interventionService.getFullIntervention( interSelected.Id, interSelected.Site ? interSelected.Site.Id : null);
         }
     }
 }

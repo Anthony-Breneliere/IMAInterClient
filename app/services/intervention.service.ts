@@ -520,6 +520,7 @@ export class InterventionService {
     {
         console.log("Envoi d'une main courante au serveur: ");
         console.log({"userId":this.userId, "numFi": numFi, "typeMaincour": typeMaincour, "comment":comment});
+        
         this.proxy.server.addNewMaincourante( this.userId, numFi, typeMaincour, comment);
     }
 
@@ -545,7 +546,7 @@ export class InterventionService {
 
         if ( queryString )
         {
-            console.log(`Recheche des anciennes interventions avec la requête suivante: '${queryString}'`);
+            console.log(`Recherche des anciennes interventions avec la requête suivante: '${queryString}'`);
             this.proxy.server.searchInterventions( queryString );
         }
     }

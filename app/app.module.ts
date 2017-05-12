@@ -13,7 +13,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 import { RouterModule }   from '@angular/router';
 import { ContextMenuModule } from 'angular2-contextmenu';
-
 /* Liste des composants */
 import { InterventionAppComponent }  from './app.component';
 import { InterventionService } from './services/intervention.service';

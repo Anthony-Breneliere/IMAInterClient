@@ -6,3 +6,6 @@ aot/**
 node_modules/**
 app/**/*.js
 app/**/*.js.map
+
+#nodejs
+npm-debug.log.*
