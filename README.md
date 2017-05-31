@@ -1,75 +1,28 @@
-# APPLICATION IMAINTER (Angular2)
-==================================================================
+# AngularCliStart
 
-## Vérifier l'installation de node.js ( > v7.6.0 )
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.4.
 
-> node --version
+## Development server
 
-## Vérifier le fonctionnement de IMAInterService
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-Ouvrir le fichier data/imainter.json, et vérifier que l'URL imainter:{"server"} est fonctionnelle.
+## Code scaffolding
 
-## Lancer l'application
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|module`.
 
-> npm start
+## Build
 
-## Compiler l'application
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-> npm run tsc
+## Running unit tests
 
-Cependant c'est fait automatiquement lorsque `npm start` est en cours d'exécution.
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Créer une publication de l'application
+## Running end-to-end tests
 
-> npm run bundle
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Before running the tests make sure you are serving the app via `ng serve`.
 
-L'application est générée dans le dossier bundle.
+## Further help
 
-
-## Copier la publication sur le serveur de recette:
-
-> npm run publish
-
-L'application est copiée sur le serveur `//svtlsre01-pic/web/ImaInter`, mis à part le fichier data/imainter.json.
-
-
-## Ajouter des libraries
-
-Vérifier la configuration proxy du gestionnaire de package npm:
-
-> npm config get proxy -g
-null 
-
-Si elle est à null:
-> npm config set proxy http://ep.threatpulse.net:80  -g
-
-Ajouter une librairie (exemple lodash):
-> npm install lodash --save
-
-Ajouter un outil de développement, ou des types typescript (exemple @types/lodash):
-> npm install @types/lodash --save-dev
-
-Ajouter la librairie dans la configuration system.config.js. system.config est l'outil de chargement dynamique des modules nodejs. 
-
-```json
-    map : { 'lodash': 'npm:lodash/lodash.js' }
-```
-
-Ajouter la librairie dans la configuration rollup-config.js. rollup est l'outil de création d'un package javascript. 
-Il faut lui dire où se trouve les fichiers du package :
-
-```json
-    { include: [ ... , 'node_modules/lodash/lodash.js'] }.
-```
-
-Dans le cas où une fonction appelée n'est pas exportée par la librairie (requis par norme ES2015), ajouter un export nommé:
-
-```json
-    { namedExports: [ 'node_modules/lodash/lodash.js': ['merge'] }.
-```
-
-## Ajouter fichiers à empaqueter dans la publication
-
-> fichier resources_files.json
-
-Ce sont les fichiers de ressources copiés avec la commande bundle. Ajouter le fichier/dossier dans le fichier resources_files.json.
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

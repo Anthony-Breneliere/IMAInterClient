@@ -1,7 +1,0 @@
-label
-{
-    display: block; /* permet d'avoir le label au dessus de la textbox car par défaut le label est inline */
-    margin: 0px 0px 5px 0px;
-    font-weight: bold;
-    font-size: 0.8em;
-}
