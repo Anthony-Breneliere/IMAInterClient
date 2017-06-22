@@ -1,0 +1,33 @@
+div.interventionGroupHeader {
+    /*border: 1px solid hsl(var( --color1 ), var( --saturation ), var( --lightness ) );*/
+    font-size: 1.0em;
+    margin: 10px 0px 10px 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.interventionGroupHeader:hover {
+    color: hsl( 0, 0%, 100%);
+    text-shadow: 0 0 15px var( --hover_shadow);
+}
+
+i {
+    margin: 5px 5px 5px 5px;
+    font-size: 2rem;
+    /*color: inherit;*/
+}
+
+div.interventionGroup div {
+    width: 100%;
+}
+
+.search {
+    margin-left: 10px;
+    width: 100%;
+}
+
+.search input {
+    padding: 0.8em;
+    width: 100%;
+}

@@ -1,10 +1,10 @@
-import { AngularCliStartPage } from './app.po';
+import { Angular2TestAppPage } from './app.po';
 
-describe('angular-cli-start App', () => {
-  let page: AngularCliStartPage;
+describe('angular2-test-app App', () => {
+  let page: Angular2TestAppPage;
 
   beforeEach(() => {
-    page = new AngularCliStartPage();
+    page = new Angular2TestAppPage();
   });
 
   it('should display message saying app works', () => {

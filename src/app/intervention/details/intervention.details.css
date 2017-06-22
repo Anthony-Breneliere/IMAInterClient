@@ -1,0 +1,152 @@
+div.intervention_details {
+    padding: 10px 10px 10px 10px;
+    display: flex;
+    flex-flow: wrap;
+    overflow-y: scroll;
+}
+
+section {
+    position: relative;
+}
+
+tr {
+    border-top: 3px solid var(--main-bg-color);
+    user-select: text;
+}
+
+tr:first-child {
+    border-top: 0px solid var(--main-bg-color);
+    padding-top: 5px;
+}
+
+select {
+    height: 2em;
+    width: auto
+}
+
+.cellinput {
+    padding: 4px 4px 4px 4px
+}
+
+.extensible {
+    resize: both
+}
+
+td.table {
+    white-space: unset;
+    margin: 2px 4px 2px 4px;
+    padding: 2px 4px 2px 4px;
+    border-left: 2px solid var(--main-bg-color);
+}
+
+
+/*checkbox,
+input-textbox,
+.from_elem {
+    display: inline-block;
+    vertical-align: top;
+    margin: 10px 25px 5px 0px;
+}*/
+
+
+/*
+div.intervenant {
+    width: 100%;
+    margin: 0px 0px 0px 0px;
+    display: inline-flex;
+}
+
+
+/*
+div.intervenant:hover {
+    border: hsl(var(--intervenant_hue), var(--saturation), var(--lightness)) solid 1px;
+}
+
+div.operateur {
+    color: hsl( var(--operateur_hue), var( --saturation), var( --lightness));
+}
+
+div.operateur:hover {
+    border: hsl(var(--operateur_hue), var(--saturation), var(--lightness)) solid 1px;
+}
+
+div.maincourante {
+    color: hsl( var(--maincourante_hue), var( --saturation), var( --lightness));
+}
+
+div.maincourante:hover {
+    border: hsl(var(--maincourante_hue), var(--saturation), var(--lightness)) solid 1px;
+}
+
+div.alarme {
+    color: hsl( var(--alarme_hue), var( --saturation), var( --lightness));
+}
+
+div.alarme:hover {
+    border: hsl(var(--alarme_hue), var(--saturation), var(--lightness)) solid 1px;
+}
+
+div.rapport {
+    color: hsl( var(--rapport_hue), var( --saturation), var( --lightness));
+}
+
+div.rapport:hover {
+    border: hsl(var(--rapport_hue), var(--saturation), var(--lightness)) solid 1px;
+}
+
+div.presence {
+    color: hsl( var(--presence_hue), var( --saturation), var( --lightness));
+}
+
+div.presence:hover {
+    border: hsl(var(--presence_hue), var(--saturation), var(--lightness)) solid 1px;
+}
+
+div.verification {
+    color: hsl( var(--verification_hue), var( --saturation), var( --lightness));
+}
+
+div.verification:hover {
+    border: hsl(var(--verification_hue), var(--saturation), var(--lightness)) solid 1px;
+}*/
+
+
+/*#InterventionAdresseInput {   width: 300px; }*/
+
+
+/*#CreationDate {   width: 80px; }*/
+
+
+/*#CreationHeure {   width: 80px; }*/
+
+table {
+    border-collapse: collapse;
+}
+
+div.section {
+    padding-left: 0;
+    margin: 10 10 10 10;
+    box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.5);
+    /*  position: relative; */
+    background-color: var( --main-bg-color)
+    /*margin-bottom: 20px;*/
+}
+
+div.title {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+    padding: 5 10 5 10;
+    margin: 0 0 0 0;
+    border: var( --main-color) solid 1px;
+}
+
+div.title:hover {
+    /*background-color: var( --main-bg-color);*/
+    border: var(--hover_shadow) solid 1px;
+}
+
+div.formulaire {
+    margin: 0 0 0 0;
+}

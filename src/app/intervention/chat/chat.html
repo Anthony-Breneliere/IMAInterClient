@@ -1,0 +1,10 @@
+<div id="chat">
+    <div #bar>
+    </div>
+    <div #messageList *ngIf="intervention">
+        <div *ngFor="let message of intervention.Chat">
+            <span>{{message.Date | date:'hh:mm:ss'}}</span><span>{{message.Buddy || "anonyme"}}></span><span>{{message.Texte}}</span>
+        </div>
+    </div>
+    > <input #messageInput (keyup)="keyPress( $event )" />
+</div>

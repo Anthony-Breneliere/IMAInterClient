@@ -1,0 +1,135 @@
+#app_bar {
+    background-color: hsl( var( --color1), var( --saturation), var( --lightness));
+    color: hsl( 0, 0%, var( --font-lightness));
+    margin: 0px 0px 0px 0px;
+    padding: 10px 10px 10px 10px;
+    box-shadow: rgba( 0, 0, 0, 0.5) 0px 2px 5px 0px;
+    display: flex;
+    align-items: center
+}
+
+#server_connected {
+    color: lawngreen;
+    text-shadow: 0 0px 15px lawngreen;
+    font-size: 1.5em;
+    margin: 0px 20px 0px 20px
+}
+
+#server_disconnected {
+    color: orangered;
+    text-shadow: 0 0px 15px orangered;
+    font-size: 1.5em;
+    margin: 0px 20px 0px 20px
+}
+
+#app_bar div {
+    vertical-align: middle
+}
+
+#app_bar #title {
+    font-size: 2em;
+    flex: 2
+}
+
+#app_bar #menu {
+    font-size: 2em;
+    flex: 1
+}
+
+#app_bar #login {
+    font-size: 1.5em;
+}
+
+
+/*Connection pannel attributs */
+
+#connection_panel {
+    position: absolute;
+    top: 60px;
+    right: 0px;
+    background-color: hsla( 0, 0%, 100%, 0.3);
+    box-shadow: 3px 3px 5px 5px hsla( 0, 0%, 0%, 0.4);
+    display: flex;
+    flex-direction: column;
+    flex-flow: column;
+}
+
+#connection_panel input {
+    margin: 10px 10px 5px 10px;
+    font-size: 0.8em;
+}
+
+#connection_panel button {
+    margin: 10px 10px 10px 10px;
+    width: auto;
+    font-size: 0.7em;
+}
+
+#connection_panel div iron-icon {
+    position: relative;
+    float: left;
+    left: 30px;
+    height: 32px;
+    width: 32px;
+}
+
+.material-icons {
+    margin: 10px 0px 0px 10px;
+    vertical-align: middle
+}
+
+.hoverable:hover {
+    color: hsl( 0, 0%, var( --hover-lightness))
+}
+
+
+/*
+
+.menu {
+font-size: 2em;
+}
+
+.menu:hover,
+.connexion:hover {
+color: hsl( 0, 0%, var( --hover-lightness))
+}
+
+.app-bar {
+background-color: hsl( var( --color1), var( --saturation), var( --lightness));
+color: hsl( 0, 0%, var( --font-lightness));
+margin: 0px 0px 0px 0px;
+padding: 10px 10px 10px 10px;
+box-shadow: rgba( 0, 0, 0, 0.5) 0px 0px 5px 0px
+}
+
+.title {
+font-size: 2em;
+}
+
+.icon {
+font-size: 2em;
+}
+
+.app-bar-right {
+font-size: 1.5em;
+}
+
+
+
+.row_justify_content {
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center
+}
+
+.row_align_right {
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: flex-end;
+}
+
+
+
+}*/

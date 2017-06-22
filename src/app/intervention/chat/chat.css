@@ -1,0 +1,12 @@
+#chat {
+    padding: 10 10 10 10;
+    z-index: 90;
+}
+
+span {
+    padding: 0 8 0 0
+}
+
+input {
+    width: 50%;
+}

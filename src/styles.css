@@ -1,1 +1,166 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    --hover_shadow: hsl( 0, 100%, 100%);
+    --main-bg-color: hsl( 0, 0%, 20%);
+    --input-bg-color: hsl( 0, 0%, 23%);
+    --dark-bg-color: hsl( 0, 0%, 10%);
+    --saturation: 50%;
+    --lightness: 35%;
+    --action-lightness: 70%;
+    --font-lightness: 70%;
+    --hover-lightness: 100%;
+    --bg-hover-lightness: 30%;
+    --selected-lightness: 100%;
+    --bg-selected-lightness: 40%;
+    --operateur_hue: 0;
+    --intervenant_hue: 20;
+    --maincourante_hue: 40;
+    --alarme_hue: 60;
+    --rapport_hue: 80;
+    --presence_hue: 100;
+    --verification_hue: 120;
+    --color1: 220;
+    --color2: 180;
+    --color3: 100;
+    --colorAction: 15;
+    --context-menu-color: hsla( 0, 0%, 10%, 0.5);
+    --main-color: hsl( var( --color1), var( --saturation), var( --lightness));
+    --selected-main-color: hsl( var( --color1), var( --saturation), var( --selected-lightness));
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    background: var( --main-bg-color);
+    color: hsl( 0, 0%, var( --font-lightness));
+    margin: 0px 0px 0px 0px;
+}
+
+* {
+    font-family: Candara, Verdana, Sans-serif;
+}
+
+select,
+input,
+textarea {
+    background-color: var( --input-bg-color);
+    color: hsl( 0, 0%, var( --font-lightness));
+    resize: none;
+}
+
+select,
+input,
+.bordered,
+textarea,
+button {
+    border: 1px solid hsl( var( --color1), var( --saturation), var( --lightness));
+}
+
+button {
+    color: hsl( 0, 0%, var( --font-lightness));
+}
+
+button:hover {
+    border: 1px solid hsl( var( --color1), var( --saturation), var( --hover-lightness));
+}
+
+button:active {
+    background-color: var( --input-bg-color);
+}
+
+input:disabled,
+textarea:disabled,
+button {
+    background-color: var( --main-bg-color);
+}
+
+.transition_1s {
+    transition: border 1s, color 1s, box-shadow 1s, text-shadow 1s;
+}
+
+input:hover:enabled,
+select:hover:enabled,
+textarea:hover:enabled,
+button:hover:enabled {
+    border: 1px solid hsl( var( --color1), var( --saturation), var( --hover-lightness));
+    transition: border 1s;
+}
+
+.ngx-contextmenu .dropdown-menu {
+    /* border: solid 1px chartreuse; */
+    background-color: var( --context-menu-color);
+    padding: 0px 0px 0px 0px;
+    border: 1px solid hsl( var( --color1), var( --saturation), var( --lightness));
+    /* Toujours au dessus: */
+    z-index: 100;
+}
+
+.ngx-contextmenu li {
+    display: block;
+    background-color: var( --context-menu-color);
+    border: 1px solid hsl( var( --color1), var( --saturation), var( --lightness));
+    text-align: left;
+}
+
+.ngx-contextmenu a {
+    color: hsl( 0, 0%, var( --font-lightness));
+    display: block;
+    padding: 0.5em 1em;
+    text-decoration: none;
+}
+
+.ngx-contextmenu a:hover {
+    color: hsl( 0, 0%, var( --hover-lightness));
+    transition: color 1s;
+}
+
+.ngx-contextmenu li:hover {
+    transition: border 1s, color 1s, box-shadow 1s, text-shadow 1s;
+    border: 1px solid hsl( var( --color1), var( --saturation), var( --hover-lightness));
+    background-color: hsl( 0, 0%, var( --bg-hover-lightness));
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: hsl( var( --color1), var( --saturation), var( --lightness));
+    border-color: hsl( var( --color1), var( --saturation), var( --lightness));
+    border-width: 1px;
+}
+
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(../node_modules/material-design-icon-fonts/iconfont/MaterialIcons-Regular.eot);
+    /* For IE6-8 */
+    src: local('Material Icons'), local('MaterialIcons-Regular'), url(../node_modules/material-design-icon-fonts/iconfont/MaterialIcons-Regular.woff2) format('woff2'), url(../node_modules/material-design-icon-fonts/iconfont/MaterialIcons-Regular.woff) format('woff'), url(../node_modules/material-design-icon-fonts/iconfont/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    /*font-weight: normal;*/
+    font-style: normal;
+    /*font-size: 24px;  !* Preferred icon size *!*/
+    /*display: inline-block;*/
+    line-height: 1;
+    /*text-transform: none;*/
+    /*letter-spacing: normal;*/
+    /*word-wrap: normal;*/
+    /*white-space: nowrap;*/
+    /*direction: ltr;*/
+    color: inherit;
+    vertical-align: middle;
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+}

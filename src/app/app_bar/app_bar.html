@@ -1,0 +1,40 @@
+<div id="app_bar">
+
+    <!--Bouton liste des interventions-->
+    <div id="menu">
+        <div (click)="onClickListButton($event)" class="transition_1s hoverable"><i class="material-icons">menu</i></div>
+    </div>
+
+    <!--Titre de l'application-->
+    <div id="title">IMA Interventions</div>
+
+    <!--Etat de connexion-->
+    <div id="server_{{connectedState}}">{{connectedLabel}}</div>
+
+    <!--Séparateur-->
+    <div id="app-bar-divider"></div>
+
+    <!--bouton de log/delog-->
+    <div id="login">
+        <div (click)="clickConnectionPanel()" class="transition_1s hoverable">
+            <span [ngSwitch]="interService.Logged">
+        <span *ngSwitchCase="true">Profil</span>
+            <span *ngSwitchCase="false">Login</span>
+            </span>
+            <i class="material-icons">account_circle</i>
+        </div>
+    </div>
+
+</div>
+
+<!--Panneau de logging affiché si on clique le bouton de log/delog-->
+<div *ngIf="ConnectionPanelDisplayed && ! interService.Logged" id="connection_panel">
+    <div>
+        <input id="login" placeholder="Login" [(ngModel)]="TSLogin" />
+    </div>
+    <input id="password" type="password" placeholder="Password" [(ngModel)]="TSPassword" />
+    <button (click)="connect()">Connecter</button>
+</div>
+<div *ngIf="ConnectionPanelDisplayed && interService.Logged">
+    <button (click)="disconnect()">Déconnecter</button>
+</div>

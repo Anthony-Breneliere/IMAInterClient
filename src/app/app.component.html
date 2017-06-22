@@ -1,3 +1,13 @@
-<h1>
-  {{title}}
-</h1>
+<!-->Webpack2 ne charge pas le fichier app.component.css -->
+
+<style>
+    #app_component {
+        overflow-y: hidden;
+        height: 100%
+    }
+</style>
+
+<div id="app_component">
+    <app-bar></app-bar>
+    <router-outlet></router-outlet>
+</div>

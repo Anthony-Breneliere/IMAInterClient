@@ -1,0 +1,29 @@
+table {
+    border-collapse: collapse;
+}
+
+div.section {
+    margin: 10px 10px 10px 10px;
+    box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.5);
+    background-color: var( --main-bg-color)
+}
+
+div.title {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+    cursor: default;
+    padding: 10px 10px 10px 10px;
+    margin: 0px;
+    border: var( --main-color) solid 1px;
+}
+
+div.title:hover {
+    /*background-color: var( --main-bg-color);*/
+    border: var(--hover_shadow) solid 1px;
+}
+
+div.formulaire {
+    margin: 0px 0px 0px 0px;
+}

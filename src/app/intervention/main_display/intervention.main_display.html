@@ -1,0 +1,15 @@
+<div id="interventionMainDisplay">
+
+    <div #interventionNavigation id="interventionNavigation">
+        <intervention-group #myGroup [SelectedIntervention]="selectedIntervention" (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.mesInterventions" GroupName="Mes Interventions en cours" [Expanded]="true"></intervention-group>
+        <intervention-group #othersGroup [SelectedIntervention]="selectedIntervention" (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.autresInterventions" GroupName="Autres Interventions en cours" [Expanded]="false"></intervention-group>
+        <intervention-group #searchGroup [SelectedIntervention]="selectedIntervention" (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.interventionsCloses" GroupName="Interventions closes" [Expanded]="true"></intervention-group>
+    </div>
+
+    <div id="interventionAndChat">
+        <intervention-details [intervention]="selectedIntervention"></intervention-details>
+
+        <chat [intervention]="selectedIntervention"></chat>
+    </div>
+
+</div>
