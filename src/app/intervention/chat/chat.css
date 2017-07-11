@@ -1,6 +1,5 @@
 #chat {
-    padding: 10 10 10 10;
-    z-index: 90;
+    z-index: 50;
 }
 
 span {
@@ -8,5 +7,6 @@ span {
 }
 
 input {
+    margin: 10 10 10 10;
     width: 50%;
 }

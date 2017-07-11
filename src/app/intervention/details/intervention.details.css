@@ -3,10 +3,12 @@ div.intervention_details {
     display: flex;
     flex-flow: wrap;
     overflow-y: scroll;
+    z-index: -10
 }
 
 section {
-    position: relative;
+    /*position: relative;
+    z-index: -10*/
 }
 
 tr {

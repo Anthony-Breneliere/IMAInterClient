@@ -86,22 +86,12 @@ export class InterventionService {
 
         this.loadHubsScript();
      }
-     
-     /**
-      * Lecture du fichier de config, éventuellement des données de démo et assignation des callbacks
-      * des méthode du hub.
-      */
-     private onConfigFileLoaded( response : any ) : void {
-       
-        this.loadHubsScript();
-     }
 
-    private isScriptLoaded : boolean = false;
-    private scriptLoaded : () => void;
+    private isHubScriptLoaded : boolean = false;
 
     /**
      * Cette méthode exécute le script de génération des hubs proxys signalR. Ce script
-     * est est généré le serveur SignalR, il faut donc l'appeler dynamiquement.
+     * est est généré par le serveur SignalR, il faut donc l'appeler dynamiquement.
      */
     private loadHubsScript() :void
     {
@@ -109,9 +99,7 @@ export class InterventionService {
 
         jQuery.getScript(hubScriptUrl, () =>
         {
-            this.isScriptLoaded = true;
-            if ( this.scriptLoaded != null )
-                this.scriptLoaded();
+            this.isHubScriptLoaded = true;
             this.initHubCallbacks();
         });
     }
@@ -177,12 +165,12 @@ export class InterventionService {
         // attention le démarrage du serveur doit se faire APRES l'enregistrement des callbacks ! 
         hub.start() 
             .done( () => {
-                console.log("Connecté, transport = " + hub.transport.name + ", connection id = " + hub.id );
+                console.log("Connecté à " + hub.url + ", transport = " + hub.transport.name + ", connection id = " + hub.id );
 
                 this.onConnected();
             })
             .fail( ( e ) => {
-                console.error('Connexion au serveur impossible.');
+                console.error("Connexion au serveur " + hub.url + " impossible.");
                 console.error( e );
             } );
     }
