@@ -38,7 +38,7 @@ export class Intervention
 
     Chat: Message[];
 
-    get SiteN() : Site { return this.Site ? this.Site : this.Site = new Site() };
+    get SiteN() : Site { return this.Site ? this.Site : (this.Site = new Site()) };
     get AlarmeN() : Alarme { return this.Alarme ? this.Alarme : this.Alarme = new Alarme() };
     get FicheQualiteN() : FicheQualite { return this.FicheQualite ? this.FicheQualite : this.FicheQualite = new FicheQualite() };
     get IntervenantN() : Intervenant { return this.Intervenant ? this.Intervenant : this.Intervenant = new Intervenant() };

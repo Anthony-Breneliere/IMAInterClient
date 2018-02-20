@@ -2,7 +2,7 @@
 
     <!--Bouton liste des interventions-->
     <div id="menu">
-        <div (click)="onClickListButton($event)" class="transition_1s hoverable"><i class="material-icons">menu</i></div>
+        <div (click)="onClickListButton($event)"><i class="mdi hoverable mdi-menu"></i></div>
     </div>
 
     <!--Titre de l'application-->
@@ -14,8 +14,9 @@
     <!--Séparateur-->
     <div id="app-bar-divider"></div>
 
-    <!--bouton de log/delog-->
-    <div id="login">
+    <!--bouton de log/delog : 
+        supprimé car l'utilisateur est logué avec sa session Windows -->
+    <!-- <div id="login">
         <div (click)="clickConnectionPanel()" class="transition_1s hoverable">
             <span [ngSwitch]="interService.Logged">
         <span *ngSwitchCase="true">Profil</span>
@@ -23,12 +24,19 @@
             </span>
             <i class="material-icons">account_circle</i>
         </div>
-    </div>
+    </div> -->
 
 </div>
 
-<!--Panneau de logging affiché si on clique le bouton de log/delog-->
-<div *ngIf="ConnectionPanelDisplayed && ! interService.Logged" id="connection_panel">
+<div *ngIf="ErrorMessages.length > 0" id="errorMessage">
+    <div *ngFor="let message of ErrorMessages" class="errorLine">
+        <span>{{message[1]}}</span>
+        <i (click)="closeError( message[0] )" id="closeButton" class="mdi mdi-close-circle hoverable transition_1s"></i>
+    </div>
+</div>
+<!--Panneau de logging affiché si on clique le bouton de log/delog :
+    supprimé car l'utilisateur est logué avec sa session Windows -->
+<!-- <div *ngIf="ConnectionPanelDisplayed && ! interService.Logged" id="connection_panel">
     <div>
         <input id="login" placeholder="Login" [(ngModel)]="TSLogin" />
     </div>
@@ -37,4 +45,4 @@
 </div>
 <div *ngIf="ConnectionPanelDisplayed && interService.Logged">
     <button (click)="disconnect()">Déconnecter</button>
-</div>
+</div> -->

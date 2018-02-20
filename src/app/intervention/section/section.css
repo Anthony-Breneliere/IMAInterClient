@@ -2,11 +2,12 @@ table {
     border-collapse: collapse;
 }
 
+fieldset.section,
 div.section {
+    border-color: var( --dark-bg-color);
     margin: 10px 10px 10px 10px;
     box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.5);
     background-color: var( --main-bg-color);
-    z-index: -500
 }
 
 div.title {
@@ -16,13 +17,16 @@ div.title {
     font-weight: bold;
     cursor: default;
     padding: 10px 10px 10px 10px;
-    margin: 0px;
+    background-color: transparent;
     border: var( --main-color) solid 1px;
+    z-index: 5
 }
 
 div.title:hover {
     /*background-color: var( --main-bg-color);*/
     border: var(--hover_shadow) solid 1px;
+    /* box-shadow: 0px 0px 8px 4px var(--hover_shadow) */
+    box-shadow: 0px 0px 5px 0px var(--hover_shadow), 0px 0px 5px 0px var(--hover_shadow) inset
 }
 
 div.formulaire {

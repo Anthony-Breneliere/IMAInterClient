@@ -2,16 +2,17 @@ import { Telephone } from "./telephone"
 
 export class Intervenant
 {
+    Societe: string;
     Adresse: string;
     Email: string;
     Matricule : string;
     Nom : string;
     Telephones: Telephone[];
 
-    get TelephonesN() : Telephone[] { return this.Telephones ? this.Telephones : this.Telephones = new Array<Telephone>() }
+    get TelephonesN() : Telephone[] { return this.Telephones ? this.Telephones : this.Telephones = [] }
 
     constructor()
     {
-        this.Telephones = new Array<Telephone>();
+        this.Telephones = [];
     }
 }

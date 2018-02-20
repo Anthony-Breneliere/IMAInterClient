@@ -3,6 +3,7 @@
  */
 
 export enum Etat {
+
     Creee,
     Transmise,
     Acceptee,
@@ -14,7 +15,11 @@ export enum Etat {
     Traitee,
     Statique,
     Annulee,
-    Close
+    Close,
+    AnnulTS,
+    AnnulITV,
+    EnAppel,
+    NotAllowed
 }
 
 export enum OrigineFiche {

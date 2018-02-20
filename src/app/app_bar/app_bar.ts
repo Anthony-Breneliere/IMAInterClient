@@ -2,8 +2,10 @@
  * Created by abreneli on 04/07/2016.
  */
 
-import {Component, OnInit, EventEmitter, Output} from '@angular/core';
-import { InterventionService } from '../services/intervention.service';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { ConnectionStatus } from '../services/connection.status';
+import { Observable } from 'rxjs/Observable';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
     moduleId: module.id,
@@ -14,49 +16,47 @@ import { InterventionService } from '../services/intervention.service';
 
 export class AppBar {
 
-    @Output() onClickListButton = new EventEmitter<Event>();
+    @Output() dispNavEvent = new EventEmitter<Event>();
 
-    constructor( public interService: InterventionService )
+    private _connected : boolean;
+
+    constructor( public connectionStatus: ConnectionStatus, private cd: ChangeDetectorRef  )
     {
+        connectionStatus.connectedStatus$.subscribe( (conn) => { this._connected = conn; cd.detectChanges(); } )
     }
 
-    m1State() : string {
-        return this.interService.m1Connected ? 'connected' : 'disconnected';
-
+    public onClickListButton() : void {
+        this.dispNavEvent.emit();
     }
 
-    plottiState() : string {
-        return this.interService.plottiConnected ? 'connected' : 'disconnected';
-
+    get ErrorMessages() : [number, string][] {
+        return this.connectionStatus.errorMessages;
     }
+
+   
+    // m1State() : string {
+    //     return this.connectionStatus.m1Connected ? 'connected' : 'disconnected';
+
+    // }
+
+    // plottiState() : string {
+    //     return this.connectionStatus.plottiConnected ? 'connected' : 'disconnected';
+
+    // }
 
     get connectedState() : string {
-        return this.interService.Connected ? 'connected' : 'disconnected';
+        return this._connected ? 'connected' : 'disconnected';
     }
 
     get connectedLabel() : string {
-        return this.interService.Connected ? 'Connected' : 'Disconnected';
+        return this._connected ? 'Connected' : 'Disconnected';
     }
 
-    public ConnectionPanelDisplayed: boolean = false;
-
-    public TSLogin : string = "";
-    public TSPassword : string = "";
-
-    connect() : void
-    {
-        if ( this.interService.connect( this.TSLogin, this.TSPassword ) )
-            this.ConnectionPanelDisplayed = false;
+    get connected() : boolean {
+        return this._connected;
     }
 
-    disconnect() : void
-    {
-        if ( this.interService.delog() )
-            this.ConnectionPanelDisplayed = false;
-    }
-
-    clickConnectionPanel() : void
-    {
-        this.ConnectionPanelDisplayed = !this.ConnectionPanelDisplayed;
+    closeError( id : number ) : void {
+        this.connectionStatus.removeErrorMessage( id );
     }
 }

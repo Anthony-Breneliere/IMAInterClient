@@ -1,3 +1,4 @@
+import { ITypeMainCourante } from '../../model/type_maincour';
 import { RapportNonAccesAuSite } from '../../model/rapport_non_acces_au_site';
 import { forEach } from 'typescript-collections/dist/lib/arrays';
 import { MainCourante } from '../../model/main_courante';
@@ -12,6 +13,7 @@ import {RapportPresence} from "../../model/rapport_presence";
 import {Alarme} from "../../model/alarme";
 import {RapportMiseEnSecurite} from '../../model/rapport_mise_en_securite';
 import {RapportArriveeSurLieux} from '../../model/rapport_arrivee_sur_lieux';
+
 import * as Lodash from 'lodash';
 
 // import 'jquery-ui';
@@ -34,15 +36,22 @@ import {
     Output,
     QueryList,
     ElementRef,
-    Renderer
+    Renderer,
+    SimpleChanges
+    
 } from '@angular/core';
 
 import { Intervention } from '../../model/intervention';
 import { Section } from '../section/section';
+import { ReactiveInputComponent } from '../reactive-components/reactive-input.component'
+import { ReactiveCheckboxComponent } from '../reactive-components/reactive-checkbox.component'
 import { Field } from '../section/field';
 import { OrigineFiche, TypeFiche, Trajet, MotifIntervention, TypePresence, DepotBonIntervention, Etat, TypeSite, CircuitVerification} from '../../model/enums';
 import { InterventionService } from "../../services/intervention.service";
 import { Subscription } from 'rxjs/Rx';
+import { Telephone } from 'app/model/telephone';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
     moduleId: module.id,
@@ -51,29 +60,72 @@ import { Subscription } from 'rxjs/Rx';
     styleUrls: ['./intervention.details.css'
     ],
 
-    // pour des raisons de performence, les champs ne seront mis à jour que sur un appel de onChangeCallback
+    // pour des raisons de performance, les champs ne seront mis à jour que sur un appel de onChangeCallback
     changeDetection : ChangeDetectionStrategy.OnPush
 })
 
 
-export class InterventionDetails implements  OnInit
+export class InterventionDetails implements  OnInit, OnChanges
 {
     interventionChangeSubscription : Subscription;
 
     // l'intervention affichée est passée en paramètre du composant
     private _intervention: Intervention;
-    
+
+
     @Input() public set intervention( value : Intervention )  {
         this._intervention = value;
         
+        // le changement d'intervention doit déclncher la détection des changements
+       //  this.ref.markForCheck(); commenté car génère des erreurs
+
         // à chaque changement d'intervention affichée le composant s'abonne aux changements de l'intervention correspondante
         if ( this.interventionChangeSubscription )
             this.interventionChangeSubscription.unsubscribe();
 
         this.interventionChangeSubscription = 
             this.interService.newInterData$.filter( i => this.intervention && this.intervention.Id == i.Id  ).subscribe( i => this.detectChanges() );
+
+        // if ( this._intervention && this._intervention.Rapport )
+        // {
+        //     console.log( this._intervention );
+        //     console.log( this._intervention.Rapport );
+        //     console.log( this._intervention.Rapport.NumeroBon );
+    
+        //     let numeroBon : FormControl = new FormControl(this._intervention.Rapport.NumeroBon);
+    
+        //     this.detailForm = new FormGroup({
+        //         'numeroBon': new FormControl(this._intervention.Rapport.NumeroBon)
+        //         });
+
+            
+        //     numeroBon.valueChanges.subscribe( c => 
+        //         {
+        //             console.log( "La valeur du bon a changé:");
+        //             console.log( c );
+        //         }
+        //     );
+        // }
     }
 
+
+    ngOnInit()
+    {
+    }
+
+    ngOnChanges( changes: SimpleChanges )
+    {
+        console.log("Changements détectés sur intervention :");
+        console.log( changes );
+    }
+
+    public get readOnly()
+    {
+        let readOnly = this._intervention.Etat == Etat.Annulee || this._intervention.Etat == Etat.Close;
+        return readOnly;
+    }
+
+    public get telephonesSite() : Telephone[] { return Array.isArray( this.site.TelephonesN ) ? this.site.TelephonesN : [] } 
     public get intervention() : Intervention { return this._intervention; }
     private get rapport() : Rapport { return this.intervention.RapportN; }
     private get intervenant() : Intervenant { return this.intervention.IntervenantN; }
@@ -81,18 +133,20 @@ export class InterventionDetails implements  OnInit
     private get trajet() : RapportTrajet { return this.rapport.TrajetN; }
     private get presence() : RapportPresence { return this.rapport.PresenceN; }
     private get miseEnSecurite() : RapportMiseEnSecurite { return this.rapport.MiseEnSecuriteN; }
-    private get verifications() : RapportVerifications { return this.rapport.VerificationsN; }
+    private get verifications() : RapportVerifications { 
+        return this.rapport.VerificationsN;
+    }
     private get arriveeSurLieux() : RapportArriveeSurLieux { return this.rapport.ArriveeSurLieuxN; }
     private get nonAccesAuSite() : RapportNonAccesAuSite { return this.arriveeSurLieux.RapportNonAccesAuSiteN; }
     private get quellesLumieresAllumees() : RapportLumieresAllumees { return this.rapport.VerificationsN.QuellesLumieresAllumeesN; }    
     private get quellesIssuesOuvertes() : RapportIssuesConcernees { return this.rapport.VerificationsN.QuellesIssuesOuvertesN; }  
     private get quellesEffractions() : RapportIssuesConcernees { return this.rapport.VerificationsN.QuellesEffractionsN; }  
-
-    private get listMainCour() : MainCourante[] { return this.intervention ? this.intervention.MainCourantes : null; };
-    private get listTypeMainCour() : string[] { return this.listTypeMainCourCache || (
-        this.listTypeMainCourCache = ['']
-            .concat(this.interService.listeTypeMaincour.filter( v => v != undefined) ) )
-        }
+    private get listMainCour() : MainCourante[] { return Array.isArray( this.intervention.MainCourantes ) ?  this.intervention.MainCourantes : [] };
+    // this.intervention && this.intervention.MainCourantes ? this.intervention.MainCourantes : 
+    private get listTypeMainCour() : ITypeMainCourante[]
+    {
+         return this.interService.listeTypeMaincour;
+    } 
 
     public get AdresseComplete() : string 
     {
@@ -105,8 +159,6 @@ export class InterventionDetails implements  OnInit
 
         return adresse;
     }
-    
-    private listTypeMainCourCache : string[];
 
     // liste des enums
     private MotifIntervention = MotifIntervention;
@@ -130,7 +182,7 @@ export class InterventionDetails implements  OnInit
     private motifChoices: any[] = []; 
 
     // saisie d'une matin courante:
-    public selectedMaincourType : number = -1;
+    public selectedMaincourType : ITypeMainCourante;
     public maincourComment : string = "";
 
     private radioValue : MotifIntervention;
@@ -147,7 +199,10 @@ export class InterventionDetails implements  OnInit
      */
     public detectChanges() : void
     {
-        this.ref.markForCheck();
+        this.ref.detectChanges();
+
+        if ( this._intervention )
+            console.log("Détection des changements pour l'affichage de l'intervention " + this._intervention.Id );
     }
 
     public get AutrePieceChecked() : boolean
@@ -236,7 +291,6 @@ export class InterventionDetails implements  OnInit
         this.miseEnSecurite.MiseEnPlaceAnimal = value ? "" : null;
     }
 
-
     private gridStackInit = false;
     public ngAfterViewChecked() : void
     {
@@ -246,17 +300,17 @@ export class InterventionDetails implements  OnInit
         // let grid = jQuery('.grid-stack').gridstack(options); 
     }
 
-
-    getTypeMaincourValue( key: string )
+    /**
+     * 
+     * @param key Retourne le libelle d'une main courante, connaissant son id
+     */
+    getTypeMaincourValue( key: number ) : string
     {
         // retourne le libellé du type de main courante ou "inconnu" si le type n'existe pas:
-        return this.interService.listeTypeMaincour[key] || this.interService.listeM1LibelleDivers[key] || "inconnu";
-    }
+        let foundMainCour =  this.interService.listeTypeMaincour.find( e => e.Type == key )
+            || this.interService.listeM1LibelleDivers.find( e => e.Type == key );
 
-    getTypeMaincourKey( value: string )
-    {
-        // retourne le libellé du type de main courante ou "inconnu" si le type n'existe pas:
-        return this.interService.listeTypeMaincour.indexOf( value );
+        return foundMainCour ? foundMainCour.Libelle : "Type inconnu";
     }
 
     isChecked( value : MotifIntervention ) : boolean
@@ -264,11 +318,9 @@ export class InterventionDetails implements  OnInit
         return this.intervention.Rapport.MotifIntervention == value;
     }
 
-    ngOnInit()
-    {
-        // this.intervention = this.interService.getIntervention( 0 );
+    private detailForm : FormGroup;
+    
 
-    }
 
     Capitalize( text: string) : string
     {
@@ -297,7 +349,7 @@ export class InterventionDetails implements  OnInit
 
     public addNewMaincourante() : void
     {
-        if (this.selectedMaincourType == -1)
+        if ( ! this.selectedMaincourType)
         {
             // toto animation pour higlighter la sélection du type de main courante
             return;
@@ -327,25 +379,9 @@ export class InterventionDetails implements  OnInit
 
             // envoi du changement dans le rapport
             this.interService.sendInterChange( { Id:this.intervention.Id, Rapport:data } );
-
         } );
-
     }
 
-    public changeRapport2( ref: ElementRef, data : any )
-    {
-       // console.log( ref.nativeElement );
-        console.log( data );
 
-        var p = new Promise<void>( (resolve) => {
-
-            Lodash.merge( this.rapport, data);
-
-            // envoi du changement dans le rapport
-            this.interService.sendInterChange( { Id:this.intervention.Id, Rapport:data } );
-
-        } );
-
-    }
 
 }

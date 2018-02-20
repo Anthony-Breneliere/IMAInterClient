@@ -1,12 +1,17 @@
-#chat {
-    z-index: 50;
+#windowChat {
+    margin: 10px 10px 10px 10px;
+}
+
+#chatHistory {
+    max-height: 200px;
+    overflow-y: scroll
 }
 
 span {
-    padding: 0 8 0 0
+    padding: 1px 8px 1px 1px
 }
 
 input {
-    margin: 10 10 10 10;
-    width: 50%;
+    width: fit-content;
+    overflow-x: hidden
 }

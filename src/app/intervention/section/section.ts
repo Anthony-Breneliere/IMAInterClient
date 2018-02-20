@@ -18,6 +18,7 @@ export class Section
 {
     @Input() title: string;
     @Input() color: string;
+    @Input() readOnly: boolean;
 
     toMake : boolean = true;
     el: ElementRef;

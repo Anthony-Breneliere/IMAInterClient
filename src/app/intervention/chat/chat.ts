@@ -12,7 +12,7 @@ import { Subject, Subscription } from "rxjs/Rx";
     templateUrl: './chat.html',
     styleUrls:  ['./chat.css'],
 
-    // pour des raisons de performence, les champs ne seront mis à jour que sur un appel de onChangeCallback
+    // pour des raisons de performance, les champs ne seront mis à jour que sur un appel de onChangeCallback
     changeDetection : ChangeDetectionStrategy.OnPush
 })
 
@@ -37,7 +37,9 @@ export class Chat {
 
         // on filtre les message sur l'instance de l'intervention qui est actuellement affichée
         this.newInterSub = 
-            this.interService.newMessages$.filter( i => this._intervention != null  ).subscribe( i => this.detectChanges() );
+            this.interService.newMessages$
+            .filter( m => m[0] == this._intervention  )
+            .subscribe( i => { this.detectChanges(); } );
     }
 
     public get intervention()  {  return this._intervention; }
@@ -64,8 +66,17 @@ export class Chat {
 
     detectChanges()
     {
-        this.ref.markForCheck();
+        this.ref.detectChanges();
 
-        console.log("nb de messages" + this.intervention.Chat.values.length);
+        console.log("nb de messages" + this.intervention.Chat.length);
+    }
+
+    get canChat() : boolean
+    {
+        let inter = this._intervention;
+        let canChat : boolean = 
+            inter &&  inter.Etat != Etat.Annulee
+            && inter.Etat != Etat.Close;
+        return canChat;
     }
 }

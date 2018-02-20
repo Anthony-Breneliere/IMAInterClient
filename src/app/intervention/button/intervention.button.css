@@ -12,7 +12,7 @@ div.bouton_intervention {
 div.bouton_intervention:hover {
     border: 1px solid hsl(var( --color1), var( --saturation), var( --hover-lightness));
     color: hsl( 0, 0%, var( --hover-lightness));
-    fill-color: hsl( 0, 0%, var( --hover-lightness));
+    box-shadow: 0px 0px 5px 0px var(--hover_shadow), 0px 0px 5px 0px var(--hover_shadow) inset
 }
 
 div.buttonMenu,
@@ -20,7 +20,7 @@ div.buttonMenu:hover {
     border: 1px solid hsl(var( --colorAction), 100%, var( --action-lightness));
     outline: 1px solid hsl(var( --colorAction), 100%, var( --action-lightness));
     color: hsl(var( --colorAction), 100%, var( --action-lightness));
-    background-color: var( --dark-bg-color);
+    background-color: var( --dark-bg-color)
 }
 
 div.bouton_intervention div {
@@ -34,6 +34,7 @@ div.bouton_intervention div {
 i {
     font-size: 1.3em;
     margin: 0px 8px 0px 0px;
+    vertical-align: bottom;
 }
 
 .selected,

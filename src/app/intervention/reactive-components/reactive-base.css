@@ -1,0 +1,8 @@
+.cellinput {
+    padding: 4px
+}
+
+.borderhalo {
+    box-shadow: 0px 0px 5px 0px var(--change-detect-color), 0px 0px 5px 0px var(--change-detect-color) inset;
+    border-color: var( --change-detect-color)
+}

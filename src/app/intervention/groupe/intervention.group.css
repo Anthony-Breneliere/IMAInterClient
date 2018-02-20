@@ -1,15 +1,18 @@
 div.interventionGroupHeader {
     /*border: 1px solid hsl(var( --color1 ), var( --saturation ), var( --lightness ) );*/
-    font-size: 1.0em;
-    margin: 10px 0px 10px 10px;
-    display: flex;
+    font-size: 1.3em;
+    margin: 5px 0px 5px 10px;
+    display: inline-flex;
+    flex-wrap: nowrap;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
+    align-items: center
 }
 
 .interventionGroupHeader:hover {
     color: hsl( 0, 0%, 100%);
     text-shadow: 0 0 15px var( --hover_shadow);
+    cursor: pointer
 }
 
 i {

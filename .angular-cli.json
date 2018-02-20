@@ -1,7 +1,7 @@
 {
     "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
     "project": {
-        "name": "angular2-test-app"
+        "name": "imainter"
     },
     "apps": [{
         "root": "src",
@@ -18,7 +18,8 @@
         "testTsconfig": "tsconfig.spec.json",
         "prefix": "app",
         "styles": [
-            "styles.css"
+            "styles.css",
+            "../node_modules/mdi/css/materialdesignicons.min.css"
         ],
         "scripts": [],
         "environmentSource": "environments/environment.ts",

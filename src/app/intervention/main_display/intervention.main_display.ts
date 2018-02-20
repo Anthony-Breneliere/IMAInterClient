@@ -1,13 +1,15 @@
 /**
  * Created by abreneli on 04/07/2016.
  */
+import { Connection } from '@angular/http';
 
-import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
+import {Component, ViewChild, OnInit, AfterViewInit, Input} from '@angular/core';
 import {InterventionGroup, GroupTypeEnum} from '../groupe/intervention.group';
 import {Intervention} from "../../model/intervention";
 import {Etat} from "../../model/enums";
 import {InterventionButton} from "../button/intervention.button";
 import {InterventionService} from "../../services/intervention.service";
+import {ConnectionStatus} from "../../services/connection.status";
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import { Chat } from '../chat/chat';
 
@@ -28,32 +30,85 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
     private selectedButton : InterventionButton;
 
     private urlInterventionId : number;
-    
+
+    public afficheNavigation : boolean;
+    public afficheBarre : boolean = true;
+
     @ViewChild("myGroup") myGroup : InterventionGroup;
     @ViewChild("othersGroup") othersGroup : InterventionGroup;
     @ViewChild("searchGroup") searchGroup : InterventionGroup;
 
     constructor(
+        private connectionStatus: ConnectionStatus,
         private interventionService: InterventionService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private router: Router
     )
     {}
 
+    public flapNav()
+    {
+        this.afficheNavigation = ! this.afficheNavigation;
+
+        this.router.navigate( [], { queryParams: 
+            { 
+                nav: this.afficheNavigation ? 1 : 0,
+                bar: this.afficheBarre ? 1 : 0
+            } } );
+    }
+
     ngOnInit() {
 
-        // a l'initialisation du composant, le paramètre id de l'url est lue de manière à charger
-        // puis à afficher l'intervention correspondante.
+        // le changement de l'id dans la route doit charger l'intervention et déployer 
+        // le groupe correspondant à l'intervention dans la barre de navigation.
         this.route.params
-            .switchMap( (params: Params) => [+params['id']] )
-            .subscribe( (id) => { 
+            .subscribe( params =>
+            {
+                let id : number = params['id'];
+ 
                 this.urlInterventionId = id;
                 if ( this.urlInterventionId > 0 )
                 {
+                    // une fois la connection établie et l'intervention id complète reçu du serveur, alors
+                    // on sélectionne et affiche l'intervention
                     this.interventionService.connectAndLoadIntervention( this.urlInterventionId )
-                    .then( (inter : Intervention) => { this.selectedIntervention =  inter; this.deployGroup( inter ); } )
+                    .then( (inter : Intervention) => { 
+                        this.selectedIntervention = inter;
+
+                        // ouverture du groupe de l'intervention
+                        this.deployGroup( inter );
+                    } )
+                    
                     .catch( (reason : any) => { console.error( "erreur de chargement de l'intervention: " + reason ); })
                 }
              } );
+
+        this.route.queryParams
+            .subscribe( queryParams =>
+            {
+                this.afficheNavigation = queryParams['nav'] != 0;
+                this.afficheBarre = queryParams['bar'] != 0;
+            } );
+    }
+
+    get chatDisplayed() : boolean
+    {
+        let inter = this.selectedIntervention;
+        let chatDisplayed : boolean = 
+            inter &&  inter.Etat != Etat.Creee
+            && inter.Etat != Etat.Traitee
+            && inter.Etat != Etat.Dispatchee
+        return chatDisplayed;
+    }
+
+    get isThereIntervenant() : boolean
+    {
+        let inter = this.selectedIntervention;
+        let isThereIntervenant : boolean = 
+            inter &&  inter.Etat != Etat.Creee
+            && inter.Etat != Etat.Annulee
+            && inter.Etat != Etat.Close;
+        return isThereIntervenant;
     }
 
     ngAfterViewInit() {
@@ -80,14 +135,14 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
      */
     private deployGroup( inter: Intervention )
     {
-        if ( inter.Etat != Etat.Close )
+        if ( this.myGroup && this.othersGroup && inter.Etat != Etat.Close )
         {
-            if ( inter.Operateur == this.interventionService.login )
+            if ( inter.Operateur == this.connectionStatus.login )
                 this.myGroup.Expanded = true;
             else
                 this.othersGroup.Expanded = true;
         }
-        else
+        else if ( this.searchGroup )
         {
             this.searchGroup.Expanded = true;
         }
@@ -109,5 +164,10 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
         }
     }
 
-
+    onTestClick()
+    {
+        if ( this.connectionStatus.errorMessages )
+            this.connectionStatus.addErrorMessage( "Message de test" );
+        this.connectionStatus.connected = ! this.connectionStatus.connected;
+    }
 }

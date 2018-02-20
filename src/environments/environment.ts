@@ -5,6 +5,6 @@
 
 export const environment = {
   production: false,
-  server: 'http://79067s07:58126',
+  server: 'http://79067S07:58126',
   envName: 'dev'
 };

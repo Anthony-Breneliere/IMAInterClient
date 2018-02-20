@@ -5,6 +5,7 @@ import { Etat } from '../../model/enums';
 
 import { Component, EventEmitter, Output, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { Intervention } from '../../model/intervention';
 import { InterventionService } from '../../services/intervention.service';
@@ -59,16 +60,18 @@ export class InterventionButton
 
     get canSubmit() : boolean 
     {
-        return true;
+        let canSubmit = this.intervention.Etat == Etat.Creee;
+        return canSubmit;
     }
 
     get canClose() : boolean 
     {
-        return true;
+        return false;
     }
 
     get canCancel() : boolean 
     {
-        return true;
+        let canCancel = this.intervention.Etat != null && this.intervention.Etat != Etat.Close && this.intervention.Etat != Etat.Annulee;
+        return canCancel;
     }
 }

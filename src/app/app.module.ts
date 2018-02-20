@@ -13,10 +13,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 import { RouterModule }   from '@angular/router';
 import { ContextMenuModule } from 'ngx-contextmenu';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+/* Liste des services */
+import { InterventionService } from './services/intervention.service';
+import { ConnectionStatus } from './services/connection.status';
 
 /* Liste des composants */
 import { InterventionAppComponent }  from './app.component';
-import { InterventionService } from './services/intervention.service';
 import { appRoutes } from './routes';
 import { InputTextbox } from './tools/input/input_textbox';
 import { Checkbox } from './tools/checkbox/checkbox';
@@ -27,15 +31,18 @@ import { InterventionDetails } from './intervention/details/intervention.details
 import { InterventionButton } from './intervention/button/intervention.button';
 import { AppBar } from './app_bar/app_bar';
 import { InterventionMainDisplay } from './intervention/main_display/intervention.main_display';
-import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { Location, LocationStrategy, PathLocationStrategy, HashLocationStrategy } from '@angular/common';
 import { DraggableDirective } from './tools/draggable'; 
 import { SortInterventionByDateTime } from './intervention/groupe/sortInterPipe';
 import { Chat } from './intervention/chat/chat';
+import { ReactiveInputComponent } from './intervention/reactive-components/reactive-input.component';
+import { ReactiveCheckboxComponent } from './intervention/reactive-components/reactive-checkbox.component';
 
 
 @NgModule({
     imports:      [
         BrowserModule,
+        BrowserAnimationsModule,
         ContextMenuModule,
         FormsModule,
         HttpModule, 
@@ -59,17 +66,21 @@ import { Chat } from './intervention/chat/chat';
         DraggableDirective,
         SortInterventionByDateTime,
         AppBar,
-        Chat ],
+        Chat,
+        ReactiveInputComponent, ReactiveCheckboxComponent ],
 
     /*
        Liste des services utilisés par le module. Les services sont injectés dans les composants.
        Pour qu'un composant du module puisse utilise le service, il faut que celui soit ajouté
        en paramètre du constructeur. Une seule instance est créée pour chaque service.
      */
-    providers:    [ InterventionService,  {provide: LocationStrategy, useClass: HashLocationStrategy }],
+    providers:    [ 
+        ConnectionStatus,
+        InterventionService,
+        { provide: LocationStrategy, useClass: HashLocationStrategy }],
 
     /*
-     * Composant affiché par le module.
+     * Composant de démarrage affiché par le module.
      */
     bootstrap:    [ InterventionAppComponent ],
 

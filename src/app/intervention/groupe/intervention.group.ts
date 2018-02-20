@@ -36,7 +36,7 @@ export class InterventionGroup  {
     {
     }
 
-    groupInterventions(): Intervention[]
+    get groupInterventions(): Intervention[]
     {
         switch( this.GroupType )
         {

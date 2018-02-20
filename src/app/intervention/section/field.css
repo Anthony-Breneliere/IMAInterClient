@@ -18,7 +18,7 @@ td.label {
 }
 
 td.input {
-    background-color: inherit;
+    background-color: var( --main-bg-color);
 }
 
 td.display {

@@ -1,22 +1,22 @@
 div.intervention_details {
     padding: 10px 10px 10px 10px;
-    display: flex;
-    flex-flow: wrap;
     overflow-y: scroll;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
     z-index: -10
 }
 
 section {
-    /*position: relative;
-    z-index: -10*/
+    position: relative;
 }
 
-tr {
+section tr {
     border-top: 3px solid var(--main-bg-color);
     user-select: text;
 }
 
-tr:first-child {
+section tr:first-child {
     border-top: 0px solid var(--main-bg-color);
     padding-top: 5px;
 }
@@ -24,6 +24,26 @@ tr:first-child {
 select {
     height: 2em;
     width: auto
+}
+
+#listMainCour {
+    margin: 0px 0px 8px 0px
+}
+
+#listMainCour tr td:not(:last-child) {
+    white-space: unset;
+    padding: 0px 8px 0px 0px;
+    margin: 0;
+}
+
+#saisieMainCour {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#saisieMainCour span:not(:last-child) {
+    margin: 0em 0.5em 0em 0em
 }
 
 .cellinput {
@@ -127,7 +147,7 @@ table {
 
 div.section {
     padding-left: 0;
-    margin: 10 10 10 10;
+    margin: 10px 10px 10px 10px;
     box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.5);
     /*  position: relative; */
     background-color: var( --main-bg-color)
@@ -139,8 +159,8 @@ div.title {
     text-align: center;
     margin-bottom: 10px;
     font-weight: bold;
-    padding: 5 10 5 10;
-    margin: 0 0 0 0;
+    padding: 5px 10px 5px 10px;
+    margin: 0px 0px 0px 0px;
     border: var( --main-color) solid 1px;
 }
 
@@ -150,5 +170,5 @@ div.title:hover {
 }
 
 div.formulaire {
-    margin: 0 0 0 0;
+    margin: 0px 0px 0px 0px;
 }

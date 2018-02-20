@@ -1,11 +1,10 @@
 <div class="intervention_details" *ngIf="intervention">
 
-    <section title="Fiche">
-
+    <section title="Fiche" [readOnly]="readOnly">
         <tr field label="Numéro ">{{intervention.Id}}</tr>
         <tr field label="Contrat ">{{site?.Contrat}}</tr>
         <tr field label="Site "><pre>{{AdresseComplete}}</pre></tr>
-        <tr *ngFor="let tel of site?.Telephones " field label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
+        <tr *ngFor="let tel of telephonesSite" field label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
         <tr field label="Creation ">{{intervention.Creation | date:'MM/dd/yyyy hh:mm:ss'}}</tr>
         <tr field label="Etat ">{{intervention.EtatLabel}}</tr>
         <tr field label="Lancement ">{{intervention.Lancement | date:'MM/dd/yyyy hh:mm:ss'}}</tr>
@@ -20,9 +19,10 @@
     </section>
 
 
-    <section title="Intervenant">
+    <section title="Intervenant" [readOnly]="readOnly">
 
         <tr field label="Nom ">{{Capitalize(intervenant?.Nom)}}</tr>
+        <tr field label="Societe ">{{intervenant?.Societe}}</tr>
         <tr field label="Adresse "><pre>{{Capitalize(intervenant?.Adresse)}}</pre></tr>
         <tr field *ngFor="let tel of intervenant?.Telephones " label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
         <tr field label="Email ">{{intervenant?.Email}}</tr>
@@ -33,37 +33,39 @@
 
     </section>
 
-    <section title="Maincourante">
+    <section title="Maincourante" [readOnly]="readOnly">
 
-        <tr *ngFor="let mainCour of listMainCour">
-            <td class="table">{{mainCour.Date | date:'MM/dd/yyyy hh:mm:ss '}}</td>
-            <td class="table">{{mainCour.Operateur}}</td>
-            <td class="table">{{getTypeMaincourValue(mainCour.Type)}}</td>
-            <td class="table">{{mainCour.Commentaire}}</td>
-        </tr>
+        <table id="listMainCour">
+            <tr *ngFor="let mainCour of listMainCour">
+                <td class="line">{{mainCour.Date | date:'MM/dd/yyyy hh:mm:ss '}}</td>
+                <td class="line">{{mainCour.Operateur}}</td>
+                <td class="line">{{getTypeMaincourValue(mainCour.Type)}}</td>
+                <td class="line">{{mainCour.Commentaire}}</td>
+            </tr>
+        </table>
 
-        <tr>
-            <td class="table button">
+        <div id="saisieMainCour">
+            <span class="table button">
                 <button class="cellinput" (click)="addNewMaincourante()">Ajouter</button>
-            </td>
-            <td class="table display">{{interService.login}}</td>
-            <td class="table select">
+            </span>
+            <span class="table display">{{interService.login}}</span>
+            <span class="table select">
                 <select class="cellinput" id="maincourSelectBox" [(ngModel)]="selectedMaincourType" name="typeMainCourante">
                     <option [ngValue]="null"></option>
-                    <option [ngValue]="getTypeMaincourKey(typeMainCour)" *ngFor="let typeMainCour of listTypeMainCour">{{typeMainCour}}</option>
+                    <option [ngValue]="typeMainCour.Type" *ngFor="let typeMainCour of listTypeMainCour">{{typeMainCour.Libelle}}</option>
                 </select>
-            </td>
-            <td class="table textarea">
+            </span>
+            <span class="table textarea">
                 <textarea class="cellinput extensible" id="CommentMaincour" placeholder="Commentaire" [(ngModel)]="maincourComment"></textarea>
-            </td>
-        </tr>
+            </span>
+        </div>
 
     </section>
 
-
-    <section *ngIf="rapport" title="Complements">
+    <section *ngIf="rapport" title="Complements" [readOnly]="readOnly">
         <tr field label="Numero de bon">
-            <input class="cellinput" #numeroBon [(ngModel)]="rapport.NumeroBon" (ngModelChange)="changeRapport2(numeroBon, {NumeroBon:numeroBon.value})" />
+            <!-- <input class="cellinput" #numeroBon [(ngModel)]="rapport.NumeroBon" (ngModelChange)="changeRapport({NumeroBon:numeroBon.value})" (valueChanges)="valueChange" /> -->
+            <reactive-input [(ngModel)]="rapport.NumeroBon" (ngModelChange)="changeRapport({NumeroBon:$event})"></reactive-input>
         </tr>
         <tr field label="Lieu dépôt">
             <select class="cellinput" #lieuDepotBon [(ngModel)]="rapport.LieuDepotBon" (ngModelChange)="changeRapport({LieuDepotBon:$event})">
@@ -72,7 +74,7 @@
             </select>
         </tr>
         <tr field *ngIf="rapport.LieuDepotBon==DepotBonIntervention.Autre" label="Autre lieu">
-            <input class="cellinput" #autreLieuDepotBon [(ngModel)]="rapport.AutreLieuDepotBon" (ngModelChange)="changeRapport({AutreLieuDepotBon:autreLieuDepotBon.value})" />
+            <input class="cellinput" #autreLieuDepot [(ngModel)]="rapport.AutreLieuDepot" (ngModelChange)="changeRapport({AutreLieuDepot:autreLieuDepot.value})" />
         </tr>
         <tr field label="Commentaires">
             <textarea class="cellinput extensible" #commentaires [(ngModel)]="rapport.Commentaires" (ngModelChange)="changeRapport({Commentaires:commentaires.value})"></textarea>
@@ -83,23 +85,23 @@
     </section>
 
 
-    <section *ngIf="rapport" title="Transport">
+    <section *ngIf="rapport && trajet" title="Transport" [readOnly]="readOnly">
         <tr field label="Meteo">
-            <input #ventFort type="checkbox" name="VentFort" [(ngModel)]="trajet?.MeteoN.VentFort" (ngModelChange)="changeRapport({Trajet:{Meteo:{VentFort:ventFort.checked}}})">Vent Fort<br>
-            <input #pluie type="checkbox" name="Pluie" [(ngModel)]="trajet?.MeteoN.Pluie" (ngModelChange)="changeRapport({Trajet:{Meteo:{Pluie:pluie.checked}}})">Pluie<br>
-            <input #orage type="checkbox" name="Orage" [(ngModel)]="trajet?.MeteoN.Orage" (ngModelChange)="changeRapport({Trajet:{Meteo:{Orage:orage.checked}}})">Orage<br>
-            <input #brouillard type="checkbox" name="Brouillard" [(ngModel)]="trajet?.MeteoN.Brouillard" (ngModelChange)="changeRapport({Trajet:{Meteo:{Brouillard:brouillard.checked}}})">Brouillard<br>
-            <input #neige type="checkbox" name="Neige" [(ngModel)]="trajet?.MeteoN.Neige" (ngModelChange)="changeRapport({Trajet:{Meteo:{Neige:neige.checked}}})">Neige
+            <reactive-checkbox label="Vent Fort" type="checkbox" [(ngModel)]="trajet.MeteoN.VentFort" (ngModelChange)="changeRapport({Trajet:{Meteo:{VentFort:$event}}})"></reactive-checkbox><br>
+            <input #pluie type="checkbox" name="Pluie" [(ngModel)]="trajet.MeteoN.Pluie" (ngModelChange)="changeRapport({Trajet:{Meteo:{Pluie:pluie.checked}}})">Pluie<br>
+            <input #orage type="checkbox" name="Orage" [(ngModel)]="trajet.MeteoN.Orage" (ngModelChange)="changeRapport({Trajet:{Meteo:{Orage:orage.checked}}})">Orage<br>
+            <input #brouillard type="checkbox" name="Brouillard" [(ngModel)]="trajet.MeteoN.Brouillard" (ngModelChange)="changeRapport({Trajet:{Meteo:{Brouillard:brouillard.checked}}})">Brouillard<br>
+            <input #neige type="checkbox" name="Neige" [(ngModel)]="trajet.MeteoN.Neige" (ngModelChange)="changeRapport({Trajet:{Meteo:{Neige:neige.checked}}})">Neige
         </tr>
         <tr field *ngIf="trajet.DetailMeteo" label="Detail météo">
             <input #detailMeteo class="cellinput" [(ngModel)]="trajet.DetailMeteo" (ngModelChange)="changeRapport({Trajet:{DetailMeteo:detailMeteo.value}})" />
         </tr>
-        <tr field label="Justification delai">
+        <tr field *ngIf="trajet.MotifDelai" label="Justification delai">
             <textarea #justificationDelai class="cellinput extensible" [(ngModel)]="trajet.MotifDelai" (ngModelChange)="changeRapport({Trajet:{MotifDelai:justificationDelai.value}})"></textarea>
         </tr>
     </section>
 
-    <section *ngIf="rapport" title="ASL/LDD">
+    <section *ngIf="rapport && arriveeSurLieux" title="Vérifications" [readOnly]="readOnly">
         <tr field label="Numero de rue">
             <input #numeroRue class="cellinput" [(ngModel)]="arriveeSurLieux.NumeroDeRue" (ngModelChange)="changeRapport({ArriveeSurLieux:{NumeroDeRue:numeroRue.value}})">
         </tr>
@@ -164,7 +166,7 @@
 
     </section>
 
-    <section *ngIf="rapport" title="Constatations matérielles" data-gs-width="auto">
+    <section *ngIf="rapport" title="Constatations matérielles" data-gs-width="auto" [readOnly]="readOnly">
 
         <tr field label="Lumière(s) Allumée(s)">
             <select class="cellinput" id="LumieresAllumees" [(ngModel)]="verifications.LumieresAllumees" (ngModelChange)="changeRapport({Verifications:{LumieresAllumees:$event}})">
@@ -267,7 +269,7 @@
 
     </section>
 
-    <section *ngIf="rapport" title="Présence sur site" data-gs-width="auto">
+    <section *ngIf="rapport && presence" title="Présence sur site" data-gs-width="auto" [readOnly]="readOnly">
         <tr field label="Types de présences">
             <input type="checkbox" name="PresenceClient" [(ngModel)]="presence.Client" (ngModelChange)="changeRapport({Presence:{Client:$event}})">Client<br>
             <input type="checkbox" name="PresenceContacts" [(ngModel)]="presence.Contacts" (ngModelChange)="changeRapport({Presence:{Contacts:$event}})">Contacts<br>
@@ -308,7 +310,7 @@
     </section>
 
 
-    <section *ngIf="rapport" title="Mise en sécurité" data-gs-width="auto">
+    <section *ngIf="rapport && miseEnSecurite" title="Mise en sécurité" data-gs-width="auto" [readOnly]="readOnly">
 
         <tr field label="intervention.Site refermable">
             <select class="cellinput" id="SiteRefermableSelect" [(ngModel)]="miseEnSecurite.SiteRefermable" (ngModelChange)="changeRapport({MiseEnSecurite:{SiteRefermable:$event}})">

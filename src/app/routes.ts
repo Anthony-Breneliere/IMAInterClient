@@ -12,10 +12,6 @@ export const appRoutes: Routes = [
         component: InterventionMainDisplay
     },
     {
-        path: 'intervention',
-        component: InterventionMainDisplay
-    },
-    {
         path: '',
         component: InterventionMainDisplay
     }

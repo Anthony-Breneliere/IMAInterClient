@@ -1,19 +1,22 @@
-<div routerLink="/intervention/{{intervention.Id}}" class="bouton_intervention transition_1s" [ngClass]="{buttonMenu:buttonMenu.isShown}" [contextMenu]="buttonMenu" [contextMenuSubject]="intervention" [class.unselected]="selected !== true" [class.selected]="selected === true"
-    *ngIf="intervention" (click)="onClickInter()">
+<div routerLink="/intervention/{{intervention.Id}}" queryParamsHandling="preserve" class="bouton_intervention transition_1s" [ngClass]="{buttonMenu:buttonMenu.isShown}" [contextMenu]="buttonMenu" [contextMenuSubject]="intervention" [class.unselected]="selected !== true"
+    [class.selected]="selected === true" *ngIf="intervention" (click)="onClickInter()">
+
     <div *ngIf="intervention.Site" class="client">
-        <i class="material-icons">perm_identity</i>{{NomComplet}}</div>
+        <i class="mdi mdi-account"></i>{{NomComplet}}</div>
     <div *ngIf="intervention.EtatLabel != 'Close'">
-        <i class="material-icons">keyboard_tab</i>{{intervention.EtatLabel}}</div>
+        <i class="mdi mdi-keyboard-tab"></i>{{intervention.EtatLabel}}</div>
     <div>
-        <i class="material-icons">airline_seat_recline_normal</i>{{intervention.Operateur}}</div>
+        <i class="mdi mdi-seat-recline-normal"></i>{{intervention.Operateur}}</div>
     <div>
-        <i class="material-icons">directions_run</i>{{intervention.Intervenant?.Nom}}</div>
+        <i class="mdi mdi-run"></i>{{intervention.Intervenant?.Nom}}</div>
     <div>
-        <i class="material-icons">access_time</i>{{intervention.Creation | date:'dd/MM/yyyy HH:mm:ss'}}</div>
+        <i class="mdi mdi-alarm-multiple"></i>{{intervention.Creation | date:'dd/MM/yyyy HH:mm:ss'}}</div>
+
 </div>
 
 
 <context-menu>
+
     <ng-template [visible]="canSubmit" contextMenuItem let-item (execute)="submit()">
         Transmettre
     </ng-template>
@@ -23,4 +26,5 @@
     <ng-template [visible]="canCancel" contextMenuItem let-item (execute)="cancel()">
         Annuler
     </ng-template>
+
 </context-menu>

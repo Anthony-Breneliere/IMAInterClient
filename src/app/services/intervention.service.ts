@@ -1,15 +1,12 @@
-import { environment } from '../../environments/environment';
 /**
  * Created by abreneli on 04/07/2016.
  */
-
-
+import { Error } from 'tslint/lib/error';
 import { Injectable }    from '@angular/core';
-import { Headers, Http } from '@angular/http';
+
 import { Intervention } from '../model/intervention';
 import { InterventionState } from '../model/intervention_state';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toPromise';
 import { OrigineFiche, TypeFiche, MotifIntervention, Trajet, TypePresence, DepotBonIntervention, Etat } from '../model/enums';
 import * as Collections from 'typescript-collections';
 import { forEach } from 'typescript-collections/dist/lib/arrays';
@@ -22,162 +19,105 @@ import { ITypeMainCourante } from "../model/type_maincour";
 import { MainCourante } from "../model/main_courante";
 import { Subject }    from 'rxjs/Subject';
 import * as Lodash from 'lodash';
+import { ConnectionStatus } from './connection.status';
 
 import 'expose-loader?jQuery!jquery';
 import 'signalr';
 
+export enum InterventionDataType {
+    Full,
+    Partial,
+    Change
+}
 
 @Injectable()
-export class InterventionService {
+export class InterventionService  {
 
     private loadedInterventionsDico : Collections.Dictionary<number, Intervention> = new Collections.Dictionary<number, Intervention>();
     private interventionsStateDico : Collections.Dictionary<number, InterventionState> = new Collections.Dictionary<number, InterventionState>();
-
     private interventionsAppUrl = 'app/interventions';  // URL to web api
-    
-    private password: string;
-    private _m1Connected: boolean = false;
-    private _plottiConnected: boolean = false;
-
-    public login: string;
 
     // liste des changements
-    private newInterDataSource = new Subject< Intervention >();
-    private newMessagesSource = new Subject< [Intervention, Message] >();
+    private _newInterDataSource = new Subject< Intervention >();
+    private _newMessagesSource = new Subject< [Intervention, Message] >();
 
     // observables stream:
-    newInterData$ = this.newInterDataSource.asObservable();
-    newMessages$ = this.newMessagesSource.asObservable();
+    public newInterData$ = this._newInterDataSource.asObservable();
+    public newMessages$ = this._newMessagesSource.asObservable();
 
     // todo: attente d'une fonction d'ESI permettant de récupére le used Id à partir de l'opérateur
     private userId: number = 9886433; 
 
+    private _listeTypeMaincour : ITypeMainCourante[] = [];
+
     // on garde en mémoire la liste des types de mains courantes:
-    public listeTypeMaincour : string[] = [];
-    public listeM1LibelleDivers : string[] = [];
+    public get listeTypeMaincour() : ITypeMainCourante[] 
+    {
+        return this._listeTypeMaincour;
+    };
+    public set listeTypeMaincour( value: ITypeMainCourante[] ) 
+    {
+        this._listeTypeMaincour = value;
+    };
 
-    // accesseurs publics:
-    get Connected() : boolean { 
-        return jQuery && jQuery.connection && jQuery.connection.hub.state == 1;
-     }
-    get Logged() : boolean { return this.login != null;  }
-
-    get m1Connected() : boolean { return this._m1Connected;  }
-    set m1Connected( value: boolean ) { this._m1Connected = value;  }
-
-    get plottiConnected() : boolean { return this._plottiConnected;  }
-    set plottiConnected( value: boolean ) { this._plottiConnected = value;  }
-
-    // le service expose une intervention sélectionnée, les composants intéressés peuvent s'enregistrer auprès de cette intervention sélectionnée
-    // c'est généralement une intervention recherchée en particulier est insérée:
-    public selectedIntervention: Observable<Array<Intervention>> = new Observable<Array<Intervention>>();
-
-    // C'est le proxy sur le hub SignalR, il permet d'appeler des méthodes coté server et au serveur
-    // d'appeler des méthodes sur tous les clients.
-    private proxy : any = null;
+    public listeM1LibelleDivers : ITypeMainCourante[] = [];
 
     /**
      * Constructeur, il charge le fichier de config qui contient l'adresse de connexion
      * au serveur.
      */
-    constructor(private http: Http) {
+    constructor(private _connectionStatus: ConnectionStatus ) {
+        console.log("Conctructor InterventionService");
 
-        console.log("intervention service controller");
+        // le chargement du script doit être effectué avant de pouvoir initialiser les callbacks de notre service InterventionService
+        _connectionStatus.promiseHubScriptLoaded.then( () =>
+        {
+            // initialisation des callbacks propres au service d'interventions:
+            this.initCallbacks();
 
-        this.loadHubsScript();
+            // connection du service d'interventions:
+            _connectionStatus.start().then( () => {
+                this.onServiceInterConnected();
+            });
+        } );
      }
 
-    private isHubScriptLoaded : boolean = false;
 
-    /**
-     * Cette méthode exécute le script de génération des hubs proxys signalR. Ce script
-     * est est généré par le serveur SignalR, il faut donc l'appeler dynamiquement.
-     */
-    private loadHubsScript() :void
-    {
-        let hubScriptUrl : string = environment['server'] + "/imaintersignalr/hubs";
-
-        jQuery.getScript(hubScriptUrl, () =>
-        {
-            this.isHubScriptLoaded = true;
-            this.initHubCallbacks();
-        });
-    }
-
-    /**
-     * Retourn vrai si on est connecté au server
-     */
-    public isServerConnected(): boolean
-    {
-        let isConnected: boolean = ! jQuery.connection.hub.disconnected;
-        return isConnected;
-    }
+    // le service expose une intervention sélectionnée, les composants intéressés peuvent s'enregistrer auprès de cette intervention sélectionnée
+    // c'est généralement une intervention recherchée en particulier est insérée:
+    public selectedIntervention: Observable<Array<Intervention>> = new Observable<Array<Intervention>>();
 
     private connectionDetected : () => void;
 
     /**
-     * affectation des callbacks aux fonctions du hubproxy. Ce sont les callbacks qui sont
-     * appelées lorsque le serveur broadcast des informations.
+     * Fonctions d'intervention appelées par le serveur
      */
-    initHubCallbacks() : void
+    private initCallbacks() : void
     {
-        let signalRUrl : string = environment['server'] + "/imaintersignalr";
-
-        let connection = jQuery.connection;
-
-        let hub = connection.hub;
-
-        hub.url = signalRUrl;
-        hub.logging = true;
-        hub.error( (error) => {      console.error('SignalR error: ' + error);     });
-        hub.connectionSlow( () => {
-            console.log('We are currently experiencing difficulties with the connection.')
-        });
-        hub.stateChanged( ( change: SignalR.StateChanged ) => { 
-            console.log("L'état de la connexion a changé de l'état " + change.oldState + " à l'état " + change.newState + " (Connecting = 0, Connected, Reconnecting, Disconnected)");
-
-            // s'il existe une promesse de reconnection, alors cette promesse est tenue:
-            if ( change.newState == 1 && this.reconnectionResolve )
-                this.reconnectionResolve();
-        });
-   
-
-        this.proxy = connection['iMAInterHub'];
+        let proxyClient = this._connectionStatus.proxyClient;
 
         // Méthode appelée quand une intervention en cours a été mise à jour ou ajoutée
-        this.proxy.client.newInterventionData = ( interventionData : Intervention ) =>
+        proxyClient.newInterventionData = ( interventionData : Intervention ) =>
         {
-            this.onReceiveInterventionData( interventionData, false );
+            this.onReceiveInterventionData( interventionData, InterventionDataType.Change );
         }
 
-        this.proxy.client.newSearchResults = ( searchResults : Intervention[] ) =>
+        proxyClient.newSearchResults = ( searchResults : Intervention[] ) =>
         {
             console.log( "Receiving search results:" );
             
             this.onReceiveInterventionList( searchResults );
         }
 
-        this.proxy.client.newChatMessage = ( numFi : number, message : Message ) =>
+        proxyClient.newChatMessage = ( message : Message ) =>
         {
-            this.onReceiveMessage( numFi, message  );
+            this.onReceiveMessage( message );
         }
-
-        // attention le démarrage du serveur doit se faire APRES l'enregistrement des callbacks ! 
-        hub.start() 
-            .done( () => {
-                console.log("Connecté à " + hub.url + ", transport = " + hub.transport.name + ", connection id = " + hub.id );
-
-                this.onConnected();
-            })
-            .fail( ( e ) => {
-                console.error("Connexion au serveur " + hub.url + " impossible.");
-                console.error( e );
-            } );
     }
 
 
     // fonction appelée au moment de la connection au serveur
-    private onConnected() : void
+    private onServiceInterConnected() : void
     {
         // chargement automatique des interventions en cours à la connection:
         this.loadCurrentInterventionList();
@@ -193,13 +133,12 @@ export class InterventionService {
      * Toutes les données des interventions ne sont pas chargés: seulement les données essentielles.
      * Remarque: cette méthode est automatiquement appelée à la connection.
      */  
-    public loadCurrentInterventionList() : void
+    private loadCurrentInterventionList() : void
     {
-        this.proxy.server.queryCurrentFI()
+        this._connectionStatus.proxyServer.queryCurrentFI()
             .done( (newInterventions : Intervention[]) => this.onReceiveInterventionList( newInterventions ) )
             .fail( ( e : any ) => {
-            console.error('Erreur lors de la récupération des interventions courrantes.');
-            console.error( e );
+            this._connectionStatus.addErrorMessage( `Erreur lors de la récupération des interventions courrantes: ${e}` );
         } );
       
     }
@@ -207,7 +146,7 @@ export class InterventionService {
     /**
      * Arrivée d'un lot d'interventions depuis le serveur
      */
-    public onReceiveInterventionList( newInterventions : Intervention[] )
+    private onReceiveInterventionList( newInterventions : Intervention[] )
     {
         console.log( newInterventions.length + " interventions reçues.");
 
@@ -217,73 +156,32 @@ export class InterventionService {
         // ajout des interventions au dico:
         for( let inter of newInterventions )
         {
-            this.onReceiveInterventionData( inter, false );
+            this.onReceiveInterventionData( inter, InterventionDataType.Partial );
         }
-
     }
 
     /**
      * Arrivée d'un message de chat sur un numéro de fiche
      */
-    onReceiveMessage( numFi : number, message : Message )
+    private onReceiveMessage( message : Message )
     {
-        console.log( `Receiving new message for intervention ${numFi}: ${message.Texte}` );
+        console.log( `Receiving new message for intervention ${message.IdChannel}: ${message.Texte}` );
         
-        let messageInter = this.loadedInterventionsDico.getValue( numFi ) ;
+        let messageInter = this.loadedInterventionsDico.getValue( message.IdChannel ) ;
         if ( messageInter != null )
         {
             messageInter.Chat.push( message );
             
-            this.newMessagesSource.next( [ messageInter, message] );
+            this._newMessagesSource.next( [ messageInter, message] );
         }
-    }
-
-    /**
-     * Log au serveur avec le compte utilisateur et un mot de passe
-     * @param login 
-     * @param password 
-     */
-    public connect( login: string, password: string ) : boolean
-    {
-        this.login = login;
-        this.password = password;
-
-        // vérification de la validité du login / password
-        if( this.login && this.login != "" && this.password && this.password != "" )
-        {
-            // TODO: se connecter au serveur
-            this.m1Connected = true;
-            this.plottiConnected = true;
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Délog au serveur, en fait on reste toujours connecté à ce dernier
-     */
-    public delog() : boolean
-    {
-        this.m1Connected = false;
-        this.plottiConnected = false;
-        this.login = null;
-
-        return true;
-    }
-
-    private handleError(error: any) {
-        console.error('An error occurred', error);
-        return Promise.reject(error.message || error);
     }
 
     /**
      * Fonction de récupération des interventions courantes
      */
-    public getInterventions(): Intervention[]
+    private getLoadedInterventions(): Intervention[]
      {
-        if ( this.Connected )
+        if ( this._connectionStatus.connected )
         {
             let interventions = this.loadedInterventionsDico.values();
             return interventions;
@@ -292,39 +190,33 @@ export class InterventionService {
             return [];
     }
 
-    get MyInterventions(): Intervention[] {
-        var currentInterventions = this.getInterventions();
+    public get MyInterventions(): Intervention[] {
+        let currentInterventions = this.getLoadedInterventions();
 
         let interList = currentInterventions.filter(
-            (i: Intervention) => { return this.operatorNameEqual( i.Operateur ) && i.Etat != Etat.Close } );
+            (i: Intervention) => { return this._connectionStatus.operatorNameEqual( i.Operateur ) && i.Etat != Etat.Close } );
         
         return interList;
     }
 
-    get OtherInterventions(): Intervention[] {
-        let otherInterventions = this.getInterventions().filter(
-            (i: Intervention) => { return (! i.Operateur || !this.operatorNameEqual( i.Operateur )) && i.Etat != Etat.Close && i.Etat != Etat.Annulee } );
+    public get OtherInterventions(): Intervention[] {
+        let otherInterventions = this.getLoadedInterventions().filter(
+            (i: Intervention) => { return (! i.Operateur || !this._connectionStatus.operatorNameEqual( i.Operateur )) && i.Etat != Etat.Close && i.Etat != Etat.Annulee } );
         return otherInterventions;
     }
 
-    get CloseInterventions(): Intervention[] {
-        var closed = this.getInterventions().filter(
+    public get CloseInterventions(): Intervention[] {
+        let closed = this.getLoadedInterventions().filter(
             (i: Intervention) => { return i.Etat == Etat.Close || i.Etat == Etat.Annulee } );
         return closed;
-    }
-
-    private operatorNameEqual( name: string ) : boolean
-    {
-        // console.log("name: " + name + " login:" + this.login);
-        return this.login && name && name.toLowerCase() == this.login.toLowerCase();
     }
 
     /**
      * Permet de récupérer tout le détail d'une intervention 
      */
-    public getFullIntervention( numFI : number, siteId : number = null ) : Promise<Intervention>
+    private getFullIntervention( numFI : number, siteId : number = null ) : Promise<Intervention>
     {
-        if ( this.Connected )
+        if ( this._connectionStatus.connected )
         {
             let interState = this.getInterventionState( numFI );
             if ( interState && interState.Loaded )
@@ -340,24 +232,6 @@ export class InterventionService {
         }
     }
 
-    private reconnectionResolve : () => void;
-
-    /**
-     * Attend la prochaine reconnexion
-     */
-    public waitForReconnection() : Promise<any>
-    {
-        let reconnectionPromise = new Promise( (resolve, reject) =>
-        {
-            if ( ! this.Connected )
-                this.reconnectionResolve = resolve;
-            else
-                resolve();
-        } );
-
-        // on retourne la promesse afin de pouvoir enchaine les promesses
-        return reconnectionPromise;
-    }
 
     /** 
      * Charge une intervention
@@ -365,7 +239,7 @@ export class InterventionService {
      */
     public connectAndLoadIntervention( numFI : number ) : Promise<Intervention>
     {
-        let loadInterventionPromise = this.waitForReconnection().then( () =>
+        let loadInterventionPromise = this._connectionStatus.waitForReconnection().then( () =>
         {
             return this.getFullIntervention( numFI, null );
         });
@@ -376,19 +250,18 @@ export class InterventionService {
     /**
      * @param numFI getInterventionFromServer
      */
-    public getInterventionFromServer( numFI : number, siteId : number ) : Promise<Intervention>
+    private getInterventionFromServer( numFI : number, siteId : number ) : Promise<Intervention>
     {
         let getInterPromise = new Promise<Intervention>( (resolve, reject ) =>
         {
-            this.proxy.server.getIntervention( numFI, siteId )
+            this._connectionStatus.proxyServer.getIntervention( numFI, siteId )
                 .done( (interventionWithDetails : Intervention) => 
                 {
-                    let interventionMerged = this.onReceiveInterventionData( interventionWithDetails, true );
+                    let interventionMerged = this.onReceiveInterventionData( interventionWithDetails, InterventionDataType.Full );
                     resolve(interventionMerged);
                 } )
                 .fail( ( e : any ) => {
-                    console.error("Erreur lors de la récupération de l'intervention " + numFI);
-                    console.error( e );
+                    this._connectionStatus.addErrorMessage( `Erreur lors de la récupération de l'intervention ${numFI}. ${e}` );
                     reject(e);
                 })
         });
@@ -397,11 +270,16 @@ export class InterventionService {
 
     /**
      * Appelé lorsqu'une nouvelle intervention a été reçu par le service.
+     * 
+     * Le comportement dépend suivant InterventionDataType
+     * Full: l'intervention est complète, elle peut contenir des valeurs null écrasante, et on retient le fait qu'on ait chargé l'inter complète.
+     * Partail: l'intervention est complète, les valeurs null sont supprimées
+     * Change: il s'agit d'un changement sur une intervention dont les valeurs null sont écransantes
      */
-    public onReceiveInterventionData( interData: Intervention, fullIntervention : boolean) : Intervention
+    private onReceiveInterventionData( interData: Intervention, dataType : InterventionDataType) : Intervention
     {
         // on logue les données reçues: l'intervention
-        console.log( "Receiving " + (fullIntervention ? "FULL" : "PARTIAL") + " intervention data :" );
+        console.log( "Receiving intervention data (type " + dataType + "):" );
         console.log( interData);
 
         let updatedInter : Intervention = null;
@@ -418,30 +296,53 @@ export class InterventionService {
             
             // état de l'intervention
             interState = this.interventionsStateDico.getValue( interData.Id );
-            interState.Loaded = interState.Loaded || fullIntervention;
+            interState.Loaded = interState.Loaded || dataType == InterventionDataType.Full;
         }
         else
         {
-            interState = this.interventionsStateDico.setValue( interData.Id, { Loaded: fullIntervention, Selected: false } );
+            interState = this.interventionsStateDico.setValue( interData.Id, { Loaded: dataType == InterventionDataType.Full, Selected: false } );
 
             // création d'une nouvelle intervention, on merge dedans les data qu'on a reçues
             let newIntervention = new Intervention();
+
+            // les réceptions d'interventions partielles ont des valeurs null, on les supprime
+            if ( dataType == InterventionDataType.Partial )
+                interData = this.omitByRecursively ( interData );
+            
             Lodash.merge( newIntervention, interData);
 
             this.loadedInterventionsDico.setValue( interData.Id, newIntervention );
             updatedInter = newIntervention;
         }
 
+
+
         // on notifie les intéressés que de nouvelles data sont reçues sur une intervention:
-        this.newInterDataSource.next( interData );
+        this._newInterDataSource.next( interData );
 
         return updatedInter;
     }
 
     /**
+     * Supprime les valeurs null sur tous les membres:
+     * https://stackoverflow.com/questions/44320693/lodash-mergewith-skip-with-some-key
+     * https://stackoverflow.com/questions/37246775/how-to-delete-recursively-undefined-properties-from-an-object-while-keeping-th
+     * @param value 
+     */
+    private omitByRecursively(value : any) : any 
+    {
+       return Lodash.isObject(value)?
+        Lodash(value)
+           .omitBy(Lodash.isNull)
+           .mapValues(v => this.omitByRecursively(v))
+           .value():
+         value;
+     }
+
+    /**
      * Permet de récupérer l'état d'une intervention chargée. Il s'agit d'une donnée interne au client.
      */
-    public getInterventionState( id: number )   : InterventionState
+    private getInterventionState( id: number )   : InterventionState
     {
         return this.interventionsStateDico.getValue( id );
     }
@@ -452,21 +353,20 @@ export class InterventionService {
      */
     private loadTypeMaincour()
     {
-        this.proxy.server.loadTypeMaincour()
+        this._connectionStatus.proxyServer.loadTypeMaincour()
             .done( (typesMainCour : ITypeMainCourante[]) => {
 
                 console.log("Réception des types de mains courantes d'intervention.");
                 
-                // on garde la liste en mémoire dans le service, la vue pourra se bind directement dessus
-                typesMainCour.map( tmc => { this.listeTypeMaincour[tmc.Type] = tmc.Libelle; } );
-                
-                // log les libellés:
-                //this.listeTypeMaincour.forEach( i => { console.log(this.listeTypeMaincour.indexOf(i) + ':' + i); } );
+                let listeTypeMaincour : string[] = [];
 
+                // on remplace la liste existante éventuelle des types de mains courantes
+                this.listeTypeMaincour = typesMainCour;
+
+                console.log( this.listeTypeMaincour.length + " types de mains courantes récupérés." );
              } )
             .fail( ( e : any ) => {
-                console.error('Erreur lors de la récupération des types de mains courantes d\'interventions.');
-                console.error( e );
+                this._connectionStatus.addErrorMessage( `Erreur lors de la récupération des types de mains courantes d\'interventions. ${e}` );
             } );
     }
 
@@ -475,21 +375,15 @@ export class InterventionService {
      */
     private loadM1LibelleDivers()
     {
-        this.proxy.server.loadM1LibelleDivers()
+        this._connectionStatus.proxyServer.loadM1LibelleDivers()
             .done( (m1LibelleDivers : ITypeMainCourante[]) => {
 
                 console.log("Réception des libellés divers M1.");
                 
-                // on garde la liste en mémoire dans le service, la vue pourra se binder directement dessus
-                m1LibelleDivers.map( lib => { this.listeM1LibelleDivers[lib.Type] = lib.Libelle; } );
-                
-                // log les libellés:
-                // this.listeTypeMaincour.forEach( i => { console.log(this.listeTypeMaincour.indexOf(i) + ':' + i); } );
-
+                this.listeM1LibelleDivers = m1LibelleDivers;
              } )
             .fail( ( e : any ) => {
-                console.error('Erreur lors de la récupération des libellés divers du M1.');
-                console.error( e );
+                this._connectionStatus.addErrorMessage( `Erreur lors de la récupération des libellés divers du M1. ${e}` );
             } );
     }
 
@@ -499,12 +393,12 @@ export class InterventionService {
      * @param typeMaincour : type de main courante
      * @param comment : commentaire
      */
-    public addNewMaincourante( numFi: number, typeMaincour: number, comment: string ) : void
+    public addNewMaincourante( numFi: number, typeMaincour: ITypeMainCourante, comment: string ) : void
     {
         console.log("Envoi d'une main courante au serveur: ");
         console.log({"userId":this.userId, "numFi": numFi, "typeMaincour": typeMaincour, "comment":comment});
         
-        this.proxy.server.addNewMaincourante( this.userId, numFi, typeMaincour, comment);
+        this._connectionStatus.proxyServer.addNewMaincourante( this.userId, numFi, typeMaincour.Type, comment);
     }
 
     /**
@@ -516,28 +410,28 @@ export class InterventionService {
         console.log(`Envoi d'un changement d'intervention: ${jsonInterChange}`);
         console.log(jsonInterChange);
         
-        this.proxy.server.sendInterChange( jsonInterChange );
+        this._connectionStatus.proxyServer.sendInterChange( jsonInterChange );
     }
 
     /**
      * Recheche des anciennes interventions avec la requête suivante
      * @param queryString string
      */
-    searchInterventions( queryString : string )
+    public searchInterventions( queryString : string )
     {
         this.clearSearchResults();
 
         if ( queryString )
         {
             console.log(`Recherche des anciennes interventions avec la requête suivante: '${queryString}'`);
-            this.proxy.server.searchInterventions( queryString );
+            this._connectionStatus.proxyServer.searchInterventions( queryString );
         }
     }
 
     /**
      * Efface les résultats de la recherche
      */
-    clearSearchResults()
+    private clearSearchResults()
     {
         let searchResult : Intervention[] = this.loadedInterventionsDico.values().filter( i => i.Etat == Etat.Close || i.Etat == Etat.Annulee );
         for( let i of searchResult )
@@ -546,28 +440,28 @@ export class InterventionService {
         }
     }
 
-    submit( intervention : Intervention ) : void 
+    public submit( intervention : Intervention ) : void 
     {
         console.log(`Demande de transmission de la fiche ${intervention.Id}.`);
-        this.proxy.server.submit( intervention.Id );
+        this._connectionStatus.proxyServer.submit( intervention.Id );
     }
 
-    close( intervention : Intervention ) : void 
+    public close( intervention : Intervention ) : void 
     {
         console.log(`Demande de clôture de la fiche ${intervention.Id}.`);
-        this.proxy.server.close( intervention.Id );
+        this._connectionStatus.proxyServer.close( intervention.Id );
     }
 
-    cancel( intervention : Intervention ) : void 
+    public cancel( intervention : Intervention ) : void 
     {
         console.log(`Demande d'annulation de la fiche ${intervention.Id}.`);
-        this.proxy.server.cancel( intervention.Id );
+        this._connectionStatus.proxyServer.cancel( intervention.Id );
     }
 
-    chat( numFi : number, message : string ) : void
+    public chat( numFi : number, message : string ) : void
     {
-        console.log(`Envoi messages sur FI ${numFi}, opérateur: ${this.login}, texte: ${message}`);
-        this.proxy.server.chat( numFi, this.login, message );
+        console.log(`Envoi messages sur FI ${numFi}, texte: ${message}`);
+        this._connectionStatus.proxyServer.chat( numFi, message );
     }
 
  }

@@ -1,16 +1,7 @@
 {
     "version": "0.2.0",
-    "configurations": [{
-            "name": "Chrome DEBUG 1239817",
-            "type": "chrome",
-            "request": "launch",
-            "url": "http://localhost:4200/#/intervention/1239817",
-            "sourceMaps": true,
-            "webRoot": "${workspaceRoot}",
-            "skipFiles": [
-                "zone.js"
-            ]
-        },
+    "configurations": [
+
         {
             "name": "Chrome DEBUG",
             "type": "chrome",
@@ -21,6 +12,18 @@
             "skipFiles": [
                 "zone.js"
             ]
+        },
+        {
+            "name": "Chrome DEBUG 1239957",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:4200/#/intervention/1239957",
+            "sourceMaps": true,
+            "webRoot": "${workspaceRoot}",
+            "skipFiles": [
+                "zone.js"
+            ]
         }
+
     ]
 }

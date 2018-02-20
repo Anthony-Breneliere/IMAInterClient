@@ -16,7 +16,7 @@ export class Site
     Ville : string;
     Telephones : Telephone[];
 
-    get TelephonesN() : Telephone[] { return this.Telephones ? this.Telephones : this.Telephones = new Array<Telephone>() }
+    get TelephonesN() : Telephone[] { return this.Telephones ? this.Telephones : (this.Telephones = []) }
 
     costructor()
     {

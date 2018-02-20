@@ -1,12 +1,21 @@
 #app_bar {
     background-color: hsl( var( --color1), var( --saturation), var( --lightness));
     color: hsl( 0, 0%, var( --font-lightness));
-    margin: 0px 0px 0px 0px;
     padding: 10px 10px 10px 10px;
     box-shadow: rgba( 0, 0, 0, 0.5) 0px 2px 5px 0px;
     display: flex;
     align-items: center;
-    z-index: 100
+}
+
+#errorMessage {
+    padding: 10px 10px 10px 10px;
+    color: orangered;
+    box-shadow: rgba( 0, 0, 0, 0.5) 0px 2px 5px 0px;
+}
+
+.errorLine {
+    display: flex;
+    justify-content: space-between
 }
 
 #server_connected {
@@ -34,6 +43,7 @@
 
 #app_bar #menu {
     font-size: 2em;
+    cursor: pointer;
     flex: 1
 }
 
@@ -80,7 +90,12 @@
 }
 
 .hoverable:hover {
-    color: hsl( 0, 0%, var( --hover-lightness))
+    color: hsl( 0, 0%, var( --hover-lightness));
+    text-shadow: 0 0 15px var( --hover_shadow)
+}
+
+#closeButton {
+    cursor: pointer
 }
 
 
