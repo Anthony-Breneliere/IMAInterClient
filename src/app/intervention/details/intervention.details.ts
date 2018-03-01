@@ -16,8 +16,6 @@ import {RapportArriveeSurLieux} from '../../model/rapport_arrivee_sur_lieux';
 
 import * as Lodash from 'lodash';
 
-// import 'jquery-ui';
-//import 'gridstack';
 
 /**
  * Created by abreneli on 01/07/2016.
@@ -43,8 +41,6 @@ import {
 
 import { Intervention } from '../../model/intervention';
 import { Section } from '../section/section';
-import { ReactiveInputComponent } from '../reactive-components/reactive-input.component'
-import { ReactiveCheckboxComponent } from '../reactive-components/reactive-checkbox.component'
 import { Field } from '../section/field';
 import { OrigineFiche, TypeFiche, Trajet, MotifIntervention, TypePresence, DepotBonIntervention, Etat, TypeSite, CircuitVerification} from '../../model/enums';
 import { InterventionService } from "../../services/intervention.service";
@@ -160,6 +156,23 @@ export class InterventionDetails implements  OnInit, OnChanges
         return adresse;
     }
 
+    public get Warning() : string
+    {
+        let warning : string = "";
+        if ( this.intervention && this.intervention.Etat === Etat.Creee)
+        {
+            let site = this.intervention.Site;
+            let intervenant = this.intervention.Intervenant;
+            if ( ! intervenant || ! intervenant.Societe )
+                warning = "L'intervention ne peut pas être lancée car le numéro SIREN de la société d'intervention n'est pas renseigné.";
+            
+            else if ( ! site || ! site.Latitude || ! site.Longitude )
+                warning = "L'intervention ne peut pas être lancée car les coordonnées géographiques du site ne sont pas renseignées.";
+        }
+
+        return warning;
+    }
+
     // liste des enums
     private MotifIntervention = MotifIntervention;
     private MotifInterventionValues = (<any> Object).values(MotifIntervention).filter( (e : any) => typeof( e ) == "number" );
@@ -269,14 +282,16 @@ export class InterventionDetails implements  OnInit, OnChanges
 
     public get MiseEnPlaceDemandeeParChecked() : boolean
     {
-        return this.miseEnSecurite.MiseEnPlaceDemandeePar != null;
+        return this.miseEnSecurite.MiseEnPlaceDemandeePar != null || this.miseEnSecurite.MiseEnPlaceDemandee;
+        
     }
 
     public set MiseEnPlaceDemandeeParChecked( value : boolean )
     {
-        this.changeRapport({MiseEnSecurite:{MiseEnPlaceDemandeePar:value? '' : null}});
-
+        this.miseEnSecurite.MiseEnPlaceDemandee = value;
         this.miseEnSecurite.MiseEnPlaceDemandeePar = value ? "" : null;
+
+        this.changeRapport({MiseEnSecurite:{MiseEnPlaceDemandeePar:value? '' : null}});
     }
 
     public get MiseEnPlaceAnimalChecked() : boolean
@@ -324,8 +339,18 @@ export class InterventionDetails implements  OnInit, OnChanges
 
     Capitalize( text: string) : string
     {
+
         return text != null ?
-            text.toLowerCase().replace( /_/g, " " ).replace(/\b\w/g, l => l.toUpperCase())
+            text.toLowerCase().replace( /_/g, " " ).replace(/\b\w/g, l => l.toUpperCase() )
+            : null;
+    }
+
+
+    SpaceWords( text: string) : string
+    {
+
+        return text != null ?
+            text.replace(/[a-z][A-Z]/g, l => l[0] + " " + l[1] )
             : null;
     }
 

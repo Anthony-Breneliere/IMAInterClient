@@ -15,6 +15,8 @@ export class Site
     CodePostal : string;
     Ville : string;
     Telephones : Telephone[];
+    Latitude : number;
+    Longitude : number;
 
     get TelephonesN() : Telephone[] { return this.Telephones ? this.Telephones : (this.Telephones = []) }
 

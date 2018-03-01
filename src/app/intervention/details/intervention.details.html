@@ -1,9 +1,12 @@
+<div *ngIf="Warning" class="warningMessage"><i class="mdi mdi-bullhorn"></i> {{Warning}}</div>
+
 <div class="intervention_details" *ngIf="intervention">
 
     <section title="Fiche" [readOnly]="readOnly">
         <tr field label="Numéro ">{{intervention.Id}}</tr>
         <tr field label="Contrat ">{{site?.Contrat}}</tr>
         <tr field label="Site "><pre>{{AdresseComplete}}</pre></tr>
+        <tr field label="Coordonnées géographiques">{{site?.Latitude}}, {{site?.Longitude}}</tr>
         <tr *ngFor="let tel of telephonesSite" field label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
         <tr field label="Creation ">{{intervention.Creation | date:'MM/dd/yyyy hh:mm:ss'}}</tr>
         <tr field label="Etat ">{{intervention.EtatLabel}}</tr>
@@ -50,13 +53,13 @@
             </span>
             <span class="table display">{{interService.login}}</span>
             <span class="table select">
-                <select class="cellinput" id="maincourSelectBox" [(ngModel)]="selectedMaincourType" name="typeMainCourante">
+                <select [(ngModel)]="selectedMaincourType" name="typeMainCourante">
                     <option [ngValue]="null"></option>
-                    <option [ngValue]="typeMainCour.Type" *ngFor="let typeMainCour of listTypeMainCour">{{typeMainCour.Libelle}}</option>
+                    <option [ngValue]="typeMainCour" *ngFor="let typeMainCour of listTypeMainCour">{{typeMainCour.Libelle}}</option>
                 </select>
             </span>
-            <span class="table textarea">
-                <textarea class="cellinput extensible" id="CommentMaincour" placeholder="Commentaire" [(ngModel)]="maincourComment"></textarea>
+            <span class="table reactive-textarea">
+                <reactive-textarea class="extensible" id="CommentMaincour" placeholder="Commentaire" [(ngModel)]="maincourComment"></reactive-textarea>
             </span>
         </div>
 
@@ -64,82 +67,77 @@
 
     <section *ngIf="rapport" title="Complements" [readOnly]="readOnly">
         <tr field label="Numero de bon">
-            <!-- <input class="cellinput" #numeroBon [(ngModel)]="rapport.NumeroBon" (ngModelChange)="changeRapport({NumeroBon:numeroBon.value})" (valueChanges)="valueChange" /> -->
+            <!-- <reactive-input #numeroBon [(ngModel)]="rapport.NumeroBon" (ngModelChange)="changeRapport({NumeroBon:numeroBon.value})" (valueChanges)="valueChange" /> -->
             <reactive-input [(ngModel)]="rapport.NumeroBon" (ngModelChange)="changeRapport({NumeroBon:$event})"></reactive-input>
         </tr>
         <tr field label="Lieu dépôt">
-            <select class="cellinput" #lieuDepotBon [(ngModel)]="rapport.LieuDepotBon" (ngModelChange)="changeRapport({LieuDepotBon:$event})">
+            <select [(ngModel)]="rapport.LieuDepotBon" (ngModelChange)="changeRapport({LieuDepotBon:$event})">
                 <option [ngValue]="null"></option>
                 <option [ngValue]="i" *ngFor="let depotBonChoice of DepotBonInterventionValues; let i = index">{{DepotBonIntervention[i]}}</option>
             </select>
         </tr>
         <tr field *ngIf="rapport.LieuDepotBon==DepotBonIntervention.Autre" label="Autre lieu">
-            <input class="cellinput" #autreLieuDepot [(ngModel)]="rapport.AutreLieuDepot" (ngModelChange)="changeRapport({AutreLieuDepot:autreLieuDepot.value})" />
+            <reactive-input [(ngModel)]="rapport.AutreLieuDepot" (ngModelChange)="changeRapport({AutreLieuDepot:$event})"></reactive-input>
         </tr>
         <tr field label="Commentaires">
-            <textarea class="cellinput extensible" #commentaires [(ngModel)]="rapport.Commentaires" (ngModelChange)="changeRapport({Commentaires:commentaires.value})"></textarea>
+            <reactive-textarea class="extensible" #commentaires [(ngModel)]="rapport.Commentaires" (ngModelChange)="changeRapport({Commentaires:$event})"></reactive-textarea>
         </tr>
         <tr field label="Observations">
-            <textarea class="cellinput extensible" #observations [(ngModel)]="rapport.Observations" (ngModelChange)="changeRapport({Observations:observations.value})"></textarea>
+            <reactive-textarea class="extensible" #observations [(ngModel)]="rapport.Observations" (ngModelChange)="changeRapport({Observations:$event})"></reactive-textarea>
         </tr>
     </section>
 
 
     <section *ngIf="rapport && trajet" title="Transport" [readOnly]="readOnly">
         <tr field label="Meteo">
-            <reactive-checkbox label="Vent Fort" type="checkbox" [(ngModel)]="trajet.MeteoN.VentFort" (ngModelChange)="changeRapport({Trajet:{Meteo:{VentFort:$event}}})"></reactive-checkbox><br>
-            <input #pluie type="checkbox" name="Pluie" [(ngModel)]="trajet.MeteoN.Pluie" (ngModelChange)="changeRapport({Trajet:{Meteo:{Pluie:pluie.checked}}})">Pluie<br>
-            <input #orage type="checkbox" name="Orage" [(ngModel)]="trajet.MeteoN.Orage" (ngModelChange)="changeRapport({Trajet:{Meteo:{Orage:orage.checked}}})">Orage<br>
-            <input #brouillard type="checkbox" name="Brouillard" [(ngModel)]="trajet.MeteoN.Brouillard" (ngModelChange)="changeRapport({Trajet:{Meteo:{Brouillard:brouillard.checked}}})">Brouillard<br>
-            <input #neige type="checkbox" name="Neige" [(ngModel)]="trajet.MeteoN.Neige" (ngModelChange)="changeRapport({Trajet:{Meteo:{Neige:neige.checked}}})">Neige
+            <reactive-checkbox label="Vent Fort" [(ngModel)]="trajet.MeteoN.VentFort" (ngModelChange)="changeRapport({Trajet:{Meteo:{VentFort:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Pluie" [(ngModel)]="trajet.MeteoN.Pluie" (ngModelChange)="changeRapport({Trajet:{Meteo:{Pluie:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Orage" [(ngModel)]="trajet.MeteoN.Orage" (ngModelChange)="changeRapport({Trajet:{Meteo:{Orage:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Brouillard" [(ngModel)]="trajet.MeteoN.Brouillard" (ngModelChange)="changeRapport({Trajet:{Meteo:{Brouillard:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Neige" [(ngModel)]="trajet.MeteoN.Neige" (ngModelChange)="changeRapport({Trajet:{Meteo:{Neige:$event}}})"></reactive-checkbox>
         </tr>
-        <tr field *ngIf="trajet.DetailMeteo" label="Detail météo">
-            <input #detailMeteo class="cellinput" [(ngModel)]="trajet.DetailMeteo" (ngModelChange)="changeRapport({Trajet:{DetailMeteo:detailMeteo.value}})" />
+        <tr field label="Detail météo">
+            <reactive-input [(ngModel)]="trajet.DetailMeteo" (ngModelChange)="changeRapport({Trajet:{DetailMeteo:$event}})"></reactive-input>
         </tr>
-        <tr field *ngIf="trajet.MotifDelai" label="Justification delai">
-            <textarea #justificationDelai class="cellinput extensible" [(ngModel)]="trajet.MotifDelai" (ngModelChange)="changeRapport({Trajet:{MotifDelai:justificationDelai.value}})"></textarea>
+        <tr field label="Justification delai">
+            <reactive-textarea class="extensible" [(ngModel)]="trajet.MotifDelai" (ngModelChange)="changeRapport({Trajet:{MotifDelai:$event}})"></reactive-textarea>
         </tr>
     </section>
 
     <section *ngIf="rapport && arriveeSurLieux" title="Vérifications" [readOnly]="readOnly">
         <tr field label="Numero de rue">
-            <input #numeroRue class="cellinput" [(ngModel)]="arriveeSurLieux.NumeroDeRue" (ngModelChange)="changeRapport({ArriveeSurLieux:{NumeroDeRue:numeroRue.value}})">
+            <reactive-input [(ngModel)]="arriveeSurLieux.NumeroDeRue" (ngModelChange)="changeRapport({ArriveeSurLieux:{NumeroDeRue:$event}})"></reactive-input>
         </tr>
         <tr field label="Nom porte/boîte aux lettres">
-            <input #nomPorteBAL class="cellinput" [(ngModel)]="arriveeSurLieux.NomSurLaPorteBAL" (ngModelChange)="changeRapport({ArriveeSurLieux:{NomSurLaPorteBAL:nomPorteBAL.value}})">
+            <reactive-input [(ngModel)]="arriveeSurLieux.NomSurLaPorteBAL" (ngModelChange)="changeRapport({ArriveeSurLieux:{NomSurLaPorteBAL:$event}})"></reactive-input>
         </tr>
         <tr field label="Type de site">
             <select #typeSite class="cellinput" [(ngModel)]="arriveeSurLieux.TypeDeSite" (ngModelChange)="changeRapport({ArriveeSurLieux:{TypeDeSite:$event}})">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="i" *ngFor="let type of TypeSiteValues; let i = index">{{Capitalize(TypeSite[i])}}</option>
+                <option [ngValue]="i" *ngFor="let type of TypeSiteValues; let i = index">{{TypeSite[i]}}</option>
             </select>
         </tr>
         <tr field label="Circuit vérification">
-            <select class="cellinput" #circuitVerification [(ngModel)]="arriveeSurLieux.CircuitVerification" (ngModelChange)="changeRapport({ArriveeSurLieux:{CircuitVerification:$event}})">
+            <select [(ngModel)]="arriveeSurLieux.CircuitVerification" (ngModelChange)="changeRapport({ArriveeSurLieux:{CircuitVerification:$event}})">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="i" *ngFor="let circuit of CircuitVerificationValues; let i = index">{{Capitalize(CircuitVerification[i])}}</option>
+                <option [ngValue]="i" *ngFor="let circuit of CircuitVerificationValues; let i = index">{{CircuitVerification[i]}}</option>
             </select>
         </tr>
 
         <tr field label="Non acces au site" *ngIf="arriveeSurLieux.CircuitVerification==CircuitVerification.Verification_KO">
-            <input #portailInfranchissable type="checkbox" name="PortailInfranchissable" [(ngModel)]="nonAccesAuSite.PortailInfranchissable" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{PortailInfranchissable:portailInfranchissable.checked}}})">Portail
-            infranchissable
-            <br>
-            <input #absenceMoyensAcces type="checkbox" name="AbsenceMoyensAcces" [(ngModel)]="nonAccesAuSite.AbsenceMoyensAcces" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AbsenceMoyensAcces:absenceMoyensAcces.checked}}})">Absence
-            de moyen d'accès<br>
-            <input #absenceDigicode type="checkbox" name="AbsenceDigicode" [(ngModel)]="nonAccesAuSite.AbsenceDigicode" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AbsenceDigicode:absenceDigicode.checked}}})">Absence de digicode<br>
-            <input #nonAccesPortePalliere type="checkbox" name="NonAccesPortePalliere" [(ngModel)]="nonAccesAuSite.NonAccesPortePalliere" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{NonAccesPortePalliere:nonAccesPortePalliere.checked}}})">Non
-            accès à la porte pallière
-            <br>
-            <input #autreRaison type="checkbox" name="AutreRaison" [(ngModel)]="nonAccesAuSite.AutreRaison" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AutreRaison:autreRaison.checked}}})">Autre raison
+            <reactive-checkbox label="Portail infranchissable" [(ngModel)]="nonAccesAuSite.PortailInfranchissable" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{PortailInfranchissable:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Absence de moyens d'accès" [(ngModel)]="nonAccesAuSite.AbsenceMoyensAcces" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AbsenceMoyensAcces:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Absence de digicode" [(ngModel)]="nonAccesAuSite.AbsenceDigicode" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AbsenceDigicode:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Non accès à la porte pallière" [(ngModel)]="nonAccesAuSite.NonAccesPortePalliere" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{NonAccesPortePalliere:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Autre raison" [(ngModel)]="nonAccesAuSite.AutreRaison" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AutreRaison:$event}}})"></reactive-checkbox>
         </tr>
 
         <tr field label="Raison non accès" *ngIf="arriveeSurLieux.CircuitVerification==CircuitVerification.Verification_KO && nonAccesAuSite.AutreRaison">
-            <input class="cellinput" [(ngModel)]="nonAccesAuSite.DetailsAutreRaison" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{DetailsAutreRaison:$event}}})">
+            <reactive-input [(ngModel)]="nonAccesAuSite.DetailsAutreRaison" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{DetailsAutreRaison:$event}}})"></reactive-input>
         </tr>
 
         <tr field label="Utilisation des moyens d'accès">
-            <select class="cellinput" id="UtilisationMoyensAcces" [(ngModel)]="arriveeSurLieux.UtilisationMoyensAcces" (ngModelChange)="changeRapport({ArriveeSurLieux:{UtilisationMoyensAcces:$event}})">
+            <select [(ngModel)]="arriveeSurLieux.UtilisationMoyensAcces" (ngModelChange)="changeRapport({ArriveeSurLieux:{UtilisationMoyensAcces:$event}})">
                 <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
@@ -147,18 +145,18 @@
         </tr>
 
         <tr field label="Vérification intégrale des issues">
-            <select class="cellinput" id="VerifIntegraleIssues" [(ngModel)]="arriveeSurLieux.VerifIntegraleIssues" (ngModelChange)="changeRapport({ArriveeSurLieux:{VerifIntegraleIssues:$event}})">
+            <select [(ngModel)]="arriveeSurLieux.VerifIntegraleIssues" (ngModelChange)="changeRapport({ArriveeSurLieux:{VerifIntegraleIssues:$event}})">
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
         </tr>
 
         <tr field label="Raison non vérification des issues" *ngIf=" ! arriveeSurLieux.VerifIntegraleIssues">
-            <input class="cellinput" id="RaisonNonVerificationIssues" [(ngModel)]="arriveeSurLieux.RaisonNonVerificationIssues" (ngModelChange)="changeRapport({ArriveeSurLieux:{RaisonNonVerificationIssues:$event}})">
+            <reactive-input id="RaisonNonVerificationIssues" [(ngModel)]="arriveeSurLieux.RaisonNonVerificationIssues" (ngModelChange)="changeRapport({ArriveeSurLieux:{RaisonNonVerificationIssues:$event}})"></reactive-input>
         </tr>
 
         <tr field label="Situations anormale">
-            <select class="cellinput" id="SituationAnormale" [(ngModel)]="arriveeSurLieux.SituationAnormale" (ngModelChange)="changeRapport({ArriveeSurLieux:{SituationAnormale:$event}})">
+            <select [(ngModel)]="arriveeSurLieux.SituationAnormale" (ngModelChange)="changeRapport({ArriveeSurLieux:{SituationAnormale:$event}})">
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
@@ -169,7 +167,7 @@
     <section *ngIf="rapport" title="Constatations matérielles" data-gs-width="auto" [readOnly]="readOnly">
 
         <tr field label="Lumière(s) Allumée(s)">
-            <select class="cellinput" id="LumieresAllumees" [(ngModel)]="verifications.LumieresAllumees" (ngModelChange)="changeRapport({Verifications:{LumieresAllumees:$event}})">
+            <select id="LumieresAllumees" [(ngModel)]="verifications.LumieresAllumees" (ngModelChange)="changeRapport({Verifications:{LumieresAllumees:$event}})">
                 <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
@@ -177,118 +175,116 @@
         </tr>
 
         <tr field label="Pièces Allumées" *ngIf="verifications.LumieresAllumees">
-            <input type="checkbox" name="Buanderie" [(ngModel)]="quellesLumieresAllumees.Buanderie" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Buanderie:$event}}})">Buanderie<br>
-            <input type="checkbox" name="Bureau" [(ngModel)]="quellesLumieresAllumees.Bureau" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Bureau:$event}}})">Bureau<br>
-            <input type="checkbox" name="Cellier" [(ngModel)]="quellesLumieresAllumees.Cellier" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Cellier:$event}}})">Cellier<br>
-            <input type="checkbox" name="Chambre" [(ngModel)]="quellesLumieresAllumees.Chambre" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Chambre:$event}}})">Chambre<br>
-            <input type="checkbox" name="Couloir" [(ngModel)]="quellesLumieresAllumees.Couloir" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Couloir:$event}}})">Couloir<br>
-            <input type="checkbox" name="Cuisine" [(ngModel)]="quellesLumieresAllumees.Cuisine" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Cuisine:$event}}})">Cuisine<br>
-            <input type="checkbox" name="Etage1" [(ngModel)]="quellesLumieresAllumees.Etage1" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Etage1:$event}}})">Etage 1<br>
-            <input type="checkbox" name="Etage2" [(ngModel)]="quellesLumieresAllumees.Etage2" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Etage2:$event}}})">Etage 2<br>
-            <input type="checkbox" name="Exterieur" [(ngModel)]="quellesLumieresAllumees.Exterieur" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Exterieur:$event}}})">Extérieur<br>
-            <input type="checkbox" name="Garage" [(ngModel)]="quellesLumieresAllumees.Garage" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Garage:$event}}})">Garage<br>
-            <input type="checkbox" name="SalleDeBain" [(ngModel)]="quellesLumieresAllumees.SalleDeBain" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{SalleDeBain:$event}}})">Salle de bain<br>
-            <input type="checkbox" name="SalonOuSalleAManger" [(ngModel)]="quellesLumieresAllumees.SalonOuSalleAManger" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{SalonOuSalleAManger:$event}}})">Salon/Salle à manger<br>
-            <input type="checkbox" name="Toilettes" [(ngModel)]="quellesLumieresAllumees.Toilettes" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Toilettes:$event}}})">Toilettes<br>
-            <input type="checkbox" name="AutrePiece" [(ngModel)]="AutrePieceChecked">Autre Piece
+            <reactive-checkbox label="Buanderie" [(ngModel)]="quellesLumieresAllumees.Buanderie" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Buanderie:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Bureau" [(ngModel)]="quellesLumieresAllumees.Bureau" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Bureau:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Cellier" [(ngModel)]="quellesLumieresAllumees.Cellier" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Cellier:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Chambre" [(ngModel)]="quellesLumieresAllumees.Chambre" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Chambre:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Couloir" [(ngModel)]="quellesLumieresAllumees.Couloir" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Couloir:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Cuisine" [(ngModel)]="quellesLumieresAllumees.Cuisine" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Cuisine:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Étage 1" [(ngModel)]="quellesLumieresAllumees.Etage1" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Etage1:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Étage 2" [(ngModel)]="quellesLumieresAllumees.Etage2" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Etage2:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Extérieur" [(ngModel)]="quellesLumieresAllumees.Exterieur" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Exterieur:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Garage" [(ngModel)]="quellesLumieresAllumees.Garage" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Garage:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Salle de bain" [(ngModel)]="quellesLumieresAllumees.SalleDeBain" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{SalleDeBain:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Salon ou salle à manger" [(ngModel)]="quellesLumieresAllumees.SalonOuSalleAManger" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{SalonOuSalleAManger:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Toilettes" [(ngModel)]="quellesLumieresAllumees.Toilettes" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Toilettes:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Autre pièce" [(ngModel)]="AutrePieceChecked">Autre Piece</reactive-checkbox>
         </tr>
 
         <tr field label="Autre pièce allumée" *ngIf="verifications.LumieresAllumees && AutrePieceChecked">
-            <input class="cellinput" [(ngModel)]="quellesLumieresAllumees.Autre" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Autre:$event}}})">
+            <reactive-input [(ngModel)]="quellesLumieresAllumees.Autre" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Autre:$event}}})"></reactive-input>
         </tr>
 
         <tr field label="Issue(s) ouverte(s)">
-            <select class="cellinput" id="IssuesOuvertes" [(ngModel)]="verifications.IssuesOuvertes" (ngModelChange)="changeRapport({Verifications:{IssuesOuvertes:$event}})">
+            <select [(ngModel)]="verifications.IssuesOuvertes" (ngModelChange)="changeRapport({Verifications:{IssuesOuvertes:$event}})">
                 <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
-                <option [ngValue]="false">Non</option> 
+                <option [ngValue]="false">Non</option>
             </select>
         </tr>
 
         <tr field label="Detail Issues" *ngIf="verifications.IssuesOuvertes">
-            <input type="checkbox" name="IssuesOuvertePorte" [(ngModel)]="quellesIssuesOuvertes.Porte" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{Porte:$event}}})">Porte<br>
-            <input type="checkbox" name="IssuesOuverteFenetre" [(ngModel)]="quellesIssuesOuvertes.Fenetre" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{Fenetre:$event}}})">Fenêtre<br>
-            <input type="checkbox" name="IssuesOuverteBaieVitree" [(ngModel)]="quellesIssuesOuvertes.BaieVitree" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{BaieVitree:$event}}})">Baie Vitrée<br>
-            <input type="checkbox" name="IssuesOuvertePortail" [(ngModel)]="quellesIssuesOuvertes.Portail" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{Portail:$event}}})">Portail<br>
-            <input type="checkbox" name="IssuesOuvertePortillon" [(ngModel)]="quellesIssuesOuvertes.Portillon" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{Portillon:$event}}})">Portillon<br>
-            <input type="checkbox" name="IssuesOuverteRideauMetallique" [(ngModel)]="quellesIssuesOuvertes.RideauMetallique" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{RideauMetallique:$event}}})">Rideau Métallique
-            <br>
-            <input type="checkbox" name="IssuesOuverteAutreIssue" [(ngModel)]="AutreIssueChecked" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{AutreIssueChecked:$event}}})">Autre issue
+            <reactive-checkbox label="Porte" [(ngModel)]="quellesIssuesOuvertes.Porte" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{Porte:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Fenêtre" [(ngModel)]="quellesIssuesOuvertes.Fenetre" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{Fenetre:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Baie vitrée" [(ngModel)]="quellesIssuesOuvertes.BaieVitree" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{BaieVitree:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Portail" [(ngModel)]="quellesIssuesOuvertes.Portail" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{Portail:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Portillon" [(ngModel)]="quellesIssuesOuvertes.Portillon" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{Portillon:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Rideau Métallique" [(ngModel)]="quellesIssuesOuvertes.RideauMetallique" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{RideauMetallique:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Autre ossue" [(ngModel)]="AutreIssueChecked" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{AutreIssueChecked:$event}}})"></reactive-checkbox>
         </tr>
 
         <tr field label="Autre issue ouverte" *ngIf="verifications.IssuesOuvertes && AutreIssueChecked">
-            <input class="cellinput" [(ngModel)]="quellesIssuesOuvertes.Autre" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{Autre:$event}}})">
+            <reactive-input [(ngModel)]="quellesIssuesOuvertes.Autre" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{Autre:$event}}})"></reactive-input>
         </tr>
 
         <tr field label="Sirène">
-            <select class="cellinput" id="Sirene" [(ngModel)]="verifications.Sirene" (ngModelChange)="changeRapport({Verifications:{Sirene:$event}})">
-                <option [ngValue]="null"></option> 
+            <select [(ngModel)]="verifications.Sirene" (ngModelChange)="changeRapport({Verifications:{Sirene:$event}})">
+                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
-                <option [ngValue]="false">Non</option> 
+                <option [ngValue]="false">Non</option>
             </select>
         </tr>
 
         <tr field label="Système">
-            <select class="cellinput" id="Systeme" [(ngModel)]="verifications.SystemeEnService" (ngModelChange)="changeRapport({Verifications:{SystemeEnService:$event}})">
-                <option [ngValue]="null"></option> 
+            <select [(ngModel)]="verifications.SystemeEnService" (ngModelChange)="changeRapport({Verifications:{SystemeEnService:$event}})">
+                <option [ngValue]="null"></option>
                 <option [ngValue]="true">En service</option>
-                <option [ngValue]="false">Hors Service</option> 
+                <option [ngValue]="false">Hors Service</option>
             </select>
         </tr>
 
         <tr field label="Remise en service" *ngIf="! verifications.SystemeEnService">
-            <select class="cellinput" id="Systeme" [(ngModel)]="verifications.RemiseEnService" (ngModelChange)="changeRapport({Verifications:{RemiseEnService:$event}})">
-                <option [ngValue]="null"></option> 
+            <select [(ngModel)]="verifications.RemiseEnService" (ngModelChange)="changeRapport({Verifications:{RemiseEnService:$event}})">
+                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
-                <option [ngValue]="false">Non</option> 
+                <option [ngValue]="false">Non</option>
             </select>
         </tr>
 
         <tr field label="Effraction(s)">
-            <select class="cellinput" id="Effractions" [(ngModel)]="verifications.Effraction" (ngModelChange)="changeRapport({Verifications:{Effraction:$event}})">
+            <select [(ngModel)]="verifications.Effraction" (ngModelChange)="changeRapport({Verifications:{Effraction:$event}})">
                 <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
-                <option [ngValue]="false">Non</option> 
+                <option [ngValue]="false">Non</option>
             </select>
         </tr>
 
         <tr field label="Detail effraction" *ngIf="verifications.Effraction">
-            <input type="checkbox" name="EffractionPorte" [(ngModel)]="quellesEffractions.Porte" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Porte:$event}}})">Porte<br>
-            <input type="checkbox" name="EffractionFenetre" [(ngModel)]="quellesEffractions.Fenetre" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Fenetre:$event}}})">Fenêtre<br>
-            <input type="checkbox" name="EffractionBaieVitree" [(ngModel)]="quellesEffractions.BaieVitree" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{BaieVitree:$event}}})">Baie Vitrée<br>
-            <input type="checkbox" name="EffractionPortail" [(ngModel)]="quellesEffractions.Portail" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Portail:$event}}})">Portail<br>
-            <input type="checkbox" name="EffractionPortillon" [(ngModel)]="quellesEffractions.Portillon" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Portillon:$event}}})">Portillon<br>
-            <input type="checkbox" name="EffractionMetallique" [(ngModel)]="quellesEffractions.RideauMetallique" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{RideauMetallique:$event}}})">Rideau Métallique
-            <br>
-            <input type="checkbox" id="EffractionAutre" [(ngModel)]="AutreEffractionChecked">Autre effraction
+            <reactive-checkbox label="Porte" [(ngModel)]="quellesEffractions.Porte" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Porte:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Fenetre" [(ngModel)]="quellesEffractions.Fenetre" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Fenetre:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="BaieVitree" [(ngModel)]="quellesEffractions.BaieVitree" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{BaieVitree:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Portail" [(ngModel)]="quellesEffractions.Portail" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Portail:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Portillon" [(ngModel)]="quellesEffractions.Portillon" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Portillon:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Metallique" [(ngModel)]="quellesEffractions.RideauMetallique" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{RideauMetallique:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Autre" id="EffractionAutre" [(ngModel)]="AutreEffractionChecked"></reactive-checkbox>
         </tr>
 
         <tr field label="Autre effraction" *ngIf="verifications.Effraction && AutreEffractionChecked">
-            <input class="cellinput" [(ngModel)]="quellesEffractions.Autre" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Autre:$event}}})">
+            <reactive-input [(ngModel)]="quellesEffractions.Autre" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Autre:$event}}})"></reactive-input>
         </tr>
 
     </section>
 
     <section *ngIf="rapport && presence" title="Présence sur site" data-gs-width="auto" [readOnly]="readOnly">
         <tr field label="Types de présences">
-            <input type="checkbox" name="PresenceClient" [(ngModel)]="presence.Client" (ngModelChange)="changeRapport({Presence:{Client:$event}})">Client<br>
-            <input type="checkbox" name="PresenceContacts" [(ngModel)]="presence.Contacts" (ngModelChange)="changeRapport({Presence:{Contacts:$event}})">Contacts<br>
-            <input type="checkbox" name="PresenceForceDeLordre" [(ngModel)]="presence.Gendarmerie" (ngModelChange)="changeRapport({Presence:{Gendarmerie:$event}})">Forces de l'ordre<br>
-            <input type="checkbox" name="PresencePompiers" [(ngModel)]="presence.Pompiers" (ngModelChange)="changeRapport({Presence:{Pompiers:$event}})">Pompiers<br>
-            <input type="checkbox" name="Animal" [(ngModel)]="presence.PresenceAnimale" (ngModelChange)="changeRapport({Presence:{PresenceAnimale:$event}})">Animal<br>
-            <input type="checkbox" name="AutrePresence" [(ngModel)]="AutrePresenceChecked">Autre présence<br>
+            <reactive-checkbox label="Client" [(ngModel)]="presence.Client" (ngModelChange)="changeRapport({Presence:{Client:$event}})"></reactive-checkbox>
+            <reactive-checkbox label="Contacts" [(ngModel)]="presence.Contacts" (ngModelChange)="changeRapport({Presence:{Contacts:$event}})"></reactive-checkbox>
+            <reactive-checkbox label="Force de l'ordre" [(ngModel)]="presence.Gendarmerie" (ngModelChange)="changeRapport({Presence:{Gendarmerie:$event}})"></reactive-checkbox>
+            <reactive-checkbox label="Pompiers" [(ngModel)]="presence.Pompiers" (ngModelChange)="changeRapport({Presence:{Pompiers:$event}})"></reactive-checkbox>
+            <reactive-checkbox label="Animal" [(ngModel)]="presence.PresenceAnimale" (ngModelChange)="changeRapport({Presence:{PresenceAnimale:$event}})"></reactive-checkbox>
+            <reactive-checkbox label="Autre présence" [(ngModel)]="AutrePresenceChecked"></reactive-checkbox>
         </tr>
 
         <tr field label="Autre présence" *ngIf="AutrePresenceChecked">
-            <input class="cellinput" [(ngModel)]="presence.AutrePresence" (ngModelChange)="changeRapport({Presence:{AutrePresence:$event}})">
+            <reactive-input [(ngModel)]="presence.AutrePresence" (ngModelChange)="changeRapport({Presence:{AutrePresence:$event}})"></reactive-input>
         </tr>
 
         <tr field label="Précision animaux" *ngIf="presence.PresenceAnimale">
-            <input class="cellinput" [(ngModel)]="presence.PrecisionAnimaux" (ngModelChange)="changeRapport({Presence:{PrecisionAnimaux:$event}})">
+            <reactive-input [(ngModel)]="presence.PrecisionAnimaux" (ngModelChange)="changeRapport({Presence:{PrecisionAnimaux:$event}})"></reactive-input>
         </tr>
 
         <tr field label="Présence véhicule">
-            <select class="cellinput" id="PresenceVehiculeChecked" [(ngModel)]="PresenceVehiculeChecked">
+            <select [(ngModel)]="PresenceVehiculeChecked">
                 <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
@@ -296,15 +292,15 @@
         </tr>
 
         <tr field label="Type de véhicule" *ngIf="PresenceVehiculeChecked">
-            <input class="cellinput" [(ngModel)]="presence.TypeVehicule" (ngModelChange)="changeRapport({Presence:{TypeVehicule:$event}})">
+            <reactive-input [(ngModel)]="presence.TypeVehicule" (ngModelChange)="changeRapport({Presence:{TypeVehicule:$event}})"></reactive-input>
         </tr>
 
         <tr field label="Couleur du véhicule" *ngIf="PresenceVehiculeChecked">
-            <input class="cellinput" [(ngModel)]="presence.CouleurVehicule" (ngModelChange)="changeRapport({Presence:{CouleurVehicule:$event}})">
+            <reactive-input [(ngModel)]="presence.CouleurVehicule" (ngModelChange)="changeRapport({Presence:{CouleurVehicule:$event}})"></reactive-input>
         </tr>
 
         <tr field label="Immatriculation" *ngIf="PresenceVehiculeChecked">
-            <input class="cellinput" [(ngModel)]="presence.PlaqueVehicule" (ngModelChange)="changeRapport({Presence:{PlaqueVehicule:$event}})">
+            <reactive-input [(ngModel)]="presence.PlaqueVehicule" (ngModelChange)="changeRapport({Presence:{PlaqueVehicule:$event}})"></reactive-input>
         </tr>
 
     </section>
@@ -312,8 +308,8 @@
 
     <section *ngIf="rapport && miseEnSecurite" title="Mise en sécurité" data-gs-width="auto" [readOnly]="readOnly">
 
-        <tr field label="intervention.Site refermable">
-            <select class="cellinput" id="SiteRefermableSelect" [(ngModel)]="miseEnSecurite.SiteRefermable" (ngModelChange)="changeRapport({MiseEnSecurite:{SiteRefermable:$event}})">
+        <tr field label="Site refermable">
+            <select [(ngModel)]="miseEnSecurite.SiteRefermable" (ngModelChange)="changeRapport({MiseEnSecurite:{SiteRefermable:$event}})">
                 <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
@@ -321,17 +317,17 @@
         </tr>
 
         <tr field label="Mise en place">
-            <input type="checkbox" name="MiseEnPlaceADS" [(ngModel)]="miseEnSecurite.MiseEnPlaceADS" (ngModelChange)="changeRapport({MiseEnSecurite:{MiseEnPlaceADS:$event}})">ADS<br>
-            <input type="checkbox" name="MiseEnPlaceMaitreChien" [(ngModel)]="miseEnSecurite.MiseEnPlaceMaitreChien" (ngModelChange)="changeRapport({MiseEnSecurite:{MiseEnPlaceMaitreChien:$event}})">Maître Chien<br>
-            <input type="checkbox" name="MiseEnPlaceDemandeePar" [(ngModel)]="MiseEnPlaceDemandeeParChecked">Demandée<br>
+            <reactive-checkbox label="Mise en place ADS" [(ngModel)]="miseEnSecurite.MiseEnPlaceADS" (ngModelChange)="changeRapport({MiseEnSecurite:{MiseEnPlaceADS:$event}})"></reactive-checkbox>
+            <reactive-checkbox label="Maître chien" [(ngModel)]="miseEnSecurite.MiseEnPlaceMaitreChien" (ngModelChange)="changeRapport({MiseEnSecurite:{MiseEnPlaceMaitreChien:$event}})"></reactive-checkbox>
+            <reactive-checkbox label="Mise en place demandée par" [(ngModel)]="MiseEnPlaceDemandeeParChecked"></reactive-checkbox>
         </tr>
 
         <tr field label="À la demande de" *ngIf="MiseEnPlaceDemandeeParChecked">
-            <input class="cellinput" [(ngModel)]="miseEnSecurite.MiseEnPlaceDemandeePar" (ngModelChange)="changeRapport({MiseEnSecurite:{MiseEnPlaceDemandeePar:$event}})">
+            <reactive-input [(ngModel)]="miseEnSecurite.MiseEnPlaceDemandeePar" (ngModelChange)="changeRapport({MiseEnSecurite:{MiseEnPlaceDemandeePar:$event}})"></reactive-input>
         </tr>
 
         <tr field label="Animal">
-            <select class="cellinput" id="AnimalSelected" [(ngModel)]="MiseEnPlaceAnimalChecked">
+            <select [(ngModel)]="MiseEnPlaceAnimalChecked">
                 <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
@@ -339,7 +335,7 @@
         </tr>
 
         <tr field label="Type de l'animal" *ngIf="MiseEnPlaceAnimalChecked">
-            <input class="cellinput" id="TypeAnimal" [(ngModel)]="miseEnSecurite.MiseEnPlaceAnimal" (ngModelChange)="changeRapport({MiseEnSecurite:{MiseEnPlaceAnimal:$event}})">
+            <reactive-input [(ngModel)]="miseEnSecurite.MiseEnPlaceAnimal" (ngModelChange)="changeRapport({MiseEnSecurite:{MiseEnPlaceAnimal:$event}})"></reactive-input>
         </tr>
 
     </section>

@@ -5,6 +5,7 @@
 export enum Etat {
 
     Creee,
+    EnAppel,
     Transmise,
     Acceptee,
     Dispatchee,
@@ -18,7 +19,6 @@ export enum Etat {
     Close,
     AnnulTS,
     AnnulITV,
-    EnAppel,
     NotAllowed
 }
 
@@ -32,6 +32,7 @@ export enum TypeFiche {
     Intervention,
     Gardiennage,
     Ronde,
+    TestReseau,
     GardiennageALaDemande
 }
 
@@ -60,20 +61,21 @@ export enum DepotBonIntervention {
     BoiteAuxLettres,
     PC,
     Garage,
-    Autre
+    Autre,
+    AEPIA
 }
 
 export enum TypeSite
 {
     Pavillon,
-    Collectif_Immeuble,
-    Commerce_Pro
+    CollectifImmeuble,
+    CommercePro
 }
 
 export enum CircuitVerification
 {
-    Interieur_Site,
-    Interieur_Enceinte,
-    Exterieur_Site,
-    Verification_KO
+    InterieurSite,
+    InterieurEnceinte,
+    ExterieurSite,
+    VerificationKO
 }

@@ -2,7 +2,10 @@ import { Component, forwardRef, ChangeDetectorRef } from '@angular/core';
 import { ControlValueAccessor,  NG_VALUE_ACCESSOR  } from '@angular/forms';
 import { trigger, style, animate, transition, keyframes } from '@angular/animations';
 
-export class ReactiveBaseComponent implements ControlValueAccessor {
+
+
+export class ReactiveBaseComponent implements ControlValueAccessor
+{
 
   public updatingState : string = null;
   _value = '';
@@ -46,6 +49,8 @@ export class ReactiveBaseComponent implements ControlValueAccessor {
   }
 
   registerOnChange(fn: any): void { this.propagateChange = fn; }
+
   registerOnTouched(fn: () => void): void {}
+
   setDisabledState?(isDisabled: boolean): void {};
 }

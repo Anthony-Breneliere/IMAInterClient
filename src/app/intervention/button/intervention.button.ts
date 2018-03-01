@@ -60,7 +60,15 @@ export class InterventionButton
 
     get canSubmit() : boolean 
     {
-        let canSubmit = this.intervention.Etat == Etat.Creee;
+        let intervenant = this.intervention.Intervenant;
+        let site = this.intervention.Site;
+
+        let canSubmit : boolean = false;
+        if ( this.intervention.Etat == Etat.Creee
+            && intervenant && intervenant.Societe
+            && site && site.Latitude && site.Longitude )
+            canSubmit = true;
+
         return canSubmit;
     }
 

@@ -21,10 +21,7 @@ section tr:first-child {
     padding-top: 5px;
 }
 
-select {
-    height: 2em;
-    width: auto
-}
+reactive-select {}
 
 #listMainCour {
     margin: 0px 0px 8px 0px
@@ -34,6 +31,11 @@ select {
     white-space: unset;
     padding: 0px 8px 0px 0px;
     margin: 0;
+}
+
+select {
+    height: 2em;
+    width: 100%
 }
 
 #saisieMainCour {
@@ -171,4 +173,14 @@ div.title:hover {
 
 div.formulaire {
     margin: 0px 0px 0px 0px;
+}
+
+div.warningMessage {
+    margin: 1em 1em 1em 1em;
+    color: var( --change-detect-color);
+}
+
+i {
+    font-size: 1.3em;
+    padding: 4px 8px 0px 0px
 }

@@ -14,10 +14,10 @@
             ]
         },
         {
-            "name": "Chrome DEBUG 1239957",
+            "name": "Chrome DEBUG 1240297",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost:4200/#/intervention/1239957",
+            "url": "http://localhost:4200/#/intervention/1240297",
             "sourceMaps": true,
             "webRoot": "${workspaceRoot}",
             "skipFiles": [

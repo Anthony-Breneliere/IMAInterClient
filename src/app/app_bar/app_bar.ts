@@ -22,7 +22,9 @@ export class AppBar {
 
     constructor( public connectionStatus: ConnectionStatus, private cd: ChangeDetectorRef  )
     {
-        connectionStatus.connectedStatus$.subscribe( (conn) => { this._connected = conn; cd.detectChanges(); } )
+        connectionStatus.connectedStatus$.subscribe( (conn) => { 
+            this._connected = conn;
+            cd.detectChanges(); } )
     }
 
     public onClickListButton() : void {

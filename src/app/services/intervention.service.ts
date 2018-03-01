@@ -45,9 +45,6 @@ export class InterventionService  {
     public newInterData$ = this._newInterDataSource.asObservable();
     public newMessages$ = this._newMessagesSource.asObservable();
 
-    // todo: attente d'une fonction d'ESI permettant de récupére le used Id à partir de l'opérateur
-    private userId: number = 9886433; 
-
     private _listeTypeMaincour : ITypeMainCourante[] = [];
 
     // on garde en mémoire la liste des types de mains courantes:
@@ -396,9 +393,9 @@ export class InterventionService  {
     public addNewMaincourante( numFi: number, typeMaincour: ITypeMainCourante, comment: string ) : void
     {
         console.log("Envoi d'une main courante au serveur: ");
-        console.log({"userId":this.userId, "numFi": numFi, "typeMaincour": typeMaincour, "comment":comment});
+        console.log({"login":this._connectionStatus.login, "numFi": numFi, "typeMaincour": typeMaincour, "comment":comment});
         
-        this._connectionStatus.proxyServer.addNewMaincourante( this.userId, numFi, typeMaincour.Type, comment);
+        this._connectionStatus.proxyServer.addNewMaincourante( numFi, typeMaincour.Type, comment);
     }
 
     /**

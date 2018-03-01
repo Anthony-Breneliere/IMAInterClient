@@ -12,12 +12,12 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 import { RouterModule }   from '@angular/router';
-import { ContextMenuModule } from 'ngx-contextmenu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /* Liste des services */
 import { InterventionService } from './services/intervention.service';
 import { ConnectionStatus } from './services/connection.status';
+import { ContextMenuModule } from 'ngx-contextmenu';
 
 /* Liste des composants */
 import { InterventionAppComponent }  from './app.component';
@@ -35,8 +35,12 @@ import { Location, LocationStrategy, PathLocationStrategy, HashLocationStrategy 
 import { DraggableDirective } from './tools/draggable'; 
 import { SortInterventionByDateTime } from './intervention/groupe/sortInterPipe';
 import { Chat } from './intervention/chat/chat';
+
+// import { ReactiveBaseComponent } from './intervention/reactive-components/reactive-base';
 import { ReactiveInputComponent } from './intervention/reactive-components/reactive-input.component';
 import { ReactiveCheckboxComponent } from './intervention/reactive-components/reactive-checkbox.component';
+import { ReactiveSelectComponent } from './intervention/reactive-components/reactive-select.component';
+import { ReactiveTextareaComponent } from './intervention/reactive-components/reactive-textarea.component';
 
 
 @NgModule({
@@ -67,7 +71,10 @@ import { ReactiveCheckboxComponent } from './intervention/reactive-components/re
         SortInterventionByDateTime,
         AppBar,
         Chat,
-        ReactiveInputComponent, ReactiveCheckboxComponent ],
+        ReactiveTextareaComponent,
+        ReactiveInputComponent,
+        ReactiveSelectComponent,
+        ReactiveCheckboxComponent ],
 
     /*
        Liste des services utilisés par le module. Les services sont injectés dans les composants.
