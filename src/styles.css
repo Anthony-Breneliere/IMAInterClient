@@ -96,6 +96,15 @@ button:hover:enabled {
 }
 
 
+/* Détection des changements */
+
+.borderhalo {
+    box-shadow: 0px 0px 5px 0px var(--change-detect-color), 0px 0px 5px 0px var(--change-detect-color) inset;
+    border: 1px solid var( --change-detect-color);
+    z-index: 100
+}
+
+
 /* Customisation des menus contextuels */
 
 .ngx-contextmenu .dropdown-menu {

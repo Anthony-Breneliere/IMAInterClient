@@ -1,5 +1,5 @@
-<div routerLink="/intervention/{{intervention.Id}}" queryParamsHandling="preserve" class="bouton_intervention transition_1s" [ngClass]="{buttonMenu:buttonMenu.isShown}" [contextMenu]="buttonMenu" [contextMenuSubject]="intervention" [class.unselected]="selected !== true"
-    [class.selected]="selected === true" *ngIf="intervention" (click)="onClickInter()">
+<div routerLink="/intervention/{{intervention.Id}}" queryParamsHandling="preserve" [class.borderhalo]="updating" [class.defaultBorder]="!updating" class="bouton_intervention transition_1s" [ngClass]="{buttonMenu:buttonMenu.isShown}" [contextMenu]="buttonMenu"
+    [contextMenuSubject]="intervention" [class.unselected]="selected !== true" [class.selected]="selected === true" *ngIf="intervention" (click)="onClickInter()">
 
     <div *ngIf="intervention.Site" class="client">
         <i class="mdi mdi-account"></i>{{NomComplet}}</div>

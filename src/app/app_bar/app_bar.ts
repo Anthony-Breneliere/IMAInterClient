@@ -22,6 +22,10 @@ export class AppBar {
 
     constructor( public connectionStatus: ConnectionStatus, private cd: ChangeDetectorRef  )
     {
+        // inialisation de l'affichage du statut de connexion
+        this._connected = connectionStatus.connected;
+
+        // inscription aux changements de statuts de connexion
         connectionStatus.connectedStatus$.subscribe( (conn) => { 
             this._connected = conn;
             cd.detectChanges(); } )

@@ -1,4 +1,4 @@
-import { Component, forwardRef, ChangeDetectorRef, Renderer, ElementRef } from '@angular/core';
+import { Component, forwardRef, ChangeDetectorRef, ElementRef, Renderer2 } from '@angular/core';
 import { SelectControlValueAccessor, ControlValueAccessor,  NG_VALUE_ACCESSOR  } from '@angular/forms';
 import { trigger, style, animate, transition, keyframes } from '@angular/animations';
 import { ReactiveBaseComponent } from './reactive-base'
@@ -24,7 +24,7 @@ export class ReactiveSelectComponent extends SelectControlValueAccessor
   // stores the action in the attribute (onModelChange) in the html template:
   propagateChange:any = ( change ) => {};
 
-  constructor( private _cdRef: ChangeDetectorRef, _renderer: Renderer, _elementRef: ElementRef ) { super( _renderer, _elementRef ) ;}
+  constructor( private _cdRef: ChangeDetectorRef, _renderer: Renderer2, _elementRef: ElementRef ) { super( _renderer, _elementRef ) ;}
 
   // change from the model
   writeValue(value: any): void

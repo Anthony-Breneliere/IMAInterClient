@@ -1,27 +1,30 @@
 div.intervention_details {
     padding: 10px 10px 10px 10px;
-    overflow-y: scroll;
     width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    z-index: -10
+    /* display: flex;
+    flex-wrap: wrap; */
+    z-index: 500
+}
+
+div.intervention_details>div {
+    border: 1px solid red;
+    width: fit-content
 }
 
 section {
+    width: fit-content;
     position: relative;
 }
 
 section tr {
     border-top: 3px solid var(--main-bg-color);
-    user-select: text;
+    /* user-select: text; */
 }
 
 section tr:first-child {
     border-top: 0px solid var(--main-bg-color);
     padding-top: 5px;
 }
-
-reactive-select {}
 
 #listMainCour {
     margin: 0px 0px 8px 0px

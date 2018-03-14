@@ -2,11 +2,12 @@
  * Created by abreneli on 04/07/2016.
  */
 
-import { Component,  Input, Output, EventEmitter } from '@angular/core';
+import { Component,  Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { InterventionButton } from '../button/intervention.button';
 import { Intervention } from '../../model/intervention';
 import { InterventionService } from '../../services/intervention.service';
 import { SortInterventionByDateTime } from './sortInterPipe';
+import { Subscription } from 'rxjs';
 
 export enum GroupTypeEnum
 {
@@ -32,8 +33,41 @@ export class InterventionGroup  {
 
     public GroupTypeEnum = GroupTypeEnum; // <- using enum in html
 
-    constructor( private interService : InterventionService )
+    private _groupInterventions : Intervention[];
+
+    private _currentlyUpdatedInters : number[] = [];
+
+    interventionChangeSubscription : Subscription;
+    
+    constructor( private interService : InterventionService, protected _ref: ChangeDetectorRef )
     {
+    }
+
+    ngOnInit()
+    {
+        // on inscrit le composant à la détection des changements d'interventions
+        // cela permet (entre autres) d'afficher un petit halo sur le bouron quand une intervention a changé
+        this.interventionChangeSubscription = 
+            this.interService.newInterData$.subscribe( inter => 
+            {
+                this._currentlyUpdatedInters.push( inter.Id );
+                this._ref.detectChanges();
+
+                console.log("Detection changement inter " + inter.Id + " liste totale: " + this._currentlyUpdatedInters );
+
+                window.setTimeout( () => {
+                    let index = this._currentlyUpdatedInters.indexOf( inter.Id );
+                    this._currentlyUpdatedInters.splice( index, 1 );
+                    this._ref.detectChanges();
+                }, 500 );
+            } );
+    }
+
+    ngOnDestroy()
+    {
+        // avant la destruction on veille à se désinscrire le composant aux changements d'intervention  
+        // ou sinon ChangeDetectorRef.detectChanges() plante
+        this.interventionChangeSubscription.unsubscribe();
     }
 
     get groupInterventions(): Intervention[]
@@ -41,14 +75,23 @@ export class InterventionGroup  {
         switch( this.GroupType )
         {
             case GroupTypeEnum.interventionsCloses:
-                return this.interService.CloseInterventions;
+                this._groupInterventions = this.interService.CloseInterventions;
+                break;
 
             case GroupTypeEnum.autresInterventions:
-                return this.interService.OtherInterventions;
+                this._groupInterventions = this.interService.OtherInterventions;
+                break;
 
             default:
-                return this.interService.MyInterventions;
+                this._groupInterventions =  this.interService.MyInterventions;
         }
+
+        return this._groupInterventions;
+    }
+
+    isCurrentlyUpdated( interId : number ) : boolean
+    {
+        return this._currentlyUpdatedInters.indexOf( interId ) != -1;
     }
 
     public onClickHeader() : void

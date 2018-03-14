@@ -49,19 +49,23 @@ import { Telephone } from 'app/model/telephone';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
+declare var require: any;
+var Masonry  = require( 'masonry-layout' );
+
+
+
 @Component({
     moduleId: module.id,
     selector: 'intervention-details',
     templateUrl: './intervention.details.html',
-    styleUrls: ['./intervention.details.css'
-    ],
+    styleUrls: ['./intervention.details.css'],
 
     // pour des raisons de performance, les champs ne seront mis à jour que sur un appel de onChangeCallback
     changeDetection : ChangeDetectionStrategy.OnPush
 })
 
 
-export class InterventionDetails implements  OnInit, OnChanges
+export class InterventionDetails implements  OnChanges
 {
     interventionChangeSubscription : Subscription;
 
@@ -82,37 +86,44 @@ export class InterventionDetails implements  OnInit, OnChanges
         this.interventionChangeSubscription = 
             this.interService.newInterData$.filter( i => this.intervention && this.intervention.Id == i.Id  ).subscribe( i => this.detectChanges() );
 
-        // if ( this._intervention && this._intervention.Rapport )
-        // {
-        //     console.log( this._intervention );
-        //     console.log( this._intervention.Rapport );
-        //     console.log( this._intervention.Rapport.NumeroBon );
-    
-        //     let numeroBon : FormControl = new FormControl(this._intervention.Rapport.NumeroBon);
-    
-        //     this.detailForm = new FormGroup({
-        //         'numeroBon': new FormControl(this._intervention.Rapport.NumeroBon)
-        //         });
-
-            
-        //     numeroBon.valueChanges.subscribe( c => 
-        //         {
-        //             console.log( "La valeur du bon a changé:");
-        //             console.log( c );
-        //         }
-        //     );
-        // }
+        // je reinitialise le layout pour la nouvelle instruction
+        this.grid = null;
     }
 
+    private grid : any;
 
-    ngOnInit()
+    ngAfterContentChecked ()
     {
+        var masonryGridElement = document.querySelector(".masonry_grid");
+
+        if ( masonryGridElement && ! this.grid )
+        {
+            this.grid = new Masonry( '.masonry_grid', {
+                itemSelector: 'section',
+                columnWidth: 10,
+                containerStyle: { position: 'relative' }
+              });
+        }
+    }
+
+    updateLayout()
+    {
+        if ( this.grid )
+        {
+            this.grid.layout();
+        }
     }
 
     ngOnChanges( changes: SimpleChanges )
     {
         console.log("Changements détectés sur intervention :");
         console.log( changes );
+    }
+
+    ngOnDestroy()
+    {
+        if ( this.interventionChangeSubscription )
+            this.interventionChangeSubscription.unsubscribe();
     }
 
     public get readOnly()

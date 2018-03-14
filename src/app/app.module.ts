@@ -47,7 +47,7 @@ import { ReactiveTextareaComponent } from './intervention/reactive-components/re
     imports:      [
         BrowserModule,
         BrowserAnimationsModule,
-        ContextMenuModule,
+        ContextMenuModule.forRoot(),
         FormsModule,
         HttpModule, 
         RouterModule.forRoot (appRoutes)

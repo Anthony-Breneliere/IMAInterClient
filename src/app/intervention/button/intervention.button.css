@@ -1,12 +1,15 @@
 div.bouton_intervention {
     padding: 12px 12px;
     /* espace autour du texte */
-    border: 1px solid hsl(var( --color1), var( --saturation), var( --lightness));
     cursor: pointer;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     font-size: 1em;
+}
+
+div.defaultBorder {
+    border: 1px solid hsl(var( --color1), var( --saturation), var( --lightness));
 }
 
 div.bouton_intervention:hover {

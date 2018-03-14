@@ -22,6 +22,7 @@ export class InterventionButton
     // l'intervention est passée en paramètre du composant
     @Input() intervention: Intervention;
     @Input() selected: boolean;
+    @Input() updating: boolean;
     @Output() onSelected = new EventEmitter<InterventionButton>();
     @ViewChild(ContextMenuComponent) public buttonMenu: ContextMenuComponent;
 
@@ -64,9 +65,13 @@ export class InterventionButton
         let site = this.intervention.Site;
 
         let canSubmit : boolean = false;
+        // if ( this.intervention.Etat == Etat.Creee
+        //     && intervenant && intervenant.Societe
+        //     && site && site.Latitude && site.Longitude )
+        //     canSubmit = true;                                // latitude longitude plus obligatoire
+
         if ( this.intervention.Etat == Etat.Creee
-            && intervenant && intervenant.Societe
-            && site && site.Latitude && site.Longitude )
+            && intervenant && intervenant.Societe )
             canSubmit = true;
 
         return canSubmit;

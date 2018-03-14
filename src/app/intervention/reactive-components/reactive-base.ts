@@ -7,18 +7,20 @@ import { trigger, style, animate, transition, keyframes } from '@angular/animati
 export class ReactiveBaseComponent implements ControlValueAccessor
 {
 
-  public updatingState : string = null;
   _value = '';
-
-  get isThirdParty() : boolean
-  {
-    return this.updatingState == "otherWriting";
-  }
 
   // stores the action in the attribute (onModelChange) in the html template:
   propagateChange:any = ( change ) => {};
 
   constructor( protected _ref: ChangeDetectorRef ) { }
+
+  // gestion de l'affichage des changements par des tierses personnes:
+  public updatingState : string = null;
+
+  get isThirdParty() : boolean
+  {
+    return this.updatingState == "otherWriting";
+  }
 
   // change from the model
   writeValue(value: any): void
