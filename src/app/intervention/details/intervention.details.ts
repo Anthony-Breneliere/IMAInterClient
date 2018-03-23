@@ -174,11 +174,16 @@ export class InterventionDetails implements  OnChanges
         {
             let site = this.intervention.Site;
             let intervenant = this.intervention.Intervenant;
-            if ( ! intervenant || ! intervenant.Societe )
+
+            if ( this.interService.waitingDeparture( this.intervention ) )
+                warning = "L'intervenant est en attente d'une autorisation de départ.";
+
+            else if ( ! intervenant || ! intervenant.Societe )
                 warning = "L'intervention ne peut pas être lancée car le numéro SIREN de la société d'intervention n'est pas renseigné.";
             
             else if ( ! site || ! site.Latitude || ! site.Longitude )
                 warning = "L'intervention ne peut pas être lancée car les coordonnées géographiques du site ne sont pas renseignées.";
+            
         }
 
         return warning;

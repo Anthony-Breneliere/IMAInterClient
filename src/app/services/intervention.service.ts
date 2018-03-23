@@ -66,6 +66,8 @@ export class InterventionService  {
     constructor(private _connectionStatus: ConnectionStatus ) {
         console.log("Conctructor InterventionService");
 
+        console.log( Etat );
+
         // le chargement du script doit être effectué avant de pouvoir initialiser les callbacks de notre service InterventionService
         _connectionStatus.promiseHubScriptLoaded.then( () =>
         {
@@ -169,6 +171,8 @@ export class InterventionService  {
         {
             messageInter.Chat.push( message );
             
+            messageInter.NotificationChange = true;
+            
             this._newMessagesSource.next( [ messageInter, message] );
         }
     }
@@ -191,7 +195,8 @@ export class InterventionService  {
         let currentInterventions = this.getLoadedInterventions();
 
         let interList = currentInterventions.filter(
-            (i: Intervention) => { return this._connectionStatus.operatorNameEqual( i.Operateur ) && i.Etat != Etat.Close } );
+            (i: Intervention) => { return this._connectionStatus.operatorNameEqual( i.Operateur ) && 
+                ( i.Etat != Etat.Close && i.Etat != Etat.Annulee) } );
         
         return interList;
     }
@@ -290,6 +295,8 @@ export class InterventionService  {
             
             // one ne merge pas directement dans l'objet en mémoire car dans le process des objets peuvent être mis à null, on merge via une copie
             Lodash.merge( updatedInter, interData );
+
+            updatedInter.NotificationChange = true;
             
             // état de l'intervention
             interState = this.interventionsStateDico.getValue( interData.Id );
@@ -353,7 +360,7 @@ export class InterventionService  {
         this._connectionStatus.proxyServer.loadTypeMaincour()
             .done( (typesMainCour : ITypeMainCourante[]) => {
 
-                console.log("Réception des types de mains courantes d'intervention.");
+                console.log(`Réception des types de mains courantes d'intervention: ${typesMainCour.length} libellés reçus.`);
                 
                 let listeTypeMaincour : string[] = [];
 
@@ -375,7 +382,7 @@ export class InterventionService  {
         this._connectionStatus.proxyServer.loadM1LibelleDivers()
             .done( (m1LibelleDivers : ITypeMainCourante[]) => {
 
-                console.log("Réception des libellés divers M1.");
+                console.log(`Réception des libellés divers M1: ${m1LibelleDivers.length} libellés reçus.`);
                 
                 this.listeM1LibelleDivers = m1LibelleDivers;
              } )
@@ -459,6 +466,20 @@ export class InterventionService  {
     {
         console.log(`Envoi messages sur FI ${numFi}, texte: ${message}`);
         this._connectionStatus.proxyServer.chat( numFi, message );
+    }
+
+    public authorizeDeparture( interId : number ) : void
+    {
+        console.log( "Authorisation de départ pour l'intervention " + interId );
+
+        this._connectionStatus.proxyServer.authorizeDeparture( interId );
+    }
+
+    public waitingDeparture( intervention : Intervention ) : boolean
+    {
+        if ( intervention )
+            return intervention.Etat == Etat.DemandeDepart;
+        return false;
     }
 
  }

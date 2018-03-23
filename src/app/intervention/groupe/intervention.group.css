@@ -1,5 +1,4 @@
 div.interventionGroupHeader {
-    /*border: 1px solid hsl(var( --color1 ), var( --saturation ), var( --lightness ) );*/
     font-size: 1.3em;
     margin: 5px 0px 5px 10px;
     display: inline-flex;
@@ -18,7 +17,6 @@ div.interventionGroupHeader {
 i {
     margin: 5px 5px 5px 5px;
     font-size: 2rem;
-    /*color: inherit;*/
 }
 
 div.interventionGroup div {

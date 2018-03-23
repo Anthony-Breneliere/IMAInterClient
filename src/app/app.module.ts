@@ -8,7 +8,7 @@
 
 /* Liste des modules */
 import { HttpModule } from '@angular/http';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA }      from '@angular/core';
+import { LOCALE_ID, NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 import { RouterModule }   from '@angular/router';
@@ -82,6 +82,7 @@ import { ReactiveTextareaComponent } from './intervention/reactive-components/re
        en paramètre du constructeur. Une seule instance est créée pour chaque service.
      */
     providers:    [ 
+        { provide: LOCALE_ID, useValue: 'fr' },
         ConnectionStatus,
         InterventionService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }],

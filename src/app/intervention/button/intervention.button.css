@@ -1,6 +1,5 @@
 div.bouton_intervention {
     padding: 12px 12px;
-    /* espace autour du texte */
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -28,10 +27,9 @@ div.buttonMenu:hover {
 
 div.bouton_intervention div {
     color: inherit;
-    fill-color: inherit;
     display: inline-block;
     vertical-align: bottom;
-    padding: 1px 0px 1px 0px/* espace entre les lignes */
+    padding: 1px 0px 1px 0px
 }
 
 i {
@@ -44,11 +42,6 @@ i {
 .selected:hover {
     background: hsl(0, 0%, var( --bg-selected-lightness));
     color: hsl( 0, 0%, var( --selected-lightness));
-    /*box-shadow: 4px 4px 4px black inset;*/
-}
-
-.selected div iron-icon {
-    fill-color: hsl( 0, 0%, var( --selected-lightness));
 }
 
 .unselected:hover {
@@ -58,4 +51,8 @@ i {
 div.client {
     font-weight: bold;
     font-size: 1em;
+}
+
+#authDeparture {
+    margin: 10px 0px 10px 0px;
 }

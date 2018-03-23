@@ -3,7 +3,7 @@ div.intervention_details {
     width: 100%;
     /* display: flex;
     flex-wrap: wrap; */
-    z-index: 500
+    z-index: 10
 }
 
 div.intervention_details>div {

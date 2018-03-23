@@ -3,7 +3,7 @@
  */
 import { Connection } from '@angular/http';
 
-import {Component, ViewChild, OnInit, AfterViewInit, Input} from '@angular/core';
+import {Component, ViewChild, OnInit, AfterViewInit, Input, ChangeDetectorRef } from '@angular/core';
 import {InterventionGroup, GroupTypeEnum} from '../groupe/intervention.group';
 import {Intervention} from "../../model/intervention";
 import {Etat} from "../../model/enums";
@@ -42,7 +42,8 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
         private connectionStatus: ConnectionStatus,
         private interventionService: InterventionService,
         private route: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private cdref : ChangeDetectorRef
     )
     {}
 
@@ -55,6 +56,10 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
                 nav: this.afficheNavigation ? 1 : 0,
                 bar: this.afficheBarre ? 1 : 0
             } } );
+    }
+
+    ngOnDestroy() {
+        console.log("Vue InterventionMainDisplay détruite.")
     }
 
     ngOnInit() {
@@ -86,7 +91,12 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
         this.route.queryParams
             .subscribe( queryParams =>
             {
-                this.afficheNavigation = queryParams['nav'] != 0;
+                // délai pour l'affichage des boutons, sinon le menu contextuel ne peut être affiché
+                setTimeout( () => {
+                    this.afficheNavigation = queryParams['nav'] != 0;
+                }, 2000 );
+                
+                // this.afficheNavigation = queryParams['nav'] != 0;
                 this.afficheBarre = queryParams['bar'] != 0;
             } );
     }
@@ -94,10 +104,16 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
     get chatDisplayed() : boolean
     {
         let inter = this.selectedIntervention;
-        let chatDisplayed : boolean = 
-            inter &&  inter.Etat != Etat.Creee
-            && inter.Etat != Etat.Traitee
-            && inter.Etat != Etat.Dispatchee
+
+        let interLancee : boolean =
+            inter && inter.Etat != Etat.Creee;
+
+        let messages : boolean =
+            inter && inter.Chat && inter.Chat.length > 0;
+
+        let chatDisplayed : boolean =
+            interLancee || messages;
+            
         return chatDisplayed;
     }
 
@@ -161,6 +177,7 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
             // récupération de l'intervention auprès des services de sa majesté IMAInter
             // chargement de l'intervention complètege effectué dans le ngOnInit, on désactive celle-ci:
             // this.interventionService.getFullIntervention( interSelected.Id, interSelected.Site ? interSelected.Site.Id : null);
+            this.cdref.detectChanges();
         }
     }
 

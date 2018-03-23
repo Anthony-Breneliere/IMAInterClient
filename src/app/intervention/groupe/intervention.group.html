@@ -20,8 +20,9 @@
         <!--</svg>-->
 
         <div *ngFor="let intervention of groupInterventions | sortInterventionByDateTime">
-            <intervention-button #buttons (onSelected)="onSelected($event)" [updating]="isCurrentlyUpdated( intervention.Id )" [intervention]="intervention" [selected]="intervention.Id == this.SelectedIntervention?.Id"></intervention-button>
+            <intervention-button #buttons (onSelected)="onSelected($event)" [updating]="isCurrentlyUpdated( intervention.Id )" [intervention]="intervention" [selected]="intervention.Id == this.SelectedIntervention?.Id" isMyInter="isMyInters"></intervention-button>
         </div>
 
     </div>
+
 </div>

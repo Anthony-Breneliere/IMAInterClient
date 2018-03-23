@@ -38,6 +38,8 @@ export class Intervention
 
     Chat: Message[];
 
+    NotificationChange : boolean;
+
     get SiteN() : Site { return this.Site ? this.Site : (this.Site = new Site()) };
     get AlarmeN() : Alarme { return this.Alarme ? this.Alarme : this.Alarme = new Alarme() };
     get FicheQualiteN() : FicheQualite { return this.FicheQualite ? this.FicheQualite : this.FicheQualite = new FicheQualite() };
@@ -59,12 +61,26 @@ export class Intervention
         this.Chat = new Array<Message>();
     }
 
+    public get NomComplet() : string
+    {
+        let s = this.Site;
+        
+        if ( s )
+            return `${s.Qualite ? s.Qualite + ' ' : ''} ${s.Nom ? s.Nom + ' ': ''} ${s.Prenom ? s.Prenom : ''}`
+        else
+            return "";
+    }
+
     // propriétés permettant d'afficher le label des énumérations
     get EtatLabel() : string
     {
+        let etat : string = null;
         if ( this.Etat != null )
-            return Etat[this.Etat];
-        else return null;
+            etat = Etat[this.Etat];
+
+        // console.log( "Traduction de la valeur " + this.Etat + " vers l'état " + etat);
+
+        return etat;
     }
 
     get OrigineLabel(): string

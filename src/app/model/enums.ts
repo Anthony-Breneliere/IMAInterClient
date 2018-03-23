@@ -2,9 +2,12 @@
  * Created by abreneli on 09/08/2016.
  */
 
+/*
+Il faut s'assurer que la valeur de l'état correspond à la valeur reàue par le serveur.
+Sinon l'état affiché ne correspond pas à l'état réel.
+ */
 export enum Etat {
-
-    Creee,
+    Creee = 0,
     EnAppel,
     Transmise,
     Acceptee,
@@ -13,8 +16,11 @@ export enum Etat {
     Rejetee,
     Programmee,
     ASL,
+    CompteRendu,
     Traitee,
     Statique,
+    DemandeDepart,
+    DepartAutorise,
     Annulee,
     Close,
     AnnulTS,

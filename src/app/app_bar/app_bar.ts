@@ -64,5 +64,6 @@ export class AppBar {
 
     closeError( id : number ) : void {
         this.connectionStatus.removeErrorMessage( id );
+        this.cd.detectChanges();
     }
 }

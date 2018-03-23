@@ -12,13 +12,14 @@
     <section title="Fiche" [readOnly]="readOnly" (resize)="updateLayout()">
         <tr field label="Numéro ">{{intervention.Id}}</tr>
         <tr field label="Contrat ">{{site?.Contrat}}</tr>
+        <tr field label="Nom du client ">{{intervention.NomComplet}}</tr>
         <tr field label="Site "><pre>{{AdresseComplete}}</pre></tr>
         <tr field label="Coordonnées géographiques">{{site?.Latitude}}, {{site?.Longitude}}</tr>
         <tr *ngFor="let tel of telephonesSite" field label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
-        <tr field label="Creation ">{{intervention.Creation | date:'MM/dd/yyyy hh:mm:ss'}}</tr>
+        <tr field label="Creation ">{{intervention.Creation | date:'long'}}</tr>
         <tr field label="Etat ">{{intervention.EtatLabel}}</tr>
-        <tr field label="Lancement ">{{intervention.Lancement | date:'MM/dd/yyyy hh:mm:ss'}}</tr>
-        <tr field label="Clôture ">{{intervention.Cloture | date:'MM/dd/yyyy hh:mm:ss'}}</tr>
+        <tr field label="Lancement ">{{intervention.Lancement | date:'long'}}</tr>
+        <tr field label="Clôture ">{{intervention.Cloture | date:'long'}}</tr>
         <tr field label="Operateur ">{{intervention.Operateur}}</tr>
         <tr field label="Origine ">{{intervention.OrigineLabel}}</tr>
         <tr field label="Type ">{{intervention.TypeFicheLabel}}</tr>
@@ -35,10 +36,11 @@
         <tr field label="Adresse "><pre>{{Capitalize(intervenant?.Adresse)}}</pre></tr>
         <tr field *ngFor="let tel of intervenant?.Telephones " label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
         <tr field label="Email ">{{intervenant?.Email}}</tr>
-        <tr field label="Moment appel ">{{intervention?.MomentAppel | date:'MM/dd/yyyy hh:mm:ss'}}</tr>
+        <tr field label="Moment appel ">{{intervention?.MomentAppel | date:'long'}}</tr>
         <tr field label="Date d 'arrivée">{{intervention?.DateArrivee | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
         <tr field label="Date de départ">{{intervention?.DateDepart | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
         <tr field label="Matricule">{{intervenant?.Matricule}}</tr>
+        <tr field label="Coordonnées géographiques">{{intervenant?.Latitude}} {{intervenant?.Longitude}}</tr>
 
     </section>
 
@@ -46,7 +48,7 @@
 
         <table id="listMainCour">
             <tr *ngFor="let mainCour of listMainCour">
-                <td class="line">{{mainCour.Date | date:'MM/dd/yyyy hh:mm:ss '}}</td>
+                <td class="line">{{mainCour.Date | date:'short'}} </td>
                 <td class="line">{{mainCour.Operateur}}</td>
                 <td class="line">{{getTypeMaincourValue(mainCour.Type)}}</td>
                 <td class="line">{{mainCour.Commentaire}}</td>

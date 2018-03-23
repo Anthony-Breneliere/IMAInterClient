@@ -31,6 +31,8 @@ export class InterventionGroup  {
     @Input() public Expanded: boolean;
     @Output() onSelectedButton = new EventEmitter<InterventionButton>();
 
+    private isMyInters : boolean = false; 
+
     public GroupTypeEnum = GroupTypeEnum; // <- using enum in html
 
     private _groupInterventions : Intervention[];
@@ -53,7 +55,7 @@ export class InterventionGroup  {
                 this._currentlyUpdatedInters.push( inter.Id );
                 this._ref.detectChanges();
 
-                console.log("Detection changement inter " + inter.Id + " liste totale: " + this._currentlyUpdatedInters );
+            //    console.log("Detection changement inter " + inter.Id + " liste totale: " + this._currentlyUpdatedInters );
 
                 window.setTimeout( () => {
                     let index = this._currentlyUpdatedInters.indexOf( inter.Id );
@@ -61,6 +63,9 @@ export class InterventionGroup  {
                     this._ref.detectChanges();
                 }, 500 );
             } );
+
+        this.interService.newMessages$
+            .subscribe( i => { this._ref.detectChanges(); } );
     }
 
     ngOnDestroy()
@@ -84,6 +89,7 @@ export class InterventionGroup  {
 
             default:
                 this._groupInterventions =  this.interService.MyInterventions;
+                this.isMyInters = true;
         }
 
         return this._groupInterventions;
@@ -91,7 +97,10 @@ export class InterventionGroup  {
 
     isCurrentlyUpdated( interId : number ) : boolean
     {
-        return this._currentlyUpdatedInters.indexOf( interId ) != -1;
+        if ( this._currentlyUpdatedInters )
+            return this._currentlyUpdatedInters.indexOf( interId ) != -1;
+
+        return false;
     }
 
     public onClickHeader() : void

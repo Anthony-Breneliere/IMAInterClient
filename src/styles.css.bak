@@ -31,9 +31,6 @@
 html,
 body {
     height: 100%;
-}
-
-body {
     background: var( --main-bg-color);
     color: hsl( 0, 0%, var( --font-lightness));
     margin: 0px 0px 0px 0px;
