@@ -66,8 +66,6 @@ export class InterventionService  {
     constructor(private _connectionStatus: ConnectionStatus ) {
         console.log("Conctructor InterventionService");
 
-        console.log( Etat );
-
         // le chargement du script doit être effectué avant de pouvoir initialiser les callbacks de notre service InterventionService
         _connectionStatus.promiseHubScriptLoaded.then( () =>
         {
@@ -180,7 +178,7 @@ export class InterventionService  {
     /**
      * Fonction de récupération des interventions courantes
      */
-    private getLoadedInterventions(): Intervention[]
+    public getLoadedInterventions(): Intervention[]
      {
         if ( this._connectionStatus.connected )
         {
@@ -191,27 +189,6 @@ export class InterventionService  {
             return [];
     }
 
-    public get MyInterventions(): Intervention[] {
-        let currentInterventions = this.getLoadedInterventions();
-
-        let interList = currentInterventions.filter(
-            (i: Intervention) => { return this._connectionStatus.operatorNameEqual( i.Operateur ) && 
-                ( i.Etat != Etat.Close && i.Etat != Etat.Annulee) } );
-        
-        return interList;
-    }
-
-    public get OtherInterventions(): Intervention[] {
-        let otherInterventions = this.getLoadedInterventions().filter(
-            (i: Intervention) => { return (! i.Operateur || !this._connectionStatus.operatorNameEqual( i.Operateur )) && i.Etat != Etat.Close && i.Etat != Etat.Annulee } );
-        return otherInterventions;
-    }
-
-    public get CloseInterventions(): Intervention[] {
-        let closed = this.getLoadedInterventions().filter(
-            (i: Intervention) => { return i.Etat == Etat.Close || i.Etat == Etat.Annulee } );
-        return closed;
-    }
 
     /**
      * Permet de récupérer tout le détail d'une intervention 
@@ -450,6 +427,13 @@ export class InterventionService  {
         this._connectionStatus.proxyServer.submit( intervention.Id );
     }
 
+
+    public submitByMail( intervention : Intervention ) : void 
+    {
+        console.log(`Demande de transmission par mail de la fiche ${intervention.Id}.`);
+        this._connectionStatus.proxyServer.submitByMail( intervention.Id );
+    }
+
     public close( intervention : Intervention ) : void 
     {
         console.log(`Demande de clôture de la fiche ${intervention.Id}.`);
@@ -475,13 +459,32 @@ export class InterventionService  {
         this._connectionStatus.proxyServer.authorizeDeparture( interId );
     }
 
+    public immobilizeIntervenant( interId : number ) : void
+    {
+        console.log( "Mise en statique de l'invervenant pour la fiche " + interId );
+
+        this._connectionStatus.proxyServer.immobilizeIntervenant( interId );
+    }
+
+    
+
     public waitingDeparture( intervention : Intervention ) : boolean
     {
         if ( intervention )
             return intervention.Etat == Etat.DemandeDepart;
+
         return false;
     }
 
+    /**
+     * Demande de mise à jour de la liste des sociétés AEPIA
+     */
+    public updateSIList() : void
+    {
+        console.log(`Demande de mise à jour de la liste des sociétés AEPIA`);
+      
+        this._connectionStatus.proxyServer.updateSIList();
+    }
  }
 
 

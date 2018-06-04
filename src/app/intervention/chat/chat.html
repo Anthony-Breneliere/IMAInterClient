@@ -1,9 +1,8 @@
 <div id="windowChat">
-    <div #bar>
-    </div>
+    <div><strong>Discussion instantannée</strong></div>
     <div id="chatHistory" #messageList *ngIf="intervention">
         <div *ngFor="let message of intervention.Chat">
-            <span>{{message.Date | date:'hh:mm:ss'}}</span><span>{{message.Texte}}</span>
+            <span>{{message.Date | date:'hh:mm:ss'}}</span><span>{{message.Buddy}} > </span><span>{{message.Texte}}</span>
         </div>
     </div>
     <div *ngIf="canChat">

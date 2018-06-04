@@ -1,4 +1,3 @@
-import { Etat } from '../../model/enums';
 /**
  * Created by abreneli on 01/07/2016.
  */
@@ -10,6 +9,7 @@ import { ContextMenuComponent } from 'ngx-contextmenu';
 import { Intervention } from '../../model/intervention';
 import { InterventionService } from '../../services/intervention.service';
 import { ContextMenuService } from 'ngx-contextmenu';
+import { Etat } from '../../model/enums';
 
 @Component({
     moduleId: module.id,
@@ -53,9 +53,44 @@ export class InterventionButton implements OnInit
 
     }
 
+    authorizeDeparture() : void
+    {
+        return this._interService.authorizeDeparture( this.intervention.Id );
+    }
+
+    immobilizeIntervenant(): void
+    {
+        return this._interService.immobilizeIntervenant( this.intervention.Id );
+    }
+
+    public displayContextMenu($event: MouseEvent, intervention: Intervention): void {
+
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        console.log( "show context menu for " + intervention.Id);
+
+        setTimeout(() => {
+            console.log( "show context menu for " + intervention.Id);
+
+            this.contextMenuService.show.next({
+                // Optional - if unspecified, all context menu components will open
+                contextMenu: this.buttonMenu,
+                event: $event,
+                item: intervention,
+            } );
+        }, 500 ); 
+    }
+
+
     submit() : void 
     {
         this._interService.submit( this.intervention );
+    }
+
+    submitByMail() : void 
+    {
+        this._interService.submitByMail( this.intervention );
     }
 
     close() : void 
@@ -72,8 +107,8 @@ export class InterventionButton implements OnInit
     {
         let intervenant = this.intervention.Intervenant;
         let site = this.intervention.Site;
-
         let canSubmit : boolean = false;
+
         // if ( this.intervention.Etat == Etat.Creee
         //     && intervenant && intervenant.Societe
         //     && site && site.Latitude && site.Longitude )
@@ -86,9 +121,22 @@ export class InterventionButton implements OnInit
         return canSubmit;
     }
 
+    get canSubmitByMail() : boolean 
+    {
+        let canSubmit : boolean = false;
+        let intervenant = this.intervention.Intervenant;
+
+        if ( this.intervention.Etat == Etat.Creee && 
+            intervenant && intervenant.Email )
+            canSubmit = true;
+
+        return false; //canSubmit;
+    }
+
     get canClose() : boolean 
     {
-        return false;
+        let canClose = this.intervention.Etat != null && this.intervention.Etat == Etat.AttenteCloture;
+        return canClose;
     }
 
     get canCancel() : boolean 
@@ -105,24 +153,4 @@ export class InterventionButton implements OnInit
         return false;
     }
 
-    authorizeDeparture() : void
-    {
-        return this._interService.authorizeDeparture( this.intervention.Id );
-    }
-
-    public delayContextMenuDisplay($event: MouseEvent, intervention: Intervention): void {
-
-        console.log( "show context menu for " + intervention.Id);
-
-        setTimeout(() => {
-            console.log( "show context menu for " + intervention.Id);
-
-            this.contextMenuService.show.next({
-                // Optional - if unspecified, all context menu components will open
-                contextMenu: this.buttonMenu,
-                event: $event,
-                item: intervention,
-            } );
-        }, 500 ); 
-    }
 }

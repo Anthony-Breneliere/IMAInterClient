@@ -29,14 +29,27 @@
     justify-content: space-between;
 }
 
+#maincourantesChat {
+    display: inline-block
+}
+
+
 intervention-details {
     overflow-x: hidden;
     overflow-y: scroll;
 }
 
+#maincourantesChat, 
+maincourantes,
 chat {
     box-shadow: 3px -2px 10px 0px rgba(0, 0, 0, 0.5);
     z-index: 10
+
+}
+
+maincourantes,
+chat {
+    width: 50%
 }
 
 app-bar {

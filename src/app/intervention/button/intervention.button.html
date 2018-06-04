@@ -1,7 +1,9 @@
-<div *ngIf="intervention" routerLink="/intervention/{{intervention.Id}}" queryParamsHandling="preserve" [class.borderhalo]="updating || notificationChange" [class.defaultBorder]="!(updating || notificationChange)" class="bouton_intervention transition_1s"
-    [class.unselected]="selected !== true" [class.selected]="selected === true" (click)="onClickInter()" [contextMenu]="buttonMenu" [contextMenuSubject]="intervention" [ngClass]="{buttonMenu:buttonMenu.isShown}">
+<div *ngIf="intervention" routerLink="/intervention/{{intervention.Id}}" queryParamsHandling="preserve" 
+    [class.borderhalo]="updating || notificationChange" [class.defaultBorder]="!(updating || notificationChange)"
+    class="bouton_intervention transition_1s" [class.unselected]="selected !== true" [class.selected]="selected === true"
+    (click)="onClickInter()" [contextMenu]="buttonMenu" [contextMenuSubject]="intervention"  >
 
-    <!-- (contextmenu)="delayContextMenuDisplay($event, intervention)" -->
+    <!-- (contextMenu)="displayContextMenu($event, intervention)" -->
 
     <div *ngIf="intervention.Site" class="client">
         <i class="mdi mdi-account"></i> {{intervention.NomComplet}}
@@ -20,17 +22,24 @@
     <div *ngIf="waitingDeparture">
         <button class="transition_1s" id="authDeparture" (click)="authorizeDeparture()">Autoriser le départ</button>
     </div>
+    <div *ngIf="waitingDeparture">
+            <button class="transition_1s" id="authDeparture" (click)="immobilizeIntervenant()">Mise en statique</button>
+    </div>
 
 </div>
 
 <context-menu #buttonMenu>
 
     <ng-template contextMenuItem let-item passive="true">
-        Actions sur {{item?.Id}}
+        Actions sur {{intervention?.Id}}
     </ng-template>
 
     <ng-template [visible]="canSubmit" contextMenuItem let-item (execute)="submit()">
         Transmettre
+    </ng-template>
+
+    <ng-template [visible]="canSubmitByMail" contextMenuItem let-item (execute)="submitByMail()">
+        Transmettre par mail
     </ng-template>
 
     <ng-template [visible]="canClose" contextMenuItem let-item (execute)="close()">
@@ -43,6 +52,10 @@
 
     <ng-template [visible]="waitingDeparture" contextMenuItem let-item (execute)="authorizeDeparture()">
         Autoriser le départ
+    </ng-template>
+
+    <ng-template [visible]="waitingDeparture" contextMenuItem let-item (execute)="immobilizeIntervenant()">
+        Mise en statique
     </ng-template>
 
 </context-menu>

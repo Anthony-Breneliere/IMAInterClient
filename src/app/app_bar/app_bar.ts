@@ -6,6 +6,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { ConnectionStatus } from '../services/connection.status';
 import { Observable } from 'rxjs/Observable';
 import { ChangeDetectorRef } from '@angular/core';
+import { InterventionService } from '../services/intervention.service';
 
 @Component({
     moduleId: module.id,
@@ -20,7 +21,7 @@ export class AppBar {
 
     private _connected : boolean;
 
-    constructor( public connectionStatus: ConnectionStatus, private cd: ChangeDetectorRef  )
+    constructor( public connectionStatus: ConnectionStatus, public interService: InterventionService, private cd: ChangeDetectorRef  )
     {
         // inialisation de l'affichage du statut de connexion
         this._connected = connectionStatus.connected;

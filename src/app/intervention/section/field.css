@@ -8,10 +8,15 @@ td {
     user-select: text
 }
 
+td.value 
+{
+    width: 10em
+}
+
 td.label {
     font-weight: bold;
     text-align: right;
-    max-width: 10em;
+    width: 8em;
     padding: 0px 4px 0px 4px;
     background-color: inherit;
     user-select: text;

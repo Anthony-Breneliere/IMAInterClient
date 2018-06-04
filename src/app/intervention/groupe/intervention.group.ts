@@ -8,6 +8,9 @@ import { Intervention } from '../../model/intervention';
 import { InterventionService } from '../../services/intervention.service';
 import { SortInterventionByDateTime } from './sortInterPipe';
 import { Subscription } from 'rxjs';
+import { Message } from '../../model/message';
+import { ConnectionStatus } from '../../services/connection.status';
+import { Etat } from "../../model/enums";
 
 export enum GroupTypeEnum
 {
@@ -35,66 +38,118 @@ export class InterventionGroup  {
 
     public GroupTypeEnum = GroupTypeEnum; // <- using enum in html
 
-    private _groupInterventions : Intervention[];
+    private _groupInterventions : Intervention[] = [];
 
     private _currentlyUpdatedInters : number[] = [];
 
     interventionChangeSubscription : Subscription;
+    interventionMessageSubscription : Subscription;
     
-    constructor( private interService : InterventionService, protected _ref: ChangeDetectorRef )
+    get groupInterventions(): Intervention[]
+    {
+        return this._groupInterventions;
+    }
+
+    constructor( private interService : InterventionService, private connStatus : ConnectionStatus, protected _ref: ChangeDetectorRef )
     {
     }
 
     ngOnInit()
     {
         // on inscrit le composant à la détection des changements d'interventions
-        // cela permet (entre autres) d'afficher un petit halo sur le bouron quand une intervention a changé
+        // cela permet (entre autres) d'afficher un petit halo sur le bouton quand une intervention a changé
         this.interventionChangeSubscription = 
-            this.interService.newInterData$.subscribe( inter => 
-            {
-                this._currentlyUpdatedInters.push( inter.Id );
-                this._ref.detectChanges();
+            this.interService.newInterData$.subscribe( inter =>  {
 
-            //    console.log("Detection changement inter " + inter.Id + " liste totale: " + this._currentlyUpdatedInters );
+                this.interventionChangeHighlight( inter.Id );
 
-                window.setTimeout( () => {
-                    let index = this._currentlyUpdatedInters.indexOf( inter.Id );
-                    this._currentlyUpdatedInters.splice( index, 1 );
-                    this._ref.detectChanges();
-                }, 500 );
+                // à chaque fois qu'on reçoit des datas sur les interventions avec les infos d'opérateur, 
+                // on met à jour la liste des interventions du groupe,
+                // car une nouvelle intervention a pu arriver, ou bien un intervention a pu se fermer, changer d'opérateur, etc..
+                if ( inter.Operateur != null )
+                    this.updateGroupInterventions();
             } );
 
-        this.interService.newMessages$
-            .subscribe( i => { this._ref.detectChanges(); } );
+        this.interventionMessageSubscription = this.interService.newMessages$
+            .subscribe( notif  => { 
+                this.interventionChangeHighlight( notif["0"].Id );
+            } );
+
+        // initialise la liste des interventions
+        this.updateGroupInterventions();
     }
+
 
     ngOnDestroy()
     {
         // avant la destruction on veille à se désinscrire le composant aux changements d'intervention  
         // ou sinon ChangeDetectorRef.detectChanges() plante
         this.interventionChangeSubscription.unsubscribe();
+
+        // désinscription aux messages
+        this.interventionMessageSubscription.unsubscribe();
     }
 
-    get groupInterventions(): Intervention[]
+    public interventionChangeHighlight( interId : number )
+    {
+        this._currentlyUpdatedInters.push( interId );
+      //  this._ref.detectChanges();
+
+    //    console.log("Detection changement inter " + inter.Id + " liste totale: " + this._currentlyUpdatedInters );
+
+        window.setTimeout( () => {
+            let index = this._currentlyUpdatedInters.indexOf( interId );
+            this._currentlyUpdatedInters.splice( index, 1 );
+            this._ref.detectChanges();
+        }, 500 );
+    }
+
+
+
+    /* on met à jour les interventions du groupe */
+    private updateGroupInterventions() : void
     {
         switch( this.GroupType )
         {
             case GroupTypeEnum.interventionsCloses:
-                this._groupInterventions = this.interService.CloseInterventions;
+                this._groupInterventions = this.CloseInterventions;
                 break;
 
             case GroupTypeEnum.autresInterventions:
-                this._groupInterventions = this.interService.OtherInterventions;
+                this._groupInterventions = this.OtherInterventions;
                 break;
 
             default:
-                this._groupInterventions =  this.interService.MyInterventions;
+                this._groupInterventions =  this.MyInterventions;
                 this.isMyInters = true;
         }
-
-        return this._groupInterventions;
     }
 
+    public get MyInterventions(): Intervention[]
+    {
+        let currentInterventions = this.interService.getLoadedInterventions();
+
+        let interList = currentInterventions.filter(
+            (i: Intervention) => { return this.connStatus.operatorNameEqual( i.Operateur ) && 
+                ( i.Etat != Etat.Close && i.Etat != Etat.Annulee) } );
+        
+        return interList;
+    }
+
+    public get OtherInterventions(): Intervention[]
+    {
+        let otherInterventions = this.interService.getLoadedInterventions().filter(
+            (i: Intervention) => { return (! i.Operateur || !this.connStatus.operatorNameEqual( i.Operateur )) && i.Etat != Etat.Close && i.Etat != Etat.Annulee } );
+        return otherInterventions;
+    }
+
+    public get CloseInterventions(): Intervention[]
+    {
+        let closed = this.interService.getLoadedInterventions().filter(
+            (i: Intervention) => { return i.Etat == Etat.Close || i.Etat == Etat.Annulee } );
+        return closed;
+    }
+    
     isCurrentlyUpdated( interId : number ) : boolean
     {
         if ( this._currentlyUpdatedInters )

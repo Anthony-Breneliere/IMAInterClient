@@ -1,5 +1,6 @@
 table {
     border-collapse: collapse;
+    width: 100%;
 }
 
 fieldset.section,
@@ -14,10 +15,10 @@ div.section {
 div.title {
     font-size: 1.2rem;
     text-align: center;
-    margin-bottom: 10px;
     font-weight: bold;
     cursor: default;
     padding: 10px 10px 10px 10px;
+    min-width: 260px;
     background-color: transparent;
     border: var( --main-color) solid 1px;
     z-index: 5
@@ -31,6 +32,6 @@ div.title:hover {
 }
 
 div.formulaire {
-    margin: 0px 0px 0px 0px;
+    margin: 5px 0px 0px 0px;
     z-index: -500
 }

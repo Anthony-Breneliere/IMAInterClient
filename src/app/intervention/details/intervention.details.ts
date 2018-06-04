@@ -3,6 +3,7 @@ import { RapportNonAccesAuSite } from '../../model/rapport_non_acces_au_site';
 import { forEach } from 'typescript-collections/dist/lib/arrays';
 import { MainCourante } from '../../model/main_courante';
 import { Intervenant } from '../../model/intervenant';
+import { InfosFacturation } from '../../model/infos_facturation';
 import { Site } from '../../model/site';
 import { Rapport } from '../../model/rapport';
 import { RapportTrajet } from '../../model/rapport_trajet';
@@ -42,7 +43,7 @@ import {
 import { Intervention } from '../../model/intervention';
 import { Section } from '../section/section';
 import { Field } from '../section/field';
-import { OrigineFiche, TypeFiche, Trajet, MotifIntervention, TypePresence, DepotBonIntervention, Etat, TypeSite, CircuitVerification} from '../../model/enums';
+import { OrigineFiche, TypeFiche, Trajet, MotifIntervention, TypePresence, DepotBonIntervention, Etat, TypeSite, CircuitVerification, AppelPourCR, OrigineConstatee} from '../../model/enums';
 import { InterventionService } from "../../services/intervention.service";
 import { Subscription } from 'rxjs/Rx';
 import { Telephone } from 'app/model/telephone';
@@ -98,10 +99,12 @@ export class InterventionDetails implements  OnChanges
 
         if ( masonryGridElement && ! this.grid )
         {
+            // voir https://masonry.desandro.com/options.html pour les possiblités
             this.grid = new Masonry( '.masonry_grid', {
                 itemSelector: 'section',
                 columnWidth: 10,
-                containerStyle: { position: 'relative' }
+                containerStyle: { position: 'relative' },
+                horizontalOrder: true /* Lays out items to (mostly) maintain horizontal left-to-right order. */
               });
         }
     }
@@ -181,8 +184,8 @@ export class InterventionDetails implements  OnChanges
             else if ( ! intervenant || ! intervenant.Societe )
                 warning = "L'intervention ne peut pas être lancée car le numéro SIREN de la société d'intervention n'est pas renseigné.";
             
-            else if ( ! site || ! site.Latitude || ! site.Longitude )
-                warning = "L'intervention ne peut pas être lancée car les coordonnées géographiques du site ne sont pas renseignées.";
+            // else if ( ! site || ! site.Latitude || ! site.Longitude )
+            //     warning = "L'intervention ne peut pas être lancée car les coordonnées géographiques du site ne sont pas renseignées.";
             
         }
 
@@ -206,8 +209,15 @@ export class InterventionDetails implements  OnChanges
     private TypeSiteValues = (<any> Object).values(TypeSite).filter( (e : any) => typeof( e ) == "number" );
 
     private CircuitVerification = CircuitVerification;
-    private CircuitVerificationValues = (<any> Object).values(CircuitVerification).filter( (e : any) => typeof( e ) == "number" );
+    private CircuitVerificationValues = Object.values(CircuitVerification).filter( (e : any) => typeof( e ) == "number" );
  
+    private AppelPourCR = AppelPourCR;
+    private AppelPourCRValues = (<any> Object).values(AppelPourCR).filter( (e : any) => typeof( e ) == "number" );
+    
+    private OrigineConstatee = OrigineConstatee;
+    private OrigineConstateeValues = (<any> Object).values(OrigineConstatee).filter( (e : any) => typeof( e ) == "number" );
+    
+
     private motifChoices: any[] = []; 
 
     // saisie d'une matin courante:
@@ -219,7 +229,9 @@ export class InterventionDetails implements  OnChanges
     constructor( private r: Renderer, private el: ElementRef, private interService: InterventionService, private ref: ChangeDetectorRef )
     {
         // on transforme l'enum MotifIntervention en une structure clé/valeur qu'on peut binder
-        this.motifChoices = (<any> Object).values(MotifIntervention).filter( (e : any) => typeof( e ) == "number" );
+        this.motifChoices = Object.values(MotifIntervention).filter( (e : any) => typeof( e ) == "number" );
+
+        console.log( CircuitVerification.VerificationKO );
     }
 
     /**
@@ -423,6 +435,17 @@ export class InterventionDetails implements  OnChanges
         } );
     }
 
+    public changeInfoFactu( data : any )
+    {
+        console.log( data );
 
+        var p = new Promise<void>( (resolve) => {
+
+            Lodash.merge( this.intervention, data);
+
+            // envoi du changement dans le rapport
+            this.interService.sendInterChange( { Id:this.intervention.Id, InfosFacturation:data } );
+        } );
+    }
 
 }

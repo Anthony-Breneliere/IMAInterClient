@@ -1,3 +1,4 @@
+
 /**
  * Created by abreneli on 04/07/2016.
  */
@@ -12,6 +13,7 @@ import {InterventionService} from "../../services/intervention.service";
 import {ConnectionStatus} from "../../services/connection.status";
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import { Chat } from '../chat/chat';
+import {Subscription} from 'rxjs/Subscription';
 
 import 'rxjs/add/operator/switchMap';
 
@@ -34,13 +36,16 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
     public afficheNavigation : boolean;
     public afficheBarre : boolean = true;
 
+    private paramsSubscription : Subscription;
+    private queryParamsSubscription : Subscription;
+
     @ViewChild("myGroup") myGroup : InterventionGroup;
     @ViewChild("othersGroup") othersGroup : InterventionGroup;
     @ViewChild("searchGroup") searchGroup : InterventionGroup;
 
     constructor(
         private connectionStatus: ConnectionStatus,
-        private interventionService: InterventionService,
+        private _interService: InterventionService,
         private route: ActivatedRoute,
         private router: Router,
         private cdref : ChangeDetectorRef
@@ -59,14 +64,17 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
     }
 
     ngOnDestroy() {
-        console.log("Vue InterventionMainDisplay détruite.")
+        this.paramsSubscription.unsubscribe();
+        this.queryParamsSubscription.unsubscribe();
+
+        console.log("Vue InterventionMainDisplay détruite.");
     }
 
     ngOnInit() {
 
         // le changement de l'id dans la route doit charger l'intervention et déployer 
         // le groupe correspondant à l'intervention dans la barre de navigation.
-        this.route.params
+        this.paramsSubscription = this.route.params
             .subscribe( params =>
             {
                 let id : number = params['id'];
@@ -76,7 +84,7 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
                 {
                     // une fois la connection établie et l'intervention id complète reçu du serveur, alors
                     // on sélectionne et affiche l'intervention
-                    this.interventionService.connectAndLoadIntervention( this.urlInterventionId )
+                    this._interService.connectAndLoadIntervention( this.urlInterventionId )
                     .then( (inter : Intervention) => { 
                         this.selectedIntervention = inter;
 
@@ -88,17 +96,22 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
                 }
              } );
 
-        this.route.queryParams
-            .subscribe( queryParams =>
+             this.queryParamsSubscription = 
+                this.route.queryParams.subscribe( queryParams =>
             {
                 // délai pour l'affichage des boutons, sinon le menu contextuel ne peut être affiché
-                setTimeout( () => {
-                    this.afficheNavigation = queryParams['nav'] != 0;
-                }, 2000 );
+                // setTimeout( () => {
+                //     this.afficheNavigation = queryParams['nav'] != 0;
+                // }, 2000 );
                 
-                // this.afficheNavigation = queryParams['nav'] != 0;
+                this.afficheNavigation = queryParams['nav'] != 0;
                 this.afficheBarre = queryParams['bar'] != 0;
+
+                if ( this.afficheNavigation  )
+                    this.deployGroup( this.selectedIntervention );
+
             } );
+
     }
 
     get chatDisplayed() : boolean
@@ -131,7 +144,8 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
         // code exécuté après l'initialisation des vues @ViewChild
 
         console.log( "InterventionMainDisplay.ngAfterViewInit");
-
+        if ( this.afficheNavigation  )
+            this.deployGroup( this.selectedIntervention );
     }
 
     private _selectedIntervention : Intervention;
@@ -151,17 +165,25 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
      */
     private deployGroup( inter: Intervention )
     {
-        if ( this.myGroup && this.othersGroup && inter.Etat != Etat.Close )
+        let groupToExpand : InterventionGroup = null;
+
+        if ( inter && this.myGroup && this.othersGroup && inter.Etat != Etat.Close )
         {
-            if ( inter.Operateur == this.connectionStatus.login )
-                this.myGroup.Expanded = true;
+            if ( this.connectionStatus.operatorNameEqual( inter.Operateur ) )
+                groupToExpand = this.myGroup;
             else
-                this.othersGroup.Expanded = true;
+                groupToExpand = this.othersGroup;
         }
         else if ( this.searchGroup )
         {
-            this.searchGroup.Expanded = true;
+            groupToExpand = this.searchGroup;
         }
+
+        // C'est ici qu'on ajoute un délai pour l'ouverture des groupes d'interventions car sinon
+        // on a pas de menu contextuel sur les boutons du groupe
+        // voir issue https://github.com/isaacplmann/ngx-contextmenu/issues/100
+        if ( groupToExpand )
+            setTimeout( () => groupToExpand.Expanded = true, 500);
     }
 
     onSelectedButton(newSelectedButton: InterventionButton)
@@ -187,4 +209,5 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
             this.connectionStatus.addErrorMessage( "Message de test" );
         this.connectionStatus.connected = ! this.connectionStatus.connected;
     }
+
 }

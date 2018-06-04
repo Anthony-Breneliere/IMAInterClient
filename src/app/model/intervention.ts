@@ -7,6 +7,7 @@ import {MainCourante} from "./main_courante";
 import {Intervenant} from "./intervenant";
 import {Site} from "./site";
 import {Message} from "./message";
+import { InfosFacturation } from './infos_facturation';
 
 /**
  * Created by abreneli on 01/07/2016.
@@ -26,6 +27,8 @@ export class Intervention
     DateArrivee : Date;
     DateAnnulation : Date;
     DateDepart : Date;
+    DateDiffusion : Date;
+    DateAffectation : Date;
     Lancement : Date;
     Cloture : Date;
     
@@ -38,6 +41,8 @@ export class Intervention
 
     Chat: Message[];
 
+    InfosFacturation : InfosFacturation;
+    
     NotificationChange : boolean;
 
     get SiteN() : Site { return this.Site ? this.Site : (this.Site = new Site()) };
@@ -46,6 +51,7 @@ export class Intervention
     get IntervenantN() : Intervenant { return this.Intervenant ? this.Intervenant : this.Intervenant = new Intervenant() };
     get RapportN(): Rapport { return this.Rapport ? this.Rapport : this.Rapport = new Rapport() };
     get MainCourantesN(): MainCourante[] { return this.MainCourantes ? this.MainCourantes : this.MainCourantes = new Array<MainCourante>()  };
+    get InfosFacturationN() : InfosFacturation { return this.InfosFacturation ? this.InfosFacturation : (this.InfosFacturation = new InfosFacturation()) };
 
     /**
      * 
@@ -101,6 +107,7 @@ export class Intervention
     set EtatLabel( value : string ) {}
     set OrigineLabel( value : string ) {}
     set TypeFicheLabel( value : string ) {}
+
 
 }
 

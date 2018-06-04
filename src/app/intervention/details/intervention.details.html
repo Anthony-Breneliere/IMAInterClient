@@ -17,6 +17,7 @@
         <tr field label="Coordonnées géographiques">{{site?.Latitude}}, {{site?.Longitude}}</tr>
         <tr *ngFor="let tel of telephonesSite" field label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
         <tr field label="Creation ">{{intervention.Creation | date:'long'}}</tr>
+        <tr field label="Diffusion">{{intervention?.DateDiffusion | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
         <tr field label="Etat ">{{intervention.EtatLabel}}</tr>
         <tr field label="Lancement ">{{intervention.Lancement | date:'long'}}</tr>
         <tr field label="Clôture ">{{intervention.Cloture | date:'long'}}</tr>
@@ -32,19 +33,22 @@
     <section title="Intervenant" [readOnly]="readOnly" (resize)="updateLayout()">
 
         <tr field label="Nom ">{{Capitalize(intervenant?.Nom)}}</tr>
-        <tr field label="Societe ">{{intervenant?.Societe}}</tr>
+        <tr field label="N° Siren ">{{intervenant?.Societe}}</tr>
         <tr field label="Adresse "><pre>{{Capitalize(intervenant?.Adresse)}}</pre></tr>
         <tr field *ngFor="let tel of intervenant?.Telephones " label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
         <tr field label="Email ">{{intervenant?.Email}}</tr>
         <tr field label="Moment appel ">{{intervention?.MomentAppel | date:'long'}}</tr>
-        <tr field label="Date d 'arrivée">{{intervention?.DateArrivee | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
+        <tr field label="Affectation">{{intervention?.DateAffectation | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
+        <tr field label="Date d'arrivée">{{intervention?.DateArrivee | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
         <tr field label="Date de départ">{{intervention?.DateDepart | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
         <tr field label="Matricule">{{intervenant?.Matricule}}</tr>
         <tr field label="Coordonnées géographiques">{{intervenant?.Latitude}} {{intervenant?.Longitude}}</tr>
 
     </section>
 
-    <section title="Maincourante" [readOnly]="readOnly" (resize)="updateLayout()">
+    <!--
+        Déplacé dans un composant spécifique
+        <section title="Maincourante" [readOnly]="readOnly" (resize)="updateLayout()">
 
         <table id="listMainCour">
             <tr *ngFor="let mainCour of listMainCour">
@@ -71,7 +75,7 @@
             </span>
         </div>
 
-    </section>
+    </section> -->
 
     <section *ngIf="rapport" title="Complements" [readOnly]="readOnly" (resize)="updateLayout()">
         <tr field label="Numero de bon">
@@ -132,7 +136,7 @@
             </select>
         </tr>
 
-        <tr field label="Non acces au site" *ngIf="arriveeSurLieux.CircuitVerification==CircuitVerification.Verification_KO">
+        <tr field label="Non acces au site" *ngIf="arriveeSurLieux.CircuitVerification==CircuitVerification.VerificationKO">
             <reactive-checkbox label="Portail infranchissable" [(ngModel)]="nonAccesAuSite.PortailInfranchissable" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{PortailInfranchissable:$event}}})"></reactive-checkbox>
             <reactive-checkbox label="Absence de moyens d'accès" [(ngModel)]="nonAccesAuSite.AbsenceMoyensAcces" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AbsenceMoyensAcces:$event}}})"></reactive-checkbox>
             <reactive-checkbox label="Absence de digicode" [(ngModel)]="nonAccesAuSite.AbsenceDigicode" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AbsenceDigicode:$event}}})"></reactive-checkbox>
@@ -140,7 +144,7 @@
             <reactive-checkbox label="Autre raison" [(ngModel)]="nonAccesAuSite.AutreRaison" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AutreRaison:$event}}})"></reactive-checkbox>
         </tr>
 
-        <tr field label="Raison non accès" *ngIf="arriveeSurLieux.CircuitVerification==CircuitVerification.Verification_KO && nonAccesAuSite.AutreRaison">
+        <tr field label="Raison non accès" *ngIf="arriveeSurLieux.CircuitVerification==CircuitVerification.VerificationKO && nonAccesAuSite.AutreRaison">
             <reactive-input [(ngModel)]="nonAccesAuSite.DetailsAutreRaison" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{DetailsAutreRaison:$event}}})"></reactive-input>
         </tr>
 
@@ -218,7 +222,7 @@
             <reactive-checkbox label="Portail" [(ngModel)]="quellesIssuesOuvertes.Portail" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{Portail:$event}}})"></reactive-checkbox>
             <reactive-checkbox label="Portillon" [(ngModel)]="quellesIssuesOuvertes.Portillon" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{Portillon:$event}}})"></reactive-checkbox>
             <reactive-checkbox label="Rideau Métallique" [(ngModel)]="quellesIssuesOuvertes.RideauMetallique" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{RideauMetallique:$event}}})"></reactive-checkbox>
-            <reactive-checkbox label="Autre ossue" [(ngModel)]="AutreIssueChecked" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{AutreIssueChecked:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Autre issue" [(ngModel)]="AutreIssueChecked" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{AutreIssueChecked:$event}}})"></reactive-checkbox>
         </tr>
 
         <tr field label="Autre issue ouverte" *ngIf="verifications.IssuesOuvertes && AutreIssueChecked">
@@ -350,6 +354,29 @@
 
         <tr field label="Type de l'animal" *ngIf="MiseEnPlaceAnimalChecked">
             <reactive-input [(ngModel)]="miseEnSecurite.MiseEnPlaceAnimal" (ngModelChange)="changeRapport({MiseEnSecurite:{MiseEnPlaceAnimal:$event}})"></reactive-input>
+        </tr>
+
+    </section>
+
+
+    <section *ngIf="intervention.InfosFacturationN" title="Facturation" data-gs-width="auto" [readOnly]="readOnly" (resize)="updateLayout()">
+
+        <tr field label="Envoi du CR">
+            <select [(ngModel)]="intervention.InfosFacturation.AppelPourCR" (ngModelChange)="changeInfoFactu({AppelPourCR:$event})">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="i" *ngFor="let appelPourCR of AppelPourCRValues; let i = index">{{AppelPourCR[i]}}</option>
+            </select>
+        </tr>
+
+        <tr field label="Origine constatee">
+            <select [(ngModel)]="intervention.InfosFacturation.OrigineConstatee" (ngModelChange)="changeInfoFactu({OrigineConstatee:$event})">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="i" *ngFor="let origineConstatee of OrigineConstateeValues; let i = index">{{OrigineConstatee[i]}}</option>
+            </select>
+        </tr>
+
+        <tr field label="Intervenant">
+            <reactive-checkbox label="Bloque au portail" [(ngModel)]="intervention.InfosFacturation.BloqueAuPortail" (ngModelChange)="changeInfoFactu({BloqueAuPortail:$event})"></reactive-checkbox>
         </tr>
 
     </section>

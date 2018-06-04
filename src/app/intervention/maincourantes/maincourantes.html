@@ -1,0 +1,27 @@
+<div id="mainCourantes">
+
+    <div><strong>Maincourantes</strong> </div>
+
+    <table id="listMainCour">
+        <tr *ngFor="let mainCour of listMainCour">
+            <td class="line">{{mainCour.Date | date:'short'}} </td>
+            <td class="line">{{mainCour.Operateur}}</td>
+            <td class="line">{{getTypeMaincourValue(mainCour.Type)}}</td>
+            <td class="line">{{mainCour.Commentaire}}</td>
+        </tr>
+    </table>
+
+    <div id="saisieMainCour">
+
+        <select [(ngModel)]="selectedMaincourType" name="typeMainCourante">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="typeMainCour" *ngFor="let typeMainCour of listTypeMainCour">{{typeMainCour.Libelle}}</option>
+        </select>
+
+        <input class="extensible" id="CommentMaincour" placeholder="Commentaire" [(ngModel)]="maincourComment"/>
+        
+        <button class="cellinput" (click)="addNewMaincourante()">Ajouter</button>
+
+    </div>
+
+</div>

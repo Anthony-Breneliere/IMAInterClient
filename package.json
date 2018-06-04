@@ -5,8 +5,8 @@
     "description": "Client Station de gestion et de suivi des interventions.",
     "scripts": {
         "ng": "ng",
-        "start": "ng serve --locale fr",
-        "build": "ng build -e recette -bh /IMAInter/ --locale fr && copy /Y dist\\*.* \\\\svtlsre01-pic\\web\\IMAInter",
+        "start": "ng serve --locale fr --host 172.22.44.49 --port 4512",
+        "build": "ng build -e recette -prod -bh /IMAInter/ --locale fr && robocopy /MIR dist \\\\svtlsre01-pic\\web\\IMAInter",
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e"
@@ -32,18 +32,18 @@
         "mdi": "^2.1.99",
         "moment": "^2.18.1",
         "ngx-contextmenu": "^4.1.2",
-        "rxjs": "^5.4.2",
+        "rxjs": "^5.5.10",
         "signalr": "^2.2.3",
         "typescript-collections": "^1.2.3",
         "zone.js": "^0.8.14"
     },
     "devDependencies": {
-        "@angular/cli": "1.7.0",
+        "@angular/cli": "^1.7.4",
         "@angular/compiler-cli": "^5.2.9",
         "@angular/language-service": "^5.2.9",
         "@types/angular-signalr-hub": "^1.5.31",
-        "@types/jasmine": "^2.5.47",
-        "@types/jquery": "^2.0.43",
+        "@types/jasmine": "~2.5.47",
+        "@types/jquery": "~2.0.43",
         "@types/lodash": "^4.14.105",
         "@types/masonry-layout": "^4.2.0",
         "@types/node": "^7.0.5",
@@ -56,8 +56,8 @@
         "karma-jasmine": "^1.1.0",
         "karma-jasmine-html-reporter": "^0.2.2",
         "protractor": "^5.1.2",
-        "ts-node": "^3.0.4",
-        "tslint": "^5.2.0",
-        "typescript": "^2.6.2"
+        "ts-node": "~3.2.0",
+        "tslint": "^5.3.2",
+        "typescript": "~2.6.2"
     }
 }

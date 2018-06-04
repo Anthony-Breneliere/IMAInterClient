@@ -5,20 +5,26 @@ import {Etat} from "../../model/enums";
 import {InterventionButton} from "../button/intervention.button";
 import {InterventionService} from "../../services/intervention.service";
 import { Subject, Subscription } from "rxjs/Rx";
+import { ITypeMainCourante } from '../../model/type_maincour';
+import { MainCourante } from '../../model/main_courante';
 
 @Component({
     moduleId: module.id,
-    selector: 'chat',
-    templateUrl: './chat.html',
-    styleUrls:  ['./chat.css'],
+    selector: 'maincourantes',
+    templateUrl: './maincourantes.html',
+    styleUrls:  ['./maincourantes.css'],
 
     // pour des raisons de performance, les champs ne seront mis à jour que sur un appel de onChangeCallback
     changeDetection : ChangeDetectionStrategy.OnPush
 })
 
-export class Chat {
+export class Maincourantes {
 
     @ViewChild('messageInput') messageInput:ElementRef;
+
+    // saisie d'une matin courante:
+    public selectedMaincourType : ITypeMainCourante;
+    public maincourComment : string = "";
 
     // liste des changements
     private newInterDataSource = new Subject< Intervention >();
@@ -37,9 +43,10 @@ export class Chat {
 
         // on filtre les message sur l'instance de l'intervention qui est actuellement affichée
         this.newInterSub = 
-            this.interService.newMessages$
-            .filter( m => m[0] == this._intervention  )
+            this.interService.newInterData$
+            .filter( i => this.intervention && this.intervention.Id == i.Id )
             .subscribe( i => { this.detectChanges(); } );
+
     }
 
     ngOnDestroy()
@@ -47,6 +54,15 @@ export class Chat {
         if ( this.newInterSub )
             this.newInterSub.unsubscribe();
     }
+
+    public get listMainCour() : MainCourante[] { return this._intervention && Array.isArray( this._intervention.MainCourantes ) ?  this._intervention.MainCourantes : [] };
+
+
+    // this.intervention && this.intervention.MainCourantes ? this.intervention.MainCourantes : 
+    public get listTypeMainCour() : ITypeMainCourante[]
+    {
+         return this.interService.listeTypeMaincour;
+    } 
     
     public get intervention()  {  return this._intervention; }
 
@@ -55,26 +71,35 @@ export class Chat {
 
     }
 
-    writeMessage( $event : any, message : string )
+    public addNewMaincourante() : void
     {
-        this.interService.chat( this.intervention.Id, message );
-        this.messageInput.nativeElement.value = "";
+        if ( ! this.selectedMaincourType)
+        {
+            // toto animation pour higlighter la sélection du type de main courante
+            return;
+        }
+        else
+        {
+            this.interService.addNewMaincourante( this._intervention.Id, this.selectedMaincourType, this.maincourComment );
+        }
     }
 
-    keyPress( $event : any )
+    /**
+     * 
+     * @param key Retourne le libelle d'une main courante, connaissant son id
+     */
+    getTypeMaincourValue( key: number ) : string
     {
-        if ( $event.keyCode == 13 )
-        {
-            this.interService.chat( this.intervention.Id, this.messageInput.nativeElement.value );
-            this.messageInput.nativeElement.value = "";
-        }
+        // retourne le libellé du type de main courante ou "inconnu" si le type n'existe pas:
+        let foundMainCour =  this.interService.listeTypeMaincour.find( e => e.Type == key )
+            || this.interService.listeM1LibelleDivers.find( e => e.Type == key );
+
+        return foundMainCour ? foundMainCour.Libelle : "Type inconnu";
     }
 
     detectChanges()
     {
         this.ref.detectChanges();
-
-        console.log("nb de messages" + this.intervention.Chat.length);
     }
 
     get canChat() : boolean

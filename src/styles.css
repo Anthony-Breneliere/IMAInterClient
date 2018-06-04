@@ -3,6 +3,8 @@
     --main-bg-color: hsl( 0, 0%, 20%);
     --input-bg-color: hsl( 0, 0%, 23%);
     --dark-bg-color: hsl( 0, 0%, 30%);
+    --changed-bg-color: hsl(56, 5%, 30%);
+    
     --change-detect-color: hsl(45, 100%, 50%);
     --saturation: 50%;
     --lightness: 35%;
@@ -19,6 +21,8 @@
     --rapport_hue: 80;
     --presence_hue: 100;
     --verification_hue: 120;
+    --gray: 0%;
+    --white_hue: 0;
     --color1: 220;
     --color2: 180;
     --color3: 100;
@@ -28,14 +32,15 @@
     --selected-main-color: hsl( var( --color1), var( --saturation), var( --selected-lightness));
 }
 
-html,
-body {
+html {
     height: 100%;
 }
 
 body {
+    height: 100%;
     background: var( --main-bg-color);
-    color: hsl( 0, 0%, var( --font-lightness));
+    color: hsl( var( --white_hue), var( --gray), var( --font-lightness));
+    color: hsl( 0, 0%, 70%);
     margin: 0px 0px 0px 0px;
 }
 
@@ -52,7 +57,7 @@ select,
 input,
 textarea {
     background-color: var( --input-bg-color);
-    color: hsl( 0, 0%, var( --font-lightness));
+    color: hsl( 0, var( --gray), var( --font-lightness));
     resize: none;
 }
 
@@ -65,7 +70,7 @@ button {
 }
 
 button {
-    color: hsl( 0, 0%, var( --font-lightness));
+    color: hsl( 0, var( --gray), var( --font-lightness));
 }
 
 button:hover {
@@ -101,6 +106,7 @@ button:hover:enabled {
 .borderhalo {
     box-shadow: 0px 0px 5px 0px var(--change-detect-color), 0px 0px 5px 0px var(--change-detect-color) inset;
     border: 1px solid var( --change-detect-color);
+    background-color: var( --changed-bg-color );
     z-index: 100
 }
 
@@ -127,21 +133,21 @@ button:hover:enabled {
 }
 
 .ngx-contextmenu a {
-    color: hsl( 0, 0%, var( --font-lightness));
+    color: hsl( 0, var( --gray), var( --font-lightness));
     display: block;
     padding: 0.5em 1em;
     text-decoration: none;
 }
 
 .ngx-contextmenu a:hover:not(:first-child) {
-    color: hsl( 0, 0%, var( --hover-lightness));
+    color: hsl( 0, var( --gray), var( --hover-lightness));
     transition: color 1s;
 }
 
 .ngx-contextmenu li:hover:not(:first-child) {
     transition: border 1s, color 1s, box-shadow 1s, text-shadow 1s;
     border: 1px solid hsl( var( --color1), var( --saturation), var( --hover-lightness));
-    background-color: hsl( 0, 0%, var( --bg-hover-lightness));
+    background-color: hsl( 0, var( --gray ), var( --bg-hover-lightness));
 }
 
 

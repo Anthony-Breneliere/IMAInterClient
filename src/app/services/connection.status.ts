@@ -175,4 +175,17 @@ export class ConnectionStatus
         // on retourne la promesse afin de pouvoir enchaine les promesses
         return reconnectionPromise;
     }
+
+    /**
+     * Retourne vrai si l'utilisateur logué est un admin
+     * ( remarque: las liste des admins est pour l'instant stockée dans le client)
+     */
+    public isAdmin() : boolean
+    {
+        let admins = environment['admins'];
+        if ( admins.find( e => e == this.login ))
+            return true;
+
+        return false;
+    }
 }

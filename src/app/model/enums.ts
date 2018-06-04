@@ -22,6 +22,7 @@ export enum Etat {
     DemandeDepart,
     DepartAutorise,
     Annulee,
+    AttenteCloture,
     Close,
     AnnulTS,
     AnnulITV,
@@ -84,4 +85,17 @@ export enum CircuitVerification
     InterieurEnceinte,
     ExterieurSite,
     VerificationKO
+}
+
+export enum AppelPourCR
+{
+    AppelParAPS,
+    AppelParSCT
+}
+
+export enum OrigineConstatee
+{
+    ErreurDeManipulation,
+    AbsenceIndentification,
+    RienASignaler
 }

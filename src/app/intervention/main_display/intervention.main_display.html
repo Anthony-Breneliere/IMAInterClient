@@ -5,14 +5,18 @@
     <div id="content">
 
         <div *ngIf="afficheNavigation" #interventionNavigation id="interventionNavigation">
-            <intervention-group #myGroup [SelectedIntervention]="selectedIntervention" (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.mesInterventions" GroupName="Mes Interventions" [Expanded]="true"></intervention-group>
+            <intervention-group #myGroup [SelectedIntervention]="selectedIntervention" (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.mesInterventions" GroupName="Mes Interventions" [Expanded]="false"></intervention-group>
             <intervention-group #othersGroup [SelectedIntervention]="selectedIntervention" (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.autresInterventions" GroupName="Autres Interventions" [Expanded]="false"></intervention-group>
-            <intervention-group #searchGroup [SelectedIntervention]="selectedIntervention" (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.interventionsCloses" GroupName="Interventions closes" [Expanded]="true"></intervention-group>
+            <intervention-group #searchGroup [SelectedIntervention]="selectedIntervention" (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.interventionsCloses" GroupName="Interventions closes" [Expanded]="false"></intervention-group>
         </div>
 
         <div id="interventionAndChat">
             <intervention-details [intervention]="selectedIntervention"></intervention-details>
-            <chat *ngIf="chatDisplayed" [intervention]="selectedIntervention"></chat>
+
+            <div id="maincourantesChat">
+                <maincourantes [intervention]="selectedIntervention"></maincourantes>
+                <chat *ngIf="chatDisplayed" [intervention]="selectedIntervention"></chat>
+            </div>
         </div>
 
     </div>

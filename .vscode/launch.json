@@ -1,25 +1,37 @@
 {
     "version": "0.2.0",
-    "configurations": [
 
+
+
+    "configurations": [
         {
-            "name": "Chrome DEBUG",
+            "name": "Chrome DEBUG 172.22.44.49",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost:4200/#/",
+            "url": "http://172.22.44.49:4512/#/",
             "sourceMaps": true,
-            "webRoot": "${workspaceRoot}",
+            "sourceMapPathOverrides": { 
+                "webpack:/*": "${webRoot}/*"
+            },
+            "webRoot": "${workspaceFolder}",
             "skipFiles": [
                 "zone.js"
-            ]
+            ],
         },
         {
-            "name": "Chrome DEBUG 1240297",
+            "name": "Chrome DEBUG 1240604",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost:4200/#/intervention/1240297",
+            "url": "http://172.22.44.49:4512/#/intervention/1240604",
+
+            "sourceMapPathOverrides": { 
+                "webpack:/*": "${webRoot}/*"
+            },
+            "webRoot": "${workspaceFolder}",
             "sourceMaps": true,
-            "webRoot": "${workspaceRoot}",
+            
+            
+
             "skipFiles": [
                 "zone.js"
             ]

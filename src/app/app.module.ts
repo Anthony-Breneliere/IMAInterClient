@@ -35,6 +35,7 @@ import { Location, LocationStrategy, PathLocationStrategy, HashLocationStrategy 
 import { DraggableDirective } from './tools/draggable'; 
 import { SortInterventionByDateTime } from './intervention/groupe/sortInterPipe';
 import { Chat } from './intervention/chat/chat';
+import { Maincourantes } from './intervention/maincourantes/maincourantes';
 
 // import { ReactiveBaseComponent } from './intervention/reactive-components/reactive-base';
 import { ReactiveInputComponent } from './intervention/reactive-components/reactive-input.component';
@@ -71,6 +72,7 @@ import { ReactiveTextareaComponent } from './intervention/reactive-components/re
         SortInterventionByDateTime,
         AppBar,
         Chat,
+        Maincourantes,
         ReactiveTextareaComponent,
         ReactiveInputComponent,
         ReactiveSelectComponent,
