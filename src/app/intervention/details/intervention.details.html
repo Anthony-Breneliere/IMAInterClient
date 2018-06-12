@@ -13,7 +13,7 @@
         <tr field label="Numéro ">{{intervention.Id}}</tr>
         <tr field label="Contrat ">{{site?.Contrat}}</tr>
         <tr field label="Nom du client ">{{intervention.NomComplet}}</tr>
-        <tr field label="Site "><pre>{{AdresseComplete}}</pre></tr>
+        <tr field label="Site ">{{AdresseComplete}}</tr>
         <tr field label="Coordonnées géographiques">{{site?.Latitude}}, {{site?.Longitude}}</tr>
         <tr *ngFor="let tel of telephonesSite" field label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
         <tr field label="Creation ">{{intervention.Creation | date:'long'}}</tr>

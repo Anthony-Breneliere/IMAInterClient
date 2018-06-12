@@ -167,7 +167,7 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
     {
         let groupToExpand : InterventionGroup = null;
 
-        if ( inter && this.myGroup && this.othersGroup && inter.Etat != Etat.Close )
+        if ( inter && this.myGroup && this.othersGroup && inter.Etat != Etat.Close && inter.Etat != Etat.Annulee )
         {
             if ( this.connectionStatus.operatorNameEqual( inter.Operateur ) )
                 groupToExpand = this.myGroup;

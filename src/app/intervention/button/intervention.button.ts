@@ -25,6 +25,7 @@ export class InterventionButton implements OnInit
     // l'intervention est passée en paramètre du composant
     @Input() intervention: Intervention;
     @Input() set selected(value : boolean) { this._selected = value; this.notificationChange = false };
+
     get selected(): boolean { return this._selected };
     @Input() updating: boolean;
     @Input() isMyInter: boolean;
@@ -130,7 +131,7 @@ export class InterventionButton implements OnInit
             intervenant && intervenant.Email )
             canSubmit = true;
 
-        return false; //canSubmit;
+        return canSubmit;
     }
 
     get canClose() : boolean 

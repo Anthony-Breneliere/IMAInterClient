@@ -175,6 +175,9 @@ export class InterventionGroup  {
         // on recherche les interventions à partir de 4 caractères saisis
         if ( queryString.length >= 4 )
         {
+            // on vide les interventions du groupe
+            this._groupInterventions = [];
+
             this.interService.searchInterventions( queryString );
         }
     }

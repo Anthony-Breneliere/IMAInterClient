@@ -10,7 +10,9 @@ td {
 
 td.value 
 {
-    width: 10em
+    width: 10em;
+
+    word-break: break-word
 }
 
 td.label {
