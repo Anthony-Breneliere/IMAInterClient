@@ -1,7 +1,5 @@
-import { Observable } from 'rxjs/Observable';
-import { Subject }    from 'rxjs/Subject';
-import 'rxjs/add/operator/toPromise';
-import { Connection, Headers, Http } from '@angular/http';
+import { Subject }    from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Injectable }    from '@angular/core';
 
@@ -31,7 +29,7 @@ export class ConnectionStatus
     promiseHubScriptLoaded : Promise< any >;
     connectedStatus$ = this._connectedStatusSource.asObservable();
 
-    constructor(private http: Http)
+    constructor(private httpClient: HttpClient)
     {
         console.log("Constrcutor ConnectionStatus")
         this.loadHubsScript();

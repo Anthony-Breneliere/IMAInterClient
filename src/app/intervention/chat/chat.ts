@@ -1,10 +1,10 @@
 
-import {Component, ViewChild, OnInit, AfterViewInit, Input, ElementRef, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
+import {Component, ViewChild, Input, ElementRef, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
 import {Intervention} from "../../model/intervention";
 import {Etat} from "../../model/enums";
-import {InterventionButton} from "../button/intervention.button";
 import {InterventionService} from "../../services/intervention.service";
-import { Subject, Subscription } from "rxjs/Rx";
+import { Subject, Subscription } from "rxjs";
+import { filter } from "rxjs/operators"
 
 @Component({
     moduleId: module.id,
@@ -38,7 +38,7 @@ export class Chat {
         // on filtre les message sur l'instance de l'intervention qui est actuellement affichée
         this.newInterSub = 
             this.interService.newMessages$
-            .filter( m => m[0] == this._intervention  )
+            .pipe( filter( m => m[0] == this._intervention  ) )
             .subscribe( i => { this.detectChanges(); } );
     }
 

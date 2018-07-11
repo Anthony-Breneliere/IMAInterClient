@@ -2,12 +2,10 @@
  * Created by abreneli on 04/07/2016.
  */
 
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ConnectionStatus } from '../services/connection.status';
-import { Observable } from 'rxjs/Observable';
 import { ChangeDetectorRef } from '@angular/core';
 import { InterventionService } from '../services/intervention.service';
-
 @Component({
     moduleId: module.id,
     selector: 'app-bar',

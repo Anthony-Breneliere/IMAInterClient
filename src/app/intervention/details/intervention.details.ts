@@ -23,17 +23,11 @@ import * as Lodash from 'lodash';
  */
 
 import {
-    AfterContentInit,
-    AfterViewInit,
+
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
-    ContentChildren,
-    EventEmitter,
     Input,
-    OnInit,
-    Output,
-    QueryList,
     ElementRef,
     Renderer,
     SimpleChanges
@@ -41,11 +35,10 @@ import {
 } from '@angular/core';
 
 import { Intervention } from '../../model/intervention';
-import { Section } from '../section/section';
-import { Field } from '../section/field';
 import { OrigineFiche, TypeFiche, Trajet, MotifIntervention, TypePresence, DepotBonIntervention, Etat, TypeSite, CircuitVerification, AppelPourCR, OrigineConstatee} from '../../model/enums';
 import { InterventionService } from "../../services/intervention.service";
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { Telephone } from 'app/model/telephone';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
@@ -85,7 +78,7 @@ export class InterventionDetails implements  OnChanges
             this.interventionChangeSubscription.unsubscribe();
 
         this.interventionChangeSubscription = 
-            this.interService.newInterData$.filter( i => this.intervention && this.intervention.Id == i.Id  ).subscribe( i => this.detectChanges() );
+            this.interService.newInterData$.pipe(filter( i => this.intervention && this.intervention.Id == i.Id  )).subscribe( i => this.detectChanges() );
 
         // je reinitialise le layout pour la nouvelle instruction
         this.grid = null;

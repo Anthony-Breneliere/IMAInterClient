@@ -13,9 +13,9 @@ import {InterventionService} from "../../services/intervention.service";
 import {ConnectionStatus} from "../../services/connection.status";
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import { Chat } from '../chat/chat';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 
-import 'rxjs/add/operator/switchMap';
+import 'rxjs-compat/add/operator/switchMap';
 
 @Component({
     moduleId: module.id,

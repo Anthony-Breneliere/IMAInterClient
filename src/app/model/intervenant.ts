@@ -1,5 +1,4 @@
 import { Telephone } from "./telephone"
-import { TimeInterval } from "rxjs";
 
 export class Intervenant
 {

@@ -40,8 +40,8 @@ i {
 
 .selected,
 .selected:hover {
-    background: hsl(0, 0%, var( --bg-selected-lightness));
-    color: hsl( 0, 0%, var( --selected-lightness));
+    background-color: var( --selected-bg-color );
+    color: var( --selected-color );
 }
 
 .unselected:hover {

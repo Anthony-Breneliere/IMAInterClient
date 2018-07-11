@@ -7,7 +7,7 @@
  */
 
 /* Liste des modules */
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { LOCALE_ID, NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
@@ -50,7 +50,7 @@ import { ReactiveTextareaComponent } from './intervention/reactive-components/re
         BrowserAnimationsModule,
         ContextMenuModule.forRoot(),
         FormsModule,
-        HttpModule, 
+        HttpClientModule, 
         RouterModule.forRoot (appRoutes)
     ],
     /*

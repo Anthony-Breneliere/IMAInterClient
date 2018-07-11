@@ -1,27 +1,19 @@
 /**
  * Created by abreneli on 04/07/2016.
  */
-import { Error } from 'tslint/lib/error';
 import { Injectable }    from '@angular/core';
-
 import { Intervention } from '../model/intervention';
 import { InterventionState } from '../model/intervention_state';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs-compat/Observable';
 import { OrigineFiche, TypeFiche, MotifIntervention, Trajet, TypePresence, DepotBonIntervention, Etat } from '../model/enums';
 import * as Collections from 'typescript-collections';
-import { forEach } from 'typescript-collections/dist/lib/arrays';
-import {Rapport} from "../model/rapport";
-import {Alarme} from "../model/alarme";
-import {RapportPresence} from "../model/rapport_presence";
 import {Message} from "../model/Message";
-import {RapportVerifications} from "../model/rapport_verifications";
 import { ITypeMainCourante } from "../model/type_maincour";
-import { MainCourante } from "../model/main_courante";
-import { Subject }    from 'rxjs/Subject';
+import { Subject }    from 'rxjs';
 import * as Lodash from 'lodash';
 import { ConnectionStatus } from './connection.status';
 
-import 'expose-loader?jQuery!jquery';
+
 import 'signalr';
 
 export enum InterventionDataType {

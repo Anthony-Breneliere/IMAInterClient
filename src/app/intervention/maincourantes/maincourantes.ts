@@ -4,9 +4,10 @@ import {Intervention} from "../../model/intervention";
 import {Etat} from "../../model/enums";
 import {InterventionButton} from "../button/intervention.button";
 import {InterventionService} from "../../services/intervention.service";
-import { Subject, Subscription } from "rxjs/Rx";
+import { Subject, Subscription } from "rxjs";
 import { ITypeMainCourante } from '../../model/type_maincour';
 import { MainCourante } from '../../model/main_courante';
+import { filter } from 'rxjs/operators';
 
 @Component({
     moduleId: module.id,
@@ -44,7 +45,7 @@ export class Maincourantes {
         // on filtre les message sur l'instance de l'intervention qui est actuellement affichée
         this.newInterSub = 
             this.interService.newInterData$
-            .filter( i => this.intervention && this.intervention.Id == i.Id )
+            .pipe( filter( i => this.intervention && this.intervention.Id == i.Id ) )
             .subscribe( i => { this.detectChanges(); } );
 
     }
