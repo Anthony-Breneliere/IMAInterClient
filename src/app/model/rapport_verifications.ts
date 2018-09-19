@@ -19,9 +19,9 @@ export class RapportVerifications
     QuellesIssuesOuvertes: RapportIssuesConcernees;
     QuellesEffractions: RapportIssuesConcernees;
 
-    get QuellesLumieresAllumeesN() : RapportLumieresAllumees { return this.QuellesLumieresAllumees ? this.QuellesLumieresAllumees : this.QuellesLumieresAllumees = new RapportLumieresAllumees() }
-    get QuellesIssuesOuvertesN() : RapportIssuesConcernees { return this.QuellesIssuesOuvertes ? this.QuellesIssuesOuvertes : this.QuellesIssuesOuvertes = new RapportIssuesConcernees() }
-    get QuellesEffractionsN() : RapportIssuesConcernees { return this.QuellesEffractions ? this.QuellesEffractions : this.QuellesEffractions = new RapportIssuesConcernees() }
+    // get QuellesLumieresAllumeesN() : RapportLumieresAllumees { return this.QuellesLumieresAllumees ? this.QuellesLumieresAllumees : this.QuellesLumieresAllumees = new RapportLumieresAllumees() }
+    // get QuellesIssuesOuvertesN() : RapportIssuesConcernees { return this.QuellesIssuesOuvertes ? this.QuellesIssuesOuvertes : this.QuellesIssuesOuvertes = new RapportIssuesConcernees() }
+    // get QuellesEffractionsN() : RapportIssuesConcernees { return this.QuellesEffractions ? this.QuellesEffractions : this.QuellesEffractions = new RapportIssuesConcernees() }
 
     constructor()
     {

@@ -3,8 +3,6 @@
  */
 
 import { Component, EventEmitter, Output, Input, ViewChild, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { RouterLink } from '@angular/router';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { Intervention } from '../../model/intervention';
 import { InterventionService } from '../../services/intervention.service';
@@ -54,15 +52,7 @@ export class InterventionButton implements OnInit
 
     }
 
-    authorizeDeparture() : void
-    {
-        return this._interService.authorizeDeparture( this.intervention.Id );
-    }
 
-    immobilizeIntervenant(): void
-    {
-        return this._interService.immobilizeIntervenant( this.intervention.Id );
-    }
 
     public displayContextMenu($event: MouseEvent, intervention: Intervention): void {
 
@@ -146,12 +136,22 @@ export class InterventionButton implements OnInit
         return canCancel;
     }
 
-    get waitingDeparture() : boolean
+    public get waitingDeparture() : boolean
     {
         if ( this.intervention )
             return this._interService.waitingDeparture( this.intervention );
         
         return false;
+    }
+
+    public authorizeDeparture() : void
+    {
+        return this._interService.authorizeDeparture( this.intervention.Id );
+    }
+
+    public immobilizeIntervenant(): void
+    {
+        return this._interService.immobilizeIntervenant( this.intervention.Id );
     }
 
 }

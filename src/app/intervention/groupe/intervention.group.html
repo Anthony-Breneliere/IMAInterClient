@@ -19,10 +19,24 @@
         <!--<use xlink:href="app/icons/new-file.svg#Capa_1"></use>-->
         <!--</svg>-->
 
+        <!-- Ajout d'une intervention 
+        <intervention-button *ngIf="GroupType == GroupTypeEnum.mesInterventions" #addButton [intervention]="{}" (click)="addNewIntervention()">
+
+            <div><i class="mdi mdi-plus"></i> Ajouter</div>
+
+        </intervention-button>
+        -->
         <div *ngFor="let intervention of groupInterventions | sortInterventionByDateTime">
-            <intervention-button #buttons (onSelected)="onSelected($event)" [updating]="isCurrentlyUpdated( intervention.Id )" [intervention]="intervention" [selected]="intervention.Id == this.SelectedIntervention?.Id" isMyInter="isMyInters"></intervention-button>
+            <intervention-button #buttons (onSelected)="onSelected($event)" [updating]="isCurrentlyUpdated( intervention.Id )"
+                [intervention]="intervention" [selected]="intervention.Id == this.SelectedIntervention?.Id" isMyInter="isMyInters" 
+                routerLink="/intervention/{{intervention.Id}}" queryParamsHandling="preserve" >
+
+                <intervention-button-content [intervention]="intervention"></intervention-button-content>
+
+            </intervention-button>
         </div>
 
     </div>
 
 </div>
+

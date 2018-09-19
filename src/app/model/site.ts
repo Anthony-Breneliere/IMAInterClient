@@ -18,9 +18,9 @@ export class Site
     Latitude : number;
     Longitude : number;
 
-    get TelephonesN() : Telephone[] { return this.Telephones ? this.Telephones : (this.Telephones = []) }
+   // get TelephonesN() : Telephone[] { return this.Telephones ? this.Telephones : (this.Telephones = []) }
 
-    costructor()
+    constructor()
     {
         this.Telephones = new Array<Telephone>();
     }

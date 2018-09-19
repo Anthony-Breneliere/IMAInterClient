@@ -8,7 +8,7 @@ export class RapportTrajet
     DetailMeteo: string;
     ProblemeCirculation: boolean;
 
-    get MeteoN() : RapportMeteo { return this.Meteo ? this.Meteo : this.Meteo = new RapportMeteo() }
+ //   get MeteoN() : RapportMeteo { return this.Meteo ? this.Meteo : this.Meteo = new RapportMeteo() }
 
     constructor()
     {

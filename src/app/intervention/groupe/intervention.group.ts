@@ -8,6 +8,7 @@ import { Intervention } from '../../model/intervention';
 import { InterventionService } from '../../services/intervention.service';
 import { SortInterventionByDateTime } from './sortInterPipe';
 import { Subscription } from 'rxjs';
+import { filter, delay } from 'rxjs/operators';
 import { Message } from '../../model/message';
 import { ConnectionStatus } from '../../services/connection.status';
 import { Etat } from "../../model/enums";
@@ -45,7 +46,7 @@ export class InterventionGroup  {
     interventionChangeSubscription : Subscription;
     interventionMessageSubscription : Subscription;
     
-    get groupInterventions(): Intervention[]
+    public get groupInterventions(): Intervention[]
     {
         return this._groupInterventions;
     }
@@ -59,15 +60,18 @@ export class InterventionGroup  {
         // on inscrit le composant à la détection des changements d'interventions
         // cela permet (entre autres) d'afficher un petit halo sur le bouton quand une intervention a changé
         this.interventionChangeSubscription = 
-            this.interService.newInterData$.subscribe( inter =>  {
-
-                this.interventionChangeHighlight( inter.Id );
+            this.interService.newInterData$.pipe( delay(1000) ).subscribe( inter =>  {
 
                 // à chaque fois qu'on reçoit des datas sur les interventions avec les infos d'opérateur, 
                 // on met à jour la liste des interventions du groupe,
                 // car une nouvelle intervention a pu arriver, ou bien un intervention a pu se fermer, changer d'opérateur, etc..
-                if ( inter.Operateur != null )
-                    this.updateGroupInterventions();
+               if ( inter.Operateur != null )
+                this.updateGroupInterventions();
+
+            } );
+
+            this.interService.newInterData$.subscribe( inter =>  {
+                 this.interventionChangeHighlight( inter.Id );
             } );
 
         this.interventionMessageSubscription = this.interService.newMessages$
@@ -122,7 +126,9 @@ export class InterventionGroup  {
             default:
                 this._groupInterventions =  this.MyInterventions;
                 this.isMyInters = true;
-        }
+        };
+
+        this._ref.detectChanges();
     }
 
     public get MyInterventions(): Intervention[]
@@ -182,4 +188,8 @@ export class InterventionGroup  {
         }
     }
 
+    addNewIntervention()
+    {
+        this.interService.addNewIntervention();
+    }
 }

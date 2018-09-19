@@ -28,11 +28,11 @@ export class Rapport
     Presence : RapportPresence;
     Trajet : RapportTrajet;
 
-    get ArriveeSurLieuxN() : RapportArriveeSurLieux { return this.ArriveeSurLieux ? this.ArriveeSurLieux : this.ArriveeSurLieux = new RapportArriveeSurLieux() }
-    get VerificationsN() : RapportVerifications { return this.Verifications ? this.Verifications : this.Verifications = new RapportVerifications() }
-    get MiseEnSecuriteN() : RapportMiseEnSecurite { return this.MiseEnSecurite ? this.MiseEnSecurite : this.MiseEnSecurite = new RapportMiseEnSecurite() }
-    get PresenceN() : RapportPresence { return this.Presence ? this.Presence : this.Presence = new RapportPresence() }
-    get TrajetN() : RapportTrajet { return this.Trajet ? this.Trajet : this.Trajet = new RapportTrajet() }
+    // get ArriveeSurLieuxN() : RapportArriveeSurLieux { return this.ArriveeSurLieux ? this.ArriveeSurLieux : this.ArriveeSurLieux = new RapportArriveeSurLieux() }
+    // get VerificationsN() : RapportVerifications { return this.Verifications ? this.Verifications : this.Verifications = new RapportVerifications() }
+    // get MiseEnSecuriteN() : RapportMiseEnSecurite { return this.MiseEnSecurite ? this.MiseEnSecurite : this.MiseEnSecurite = new RapportMiseEnSecurite() }
+    // get PresenceN() : RapportPresence { return this.Presence ? this.Presence : this.Presence = new RapportPresence() }
+    // get TrajetN() : RapportTrajet { return this.Trajet ? this.Trajet : this.Trajet = new RapportTrajet() }
 
     constructor()
     {

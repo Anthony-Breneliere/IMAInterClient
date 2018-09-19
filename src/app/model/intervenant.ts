@@ -12,7 +12,7 @@ export class Intervenant
     Longitude : number;
     DelaiMinutes : number;
 
-    get TelephonesN() : Telephone[] { return this.Telephones ? this.Telephones : this.Telephones = [] }
+ //   get TelephonesN() : Telephone[] { return this.Telephones ? this.Telephones : this.Telephones = [] }
 
     constructor()
     {

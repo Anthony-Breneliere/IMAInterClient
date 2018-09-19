@@ -1,17 +1,20 @@
 /**
  * Created by abreneli on 04/07/2016.
  */
-import { Injectable }    from '@angular/core';
+
 import { Intervention } from '../model/intervention';
 import { InterventionState } from '../model/intervention_state';
-import { Observable } from 'rxjs-compat/Observable';
 import { OrigineFiche, TypeFiche, MotifIntervention, Trajet, TypePresence, DepotBonIntervention, Etat } from '../model/enums';
-import * as Collections from 'typescript-collections';
-import {Message} from "../model/Message";
 import { ITypeMainCourante } from "../model/type_maincour";
+import {Message} from "../model/message";
+
+import { Injectable }    from '@angular/core';
+
 import { Subject }    from 'rxjs';
 import * as Lodash from 'lodash';
 import { ConnectionStatus } from './connection.status';
+import * as Collections from 'typescript-collections';
+import { Observable } from 'rxjs-compat/Observable';
 
 
 import 'signalr';
@@ -24,6 +27,8 @@ export enum InterventionDataType {
 
 @Injectable()
 export class InterventionService  {
+
+
 
     private loadedInterventionsDico : Collections.Dictionary<number, Intervention> = new Collections.Dictionary<number, Intervention>();
     private interventionsStateDico : Collections.Dictionary<number, InterventionState> = new Collections.Dictionary<number, InterventionState>();
@@ -476,6 +481,21 @@ export class InterventionService  {
         console.log(`Demande de mise à jour de la liste des sociétés AEPIA`);
       
         this._connectionStatus.proxyServer.updateSIList();
+    }
+
+
+    public addNewIntervention(): Intervention
+    {
+        let newIntervention = new Intervention();
+        newIntervention.Operateur = "abreneli";
+        newIntervention.Id = 1;
+        newIntervention.Creation = new Date();
+
+        this.loadedInterventionsDico.setValue( 1, newIntervention );
+
+        this._newInterDataSource.next( newIntervention );
+
+        return newIntervention;
     }
  }
 

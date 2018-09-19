@@ -15,7 +15,7 @@ export class RapportArriveeSurLieux
 
     NonAccesAuSite: RapportNonAccesAuSite;
 
-    get RapportNonAccesAuSiteN() : RapportNonAccesAuSite { return this.NonAccesAuSite ? this.NonAccesAuSite : this.NonAccesAuSite = new RapportNonAccesAuSite() }
+  //  get RapportNonAccesAuSiteN() : RapportNonAccesAuSite { return this.NonAccesAuSite ? this.NonAccesAuSite : this.NonAccesAuSite = new RapportNonAccesAuSite() }
 
     constructor()
     {

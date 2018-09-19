@@ -39,6 +39,8 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
     private paramsSubscription : Subscription;
     private queryParamsSubscription : Subscription;
 
+    public updatingIntervention : boolean = false;
+
     @ViewChild("myGroup") myGroup : InterventionGroup;
     @ViewChild("othersGroup") othersGroup : InterventionGroup;
     @ViewChild("searchGroup") searchGroup : InterventionGroup;
@@ -157,7 +159,13 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
 
     set selectedIntervention( value: Intervention)
     {
+        this.updatingIntervention = true;
+        this.cdref.detectChanges();
+
         this._selectedIntervention = value;
+
+        this.updatingIntervention = false;
+        this.cdref.detectChanges();
     }
 
     /**

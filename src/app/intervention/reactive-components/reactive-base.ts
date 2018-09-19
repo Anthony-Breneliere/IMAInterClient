@@ -25,16 +25,21 @@ export class ReactiveBaseComponent implements ControlValueAccessor
   // change from the model
   writeValue(value: any): void
   {
-    this._value = value; 
-    this.updatingState = 'otherWriting';
+    // on compare les valeurs pour voir s'il y a réellement un changement
+    if ( this._value != value )
+    {
+      this.updatingState = 'otherWriting';
 
-    window.setTimeout( () => {
-      this.updatingState = null;
+      window.setTimeout( () => {
+        this.updatingState = null;
+        this._ref.detectChanges();
+      }, 100 );
+  
+      // model value has change so changes must be detected (case ChangeDetectorStrategy is OnPush)
       this._ref.detectChanges();
-    }, 100 );
+    }
 
-    // model value has change so changes must be detected (case ChangeDetectorStrategy is OnPush)
-    this._ref.detectChanges();
+    this._value = value;
   }
   
   // change from the UI

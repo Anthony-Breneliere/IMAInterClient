@@ -56,13 +56,24 @@ export class Maincourantes {
             this.newInterSub.unsubscribe();
     }
 
-    public get listMainCour() : MainCourante[] { return this._intervention && Array.isArray( this._intervention.MainCourantes ) ?  this._intervention.MainCourantes : [] };
+    public get listMainCour() : MainCourante[]
+    { 
+        if ( ! this._intervention || ! Array.isArray( this._intervention.MainCourantes ) )
+            return [];
+
+        var displayedMainCour =
+            this._intervention.MainCourantes.sort( (m1, m2) => { 
+                return m1.Date > m2.Date ? 1 :  m1.Date < m2.Date ? -1 : 0;
+            });
+
+        return displayedMainCour;
+    };
 
 
     // this.intervention && this.intervention.MainCourantes ? this.intervention.MainCourantes : 
     public get listTypeMainCour() : ITypeMainCourante[]
     {
-         return this.interService.listeTypeMaincour;
+         return this.interService.listeTypeMaincour.filter( mc => mc != null );
     } 
     
     public get intervention()  {  return this._intervention; }

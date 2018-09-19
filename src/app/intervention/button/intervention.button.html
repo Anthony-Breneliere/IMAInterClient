@@ -1,29 +1,12 @@
-<div *ngIf="intervention" routerLink="/intervention/{{intervention.Id}}" queryParamsHandling="preserve" 
-    [class.borderhalo]="updating || notificationChange" [class.defaultBorder]="!(updating || notificationChange)"
-    class="bouton_intervention transition_1s" [class.unselected]="selected !== true" [class.selected]="selected === true"
-    (click)="onClickInter()" [contextMenu]="buttonMenu" [contextMenuSubject]="intervention"  >
+<div  [class.borderhalo]="updating || notificationChange" [class.defaultBorder]="!(updating || notificationChange)"
+    class="bouton_nav transition_1s" [class.unselected]="selected !== true" [class.selected]="selected === true" (click)="onClickInter()"
+    [contextMenu]="buttonMenu" [contextMenuSubject]="intervention" >
 
-    <!-- (contextMenu)="displayContextMenu($event, intervention)" -->
+    <div class="intervention_data" *ngIf="intervention"  >
+        
+        <!-- (contextMenu)="displayContextMenu($event, intervention)" -->
+        <ng-Content></ng-Content>
 
-    <div *ngIf="intervention.Site" class="client">
-        <i class="mdi mdi-account"></i> {{intervention.NomComplet}}
-    </div>
-    <div *ngIf="intervention.EtatLabel != 'Close'">
-        <i class="mdi mdi-keyboard-tab"></i> {{intervention.EtatLabel}}
-    </div>
-    <div>
-        <i class="mdi mdi-seat-recline-normal"></i> {{intervention.Operateur}}
-    </div>
-    <div>
-        <i class="mdi mdi-run"></i> {{intervention.Intervenant?.Nom}}
-    </div>
-    <div>
-        <i class="mdi mdi-alarm-multiple"></i> {{intervention.Creation | date:'long'}}</div>
-    <div *ngIf="waitingDeparture">
-        <button class="transition_1s" id="authDeparture" (click)="authorizeDeparture()">Autoriser le départ</button>
-    </div>
-    <div *ngIf="waitingDeparture">
-            <button class="transition_1s" id="authDeparture" (click)="immobilizeIntervenant()">Mise en statique</button>
     </div>
 
 </div>
@@ -59,3 +42,4 @@
     </ng-template>
 
 </context-menu>
+

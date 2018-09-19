@@ -39,7 +39,7 @@ import { OrigineFiche, TypeFiche, Trajet, MotifIntervention, TypePresence, Depot
 import { InterventionService } from "../../services/intervention.service";
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Telephone } from 'app/model/telephone';
+import { Telephone } from '../../model/telephone';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
@@ -112,8 +112,8 @@ export class InterventionDetails implements  OnChanges
 
     ngOnChanges( changes: SimpleChanges )
     {
-        console.log("Changements détectés sur intervention :");
-        console.log( changes );
+        // console.log("Changements détectés sur intervention :");
+        // console.log( changes );
     }
 
     ngOnDestroy()
@@ -128,22 +128,20 @@ export class InterventionDetails implements  OnChanges
         return readOnly;
     }
 
-    public get telephonesSite() : Telephone[] { return Array.isArray( this.site.TelephonesN ) ? this.site.TelephonesN : [] } 
+    public get telephonesSite() : Telephone[] { return Array.isArray( this.site.Telephones ) ? this.site.Telephones : [] } 
     public get intervention() : Intervention { return this._intervention; }
-    private get rapport() : Rapport { return this.intervention.RapportN; }
-    private get intervenant() : Intervenant { return this.intervention.IntervenantN; }
-    private get site() : Site { return this.intervention.SiteN; }
-    private get trajet() : RapportTrajet { return this.rapport.TrajetN; }
-    private get presence() : RapportPresence { return this.rapport.PresenceN; }
-    private get miseEnSecurite() : RapportMiseEnSecurite { return this.rapport.MiseEnSecuriteN; }
-    private get verifications() : RapportVerifications { 
-        return this.rapport.VerificationsN;
-    }
-    private get arriveeSurLieux() : RapportArriveeSurLieux { return this.rapport.ArriveeSurLieuxN; }
-    private get nonAccesAuSite() : RapportNonAccesAuSite { return this.arriveeSurLieux.RapportNonAccesAuSiteN; }
-    private get quellesLumieresAllumees() : RapportLumieresAllumees { return this.rapport.VerificationsN.QuellesLumieresAllumeesN; }    
-    private get quellesIssuesOuvertes() : RapportIssuesConcernees { return this.rapport.VerificationsN.QuellesIssuesOuvertesN; }  
-    private get quellesEffractions() : RapportIssuesConcernees { return this.rapport.VerificationsN.QuellesEffractionsN; }  
+    private get rapport() : Rapport { return this.intervention.Rapport; }
+    private get intervenant() : Intervenant { return this.intervention.Intervenant; }
+    private get site() : Site { return this.intervention.Site; }
+    private get trajet() : RapportTrajet { return this.rapport.Trajet; }
+    private get presence() : RapportPresence { return this.rapport.Presence; }
+    private get miseEnSecurite() : RapportMiseEnSecurite { return this.rapport.MiseEnSecurite; }
+    private get verifications() : RapportVerifications {  return this.rapport.Verifications; }
+    private get arriveeSurLieux() : RapportArriveeSurLieux { return this.rapport.ArriveeSurLieux; }
+    private get nonAccesAuSite() : RapportNonAccesAuSite { return this.arriveeSurLieux.NonAccesAuSite; }
+    private get quellesLumieresAllumees() : RapportLumieresAllumees { return this.rapport.Verifications.QuellesLumieresAllumees; }    
+    private get quellesIssuesOuvertes() : RapportIssuesConcernees { return this.rapport.Verifications.QuellesIssuesOuvertes; }  
+    private get quellesEffractions() : RapportIssuesConcernees { return this.rapport.Verifications.QuellesEffractions; }  
     private get listMainCour() : MainCourante[] { return Array.isArray( this.intervention.MainCourantes ) ?  this.intervention.MainCourantes : [] };
     // this.intervention && this.intervention.MainCourantes ? this.intervention.MainCourantes : 
     private get listTypeMainCour() : ITypeMainCourante[]

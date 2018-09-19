@@ -45,13 +45,13 @@ export class Intervention
     
     NotificationChange : boolean;
 
-    get SiteN() : Site { return this.Site ? this.Site : (this.Site = new Site()) };
-    get AlarmeN() : Alarme { return this.Alarme ? this.Alarme : this.Alarme = new Alarme() };
-    get FicheQualiteN() : FicheQualite { return this.FicheQualite ? this.FicheQualite : this.FicheQualite = new FicheQualite() };
-    get IntervenantN() : Intervenant { return this.Intervenant ? this.Intervenant : this.Intervenant = new Intervenant() };
-    get RapportN(): Rapport { return this.Rapport ? this.Rapport : this.Rapport = new Rapport() };
-    get MainCourantesN(): MainCourante[] { return this.MainCourantes ? this.MainCourantes : this.MainCourantes = new Array<MainCourante>()  };
-    get InfosFacturationN() : InfosFacturation { return this.InfosFacturation ? this.InfosFacturation : (this.InfosFacturation = new InfosFacturation()) };
+    // get SiteN() : Site { return this.Site ? this.Site : (this.Site = new Site()) };
+    // get AlarmeN() : Alarme { return this.Alarme ? this.Alarme : this.Alarme = new Alarme() };
+    // get FicheQualiteN() : FicheQualite { return this.FicheQualite ? this.FicheQualite : this.FicheQualite = new FicheQualite() };
+    // get IntervenantN() : Intervenant { return this.Intervenant ? this.Intervenant : this.Intervenant = new Intervenant() };
+    // get RapportN(): Rapport { return this.Rapport ? this.Rapport : this.Rapport = new Rapport() };
+    // get MainCourantesN(): MainCourante[] { return this.MainCourantes ? this.MainCourantes : this.MainCourantes = new Array<MainCourante>()  };
+    // get InfosFacturationN() : InfosFacturation { return this.InfosFacturation ? this.InfosFacturation : (this.InfosFacturation = new InfosFacturation()) };
 
     /**
      * 
@@ -104,9 +104,9 @@ export class Intervention
     }
 
     // ajoute des setters pour éviter les exceptions lors de la recopie automatique
-    set EtatLabel( value : string ) {}
-    set OrigineLabel( value : string ) {}
-    set TypeFicheLabel( value : string ) {}
+    // set EtatLabel( value : string ) {}
+    // set OrigineLabel( value : string ) {}
+    // set TypeFicheLabel( value : string ) {}
 
 
 }

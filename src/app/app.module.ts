@@ -29,6 +29,7 @@ import { Field } from './intervention/section/field';
 import { InterventionGroup } from './intervention/groupe/intervention.group';
 import { InterventionDetails } from './intervention/details/intervention.details';
 import { InterventionButton } from './intervention/button/intervention.button';
+import { InterventionButtonContent } from './intervention/button/intervention.button.content';
 import { AppBar } from './app_bar/app_bar';
 import { InterventionMainDisplay } from './intervention/main_display/intervention.main_display';
 import { Location, LocationStrategy, PathLocationStrategy, HashLocationStrategy } from '@angular/common';
@@ -67,7 +68,7 @@ import { ReactiveTextareaComponent } from './intervention/reactive-components/re
         Checkbox,
         InterventionGroup,
         InterventionDetails,
-        InterventionButton,
+        InterventionButton, InterventionButtonContent,
         DraggableDirective,
         SortInterventionByDateTime,
         AppBar,
