@@ -8,7 +8,7 @@ import { ReactiveBaseComponent } from './reactive-base'
   selector: 'reactive-checkbox',
   template: `
   <label class="container" [class.transition_1s]="!isThirdParty" [class.textChange]="isThirdParty">{{label}}
-    <input class="cellinput" type="checkbox" [(ngModel)]="value" />
+    <input class="inputcheckbox" type="checkbox" [(ngModel)]="value" />
     <span  class="checkmark" [class.transition_1s]="!isThirdParty" [class.borderhalo]="isThirdParty"></span>
   </label>
   `,

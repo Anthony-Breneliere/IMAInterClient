@@ -30,8 +30,23 @@ export class InterventionButton implements OnInit
     @Output() onSelected = new EventEmitter<InterventionButton>();
     @ViewChild(ContextMenuComponent) public buttonMenu: ContextMenuComponent;
 
+    constructor( private _interService : InterventionService, private contextMenuService : ContextMenuService )
+    {}
+
     public ngOnInit()
     {
+        // quand une nouvelle intervention est créée et que le bouton apparait, le menu contextuel n'est pas initialisé par 
+        // défaut, on l'initialise pour l'ajouter au DOM
+        this.contextMenuService.show.subscribe((el) => {
+            const overlay = this.contextMenuService.getLastAttachedOverlay();
+            overlay.updatePosition();
+            const comp: any = overlay.contextMenu;
+            if (!comp._keyManager) {
+                 comp.ngOnInit();
+             }
+            comp.changeDetector.markForCheck();
+            comp.changeDetector.detectChanges();
+         });
     }
 
     public get notificationChange() : boolean { 
@@ -42,37 +57,12 @@ export class InterventionButton implements OnInit
         this.intervention.NotificationChange = value
     };
 
-    constructor( private _interService : InterventionService, private contextMenuService : ContextMenuService )
-    {}
-
     onClickInter(): void
     {
         // dans le cas où le bouton est sélectionné on prévient le composant parent pour la désélection
         this.onSelected.emit( this );
 
     }
-
-
-
-    public displayContextMenu($event: MouseEvent, intervention: Intervention): void {
-
-        $event.preventDefault();
-        $event.stopPropagation();
-
-        console.log( "show context menu for " + intervention.Id);
-
-        setTimeout(() => {
-            console.log( "show context menu for " + intervention.Id);
-
-            this.contextMenuService.show.next({
-                // Optional - if unspecified, all context menu components will open
-                contextMenu: this.buttonMenu,
-                event: $event,
-                item: intervention,
-            } );
-        }, 500 ); 
-    }
-
 
     submit() : void 
     {

@@ -139,6 +139,7 @@ export class InterventionDetails implements  OnChanges
     private get verifications() : RapportVerifications {  return this.rapport.Verifications; }
     private get arriveeSurLieux() : RapportArriveeSurLieux { return this.rapport.ArriveeSurLieux; }
     private get nonAccesAuSite() : RapportNonAccesAuSite { return this.arriveeSurLieux.NonAccesAuSite; }
+    private get infosFacturation() : InfosFacturation { return this.intervention.InfosFacturation; }
     private get quellesLumieresAllumees() : RapportLumieresAllumees { return this.rapport.Verifications.QuellesLumieresAllumees; }    
     private get quellesIssuesOuvertes() : RapportIssuesConcernees { return this.rapport.Verifications.QuellesIssuesOuvertes; }  
     private get quellesEffractions() : RapportIssuesConcernees { return this.rapport.Verifications.QuellesEffractions; }  
@@ -177,7 +178,6 @@ export class InterventionDetails implements  OnChanges
             
             // else if ( ! site || ! site.Latitude || ! site.Longitude )
             //     warning = "L'intervention ne peut pas être lancée car les coordonnées géographiques du site ne sont pas renseignées.";
-            
         }
 
         return warning;
@@ -251,7 +251,7 @@ export class InterventionDetails implements  OnChanges
 
     public get AutreIssueChecked() : boolean
     {
-        return this.quellesIssuesOuvertes.Autre != null;
+        return this.quellesIssuesOuvertes && this.quellesIssuesOuvertes.Autre != null;
     }
 
     public set AutreIssueChecked( value : boolean )
@@ -263,7 +263,7 @@ export class InterventionDetails implements  OnChanges
 
     public get AutreEffractionChecked() : boolean
     {
-        return this.quellesEffractions.Autre != null;
+        return this.quellesEffractions && this.quellesEffractions.Autre != null;
     }
 
     public set AutreEffractionChecked( value : boolean )
@@ -275,7 +275,7 @@ export class InterventionDetails implements  OnChanges
 
     public get AutrePresenceChecked() : boolean
     {
-        return this.presence.AutrePresence != null;
+        return this.presence && this.presence.AutrePresence != null;
     }
 
     public set AutrePresenceChecked( value : boolean )
@@ -287,7 +287,7 @@ export class InterventionDetails implements  OnChanges
 
     public get PresenceVehiculeChecked() : boolean
     {
-        return this.presence.TypeVehicule != null;
+        return this.presence && this.presence.TypeVehicule != null;
     }
 
     public set PresenceVehiculeChecked( value : boolean )
@@ -301,8 +301,7 @@ export class InterventionDetails implements  OnChanges
 
     public get MiseEnPlaceDemandeeParChecked() : boolean
     {
-        return this.miseEnSecurite.MiseEnPlaceDemandeePar != null || this.miseEnSecurite.MiseEnPlaceDemandee;
-        
+        return this.miseEnSecurite && this.miseEnSecurite.MiseEnPlaceDemandeePar != null || this.miseEnSecurite.MiseEnPlaceDemandee;
     }
 
     public set MiseEnPlaceDemandeeParChecked( value : boolean )
@@ -315,7 +314,7 @@ export class InterventionDetails implements  OnChanges
 
     public get MiseEnPlaceAnimalChecked() : boolean
     {
-        return this.miseEnSecurite.MiseEnPlaceAnimal != null;
+        return this.miseEnSecurite && this.miseEnSecurite.MiseEnPlaceAnimal != null;
     }
 
     public set MiseEnPlaceAnimalChecked( value : boolean )
@@ -349,7 +348,7 @@ export class InterventionDetails implements  OnChanges
 
     isChecked( value : MotifIntervention ) : boolean
     {
-        return this.intervention.Rapport.MotifIntervention == value;
+        return this.rapport && this.rapport.MotifIntervention == value;
     }
 
     private detailForm : FormGroup;

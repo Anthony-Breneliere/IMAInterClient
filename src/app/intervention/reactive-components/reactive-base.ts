@@ -3,7 +3,12 @@ import { ControlValueAccessor,  NG_VALUE_ACCESSOR  } from '@angular/forms';
 import { trigger, style, animate, transition, keyframes } from '@angular/animations';
 
 
-
+/**
+ * Cette classe permet au composant de détecter les changements sur la valeur
+ * par un autre utilisateur.
+ * Elle gère un état this.updatingState qui est fixé à 'otherWriting' dans le cas
+ * où un changement venu d'ailleurs s'est produit dans les 100 dernières ms.
+ */
 export class ReactiveBaseComponent implements ControlValueAccessor
 {
 

@@ -8,6 +8,10 @@ select {
     width: 100%
 }
 
+.inputcheckbox {
+    width: 0%
+}
+
 textarea {
     width: 100%;
     resize: both

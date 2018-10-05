@@ -187,11 +187,9 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
             groupToExpand = this.searchGroup;
         }
 
-        // C'est ici qu'on ajoute un délai pour l'ouverture des groupes d'interventions car sinon
-        // on a pas de menu contextuel sur les boutons du groupe
-        // voir issue https://github.com/isaacplmann/ngx-contextmenu/issues/100
+        // deploiement du groupe
         if ( groupToExpand )
-            setTimeout( () => groupToExpand.Expanded = true, 500);
+            groupToExpand.Expanded = true;
     }
 
     onSelectedButton(newSelectedButton: InterventionButton)

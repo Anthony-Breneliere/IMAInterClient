@@ -65,6 +65,7 @@ export class Intervention
         this.Intervenant = new Intervenant();
         this.Rapport = new Rapport();
         this.Chat = new Array<Message>();
+        this.InfosFacturation = new InfosFacturation();
     }
 
     public get NomComplet() : string
