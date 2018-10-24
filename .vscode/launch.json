@@ -5,10 +5,10 @@
 
     "configurations": [
         {
-            "name": "Chrome DEBUG 172.22.44.49",
+            "name": "Chrome ImaInter",
             "type": "chrome",
             "request": "launch",
-            "url": "http://172.22.44.49:4512/#/",
+            "url": "http://localhost:4512/#/",
             "sourceMaps": true,
             "sourceMapPathOverrides": { 
                 "webpack:/*": "${webRoot}/*"
@@ -18,24 +18,21 @@
                 "zone.js"
             ],
         },
+
         {
-            "name": "Chrome DEBUG 1240604",
+            "name": "Chrome TestPage",
             "type": "chrome",
             "request": "launch",
-            "url": "http://172.22.44.49:4512/#/intervention/1240604",
-
+            "url": "http://localhost:4512/#/test",
+            "sourceMaps": true,
             "sourceMapPathOverrides": { 
                 "webpack:/*": "${webRoot}/*"
             },
             "webRoot": "${workspaceFolder}",
-            "sourceMaps": true,
-            
-            
-
             "skipFiles": [
                 "zone.js"
-            ]
-        }
+            ],
+        },
 
     ]
 }

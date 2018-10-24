@@ -140,9 +140,29 @@ export class InterventionDetails implements  OnChanges
     private get arriveeSurLieux() : RapportArriveeSurLieux { return this.rapport.ArriveeSurLieux; }
     private get nonAccesAuSite() : RapportNonAccesAuSite { return this.arriveeSurLieux.NonAccesAuSite; }
     private get infosFacturation() : InfosFacturation { return this.intervention.InfosFacturation; }
-    private get quellesLumieresAllumees() : RapportLumieresAllumees { return this.rapport.Verifications.QuellesLumieresAllumees; }    
-    private get quellesIssuesOuvertes() : RapportIssuesConcernees { return this.rapport.Verifications.QuellesIssuesOuvertes; }  
-    private get quellesEffractions() : RapportIssuesConcernees { return this.rapport.Verifications.QuellesEffractions; }  
+
+    private get quellesLumieresAllumees() : RapportLumieresAllumees
+    { 
+        return new RapportLumieresAllumees();
+    }
+    
+    
+    private get quellesIssuesOuvertes() : RapportIssuesConcernees
+    { 
+        // il se peut que le serveur mette cette valeur à null
+        if ( ! this.rapport.Verifications.QuellesIssuesOuvertes )
+            this.rapport.Verifications.QuellesIssuesOuvertes = new RapportIssuesConcernees();
+
+        return this.rapport.Verifications.QuellesIssuesOuvertes;
+    }    
+    private get quellesEffractions() : RapportIssuesConcernees
+    { 
+        // il se peut que le serveur mette cette valeur à null
+        if ( ! this.rapport.Verifications.QuellesEffractions )
+            this.rapport.Verifications.QuellesEffractions = new RapportIssuesConcernees();
+
+        return this.rapport.Verifications.QuellesEffractions;
+    }    
     private get listMainCour() : MainCourante[] { return Array.isArray( this.intervention.MainCourantes ) ?  this.intervention.MainCourantes : [] };
     // this.intervention && this.intervention.MainCourantes ? this.intervention.MainCourantes : 
     private get listTypeMainCour() : ITypeMainCourante[]
@@ -237,6 +257,17 @@ export class InterventionDetails implements  OnChanges
             console.log("Détection des changements pour l'affichage de l'intervention " + this._intervention.Id );
     }
 
+    public get NonVerifAutreRaisonChecked() : boolean
+    {
+        return this.nonAccesAuSite.AutreRaison != null;
+    }
+
+    public set NonVerifAutreRaisonChecked( value : boolean )
+    {
+        this.changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AutreRaison: value? '' : null}}})
+        this.nonAccesAuSite.AutreRaison = value ? "" : null;
+    }
+
     public get AutrePieceChecked() : boolean
     {
         return this.quellesLumieresAllumees.Autre != null;
@@ -287,16 +318,19 @@ export class InterventionDetails implements  OnChanges
 
     public get PresenceVehiculeChecked() : boolean
     {
-        return this.presence && this.presence.TypeVehicule != null;
+        let checked: boolean = this.presence && ( this.presence.TypeVehicule != null || this.presence.CouleurVehicule != null || this.presence.PlaqueVehicule != null );
+
+        return checked;
     }
 
     public set PresenceVehiculeChecked( value : boolean )
     {
-        this.changeRapport({Presence:{TypeVehicule:value? '' : null,CouleurVehicule:value? '' : null,PlaqueVehicule:value? '' : null}});
-
         this.presence.TypeVehicule = value ? "" : null;
         this.presence.CouleurVehicule = value ? "" : null;
         this.presence.PlaqueVehicule = value ? "" : null;
+
+        if ( ! value )
+            this.changeRapport({Presence:{TypeVehicule:null, CouleurVehicule:null, PlaqueVehicule:null}});
      }
 
     public get MiseEnPlaceDemandeeParChecked() : boolean

@@ -37,13 +37,23 @@
         <tr field label="Adresse "><pre>{{Capitalize(intervenant?.Adresse)}}</pre></tr>
         <tr field *ngFor="let tel of intervenant?.Telephones " label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
         <tr field label="Email ">{{intervenant?.Email}}</tr>
+        <tr field label="Matricule">{{intervenant?.Matricule}}</tr>
+        <!-- <tr field label="Coordonnées géographiques">{{intervenant?.Latitude}} {{intervenant?.Longitude}}</tr> -->
+
+    </section>
+
+
+    <section title="Historique" [readOnly]="readOnly" (resize)="updateLayout()">
+
+        <!-- <tr field label="Moment appel">
+            <reactive-input [(ngModel)]="rapport.NumeroBon" (ngModelChange)="changeRapport({NumeroBon:$event})"></reactive-input>
+        </tr> -->
+
         <tr field label="Moment appel ">{{intervention?.MomentAppel | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
         <tr field label="Date de diffusion">{{intervention?.DateDiffusion | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
         <tr field label="Affectation">{{intervention?.DateAffectation | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
         <tr field label="Date d'arrivée">{{intervention?.DateArrivee | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
         <tr field label="Date de départ">{{intervention?.DateDepart | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
-        <tr field label="Matricule">{{intervenant?.Matricule}}</tr>
-        <!-- <tr field label="Coordonnées géographiques">{{intervenant?.Latitude}} {{intervenant?.Longitude}}</tr> -->
 
     </section>
 
@@ -145,8 +155,8 @@
             <reactive-checkbox label="Autre raison" [(ngModel)]="nonAccesAuSite.AutreRaison" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AutreRaison:$event}}})"></reactive-checkbox>
         </tr>
 
-        <tr field label="Raison non accès" *ngIf="arriveeSurLieux.CircuitVerification==CircuitVerification.VerificationKO && nonAccesAuSite.AutreRaison">
-            <reactive-input [(ngModel)]="nonAccesAuSite.DetailsAutreRaison" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{DetailsAutreRaison:$event}}})"></reactive-input>
+        <tr field label="Raison non accès" *ngIf="arriveeSurLieux.CircuitVerification==CircuitVerification.VerificationKO && NonVerifAutreRaisonChecked">
+            <reactive-input [(ngModel)]="nonAccesAuSite.AutreRaison" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AutreRaison:$event}}})"></reactive-input>
         </tr>
 
         <tr field label="Utilisation des moyens d'accès">
@@ -181,7 +191,6 @@
 
         <tr field label="Lumière(s) Allumée(s)">
             <select id="LumieresAllumees" [(ngModel)]="verifications.LumieresAllumees" (ngModelChange)="changeRapport({Verifications:{LumieresAllumees:$event}})">
-                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
@@ -210,7 +219,6 @@
 
         <tr field label="Issue(s) ouverte(s)">
             <select [(ngModel)]="verifications.IssuesOuvertes" (ngModelChange)="changeRapport({Verifications:{IssuesOuvertes:$event}})">
-                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
@@ -232,7 +240,6 @@
 
         <tr field label="Sirène">
             <select [(ngModel)]="verifications.Sirene" (ngModelChange)="changeRapport({Verifications:{Sirene:$event}})">
-                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
@@ -246,7 +253,6 @@
             </select> -->
 
             <select reactive-select [(ngModel)]="verifications.SystemeEnService" (ngModelChange)="changeRapport({Verifications:{SystemeEnService:$event}})">
-                <option [ngValue]="null"></option>
                 <option [ngValue]="true">En service</option>
                 <option [ngValue]="false">Hors Service</option>
             </select>
@@ -262,7 +268,6 @@
 
         <tr field label="Effraction(s)">
             <select [(ngModel)]="verifications.Effraction" (ngModelChange)="changeRapport({Verifications:{Effraction:$event}})">
-                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
@@ -304,7 +309,6 @@
 
         <tr field label="Présence véhicule">
             <select [(ngModel)]="PresenceVehiculeChecked">
-                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
@@ -329,7 +333,6 @@
 
         <tr field label="Site refermable">
             <select [(ngModel)]="miseEnSecurite.SiteRefermable" (ngModelChange)="changeRapport({MiseEnSecurite:{SiteRefermable:$event}})">
-                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
@@ -347,7 +350,6 @@
 
         <tr field label="Animal">
             <select [(ngModel)]="MiseEnPlaceAnimalChecked">
-                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>

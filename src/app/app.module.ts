@@ -43,7 +43,10 @@ import { ReactiveInputComponent } from './intervention/reactive-components/react
 import { ReactiveCheckboxComponent } from './intervention/reactive-components/reactive-checkbox.component';
 import { ReactiveSelectComponent } from './intervention/reactive-components/reactive-select.component';
 import { ReactiveTextareaComponent } from './intervention/reactive-components/reactive-textarea.component';
+import { TestComponent } from './test/test.component';
 
+// inclus pour le datepicker:
+// import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     imports:      [
@@ -52,6 +55,7 @@ import { ReactiveTextareaComponent } from './intervention/reactive-components/re
         ContextMenuModule.forRoot(),
         FormsModule,
         HttpClientModule, 
+ //       NgbModule,
         RouterModule.forRoot (appRoutes)
     ],
     /*
@@ -77,7 +81,9 @@ import { ReactiveTextareaComponent } from './intervention/reactive-components/re
         ReactiveTextareaComponent,
         ReactiveInputComponent,
         ReactiveSelectComponent,
-        ReactiveCheckboxComponent ],
+        ReactiveCheckboxComponent,
+        TestComponent,
+        ],
 
     /*
        Liste des services utilisés par le module. Les services sont injectés dans les composants.

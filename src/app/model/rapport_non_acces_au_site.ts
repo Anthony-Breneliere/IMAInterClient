@@ -6,6 +6,5 @@ export class RapportNonAccesAuSite
     AbsenceMoyensAcces: boolean;
     AbsenceDigicode: boolean;
     NonAccesPortePalliere: boolean;
-    AutreRaison: boolean;
-    DetailsAutreRaison: string;
+    AutreRaison: string;
 }
