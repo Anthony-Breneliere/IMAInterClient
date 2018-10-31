@@ -17,9 +17,17 @@ trigger:
     
 steps:
 
-- script: |
+- script:
     npm install -g @angular/cli
+  displayName: 'Install @angular/cli globally'
+
+- script:
     npm install
+  displayName: 'Install packages dependencies'
+
+- script:
     npm run build
-    echo 'Fin de script'
-  displayName: 'Build'
+  displayName: 'Build application'
+
+    
+  
