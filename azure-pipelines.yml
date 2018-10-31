@@ -8,9 +8,9 @@ resources:
 
 queue:
   name: PIC POOL
-  
+
 steps:
 
 - script: 
-    ng build --prod --configuration=recette
-  displayName: 'ng build'
+    npm run build
+  displayName: 'Build'
