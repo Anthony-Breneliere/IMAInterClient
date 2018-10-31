@@ -17,6 +17,8 @@ trigger:
     
 steps:
 
-- script: 
+- script: |
+    npm install -g @angular/cli
+    npm install
     npm run build
   displayName: 'Build'
