@@ -21,4 +21,5 @@ steps:
     npm install -g @angular/cli
     npm install
     npm run build
+    echo 'Fin de script'
   displayName: 'Build'
