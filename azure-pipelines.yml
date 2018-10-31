@@ -9,6 +9,12 @@ resources:
 queue:
   name: PIC POOL
 
+trigger:
+
+  branches:
+    include:
+    - master
+    
 steps:
 
 - script: 
