@@ -29,5 +29,17 @@ steps:
     npm run build
   displayName: 'Build application'
 
+- task: CopyFiles@2
+  displayName: 'Copy sources (binaries)'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)\dist'
+    TargetFolder: $(build.artifactstagingdirectory)
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: $(build.artifactstagingdirectory)
+    ArtifactName: '$(build.definitionname) $(build.buildnumber)'
+
     
   
