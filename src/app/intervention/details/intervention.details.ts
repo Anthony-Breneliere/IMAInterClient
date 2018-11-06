@@ -14,6 +14,7 @@ import {RapportPresence} from "../../model/rapport_presence";
 import {Alarme} from "../../model/alarme";
 import {RapportMiseEnSecurite} from '../../model/rapport_mise_en_securite';
 import {RapportArriveeSurLieux} from '../../model/rapport_arrivee_sur_lieux';
+import { formatDate } from '@angular/common'
 
 import * as Lodash from 'lodash';
 
@@ -472,13 +473,42 @@ export class InterventionDetails implements  OnChanges
         } );
     }
 
-    public updateArrivee( event : any )
+    public updateArrivee( dateString: string )
     {
-        console.log( event )
+        if ( dateString )
+        {
+            try
+            {
+                let arrivee: Date = new Date( dateString );
+                this.intervention.DateArrivee = arrivee;
+
+                // envoi du changement de date d'arrivée
+                this.interService.sendInterChange( { Id:this.intervention.Id, DateArrivee:arrivee } );
+            }
+            catch( error )
+            {
+                console.warn( error );
+            }
+        }
+
     }
 
-    public updateDepart( event : any )
+    public updateDepart( dateString: string )
     {
-        console.log( event )
+        if ( dateString )
+        {
+            try
+            {
+                let depart: Date = new Date( dateString );
+                this.intervention.DateDepart = depart;
+
+                // envoi du changement de date de départ
+                this.interService.sendInterChange( { Id:this.intervention.Id, DateArrivee:depart } );
+            }
+            catch( error )
+            {
+                console.warn( error );
+            }
+        }
     }
 }

@@ -2,13 +2,6 @@
 
 <div class="masonry_grid intervention_details" *ngIf="intervention">
 
-    <!-- <div>TOTO</div> -->
-    <!-- <div class="test">Couche:<input type="text" name="fname" />
-    </div>
-    <div class="test">Poule:<input type="text" name="fname" />
-    </div> -->
-
-
     <section title="Fiche" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
         <tr field label="Numéro ">{{intervention.Id}}</tr>
         <tr field label="Contrat ">{{site?.Contrat}}</tr>
@@ -38,8 +31,6 @@
             <span *ngIf="intervenant?.IsAepiaManaged == true">Oui</span>
             <span *ngIf="intervenant?.IsAepiaManaged == false">Non</span>
         </tr>
-        
-        <!-- <tr field label="Coordonnées géographiques">{{intervenant?.Latitude}} {{intervenant?.Longitude}}</tr> -->
 
     </section>
 
@@ -58,11 +49,12 @@
         <tr field *ngIf="intervenant?.IsAepiaManaged" label="Départ">{{intervention.DateDepart | date:'MM/dd/yyyy HH:mm:ss '}}</tr>
 
         <!-- Valeur modifiable si l'intervenant est identifié non géré par Aepia -->
-        <tr field label="Arrivée">
-            <reactive-input class="extensible" [(ngModel)]="intervention.DateArrivee" (ngModelChange)="updateArrivee($event)"></reactive-input>
+        <tr field label="Arrivée" *ngIf="!intervenant?.IsAepiaManaged">
+            <reactive-date-input class="extensible" [ngModel]="intervention.DateArrivee" (dateOutput)="updateArrivee($event)"></reactive-date-input>
         </tr>
-        <tr field label="Départ">
-            <reactive-input class="extensible" [(ngModel)]="intervention.DateDepart" (ngModelChange)="updateDepart($event)"></reactive-input>
+
+        <tr field label="Départ" *ngIf="!intervenant?.IsAepiaManaged">
+            <reactive-date-input class="extensible" [ngModel]="intervention.DateDepart" (dateOutput)="updateDepart($event)"></reactive-date-input>
         </tr>
 
         <tr field label="Clôture ">{{intervention.Cloture | date:'MM/dd/yyyy HH:mm:ss '}}</tr>
