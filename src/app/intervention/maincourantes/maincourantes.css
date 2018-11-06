@@ -8,8 +8,23 @@ span {
 
 #saisieMainCour {
 
-    display: inline-block
+    width: fit-content
+}
 
+#saisieMainCour select {
+    width: auto;
+    margin: 0px 10px 0px 0px
+}
+
+#saisieMainCour input {
+    max-width: 150px;
+    margin: 0px 10px 0px 0px
+}
+
+#saisieMainCour button {
+    width: 120px;
+    height: 26px;
+    margin: 0px 0px 0px 0px
 }
 
 select, textarea, button, input {
@@ -31,4 +46,9 @@ button {
 
 .line:not(:last-child) {
     padding: 0em 0.8em 0em 0em; 
+}
+
+#listMainCour {
+    max-height: 120px;
+    overflow-y: scroll
 }

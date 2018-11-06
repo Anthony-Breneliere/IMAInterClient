@@ -29,7 +29,6 @@ export enum InterventionDataType {
 export class InterventionService  {
 
 
-
     private loadedInterventionsDico : Collections.Dictionary<number, Intervention> = new Collections.Dictionary<number, Intervention>();
     private interventionsStateDico : Collections.Dictionary<number, InterventionState> = new Collections.Dictionary<number, InterventionState>();
     private interventionsAppUrl = 'app/interventions';  // URL to web api
@@ -429,6 +428,11 @@ export class InterventionService  {
     {
         console.log(`Demande de transmission par mail de la fiche ${intervention.Id}.`);
         this._connectionStatus.proxyServer.submitByMail( intervention.Id );
+    }
+
+    submitByFax(intervention: Intervention): any {
+        console.log(`Demande de transmission par FAX de la fiche ${intervention.Id}.`);
+        this._connectionStatus.proxyServer.submitByFax( intervention.Id );
     }
 
     public close( intervention : Intervention ) : void 

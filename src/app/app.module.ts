@@ -43,6 +43,8 @@ import { ReactiveInputComponent } from './intervention/reactive-components/react
 import { ReactiveCheckboxComponent } from './intervention/reactive-components/reactive-checkbox.component';
 import { ReactiveSelectComponent } from './intervention/reactive-components/reactive-select.component';
 import { ReactiveTextareaComponent } from './intervention/reactive-components/reactive-textarea.component';
+import { ReactiveDateInputComponent } from './intervention/reactive-components/reactive-date.input.component';
+
 import { TestComponent } from './test/test.component';
 
 // inclus pour le datepicker:
@@ -82,6 +84,7 @@ import { TestComponent } from './test/test.component';
         ReactiveInputComponent,
         ReactiveSelectComponent,
         ReactiveCheckboxComponent,
+        ReactiveDateInputComponent,
         TestComponent,
         ],
 

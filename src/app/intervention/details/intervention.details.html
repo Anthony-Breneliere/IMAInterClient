@@ -9,57 +9,70 @@
     </div> -->
 
 
-    <section title="Fiche" [readOnly]="readOnly" (resize)="updateLayout()">
+    <section title="Fiche" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
         <tr field label="Numéro ">{{intervention.Id}}</tr>
         <tr field label="Contrat ">{{site?.Contrat}}</tr>
         <tr field label="Nom du client ">{{intervention.NomComplet}}</tr>
         <tr field label="Site ">{{AdresseComplete}}</tr>
         <tr field label="Coordonnées géographiques">{{site?.Latitude}}, {{site?.Longitude}}</tr>
         <tr *ngFor="let tel of telephonesSite" field label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
-        <tr field label="Creation ">{{intervention.Creation | date:'long'}}</tr>
-        <tr field label="Diffusion">{{intervention?.DateDiffusion | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
         <tr field label="Etat ">{{intervention.EtatLabel}}</tr>
-        <tr field label="Lancement ">{{intervention.Lancement | date:'long'}}</tr>
-        <tr field label="Clôture ">{{intervention.Cloture | date:'long'}}</tr>
         <tr field label="Operateur ">{{intervention.Operateur}}</tr>
         <tr field label="Origine ">{{intervention.OrigineLabel}}</tr>
         <tr field label="Type ">{{intervention.TypeFicheLabel}}</tr>
         <tr field label="Evenement Alarme ">{{intervention.Alarme?.Evenement}}</tr>
         <tr field label="Code Canal ">{{intervention.Alarme?.CodeCanal}}</tr>
-        <tr field label="Heure Alarme ">{{intervention.Alarme?.Heure | date:'hh:mm:ss'}}</tr>
+        <tr field label="Heure Alarme ">{{intervention.Alarme?.Heure | date:'HH:mm:ss'}}</tr>
     </section>
 
 
-    <section title="Intervenant" [readOnly]="readOnly" (resize)="updateLayout()">
+    <section title="Intervenant" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
 
         <tr field label="Nom ">{{Capitalize(intervenant?.Nom)}}</tr>
         <tr field label="N° Siren ">{{intervenant?.Societe}}</tr>
-        <tr field label="Adresse "><pre>{{Capitalize(intervenant?.Adresse)}}</pre></tr>
+        <tr field label= "Adresse "><pre>{{Capitalize(intervenant?.Adresse)}}</pre></tr>
         <tr field *ngFor="let tel of intervenant?.Telephones " label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
         <tr field label="Email ">{{intervenant?.Email}}</tr>
         <tr field label="Matricule">{{intervenant?.Matricule}}</tr>
+        <tr *ngIf="!readOnly" field label="Géré par Aepia">
+            <span *ngIf="intervenant?.IsAepiaManaged == true">Oui</span>
+            <span *ngIf="intervenant?.IsAepiaManaged == false">Non</span>
+        </tr>
+        
         <!-- <tr field label="Coordonnées géographiques">{{intervenant?.Latitude}} {{intervenant?.Longitude}}</tr> -->
 
     </section>
 
 
-    <section title="Historique" [readOnly]="readOnly" (resize)="updateLayout()">
+    <section title="Historique" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
 
-        <!-- <tr field label="Moment appel">
-            <reactive-input [(ngModel)]="rapport.NumeroBon" (ngModelChange)="changeRapport({NumeroBon:$event})"></reactive-input>
-        </tr> -->
+        <tr field label="Creation ">{{intervention.Creation | date:'MM/dd/yyyy HH:mm:ss '}}</tr>
+        <tr field label="Lancement ">{{intervention.Lancement | date:'MM/dd/yyyy HH:mm:ss '}}</tr>
 
-        <tr field label="Moment appel ">{{intervention?.MomentAppel | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
-        <tr field label="Date de diffusion">{{intervention?.DateDiffusion | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
-        <tr field label="Affectation">{{intervention?.DateAffectation | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
-        <tr field label="Date d'arrivée">{{intervention?.DateArrivee | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
-        <tr field label="Date de départ">{{intervention?.DateDepart | date:'MM/dd/yyyy hh:mm:ss '}}</tr>
+        <!-- Pas sauvegardé dans le M1: -->
+        <tr field *ngIf="! closedOrCanceled" label="Diffusion">{{intervention.DateDiffusion | date:'MM/dd/yyyy HH:mm:ss '}}</tr>
+        <tr field *ngIf="! closedOrCanceled" label="Affectation">{{intervention.DateAffectation | date:'MM/dd/yyyy HH:mm:ss '}}</tr>
+
+        <!-- Champs en lecture seule par Aepia que si l'intervenant est Aepia -->
+        <tr field *ngIf="intervenant?.IsAepiaManaged" label="Arrivée">{{intervention.DateArrivee | date:'MM/dd/yyyy HH:mm:ss '}}</tr>
+        <tr field *ngIf="intervenant?.IsAepiaManaged" label="Départ">{{intervention.DateDepart | date:'MM/dd/yyyy HH:mm:ss '}}</tr>
+
+        <!-- Valeur modifiable si l'intervenant est identifié non géré par Aepia -->
+        <tr field label="Arrivée">
+            <reactive-input class="extensible" [(ngModel)]="intervention.DateArrivee" (ngModelChange)="updateArrivee($event)"></reactive-input>
+        </tr>
+        <tr field label="Départ">
+            <reactive-input class="extensible" [(ngModel)]="intervention.DateDepart" (ngModelChange)="updateDepart($event)"></reactive-input>
+        </tr>
+
+        <tr field label="Clôture ">{{intervention.Cloture | date:'MM/dd/yyyy HH:mm:ss '}}</tr>
+
 
     </section>
 
     <!--
         Déplacé dans un composant spécifique
-        <section title="Maincourante" [readOnly]="readOnly" (resize)="updateLayout()">
+        <section title="Maincourante" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
 
         <table id="listMainCour">
             <tr *ngFor="let mainCour of listMainCour">
@@ -88,7 +101,7 @@
 
     </section> -->
 
-    <section *ngIf="rapport" title="Complements" [readOnly]="readOnly" (resize)="updateLayout()">
+    <section *ngIf="rapport" title="Complements" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
         <tr field label="Numero de bon">
             <!-- <reactive-input #numeroBon [(ngModel)]="rapport.NumeroBon" (ngModelChange)="changeRapport({NumeroBon:numeroBon.value})" (valueChanges)="valueChange" /> -->
             <reactive-input [(ngModel)]="rapport.NumeroBon" (ngModelChange)="changeRapport({NumeroBon:$event})"></reactive-input>
@@ -111,7 +124,7 @@
     </section>
 
 
-    <section *ngIf="rapport && trajet" title="Transport" [readOnly]="readOnly" (resize)="updateLayout()">
+    <section *ngIf="rapport && trajet" title="Transport" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
         <tr field label="Meteo">
             <reactive-checkbox label="Vent Fort" [(ngModel)]="trajet.Meteo.VentFort" (ngModelChange)="changeRapport({Trajet:{Meteo:{VentFort:$event}}})"></reactive-checkbox>
             <reactive-checkbox label="Pluie" [(ngModel)]="trajet.Meteo.Pluie" (ngModelChange)="changeRapport({Trajet:{Meteo:{Pluie:$event}}})"></reactive-checkbox>
@@ -127,7 +140,7 @@
         </tr>
     </section>
 
-    <section *ngIf="rapport && arriveeSurLieux" title="Vérifications" [readOnly]="readOnly" (resize)="updateLayout()">
+    <section *ngIf="rapport && arriveeSurLieux" title="Vérifications" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
         <tr field label="Numero de rue">
             <reactive-input [(ngModel)]="arriveeSurLieux.NumeroDeRue" (ngModelChange)="changeRapport({ArriveeSurLieux:{NumeroDeRue:$event}})"></reactive-input>
         </tr>
@@ -187,7 +200,7 @@
 
     </section>
 
-    <section *ngIf="rapport" title="Constatations matérielles" data-gs-width="auto" [readOnly]="readOnly" (resize)="updateLayout()">
+    <section *ngIf="rapport" title="Constatations matérielles" data-gs-width="auto" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
 
         <tr field label="Lumière(s) Allumée(s)">
             <select id="LumieresAllumees" [(ngModel)]="verifications.LumieresAllumees" (ngModelChange)="changeRapport({Verifications:{LumieresAllumees:$event}})">
@@ -289,7 +302,7 @@
 
     </section>
 
-    <section *ngIf="rapport && presence" title="Présence sur site" data-gs-width="auto" [readOnly]="readOnly" (resize)="updateLayout()">
+    <section *ngIf="rapport && presence" title="Présence sur site" data-gs-width="auto" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
         <tr field label="Types de présences">
             <reactive-checkbox label="Client" [(ngModel)]="presence.Client" (ngModelChange)="changeRapport({Presence:{Client:$event}})"></reactive-checkbox>
             <reactive-checkbox label="Contacts" [(ngModel)]="presence.Contacts" (ngModelChange)="changeRapport({Presence:{Contacts:$event}})"></reactive-checkbox>
@@ -329,7 +342,7 @@
     </section>
 
 
-    <section *ngIf="rapport && miseEnSecurite" title="Mise en sécurité" data-gs-width="auto" [readOnly]="readOnly" (resize)="updateLayout()">
+    <section *ngIf="rapport && miseEnSecurite" title="Mise en sécurité" data-gs-width="auto" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
 
         <tr field label="Site refermable">
             <select [(ngModel)]="miseEnSecurite.SiteRefermable" (ngModelChange)="changeRapport({MiseEnSecurite:{SiteRefermable:$event}})">
@@ -362,7 +375,7 @@
     </section>
 
 
-    <section *ngIf="infosFacturation" title="Facturation" data-gs-width="auto" [readOnly]="readOnly" (resize)="updateLayout()">
+    <section *ngIf="infosFacturation" title="Facturation" data-gs-width="auto" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
 
         <tr field label="Envoi du CR">
             <select [(ngModel)]="intervention.InfosFacturation.AppelPourCR" (ngModelChange)="changeInfoFactu({AppelPourCR:$event})">

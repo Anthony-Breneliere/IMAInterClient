@@ -2,14 +2,16 @@
 
     <div><strong>Maincourantes</strong> </div>
 
-    <table id="listMainCour">
-        <tr *ngFor="let mainCour of listMainCour">
-            <td class="line">{{mainCour.Date | date:'short'}} </td>
-            <td class="line">{{mainCour.Operateur}}</td>
-            <td class="line">{{getTypeMaincourValue(mainCour.Type)}}</td>
-            <td class="line">{{mainCour.Commentaire}}</td>
-        </tr>
-    </table>
+    <div id="listMainCour">
+        <table>
+            <tr *ngFor="let mainCour of listMainCour">
+                <td class="line">{{mainCour.Date | date:'short'}} </td>
+                <td class="line">{{mainCour.Operateur}}</td>
+                <td class="line">{{getTypeMaincourValue(mainCour.Type)}}</td>
+                <td class="line">{{mainCour.Commentaire}}</td>
+            </tr>
+        </table>
+    </div>
 
     <div id="saisieMainCour">
 

@@ -122,10 +122,10 @@ export class InterventionDetails implements  OnChanges
             this.interventionChangeSubscription.unsubscribe();
     }
 
-    public get readOnly()
+    public get closedOrCanceled()
     {
-        let readOnly = this._intervention.Etat == Etat.Annulee || this._intervention.Etat == Etat.Close;
-        return readOnly;
+        let closedOrCanceled = this._intervention.Etat == Etat.Annulee || this._intervention.Etat == Etat.Close;
+        return closedOrCanceled;
     }
 
     public get telephonesSite() : Telephone[] { return Array.isArray( this.site.Telephones ) ? this.site.Telephones : [] } 
@@ -419,7 +419,7 @@ export class InterventionDetails implements  OnChanges
         if ( text.match(/[0-9]+/) != null )
             result +="Tel ";
 
-        result += label.replace( /_/g, " " ).replace( /telephone/g, "").toLowerCase();
+        result += this.Capitalize( label.replace( /_/g, " " ).replace( /telephone/g, "") );
 
         return result;
     }
@@ -472,4 +472,13 @@ export class InterventionDetails implements  OnChanges
         } );
     }
 
+    public updateArrivee( event : any )
+    {
+        console.log( event )
+    }
+
+    public updateDepart( event : any )
+    {
+        console.log( event )
+    }
 }

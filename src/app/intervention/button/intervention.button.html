@@ -9,6 +9,7 @@
 
     </div>
 
+    <!-- <div class="tooltiptext">Coucou</div> -->
 </div>
 
 <context-menu #buttonMenu>
@@ -18,11 +19,15 @@
     </ng-template>
 
     <ng-template [visible]="canSubmit" contextMenuItem let-item (execute)="submit()">
-        Transmettre
+        Transmettre sur mobile
     </ng-template>
 
     <ng-template [visible]="canSubmitByMail" contextMenuItem let-item (execute)="submitByMail()">
         Transmettre par mail
+    </ng-template>
+
+    <ng-template [visible]="canSubmitByFax" contextMenuItem let-item (execute)="submitByFax()">
+        Transmettre par fax
     </ng-template>
 
     <ng-template [visible]="canClose" contextMenuItem let-item (execute)="close()">

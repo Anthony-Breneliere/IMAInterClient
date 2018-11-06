@@ -27,13 +27,20 @@
         </intervention-button>
         -->
         <div *ngFor="let intervention of groupInterventions | sortInterventionByDateTime">
-            <intervention-button #buttons (onSelected)="onSelected($event)" [updating]="isCurrentlyUpdated( intervention.Id )"
-                [intervention]="intervention" [selected]="intervention.Id == this.SelectedIntervention?.Id" isMyInter="isMyInters" 
-                routerLink="/intervention/{{intervention.Id}}" queryParamsHandling="preserve" >
+            <intervention-button #buttons
+                (onSelected)="onSelected($event)"
+                [updating]="isCurrentlyUpdated( intervention.Id )"
+                [intervention]="intervention"
+                [selected]="intervention.Id == this.SelectedIntervention?.Id"
+                isMyInter="isMyInters" 
+                routerLink="/intervention/{{intervention.Id}}"
+                queryParamsHandling="preserve" >
 
-                <intervention-button-content [intervention]="intervention"></intervention-button-content>
+                <intervention-button-content [intervention]="intervention">
+                </intervention-button-content>
 
             </intervention-button>
+
         </div>
 
     </div>

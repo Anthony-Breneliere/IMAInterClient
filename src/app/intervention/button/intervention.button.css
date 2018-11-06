@@ -45,7 +45,11 @@ div.client {
 }
 
 #authDeparture {
-    margin: 10px 0px 10px 0px;
+    margin: 10px 0px 0px 0px;
+    width: 100%;
+    font-size: 1em;
+    padding: 5px 20px;
+    text-align: center
 }
 
 div.bouton_nav {

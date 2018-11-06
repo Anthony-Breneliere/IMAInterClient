@@ -23,13 +23,12 @@ export class Intervention
     TypeFiche : TypeFiche;
 
     Creation : Date;
-    MomentAppel : Date;
+    Lancement : Date;
+    DateDiffusion : Date;
+    DateAffectation : Date;
     DateArrivee : Date;
     DateAnnulation : Date;
     DateDepart : Date;
-    DateDiffusion : Date;
-    DateAffectation : Date;
-    Lancement : Date;
     Cloture : Date;
     
     Site : Site;

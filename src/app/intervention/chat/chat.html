@@ -1,11 +1,17 @@
 <div id="windowChat">
-    <div><strong>Discussion instantannée</strong></div>
-    <div id="chatHistory" #messageList *ngIf="intervention">
-        <div *ngFor="let message of intervention.Chat">
-            <span>{{message.Date | date:'hh:mm:ss'}}</span><span>{{message.Buddy}} > </span><span>{{message.Texte}}</span>
-        </div>
+    <div><strong>Discussion instantanée</strong></div>
+
+    <div id="chatHistory" *ngIf="intervention">
+        <table>
+            <tr *ngFor="let message of intervention.Chat">
+                <td class="line">{{message.Date | date:'HH:mm:ss'}}</td>
+                <td class="line">{{message.Buddy}}</td>
+                <td class="line">{{message.Texte}}</td>
+            </tr>
+        </table>
     </div>
-    <div *ngIf="canChat">
+
+    <div id="chatinput" *ngIf="canChat">
         <span>Envoyer un message:</span> <input #messageInput (keyup)="keyPress( $event )" />
     </div>
 </div>

@@ -39,13 +39,16 @@ export class InterventionButton implements OnInit
         // défaut, on l'initialise pour l'ajouter au DOM
         this.contextMenuService.show.subscribe((el) => {
             const overlay = this.contextMenuService.getLastAttachedOverlay();
-            overlay.updatePosition();
-            const comp: any = overlay.contextMenu;
-            if (!comp._keyManager) {
-                 comp.ngOnInit();
-             }
-            comp.changeDetector.markForCheck();
-            comp.changeDetector.detectChanges();
+            if ( overlay )
+            {
+                overlay.updatePosition();
+                const comp: any = overlay.contextMenu;
+                if (!comp._keyManager) {
+                    comp.ngOnInit();
+                }
+                comp.changeDetector.markForCheck();
+                comp.changeDetector.detectChanges();
+            }
          });
     }
 
@@ -72,6 +75,11 @@ export class InterventionButton implements OnInit
     submitByMail() : void 
     {
         this._interService.submitByMail( this.intervention );
+    }
+
+    submitByFax() : void 
+    {
+        this._interService.submitByFax( this.intervention );
     }
 
     close() : void 
@@ -108,10 +116,19 @@ export class InterventionButton implements OnInit
         let intervenant = this.intervention.Intervenant;
 
         if ( this.intervention.Etat == Etat.Creee && 
-            intervenant && intervenant.Email )
+            intervenant && intervenant.Email && intervenant.Email != "")
             canSubmit = true;
 
         return canSubmit;
+    }
+
+
+    get canSubmitByFax() : boolean 
+    {
+        if ( this._intervenantFaxNumber )
+            return true;
+        else
+            return false;
     }
 
     get canClose() : boolean 
@@ -143,5 +160,32 @@ export class InterventionButton implements OnInit
     {
         return this._interService.immobilizeIntervenant( this.intervention.Id );
     }
+
+
+    private _intervenantFaxNumber : string;
+
+    public intervenantFaxNumber(): string
+    {
+        // pour les perfs on garde une propriété privée dans la vue du bouton comportant le numero de fax
+        if ( this._intervenantFaxNumber )
+            return this._intervenantFaxNumber;
+
+        let intervenant = this.intervention.Intervenant;
+
+        if ( intervenant && intervenant.Telephones)
+        {
+            let telFax = intervenant.Telephones.find( t => t.Type.toLowerCase().indexOf("fax") != -1);
+
+            if ( telFax )
+            {
+                this._intervenantFaxNumber = telFax.Numero;
+                return this._intervenantFaxNumber;
+            }
+        }
+
+        return null;
+    }
+
+
 
 }

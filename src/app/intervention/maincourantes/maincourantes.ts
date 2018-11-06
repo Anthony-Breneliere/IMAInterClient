@@ -93,6 +93,7 @@ export class Maincourantes {
         else
         {
             this.interService.addNewMaincourante( this._intervention.Id, this.selectedMaincourType, this.maincourComment );
+            this.maincourComment = "";
         }
     }
 
