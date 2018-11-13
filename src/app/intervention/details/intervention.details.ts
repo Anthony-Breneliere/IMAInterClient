@@ -144,7 +144,11 @@ export class InterventionDetails implements  OnChanges
 
     private get quellesLumieresAllumees() : RapportLumieresAllumees
     { 
-        return new RapportLumieresAllumees();
+        // il se peut que le serveur mette cette valeur à null
+        if ( ! this.rapport.Verifications.QuellesIssuesOuvertes )
+            this.rapport.Verifications.QuellesLumieresAllumees = new RapportLumieresAllumees();
+
+        return this.rapport.Verifications.QuellesLumieresAllumees;
     }
     
     

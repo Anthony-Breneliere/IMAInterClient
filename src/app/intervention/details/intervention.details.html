@@ -204,7 +204,6 @@
         <tr field label="Pièces Allumées" *ngIf="verifications.LumieresAllumees">
             <reactive-checkbox label="Buanderie" [(ngModel)]="quellesLumieresAllumees.Buanderie" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Buanderie:$event}}})"></reactive-checkbox>
             <reactive-checkbox label="Bureau" [(ngModel)]="quellesLumieresAllumees.Bureau" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Bureau:$event}}})"></reactive-checkbox>
-            <reactive-checkbox label="Cellier" [(ngModel)]="quellesLumieresAllumees.Cellier" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Cellier:$event}}})"></reactive-checkbox>
             <reactive-checkbox label="Chambre" [(ngModel)]="quellesLumieresAllumees.Chambre" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Chambre:$event}}})"></reactive-checkbox>
             <reactive-checkbox label="Couloir" [(ngModel)]="quellesLumieresAllumees.Couloir" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Couloir:$event}}})"></reactive-checkbox>
             <reactive-checkbox label="Cuisine" [(ngModel)]="quellesLumieresAllumees.Cuisine" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Cuisine:$event}}})"></reactive-checkbox>
@@ -280,11 +279,11 @@
 
         <tr field label="Detail effraction" *ngIf="verifications.Effraction">
             <reactive-checkbox label="Porte" [(ngModel)]="quellesEffractions.Porte" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Porte:$event}}})"></reactive-checkbox>
-            <reactive-checkbox label="Fenetre" [(ngModel)]="quellesEffractions.Fenetre" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Fenetre:$event}}})"></reactive-checkbox>
-            <reactive-checkbox label="BaieVitree" [(ngModel)]="quellesEffractions.BaieVitree" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{BaieVitree:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Fenêtre" [(ngModel)]="quellesEffractions.Fenetre" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Fenetre:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Baie Vitrée" [(ngModel)]="quellesEffractions.BaieVitree" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{BaieVitree:$event}}})"></reactive-checkbox>
             <reactive-checkbox label="Portail" [(ngModel)]="quellesEffractions.Portail" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Portail:$event}}})"></reactive-checkbox>
             <reactive-checkbox label="Portillon" [(ngModel)]="quellesEffractions.Portillon" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Portillon:$event}}})"></reactive-checkbox>
-            <reactive-checkbox label="Metallique" [(ngModel)]="quellesEffractions.RideauMetallique" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{RideauMetallique:$event}}})"></reactive-checkbox>
+            <reactive-checkbox label="Rideau Métallique" [(ngModel)]="quellesEffractions.RideauMetallique" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{RideauMetallique:$event}}})"></reactive-checkbox>
             <reactive-checkbox label="Autre" id="EffractionAutre" [(ngModel)]="AutreEffractionChecked"></reactive-checkbox>
         </tr>
 
