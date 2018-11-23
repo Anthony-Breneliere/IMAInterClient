@@ -6,6 +6,7 @@ import { Component, EventEmitter, Output, Input, ViewChild, OnInit } from '@angu
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { Intervention } from '../../model/intervention';
 import { InterventionService } from '../../services/intervention.service';
+import { ConnectionStatus } from '../../services/connection.status';
 import { ContextMenuService } from 'ngx-contextmenu';
 import { Etat } from '../../model/enums';
 
@@ -30,7 +31,7 @@ export class InterventionButton implements OnInit
     @Output() onSelected = new EventEmitter<InterventionButton>();
     @ViewChild(ContextMenuComponent) public buttonMenu: ContextMenuComponent;
 
-    constructor( private _interService : InterventionService, private contextMenuService : ContextMenuService )
+    constructor( private _interService : InterventionService, private _connectionStatus : ConnectionStatus, private contextMenuService : ContextMenuService )
     {}
 
     public ngOnInit()
@@ -92,6 +93,11 @@ export class InterventionButton implements OnInit
         this._interService.cancel( this.intervention );
     }
 
+    get connected() : boolean
+    {
+        return this._connectionStatus.connected;
+    }
+
     get canSubmit() : boolean 
     {
         let intervenant = this.intervention.Intervenant;
@@ -103,7 +109,7 @@ export class InterventionButton implements OnInit
         //     && site && site.Latitude && site.Longitude )
         //     canSubmit = true;                                // latitude longitude plus obligatoire
 
-        if ( this.intervention.Etat == Etat.Creee
+        if ( this.connected && this.intervention.Etat == Etat.Creee 
             && intervenant && intervenant.Societe )
             canSubmit = true;
 
@@ -115,7 +121,7 @@ export class InterventionButton implements OnInit
         let canSubmit : boolean = false;
         let intervenant = this.intervention.Intervenant;
 
-        if ( this.intervention.Etat == Etat.Creee && 
+        if ( this.connected && this.intervention.Etat == Etat.Creee && 
             intervenant && intervenant.Email && intervenant.Email != "")
             canSubmit = true;
 
@@ -125,7 +131,7 @@ export class InterventionButton implements OnInit
 
     get canSubmitByFax() : boolean 
     {
-        if ( this._intervenantFaxNumber )
+        if ( this.connected && this._intervenantFaxNumber )
             return true;
         else
             return false;
@@ -133,13 +139,13 @@ export class InterventionButton implements OnInit
 
     get canClose() : boolean 
     {
-        let canClose = this.intervention.Etat != null && this.intervention.Etat == Etat.AttenteCloture;
+        let canClose = this.connected && this.intervention.Etat != null && this.intervention.Etat == Etat.AttenteCloture;
         return canClose;
     }
 
     get canCancel() : boolean 
     {
-        let canCancel = this.intervention.Etat != null && this.intervention.Etat != Etat.Close && this.intervention.Etat != Etat.Annulee;
+        let canCancel = this.connected && this.intervention.Etat != null && this.intervention.Etat != Etat.Close && this.intervention.Etat != Etat.Annulee;
         return canCancel;
     }
 

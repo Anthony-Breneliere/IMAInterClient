@@ -23,6 +23,7 @@ export class RapportPresence
     public Contacts : boolean;
     public AutrePresence : string;
 
+    public PresenceVehicule : boolean;
     public TypeVehicule : string;
     public CouleurVehicule : string;
     public PlaqueVehicule : string;

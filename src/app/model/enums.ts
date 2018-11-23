@@ -99,3 +99,21 @@ export enum OrigineConstatee
     AbsenceIndentification,
     RienASignaler
 }
+
+export enum AutoMC
+{
+    AnnulationIntervention = 1435,
+    AnnulationAcceptee = 1480,
+    ArriveeSurPlaceIntervenants = 1433,
+    ClotureIntervention = 1432,
+    RapportIntervention = 1438,
+    CompteRenduIntervention = 1482,
+    DemandeAnnulationTransmise = 1446,
+    DemandeInterventionTransmise = 1444,
+    InterventionAcceptee = 1448,
+    InterventionRefusee = 1449,
+    ReceptionAudio = 6122,
+    ReceptionImage = 6120,
+    ReceptionVideo = 6121,
+    MiseEnStatique = 10380696
+}

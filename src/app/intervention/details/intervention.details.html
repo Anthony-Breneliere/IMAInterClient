@@ -2,7 +2,7 @@
 
 <div class="masonry_grid intervention_details" *ngIf="intervention">
 
-    <section title="Fiche" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
+    <section title="Fiche" [readOnly]="readOnlySection" (resize)="updateLayout()">
         <tr field label="Numéro ">{{intervention.Id}}</tr>
         <tr field label="Contrat ">{{site?.Contrat}}</tr>
         <tr field label="Nom du client ">{{intervention.NomComplet}}</tr>
@@ -19,7 +19,7 @@
     </section>
 
 
-    <section title="Intervenant" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
+    <section title="Intervenant" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
         <tr field label="Nom ">{{Capitalize(intervenant?.Nom)}}</tr>
         <tr field label="N° Siren ">{{intervenant?.Societe}}</tr>
@@ -35,14 +35,14 @@
     </section>
 
 
-    <section title="Historique" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
+    <section title="Historique" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
         <tr field label="Creation ">{{intervention.Creation | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
         <tr field label="Lancement ">{{intervention.Lancement | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
 
         <!-- Pas sauvegardé dans le M1: -->
-        <tr field *ngIf="! closedOrCanceled" label="Diffusion">{{intervention.DateDiffusion | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
-        <tr field *ngIf="! closedOrCanceled" label="Affectation">{{intervention.DateAffectation | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
+        <tr field *ngIf="! readOnlySection" label="Diffusion">{{intervention.DateDiffusion | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
+        <tr field *ngIf="! readOnlySection" label="Affectation">{{intervention.DateAffectation | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
 
         <!-- Champs en lecture seule par Aepia que si l'intervenant est Aepia -->
         <tr field *ngIf="!updateIsDateArriveeUpdatable" label="Arrivée">{{intervention.DateArrivee | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
@@ -64,7 +64,7 @@
 
     <!--
         Déplacé dans un composant spécifique
-        <section title="Maincourante" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
+        <section title="Maincourante" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
         <table id="listMainCour">
             <tr *ngFor="let mainCour of listMainCour">
@@ -93,7 +93,7 @@
 
     </section> -->
 
-    <section *ngIf="rapport" title="Complements" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
+    <section *ngIf="rapport" title="Complements" [readOnly]="readOnlySection" (resize)="updateLayout()">
         <tr field label="Numero de bon">
             <!-- <reactive-input #numeroBon [(ngModel)]="rapport.NumeroBon" (ngModelChange)="changeRapport({NumeroBon:numeroBon.value})" (valueChanges)="valueChange" /> -->
             <reactive-input [(ngModel)]="rapport.NumeroBon" (ngModelChange)="changeRapport({NumeroBon:$event})"></reactive-input>
@@ -116,7 +116,7 @@
     </section>
 
 
-    <section *ngIf="rapport && trajet" title="Transport" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
+    <section *ngIf="rapport && trajet" title="Transport" [readOnly]="readOnlySection" (resize)="updateLayout()">
         <tr field label="Meteo">
             <reactive-checkbox label="Vent Fort" [(ngModel)]="trajet.Meteo.VentFort" (ngModelChange)="changeRapport({Trajet:{Meteo:{VentFort:$event}}})"></reactive-checkbox>
             <reactive-checkbox label="Pluie" [(ngModel)]="trajet.Meteo.Pluie" (ngModelChange)="changeRapport({Trajet:{Meteo:{Pluie:$event}}})"></reactive-checkbox>
@@ -132,7 +132,7 @@
         </tr>
     </section>
 
-    <section *ngIf="rapport && arriveeSurLieux" title="Vérifications" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
+    <section *ngIf="rapport && arriveeSurLieux" title="Vérifications" [readOnly]="readOnlySection" (resize)="updateLayout()">
         <tr field label="Numero de rue">
             <reactive-input [(ngModel)]="arriveeSurLieux.NumeroDeRue" (ngModelChange)="changeRapport({ArriveeSurLieux:{NumeroDeRue:$event}})"></reactive-input>
         </tr>
@@ -192,7 +192,7 @@
 
     </section>
 
-    <section *ngIf="rapport" title="Constatations matérielles" data-gs-width="auto" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
+    <section *ngIf="rapport" title="Constatations matérielles" data-gs-width="auto" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
         <tr field label="Lumière(s) Allumée(s)">
             <select id="LumieresAllumees" [(ngModel)]="verifications.LumieresAllumees" (ngModelChange)="changeRapport({Verifications:{LumieresAllumees:$event}})">
@@ -293,7 +293,7 @@
 
     </section>
 
-    <section *ngIf="rapport && presence" title="Présence sur site" data-gs-width="auto" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
+    <section *ngIf="rapport && presence" title="Présence sur site" data-gs-width="auto" [readOnly]="readOnlySection" (resize)="updateLayout()">
         <tr field label="Types de présences">
             <reactive-checkbox label="Client" [(ngModel)]="presence.Client" (ngModelChange)="changeRapport({Presence:{Client:$event}})"></reactive-checkbox>
             <reactive-checkbox label="Contacts" [(ngModel)]="presence.Contacts" (ngModelChange)="changeRapport({Presence:{Contacts:$event}})"></reactive-checkbox>
@@ -312,28 +312,28 @@
         </tr>
 
         <tr field label="Présence véhicule">
-            <select [(ngModel)]="PresenceVehiculeChecked">
+            <select [(ngModel)]="presence.PresenceVehicule" (ngModelChange)="changeRapport({Presence:{PresenceVehicule:$event}})">
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
         </tr>
 
-        <tr field label="Type de véhicule" *ngIf="PresenceVehiculeChecked">
+        <tr field label="Type de véhicule" *ngIf="presence.PresenceVehicule">
             <reactive-input [(ngModel)]="presence.TypeVehicule" (ngModelChange)="changeRapport({Presence:{TypeVehicule:$event}})"></reactive-input>
         </tr>
 
-        <tr field label="Couleur du véhicule" *ngIf="PresenceVehiculeChecked">
+        <tr field label="Couleur du véhicule" *ngIf="presence.PresenceVehicule">
             <reactive-input [(ngModel)]="presence.CouleurVehicule" (ngModelChange)="changeRapport({Presence:{CouleurVehicule:$event}})"></reactive-input>
         </tr>
 
-        <tr field label="Immatriculation" *ngIf="PresenceVehiculeChecked">
+        <tr field label="Immatriculation" *ngIf="presence.PresenceVehicule">
             <reactive-input [(ngModel)]="presence.PlaqueVehicule" (ngModelChange)="changeRapport({Presence:{PlaqueVehicule:$event}})"></reactive-input>
         </tr>
 
     </section>
 
 
-    <section *ngIf="rapport && miseEnSecurite" title="Mise en sécurité" data-gs-width="auto" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
+    <section *ngIf="rapport && miseEnSecurite" title="Mise en sécurité" data-gs-width="auto" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
         <tr field label="Site refermable">
             <select [(ngModel)]="miseEnSecurite.SiteRefermable" (ngModelChange)="changeRapport({MiseEnSecurite:{SiteRefermable:$event}})">
@@ -366,7 +366,7 @@
     </section>
 
 
-    <section *ngIf="infosFacturation" title="Facturation" data-gs-width="auto" [readOnly]="closedOrCanceled" (resize)="updateLayout()">
+    <section *ngIf="infosFacturation" title="Facturation" data-gs-width="auto" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
         <tr field label="Envoi du CR">
             <select [(ngModel)]="intervention.InfosFacturation.AppelPourCR" (ngModelChange)="changeInfoFactu({AppelPourCR:$event})">

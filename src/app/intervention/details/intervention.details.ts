@@ -36,8 +36,9 @@ import {
 } from '@angular/core';
 
 import { Intervention } from '../../model/intervention';
-import { OrigineFiche, TypeFiche, Trajet, MotifIntervention, TypePresence, DepotBonIntervention, Etat, TypeSite, CircuitVerification, AppelPourCR, OrigineConstatee} from '../../model/enums';
+import { OrigineFiche, TypeFiche, Trajet, MotifIntervention, TypePresence, DepotBonIntervention, Etat, TypeSite, CircuitVerification, AppelPourCR, OrigineConstatee, AutoMC} from '../../model/enums';
 import { InterventionService } from "../../services/intervention.service";
+import { ConnectionStatus } from "../../services/connection.status";
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Telephone } from '../../model/telephone';
@@ -79,7 +80,7 @@ export class InterventionDetails implements  OnChanges
             this.interventionChangeSubscription.unsubscribe();
 
         this.interventionChangeSubscription = 
-            this.interService.newInterData$.pipe(filter( i => this.intervention && this.intervention.Id == i.Id  )).subscribe( i => this.detectChanges() );
+            this._interService.newInterData$.pipe(filter( i => this.intervention && this.intervention.Id == i.Id  )).subscribe( i => this.detectChanges() );
 
         // je reinitialise le layout pour la nouvelle instruction
         this.grid = null;
@@ -123,10 +124,13 @@ export class InterventionDetails implements  OnChanges
             this.interventionChangeSubscription.unsubscribe();
     }
 
-    public get closedOrCanceled()
+    public get readOnlySection()
     {
-        let closedOrCanceled = this._intervention.Etat == Etat.Annulee || this._intervention.Etat == Etat.Close;
-        return closedOrCanceled;
+        let readOnlySection = 
+            this._intervention.Etat == Etat.Annulee || this._intervention.Etat == Etat.Close
+            || ! this._connectionStatus.connected
+
+        return readOnlySection;
     }
 
     public get telephonesSite() : Telephone[] { return Array.isArray( this.site.Telephones ) ? this.site.Telephones : [] } 
@@ -172,7 +176,7 @@ export class InterventionDetails implements  OnChanges
     // this.intervention && this.intervention.MainCourantes ? this.intervention.MainCourantes : 
     private get listTypeMainCour() : ITypeMainCourante[]
     {
-         return this.interService.listeTypeMaincour;
+         return this._interService.listeTypeMaincour;
     } 
 
     public get AdresseComplete() : string 
@@ -195,7 +199,7 @@ export class InterventionDetails implements  OnChanges
             let site = this.intervention.Site;
             let intervenant = this.intervention.Intervenant;
 
-            if ( this.interService.waitingDeparture( this.intervention ) )
+            if ( this._interService.waitingDeparture( this.intervention ) )
                 warning = "L'intervenant est en attente d'une autorisation de départ.";
 
             else if ( ! intervenant || ! intervenant.Societe )
@@ -242,7 +246,7 @@ export class InterventionDetails implements  OnChanges
 
     private radioValue : MotifIntervention;
 
-    constructor( private r: Renderer, private el: ElementRef, private interService: InterventionService, private ref: ChangeDetectorRef )
+    constructor( private r: Renderer, private el: ElementRef, private _connectionStatus: ConnectionStatus, private _interService: InterventionService, private ref: ChangeDetectorRef )
     {
         // on transforme l'enum MotifIntervention en une structure clé/valeur qu'on peut binder
         this.motifChoices = Object.values(MotifIntervention).filter( (e : any) => typeof( e ) == "number" );
@@ -323,7 +327,11 @@ export class InterventionDetails implements  OnChanges
 
     public get PresenceVehiculeChecked() : boolean
     {
-        let checked: boolean = this.presence && ( this.presence.TypeVehicule != null || this.presence.CouleurVehicule != null || this.presence.PlaqueVehicule != null );
+        let checked: boolean;
+        if ( this.presence && ( this.presence.TypeVehicule || this.presence.CouleurVehicule || this.presence.PlaqueVehicule ) )
+            checked = true;
+        else
+            checked = false;
 
         return checked;
     }
@@ -332,7 +340,7 @@ export class InterventionDetails implements  OnChanges
     {
         this.presence.TypeVehicule = value ? "" : null;
         this.presence.CouleurVehicule = value ? "" : null;
-        this.presence.PlaqueVehicule = value ? "" : null;
+        this.presence.PlaqueVehicule = value ? " " : null;
 
         if ( ! value )
             this.changeRapport({Presence:{TypeVehicule:null, CouleurVehicule:null, PlaqueVehicule:null}});
@@ -379,8 +387,8 @@ export class InterventionDetails implements  OnChanges
     getTypeMaincourValue( key: number ) : string
     {
         // retourne le libellé du type de main courante ou "inconnu" si le type n'existe pas:
-        let foundMainCour =  this.interService.listeTypeMaincour.find( e => e.Type == key )
-            || this.interService.listeM1LibelleDivers.find( e => e.Type == key );
+        let foundMainCour =  this._interService.listeTypeMaincour.find( e => e.Type == key )
+            || this._interService.listeM1LibelleDivers.find( e => e.Type == key );
 
         return foundMainCour ? foundMainCour.Libelle : "Type inconnu";
     }
@@ -438,7 +446,7 @@ export class InterventionDetails implements  OnChanges
         }
         else
         {
-            this.interService.addNewMaincourante( this.intervention.Id, this.selectedMaincourType, this.maincourComment );
+            this._interService.addNewMaincourante( this.intervention.Id, this.selectedMaincourType, this.maincourComment );
         }
     }
 
@@ -460,7 +468,7 @@ export class InterventionDetails implements  OnChanges
             Lodash.merge( this.rapport, data);
 
             // envoi du changement dans le rapport
-            this.interService.sendInterChange( { Id:this.intervention.Id, Rapport:data } );
+            this._interService.sendInterChange( { Id:this.intervention.Id, Rapport:data } );
         } );
     }
 
@@ -473,7 +481,7 @@ export class InterventionDetails implements  OnChanges
             Lodash.merge( this.intervention, data);
 
             // envoi du changement dans le rapport
-            this.interService.sendInterChange( { Id:this.intervention.Id, InfosFacturation:data } );
+            this._interService.sendInterChange( { Id:this.intervention.Id, InfosFacturation:data } );
         } );
     }
 
@@ -487,7 +495,7 @@ export class InterventionDetails implements  OnChanges
                 this.intervention.DateArrivee = arrivee;
 
                 // envoi du changement de date d'arrivée
-                this.interService.sendInterChange( { Id:this.intervention.Id, DateArrivee:arrivee } );
+                this._interService.sendInterChange( { Id:this.intervention.Id, DateArrivee:arrivee } );
             }
             catch( error )
             {
@@ -507,7 +515,7 @@ export class InterventionDetails implements  OnChanges
                 this.intervention.DateDepart = depart;
 
                 // envoi du changement de date de départ
-                this.interService.sendInterChange( { Id:this.intervention.Id, DateArrivee:depart } );
+                this._interService.sendInterChange( { Id:this.intervention.Id, DateArrivee:depart } );
             }
             catch( error )
             {
@@ -519,9 +527,18 @@ export class InterventionDetails implements  OnChanges
     public get updateIsDateDepartUpdatable() : boolean
     {
         var updatable = false;
-        if ( this.intervention && this.intervention.Intervenant && this.intervention.Intervenant.IsAepiaManaged 
-            &&  this.intervention.Etat != Etat.Annulee && this.intervention.Etat == Etat.Close )
-            updatable = true;
+        if ( this.intervention )
+        {
+            let mainCours : MainCourante[] = this.intervention.MainCourantes ;
+
+            if ( this.intervention.Intervenant && this.intervention.Intervenant.IsAepiaManaged 
+                &&  this.intervention.Etat != Etat.Annulee && this.intervention.Etat == Etat.Close )
+                updatable = true;
+
+            
+            // else if (mainCours && mainCours.some( ( mc :MainCourante) => mc.Type == AutoMC.DemandeInterventionTransmise ) )
+            //     updatable = true;
+        }
         return updatable;
     }
 
