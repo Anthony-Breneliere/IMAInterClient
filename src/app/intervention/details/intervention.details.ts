@@ -515,4 +515,18 @@ export class InterventionDetails implements  OnChanges
             }
         }
     }
+
+    public get updateIsDateDepartUpdatable() : boolean
+    {
+        var updatable = false;
+        if ( this.intervention && this.intervention.Intervenant && this.intervention.Intervenant.IsAepiaManaged 
+            &&  this.intervention.Etat != Etat.Annulee && this.intervention.Etat == Etat.Close )
+            updatable = true;
+        return updatable;
+    }
+
+    public get updateIsDateArriveeUpdatable() : boolean
+    {
+        return this.updateIsDateDepartUpdatable;
+    }
 }

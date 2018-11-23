@@ -7,9 +7,7 @@ import { InterventionState } from '../model/intervention_state';
 import { OrigineFiche, TypeFiche, MotifIntervention, Trajet, TypePresence, DepotBonIntervention, Etat } from '../model/enums';
 import { ITypeMainCourante } from "../model/type_maincour";
 import {Message} from "../model/message";
-
 import { Injectable }    from '@angular/core';
-
 import { Subject }    from 'rxjs';
 import * as Lodash from 'lodash';
 import { ConnectionStatus } from './connection.status';

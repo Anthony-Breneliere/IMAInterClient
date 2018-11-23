@@ -45,20 +45,20 @@
         <tr field *ngIf="! closedOrCanceled" label="Affectation">{{intervention.DateAffectation | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
 
         <!-- Champs en lecture seule par Aepia que si l'intervenant est Aepia -->
-        <tr field *ngIf="intervenant?.IsAepiaManaged" label="Arrivée">{{intervention.DateArrivee | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
-        <tr field *ngIf="intervenant?.IsAepiaManaged" label="Départ">{{intervention.DateDepart | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
+        <tr field *ngIf="!updateIsDateArriveeUpdatable" label="Arrivée">{{intervention.DateArrivee | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
+        <tr field *ngIf="!updateIsDateDepartUpdatable" label="Départ">{{intervention.DateDepart | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
 
         <!-- Valeur modifiable si l'intervenant est identifié non géré par Aepia -->
-        <tr field label="Arrivée" *ngIf="!intervenant?.IsAepiaManaged">
+
+        <tr field label="Arrivée" *ngIf="updateIsDateArriveeUpdatable">
             <reactive-date-input class="extensible" [ngModel]="intervention.DateArrivee" (dateOutput)="updateArrivee($event)"></reactive-date-input>
         </tr>
 
-        <tr field label="Départ" *ngIf="!intervenant?.IsAepiaManaged">
+        <tr field label="Départ" *ngIf="updateIsDateDepartUpdatable">
             <reactive-date-input class="extensible" [ngModel]="intervention.DateDepart" (dateOutput)="updateDepart($event)"></reactive-date-input>
         </tr>
 
         <tr field label="Clôture ">{{intervention.Cloture | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
-
 
     </section>
 
