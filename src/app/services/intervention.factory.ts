@@ -81,6 +81,7 @@ export class InterventionFactory  {
             CodePostal : "44119",
             Ville: "Treillieres",
             Telephones : new Array<Telephone>(),
+            Informations: "Apporter son VISA",
             Latitude: 0,
             Longitude: 0
         }

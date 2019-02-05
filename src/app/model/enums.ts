@@ -45,9 +45,9 @@ export enum TypeFiche {
 
 export enum MotifIntervention {
     Intrusion,
-    Identification,
-    AbsenceTest,
-    Autre
+    Agression,
+    Incendie,
+    Technique
 }
 
 export enum Trajet {

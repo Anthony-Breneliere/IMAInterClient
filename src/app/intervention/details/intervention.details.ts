@@ -36,7 +36,7 @@ import {
 } from '@angular/core';
 
 import { Intervention } from '../../model/intervention';
-import { OrigineFiche, TypeFiche, Trajet, MotifIntervention, TypePresence, DepotBonIntervention, Etat, TypeSite, CircuitVerification, AppelPourCR, OrigineConstatee, AutoMC} from '../../model/enums';
+import { OrigineFiche, TypeFiche, Trajet, MotifIntervention, TypePresence, DepotBonIntervention, Etat, TypeSite, CircuitVerification, AppelPourCR, OrigineConstatee, AutoMC } from '../../model/enums';
 import { InterventionService } from "../../services/intervention.service";
 import { ConnectionStatus } from "../../services/connection.status";
 import { Subscription } from 'rxjs';
@@ -149,7 +149,7 @@ export class InterventionDetails implements  OnChanges
     private get quellesLumieresAllumees() : RapportLumieresAllumees
     { 
         // il se peut que le serveur mette cette valeur à null
-        if ( ! this.rapport.Verifications.QuellesIssuesOuvertes )
+        if ( ! this.rapport.Verifications.QuellesLumieresAllumees )
             this.rapport.Verifications.QuellesLumieresAllumees = new RapportLumieresAllumees();
 
         return this.rapport.Verifications.QuellesLumieresAllumees;

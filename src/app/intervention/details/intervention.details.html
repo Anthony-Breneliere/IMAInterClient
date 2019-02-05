@@ -16,6 +16,7 @@
         <tr field label="Evenement Alarme ">{{intervention.Alarme?.Evenement}}</tr>
         <tr field label="Code Canal ">{{intervention.Alarme?.CodeCanal}}</tr>
         <tr field label="Heure Alarme ">{{intervention.Alarme?.Heure | date:'HH:mm:ss'}}</tr>
+        <tr field label="Informations ">{{intervention.Site?.Informations}}</tr>
     </section>
 
 
@@ -94,6 +95,13 @@
     </section> -->
 
     <section *ngIf="rapport" title="Complements" [readOnly]="readOnlySection" (resize)="updateLayout()">
+
+        <tr field label="Motif d'intervention">
+            <select #typeSite class="cellinput" [(ngModel)]="rapport.MotifIntervention" (ngModelChange)="changeRapport({MotifIntervention:$event})">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="i" *ngFor="let type of MotifInterventionValues; let i = index">{{MotifIntervention[i]}}</option>
+            </select>
+        </tr>
         <tr field label="Numero de bon">
             <!-- <reactive-input #numeroBon [(ngModel)]="rapport.NumeroBon" (ngModelChange)="changeRapport({NumeroBon:numeroBon.value})" (valueChanges)="valueChange" /> -->
             <reactive-input [(ngModel)]="rapport.NumeroBon" (ngModelChange)="changeRapport({NumeroBon:$event})"></reactive-input>
