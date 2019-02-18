@@ -96,7 +96,7 @@ export enum AppelPourCR
 export enum OrigineConstatee
 {
     ErreurDeManipulation,
-    AbsenceIndentification,
+    AbsenceIdentification,
     RienASignaler
 }
 

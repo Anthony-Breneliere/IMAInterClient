@@ -192,7 +192,7 @@
             <reactive-input id="RaisonNonVerificationIssues" [(ngModel)]="arriveeSurLieux.RaisonNonVerificationIssues" (ngModelChange)="changeRapport({ArriveeSurLieux:{RaisonNonVerificationIssues:$event}})"></reactive-input>
         </tr>
 
-        <tr field label="Situations anormale">
+        <tr field label="Situation anormale">
             <select [(ngModel)]="arriveeSurLieux.SituationAnormale" (ngModelChange)="changeRapport({ArriveeSurLieux:{SituationAnormale:$event}})">
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
@@ -303,7 +303,7 @@
     </section>
 
     <section *ngIf="rapport && presence" title="Présence sur site" data-gs-width="auto" [readOnly]="readOnlySection" (resize)="updateLayout()">
-        <tr field label="Types de présences">
+        <tr field label="Type de présence">
             <reactive-checkbox label="Client" [(ngModel)]="presence.Client" (ngModelChange)="changeRapport({Presence:{Client:$event}})"></reactive-checkbox>
             <reactive-checkbox label="Contacts" [(ngModel)]="presence.Contacts" (ngModelChange)="changeRapport({Presence:{Contacts:$event}})"></reactive-checkbox>
             <reactive-checkbox label="Force de l'ordre" [(ngModel)]="presence.Gendarmerie" (ngModelChange)="changeRapport({Presence:{Gendarmerie:$event}})"></reactive-checkbox>
