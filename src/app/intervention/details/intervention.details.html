@@ -148,12 +148,12 @@
         <tr field label="Nom porte/boîte aux lettres">
             <reactive-input [(ngModel)]="arriveeSurLieux.NomSurLaPorteBAL" (ngModelChange)="changeRapport({ArriveeSurLieux:{NomSurLaPorteBAL:$event}})"></reactive-input>
         </tr>
-        <tr field label="Type de site">
+        <!-- <tr field label="Type de site">
             <select #typeSite class="cellinput" [(ngModel)]="arriveeSurLieux.TypeDeSite" (ngModelChange)="changeRapport({ArriveeSurLieux:{TypeDeSite:$event}})">
                 <option [ngValue]="null"></option>
                 <option [ngValue]="i" *ngFor="let type of TypeSiteValues; let i = index">{{TypeSite[i]}}</option>
             </select>
-        </tr>
+        </tr> -->
         <tr field label="Circuit vérification">
             <select [(ngModel)]="arriveeSurLieux.CircuitVerification" (ngModelChange)="changeRapport({ArriveeSurLieux:{CircuitVerification:$event}})">
                 <option [ngValue]="null"></option>
@@ -173,7 +173,10 @@
             <reactive-input [(ngModel)]="nonAccesAuSite.AutreRaison" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AutreRaison:$event}}})"></reactive-input>
         </tr>
 
-        <tr field label="Utilisation des moyens d'accès">
+        <!--
+          Désactivation Mantis 0018989
+
+          <tr field label="Utilisation des moyens d'accès">
             <select [(ngModel)]="arriveeSurLieux.UtilisationMoyensAcces" (ngModelChange)="changeRapport({ArriveeSurLieux:{UtilisationMoyensAcces:$event}})">
                 <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
@@ -197,7 +200,7 @@
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
-        </tr>
+        </tr> -->
 
     </section>
 
@@ -250,7 +253,8 @@
         <tr field label="Autre issue ouverte" *ngIf="verifications.IssuesOuvertes && AutreIssueChecked">
             <reactive-input [(ngModel)]="quellesIssuesOuvertes.Autre" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{Autre:$event}}})"></reactive-input>
         </tr>
-
+<!--
+        désactivé par la mantis 0018989
         <tr field label="Sirène">
             <select [(ngModel)]="verifications.Sirene" (ngModelChange)="changeRapport({Verifications:{Sirene:$event}})">
                 <option [ngValue]="true">Oui</option>
@@ -259,11 +263,11 @@
         </tr>
 
         <tr field label="Système">
-            <!-- <select [(ngModel)]="verifications.SystemeEnService" (ngModelChange)="changeRapport({Verifications:{SystemeEnService:$event}})">
+            <select [(ngModel)]="verifications.SystemeEnService" (ngModelChange)="changeRapport({Verifications:{SystemeEnService:$event}})">
                 <option [ngValue]="null"></option>
                 <option [ngValue]="true">En service</option>
                 <option [ngValue]="false">Hors Service</option>
-            </select> -->
+            </select>
 
             <select reactive-select [(ngModel)]="verifications.SystemeEnService" (ngModelChange)="changeRapport({Verifications:{SystemeEnService:$event}})">
                 <option [ngValue]="true">En service</option>
@@ -278,7 +282,7 @@
                 <option [ngValue]="false">Non</option>
             </select>
         </tr>
-
+-->
         <tr field label="Effraction(s)">
             <select [(ngModel)]="verifications.Effraction" (ngModelChange)="changeRapport({Verifications:{Effraction:$event}})">
                 <option [ngValue]="true">Oui</option>

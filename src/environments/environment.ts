@@ -8,5 +8,5 @@ export const environment = {
   server: 'http://79067S07:58126',
   // server: 'http://svtlsre01-pic/IMAInterService',
   envName: 'dev',
-  admins: [ "lpapillo", "abreneli", "galberti" ]
+  admins: [ "lpapillo", "abreneli", "galberti", "rbillaul" ]
 };
