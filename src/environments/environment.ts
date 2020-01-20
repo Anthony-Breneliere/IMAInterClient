@@ -5,8 +5,8 @@
 
 export const environment = {
   production: false,
-  server: 'http://79067S07:58126',
+  server: 'http://localhost:5000',
   // server: 'http://svtlsre01-pic/IMAInterService',
   envName: 'dev',
-  admins: [ "lpapillo", "abreneli", "galberti", "rbillaul" ]
+  admins: [ "lpapillo", "abreneli", "bkerviche", "gmace", "alapeyre", "rbillaul", "elhereec" ]
 };

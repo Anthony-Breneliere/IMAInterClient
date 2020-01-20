@@ -16,6 +16,7 @@ import { Observable } from 'rxjs-compat/Observable';
 
 
 import 'signalr';
+import { jsonpCallbackContext } from '@angular/common/http/src/module';
 
 export enum InterventionDataType {
     Full,
@@ -42,11 +43,11 @@ export class InterventionService  {
     private _listeTypeMaincour : ITypeMainCourante[] = [];
 
     // on garde en mémoire la liste des types de mains courantes:
-    public get listeTypeMaincour() : ITypeMainCourante[] 
+    public get listeTypeMaincour() : ITypeMainCourante[]
     {
         return this._listeTypeMaincour;
     };
-    public set listeTypeMaincour( value: ITypeMainCourante[] ) 
+    public set listeTypeMaincour( value: ITypeMainCourante[] )
     {
         this._listeTypeMaincour = value;
     };
@@ -96,7 +97,7 @@ export class InterventionService  {
         proxyClient.newSearchResults = ( searchResults : Intervention[] ) =>
         {
             console.log( "Receiving search results:" );
-            
+
             this.onReceiveInterventionList( searchResults );
         }
 
@@ -123,7 +124,7 @@ export class InterventionService  {
     /** Cette fonction charge les interventions qui sont en cours
      * Toutes les données des interventions ne sont pas chargés: seulement les données essentielles.
      * Remarque: cette méthode est automatiquement appelée à la connection.
-     */  
+     */
     private loadCurrentInterventionList() : void
     {
         this._connectionStatus.proxyServer.queryCurrentFI()
@@ -131,7 +132,7 @@ export class InterventionService  {
             .fail( ( e : any ) => {
             this._connectionStatus.addErrorMessage( `Erreur lors de la récupération des interventions courrantes: ${e}` );
         } );
-      
+
     }
 
     /**
@@ -143,7 +144,7 @@ export class InterventionService  {
 
         let updatedCount : number = 0;
         let createdCount : number = 0;
-    
+
         // ajout des interventions au dico:
         for( let inter of newInterventions )
         {
@@ -157,14 +158,14 @@ export class InterventionService  {
     private onReceiveMessage( message : Message )
     {
         console.log( `Receiving new message for intervention ${message.IdChannel}: ${message.Texte}` );
-        
+
         let messageInter = this.loadedInterventionsDico.getValue( message.IdChannel ) ;
         if ( messageInter != null )
         {
             messageInter.Chat.push( message );
-            
+
             messageInter.NotificationChange = true;
-            
+
             this._newMessagesSource.next( [ messageInter, message] );
         }
     }
@@ -179,13 +180,13 @@ export class InterventionService  {
             let interventions = this.loadedInterventionsDico.values();
             return interventions;
         }
-        else 
+        else
             return [];
     }
 
 
     /**
-     * Permet de récupérer tout le détail d'une intervention 
+     * Permet de récupérer tout le détail d'une intervention
      */
     private getFullIntervention( numFI : number, siteId : number = null ) : Promise<Intervention>
     {
@@ -198,7 +199,7 @@ export class InterventionService  {
                 return new Promise<Intervention>( ( resolve ) => { return this.loadedInterventionsDico[ numFI ]; } );
             }
             else
-            {   
+            {
                 // récupération de l'intervention auprès des services de sa majesté IMAInter
                 return this.getInterventionFromServer( numFI, siteId );
             }
@@ -206,7 +207,7 @@ export class InterventionService  {
     }
 
 
-    /** 
+    /**
      * Charge une intervention
      * numFI : numéro de fiche
      */
@@ -216,7 +217,7 @@ export class InterventionService  {
         {
             return this.getFullIntervention( numFI, null );
         });
-   
+
         return loadInterventionPromise;
     }
 
@@ -228,7 +229,7 @@ export class InterventionService  {
         let getInterPromise = new Promise<Intervention>( (resolve, reject ) =>
         {
             this._connectionStatus.proxyServer.getIntervention( numFI, siteId )
-                .done( (interventionWithDetails : Intervention) => 
+                .done( (interventionWithDetails : Intervention) =>
                 {
                     let interventionMerged = this.onReceiveInterventionData( interventionWithDetails, InterventionDataType.Full );
                     resolve(interventionMerged);
@@ -243,7 +244,7 @@ export class InterventionService  {
 
     /**
      * Appelé lorsqu'une nouvelle intervention a été reçu par le service.
-     * 
+     *
      * Le comportement dépend suivant InterventionDataType
      * Full: l'intervention est complète, elle peut contenir des valeurs null écrasante, et on retient le fait qu'on ait chargé l'inter complète.
      * Partail: l'intervention est complète, les valeurs null sont supprimées
@@ -260,15 +261,25 @@ export class InterventionService  {
 
         // cas de données d'intervention déjà chargée en mémoire
         if ( this.loadedInterventionsDico.containsKey( interData.Id ) )
-        {  
+        {
             // on met à jour l'intervention que nous avons actuellement en mémoire (elle n'est pas remplacée)
             updatedInter = this.loadedInterventionsDico.getValue( interData.Id );
-            
+
+            // on protège le champs que l'utilisateur est en train de modifier
+            // if ( this.protectedDataFromWrites && interData.Id == this.protectedDataFromWrites.Id )
+            // {
+            //   var excudeObj = this.protectedDataFromWrites;
+            //   for( var p in excudeObj )
+            //   {
+
+            //   }
+            // }
+
             // one ne merge pas directement dans l'objet en mémoire car dans le process des objets peuvent être mis à null, on merge via une copie
             Lodash.merge( updatedInter, interData );
 
             updatedInter.NotificationChange = true;
-            
+
             // état de l'intervention
             interState = this.interventionsStateDico.getValue( interData.Id );
             interState.Loaded = interState.Loaded || dataType == InterventionDataType.Full;
@@ -283,7 +294,7 @@ export class InterventionService  {
             // les réceptions d'interventions partielles ont des valeurs null, on les supprime
             if ( dataType == InterventionDataType.Partial )
                 interData = this.omitByRecursively ( interData );
-            
+
             Lodash.merge( newIntervention, interData);
 
             this.loadedInterventionsDico.setValue( interData.Id, newIntervention );
@@ -302,9 +313,9 @@ export class InterventionService  {
      * Supprime les valeurs null sur tous les membres:
      * https://stackoverflow.com/questions/44320693/lodash-mergewith-skip-with-some-key
      * https://stackoverflow.com/questions/37246775/how-to-delete-recursively-undefined-properties-from-an-object-while-keeping-th
-     * @param value 
+     * @param value
      */
-    private omitByRecursively(value : any) : any 
+    private omitByRecursively(value : any) : any
     {
        return Lodash.isObject(value)?
         Lodash(value)
@@ -332,7 +343,7 @@ export class InterventionService  {
             .done( (typesMainCour : ITypeMainCourante[]) => {
 
                 console.log(`Réception des types de mains courantes d'intervention: ${typesMainCour.length} libellés reçus.`);
-                
+
                 let listeTypeMaincour : string[] = [];
 
                 // on remplace la liste existante éventuelle des types de mains courantes
@@ -354,7 +365,7 @@ export class InterventionService  {
             .done( (m1LibelleDivers : ITypeMainCourante[]) => {
 
                 console.log(`Réception des libellés divers M1: ${m1LibelleDivers.length} libellés reçus.`);
-                
+
                 this.listeM1LibelleDivers = m1LibelleDivers;
              } )
             .fail( ( e : any ) => {
@@ -372,9 +383,11 @@ export class InterventionService  {
     {
         console.log("Envoi d'une main courante au serveur: ");
         console.log({"login":this._connectionStatus.login, "numFi": numFi, "typeMaincour": typeMaincour, "comment":comment});
-        
+
         this._connectionStatus.proxyServer.addNewMaincourante( numFi, typeMaincour.Type, comment);
     }
+
+    // private protectedDataFromWrites : Any;
 
     /**
      * Envoi d'un changement d'intervention
@@ -384,7 +397,10 @@ export class InterventionService  {
     {
         console.log(`Envoi d'un changement d'intervention: ${jsonInterChange}`);
         console.log(jsonInterChange);
-        
+
+        // this.protectedDataFromWrites = jsonInterChange;
+        // setTimeout( () => { this.protectedDataFromWrites = null; }, 1000 );
+
         this._connectionStatus.proxyServer.sendInterChange( jsonInterChange );
     }
 
@@ -415,14 +431,14 @@ export class InterventionService  {
         }
     }
 
-    public submit( intervention : Intervention ) : void 
+    public submit( intervention : Intervention ) : void
     {
         console.log(`Demande de transmission de la fiche ${intervention.Id}.`);
         this._connectionStatus.proxyServer.submit( intervention.Id );
     }
 
 
-    public submitByMail( intervention : Intervention ) : void 
+    public submitByMail( intervention : Intervention ) : void
     {
         console.log(`Demande de transmission par mail de la fiche ${intervention.Id}.`);
         this._connectionStatus.proxyServer.submitByMail( intervention.Id );
@@ -433,13 +449,13 @@ export class InterventionService  {
         this._connectionStatus.proxyServer.submitByFax( intervention.Id );
     }
 
-    public close( intervention : Intervention ) : void 
+    public close( intervention : Intervention ) : void
     {
         console.log(`Demande de clôture de la fiche ${intervention.Id}.`);
         this._connectionStatus.proxyServer.close( intervention.Id );
     }
 
-    public cancel( intervention : Intervention ) : void 
+    public cancel( intervention : Intervention ) : void
     {
         console.log(`Demande d'annulation de la fiche ${intervention.Id}.`);
         this._connectionStatus.proxyServer.cancel( intervention.Id );
@@ -465,7 +481,7 @@ export class InterventionService  {
         this._connectionStatus.proxyServer.immobilizeIntervenant( interId );
     }
 
-    
+
 
     public waitingDeparture( intervention : Intervention ) : boolean
     {
@@ -481,7 +497,7 @@ export class InterventionService  {
     public updateSIList() : void
     {
         console.log(`Demande de mise à jour de la liste des sociétés AEPIA`);
-      
+
         this._connectionStatus.proxyServer.updateSIList();
     }
 
