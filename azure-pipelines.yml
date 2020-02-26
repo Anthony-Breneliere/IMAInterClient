@@ -39,7 +39,7 @@ steps:
   displayName: 'Publish Artifact'
   inputs:
     PathtoPublish: $(build.artifactstagingdirectory)
-    ArtifactName: '$(build.definitionname) $(build.buildnumber)'
+    ArtifactName: '$(build.definitionname)'
 
     
   
