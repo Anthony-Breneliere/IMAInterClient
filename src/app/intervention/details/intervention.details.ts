@@ -228,6 +228,9 @@ export class InterventionDetails implements  OnChanges
     private TypeSite = TypeSite;
     private TypeSiteValues = (<any> Object).values(TypeSite).filter( (e : any) => typeof( e ) == "number" );
 
+    private TypeFiche = TypeFiche;
+    private TypeFicheValues = (<any> Object).values(TypeFiche).filter( (e : any) => typeof( e ) == "number" );
+
     private CircuitVerification = CircuitVerification;
     private CircuitVerificationValues = Object.values(CircuitVerification).filter( (e : any) => typeof( e ) == "number" );
  
@@ -469,6 +472,19 @@ export class InterventionDetails implements  OnChanges
 
             // envoi du changement dans le rapport
             this._interService.sendInterChange( { Id:this.intervention.Id, Rapport:data } );
+        } );
+    }
+
+    public changeTypeFiche( data : any )
+    {
+        console.log( "Changement du type d'intervention vers " + TypeFiche[data] );
+
+        var p = new Promise<void>( (resolve) => {
+
+            Lodash.merge( this.intervention, data);
+
+            // envoi du changement dans l'intervention
+            this._interService.sendInterChange( { Id:this.intervention.Id, TypeFiche:data } );
         } );
     }
 
