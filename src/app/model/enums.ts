@@ -40,7 +40,8 @@ export enum TypeFiche {
     Gardiennage,
     Ronde,
     TestReseau,
-    GardiennageALaDemande
+    GardiennageALaDemande,
+    RondeALaDemande
 }
 
 export enum MotifIntervention {
