@@ -69,12 +69,12 @@ div.defaultBorder {
 }
 
 .ribbon {
-    --intervention: blue;
-    --gardiennage: violet;
+    --intervention: dodgerblue;
+    --gardiennage: deeppink;
     --gardiennageALaDemande: purple;
-    --ronde: green;
-    --rondeALaDemande: orange;
-    --testReseau: lightgray;
+    --ronde: lime;
+    --rondeALaDemande: darkorange;
+    --testReseau: silver;
     width: 10px;
     height: 10px;
     position: absolute;
