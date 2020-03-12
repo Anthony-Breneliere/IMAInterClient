@@ -98,7 +98,7 @@ export class Intervention
 
     get TypeFicheLabel(): string
     {
-        if ( this.TypeFiche )
+        if (TypeFiche[this.TypeFiche])
             return TypeFiche[this.TypeFiche];
         else return null;
     }

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Intervention } from '../../model/intervention';
 import { InterventionService } from '../../services/intervention.service';
+import { TypeFiche } from '../../model/enums';
 
 @Component({
     moduleId: module.id,
@@ -33,5 +34,38 @@ export class InterventionButtonContent
     {
         return this._interService.immobilizeIntervenant( this.intervention.Id );
     }
+    get isTypeFicheIntervention() : boolean
+    {
+        return this.intervention.TypeFiche == TypeFiche.Intervention;
+    }
 
+    get isTypeFicheGardiennage() : boolean
+    {
+        return this.intervention.TypeFiche == TypeFiche.Gardiennage;
+    }
+
+    get isTypeFicheGardiennageALaDemande() : boolean
+    {
+        return this.intervention.TypeFiche == TypeFiche.GardiennageALaDemande;
+    }
+
+    get isTypeFicheRonde() : boolean
+    {
+        return this.intervention.TypeFiche == TypeFiche.Ronde;
+    }
+
+    get isTypeFicheRondeALaDemande() : boolean
+    {
+        return this.intervention.TypeFiche == TypeFiche.RondeALaDemande;
+    }
+
+    get isTypeFicheTestReseau() : boolean
+    {
+        return this.intervention.TypeFiche == TypeFiche.TestReseau;
+    }
+
+    get typeFiche() : string
+    {
+        return this.intervention.TypeFicheLabel;
+    }
 }
