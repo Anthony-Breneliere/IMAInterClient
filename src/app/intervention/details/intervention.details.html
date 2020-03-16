@@ -14,7 +14,12 @@
         <tr field label="Origine ">{{intervention.OrigineLabel}}</tr>
         <tr field label="Type ">
             <select id="InterventionType" [(ngModel)]="intervention.TypeFiche" (ngModelChange)="changeTypeFiche($event)">
-                <option [ngValue]="i" *ngFor="let type of TypeFicheValues; let i = index">{{TypeFiche[i]}}</option>
+                <option [ngValue]="TypeFiche.Intervention">Intervention</option>
+                <option [ngValue]="TypeFiche.Gardiennage">Gardiennage</option>
+                <option [ngValue]="TypeFiche.Ronde">Ronde</option>
+                <option [ngValue]="TypeFiche.TestReseau">Test réseau</option>
+                <option [ngValue]="TypeFiche.GardiennageALaDemande">Gardiennage à la demande</option>
+                <option [ngValue]="TypeFiche.RondeALaDemande">Ronde à la demande</option>
             </select>
         </tr>
         <tr field label="Evenement Alarme ">{{intervention.Alarme?.Evenement}}</tr>
@@ -24,7 +29,6 @@
         <tr field label="Informations ">{{intervention.Site?.Informations}}</tr>
     </section>
 
-
     <section title="Intervenant" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
         <tr field label="Nom ">{{Capitalize(intervenant?.Nom)}}</tr>
@@ -33,10 +37,6 @@
         <tr field *ngFor="let tel of intervenant?.Telephones " label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
         <tr field label="Email ">{{intervenant?.Email}}</tr>
         <tr field label="Matricule">{{intervenant?.Matricule}}</tr>
-        <tr *ngIf="!readOnly" field label="Géré par Aepia">
-            <span *ngIf="intervenant?.IsAepiaManaged == true">Oui</span>
-            <span *ngIf="intervenant?.IsAepiaManaged == false">Non</span>
-        </tr>
 
     </section>
 
@@ -114,9 +114,13 @@
         <tr field label="Lieu dépôt">
             <select [(ngModel)]="rapport.LieuDepotBon" (ngModelChange)="changeRapport({LieuDepotBon:$event})">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="i" *ngFor="let depotBonChoice of DepotBonInterventionValues; let i = index">{{DepotBonIntervention[i]}}</option>
+                <option [ngValue]="DepotBonIntervention.BoiteAuxLettres">Boîte aux lettres</option>
+                <option [ngValue]="DepotBonIntervention.PC">PC</option>
+                <option [ngValue]="DepotBonIntervention.Garage">Garage</option>
+                <option [ngValue]="DepotBonIntervention.Autre">Autre</option>
             </select>
         </tr>
+
         <tr field *ngIf="rapport.LieuDepotBon==DepotBonIntervention.Autre" label="Autre lieu">
             <reactive-input [(ngModel)]="rapport.AutreLieuDepot" (ngModelChange)="changeRapport({AutreLieuDepot:$event})"></reactive-input>
         </tr>
@@ -146,22 +150,31 @@
     </section>
 
     <section *ngIf="rapport && arriveeSurLieux" title="Vérifications" [readOnly]="readOnlySection" (resize)="updateLayout()">
+
         <tr field label="Numero de rue">
             <reactive-input [(ngModel)]="arriveeSurLieux.NumeroDeRue" (ngModelChange)="changeRapport({ArriveeSurLieux:{NumeroDeRue:$event}})"></reactive-input>
         </tr>
+
         <tr field label="Nom porte/boîte aux lettres">
             <reactive-input [(ngModel)]="arriveeSurLieux.NomSurLaPorteBAL" (ngModelChange)="changeRapport({ArriveeSurLieux:{NomSurLaPorteBAL:$event}})"></reactive-input>
         </tr>
-        <!-- <tr field label="Type de site">
+
+        <tr field label="Type de site">
             <select #typeSite class="cellinput" [(ngModel)]="arriveeSurLieux.TypeDeSite" (ngModelChange)="changeRapport({ArriveeSurLieux:{TypeDeSite:$event}})">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="i" *ngFor="let type of TypeSiteValues; let i = index">{{TypeSite[i]}}</option>
+                <option [ngValue]="TypeSite.Pavillon">Pavillon</option>
+                <option [ngValue]="TypeSite.CollectifImmeuble">Collectif ou immeuble</option>
+                <option [ngValue]="TypeSite.CommercePro">Commerce ou local professionnel</option>
             </select>
-        </tr> -->
+        </tr>
+
         <tr field label="Circuit vérification">
             <select [(ngModel)]="arriveeSurLieux.CircuitVerification" (ngModelChange)="changeRapport({ArriveeSurLieux:{CircuitVerification:$event}})">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="i" *ngFor="let circuit of CircuitVerificationValues; let i = index">{{CircuitVerification[i]}}</option>
+                <option [ngValue]="CircuitVerification.InterieurSite">Intérieur du site</option>
+                <option [ngValue]="CircuitVerification.InterieurEnceinte">Intérieur de l'enceinte</option>
+                <option [ngValue]="CircuitVerification.ExterieurSite">Extérieur du site</option>
+                <option [ngValue]="CircuitVerification.VerificationKO">Vérification KO</option>
             </select>
         </tr>
 
@@ -177,10 +190,8 @@
             <reactive-input [(ngModel)]="nonAccesAuSite.AutreRaison" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AutreRaison:$event}}})"></reactive-input>
         </tr>
 
-        <!--
-          Désactivation Mantis 0018989
 
-          <tr field label="Utilisation des moyens d'accès">
+        <tr field label="Utilisation des moyens d'accès">
             <select [(ngModel)]="arriveeSurLieux.UtilisationMoyensAcces" (ngModelChange)="changeRapport({ArriveeSurLieux:{UtilisationMoyensAcces:$event}})">
                 <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
@@ -190,6 +201,7 @@
 
         <tr field label="Vérification intégrale des issues">
             <select [(ngModel)]="arriveeSurLieux.VerifIntegraleIssues" (ngModelChange)="changeRapport({ArriveeSurLieux:{VerifIntegraleIssues:$event}})">
+                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
@@ -201,10 +213,11 @@
 
         <tr field label="Situation anormale">
             <select [(ngModel)]="arriveeSurLieux.SituationAnormale" (ngModelChange)="changeRapport({ArriveeSurLieux:{SituationAnormale:$event}})">
+                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
-        </tr> -->
+        </tr>
 
     </section>
 
@@ -212,6 +225,7 @@
 
         <tr field label="Lumière(s) Allumée(s)">
             <select id="LumieresAllumees" [(ngModel)]="verifications.LumieresAllumees" (ngModelChange)="changeRapport({Verifications:{LumieresAllumees:$event}})">
+                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
@@ -239,6 +253,7 @@
 
         <tr field label="Issue(s) ouverte(s)">
             <select [(ngModel)]="verifications.IssuesOuvertes" (ngModelChange)="changeRapport({Verifications:{IssuesOuvertes:$event}})">
+                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
@@ -257,10 +272,26 @@
         <tr field label="Autre issue ouverte" *ngIf="verifications.IssuesOuvertes && AutreIssueChecked">
             <reactive-input [(ngModel)]="quellesIssuesOuvertes.Autre" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{Autre:$event}}})"></reactive-input>
         </tr>
-<!--
-        désactivé par la mantis 0018989
-        <tr field label="Sirène">
+
+        <tr field label="Verifications systèmes">
+          <select [(ngModel)]="verifications.Systeme" (ngModelChange)="changeRapport({Verifications:{Systeme:$event}})">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="VerificationSysteme.Sirene">Sirène</option>
+            <option [ngValue]="VerificationSysteme.SystemeEnService">Système en service</option>
+            <option [ngValue]="VerificationSysteme.RemiseEnService">Remise en service</option>
+          </select>
+
+        </tr>
+
+        <!-- <tr field label="Verifications systèmes">
+          <reactive-checkbox label="Sirène" [(ngModel)]="verifications.Sirene" (ngModelChange)="changeRapport({Verifications:{Sirene:$event}})"></reactive-checkbox>
+          <reactive-checkbox label="Système en service" [(ngModel)]="verifications.SystemeEnService" (ngModelChange)="changeRapport({Verifications:{SystemeEnService:$event}})"></reactive-checkbox>
+          <reactive-checkbox label="Remise en service"  [(ngModel)]="verifications.RemiseEnService" (ngModelChange)="changeRapport({Verifications:{RemiseEnService:$event}})"></reactive-checkbox>
+        </tr> -->
+
+        <!-- <tr field label="Sirène">
             <select [(ngModel)]="verifications.Sirene" (ngModelChange)="changeRapport({Verifications:{Sirene:$event}})">
+                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
@@ -273,10 +304,6 @@
                 <option [ngValue]="false">Hors Service</option>
             </select>
 
-            <select reactive-select [(ngModel)]="verifications.SystemeEnService" (ngModelChange)="changeRapport({Verifications:{SystemeEnService:$event}})">
-                <option [ngValue]="true">En service</option>
-                <option [ngValue]="false">Hors Service</option>
-            </select>
         </tr>
 
         <tr field label="Remise en service" *ngIf="! verifications.SystemeEnService">
@@ -285,10 +312,11 @@
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
-        </tr>
--->
+        </tr> -->
+
         <tr field label="Effraction(s)">
             <select [(ngModel)]="verifications.Effraction" (ngModelChange)="changeRapport({Verifications:{Effraction:$event}})">
+                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
@@ -330,6 +358,7 @@
 
         <tr field label="Présence véhicule">
             <select [(ngModel)]="presence.PresenceVehicule" (ngModelChange)="changeRapport({Presence:{PresenceVehicule:$event}})">
+                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
@@ -354,6 +383,7 @@
 
         <tr field label="Site refermable">
             <select [(ngModel)]="miseEnSecurite.SiteRefermable" (ngModelChange)="changeRapport({MiseEnSecurite:{SiteRefermable:$event}})">
+                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
@@ -369,8 +399,12 @@
             <reactive-input [(ngModel)]="miseEnSecurite.MiseEnPlaceDemandeePar" (ngModelChange)="changeRapport({MiseEnSecurite:{MiseEnPlaceDemandeePar:$event}})"></reactive-input>
         </tr>
 
+        <!--
+        Supprimé en attente de confirmation Émilie
+
         <tr field label="Animal">
             <select [(ngModel)]="MiseEnPlaceAnimalChecked">
+                <option [ngValue]="null"></option>
                 <option [ngValue]="true">Oui</option>
                 <option [ngValue]="false">Non</option>
             </select>
@@ -378,7 +412,7 @@
 
         <tr field label="Type de l'animal" *ngIf="MiseEnPlaceAnimalChecked">
             <reactive-input [(ngModel)]="miseEnSecurite.MiseEnPlaceAnimal" (ngModelChange)="changeRapport({MiseEnSecurite:{MiseEnPlaceAnimal:$event}})"></reactive-input>
-        </tr>
+        </tr> -->
 
     </section>
 
@@ -388,14 +422,17 @@
         <tr field label="Envoi du CR">
             <select [(ngModel)]="intervention.InfosFacturation.AppelPourCR" (ngModelChange)="changeInfoFactu({AppelPourCR:$event})">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="i" *ngFor="let appelPourCR of AppelPourCRValues; let i = index">{{AppelPourCR[i]}}</option>
+                <option [ngValue]="AppelPourCR.AppelParAPS">Appel par le APS</option>
+                <option [ngValue]="AppelPourCR.AppelParSCT">Appel par le SCT</option>
             </select>
         </tr>
 
         <tr field label="Origine constatee">
             <select [(ngModel)]="intervention.InfosFacturation.OrigineConstatee" (ngModelChange)="changeInfoFactu({OrigineConstatee:$event})">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="i" *ngFor="let origineConstatee of OrigineConstateeValues; let i = index">{{OrigineConstatee[i]}}</option>
+                <option [ngValue]="OrigineConstatee.ErreurDeManipulation">Erreur de manipulation</option>
+                <option [ngValue]="OrigineConstatee.AbsenceIdentification">Absence d'identification</option>
+                <option [ngValue]="OrigineConstatee.RienASignaler">Rien à signaler</option>
             </select>
         </tr>
 

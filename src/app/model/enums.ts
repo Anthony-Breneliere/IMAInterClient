@@ -69,8 +69,7 @@ export enum DepotBonIntervention {
     BoiteAuxLettres,
     PC,
     Garage,
-    Autre,
-    AEPIA
+    Autre
 }
 
 export enum TypeSite
@@ -99,6 +98,13 @@ export enum OrigineConstatee
     ErreurDeManipulation,
     AbsenceIdentification,
     RienASignaler
+}
+
+export enum VerificationSysteme
+{
+    Sirene,
+    SystemeEnService,
+    RemiseEnService
 }
 
 export enum AutoMC
