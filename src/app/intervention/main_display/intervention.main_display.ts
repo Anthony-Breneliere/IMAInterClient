@@ -58,8 +58,8 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
     {
         this.afficheNavigation = ! this.afficheNavigation;
 
-        this.router.navigate( [], { queryParams: 
-            { 
+        this.router.navigate( [], { queryParams:
+            {
                 nav: this.afficheNavigation ? 1 : 0,
                 bar: this.afficheBarre ? 1 : 0
             } } );
@@ -74,38 +74,38 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
 
     ngOnInit() {
 
-        // le changement de l'id dans la route doit charger l'intervention et déployer 
+        // le changement de l'id dans la route doit charger l'intervention et déployer
         // le groupe correspondant à l'intervention dans la barre de navigation.
         this.paramsSubscription = this.route.params
             .subscribe( params =>
             {
                 let id : number = params['id'];
- 
+
                 this.urlInterventionId = id;
                 if ( this.urlInterventionId > 0 )
                 {
                     // une fois la connection établie et l'intervention id complète reçu du serveur, alors
                     // on sélectionne et affiche l'intervention
                     this._interService.connectAndLoadIntervention( this.urlInterventionId )
-                    .then( (inter : Intervention) => { 
+                    .then( (inter : Intervention) => {
                         this.selectedIntervention = inter;
 
                         // ouverture du groupe de l'intervention
                         this.deployGroup( inter );
                     } )
-                    
+
                     .catch( (reason : any) => { console.error( "erreur de chargement de l'intervention: " + reason ); })
                 }
              } );
 
-             this.queryParamsSubscription = 
+             this.queryParamsSubscription =
                 this.route.queryParams.subscribe( queryParams =>
             {
                 // délai pour l'affichage des boutons, sinon le menu contextuel ne peut être affiché
                 // setTimeout( () => {
                 //     this.afficheNavigation = queryParams['nav'] != 0;
                 // }, 2000 );
-                
+
                 this.afficheNavigation = queryParams['nav'] != 0;
                 this.afficheBarre = queryParams['bar'] != 0;
 
@@ -118,6 +118,8 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
 
     get chatDisplayed() : boolean
     {
+        return false; // désactivée sans client mobile
+
         let inter = this.selectedIntervention;
 
         let interLancee : boolean =
@@ -126,16 +128,15 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
         let messages : boolean =
             inter && inter.Chat && inter.Chat.length > 0;
 
-        let chatDisplayed : boolean =
-            interLancee || messages;
-            
+        let chatDisplayed : boolean = interLancee || messages;
+
         return chatDisplayed;
     }
 
     get isThereIntervenant() : boolean
     {
         let inter = this.selectedIntervention;
-        let isThereIntervenant : boolean = 
+        let isThereIntervenant : boolean =
             inter &&  inter.Etat != Etat.Creee
             && inter.Etat != Etat.Annulee
             && inter.Etat != Etat.Close;

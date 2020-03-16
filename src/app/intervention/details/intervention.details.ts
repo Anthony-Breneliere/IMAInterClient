@@ -32,11 +32,11 @@ import {
     ElementRef,
     Renderer,
     SimpleChanges
-    
+
 } from '@angular/core';
 
 import { Intervention } from '../../model/intervention';
-import { OrigineFiche, TypeFiche, Trajet, MotifIntervention, TypePresence, DepotBonIntervention, Etat, TypeSite, CircuitVerification, AppelPourCR, OrigineConstatee, AutoMC } from '../../model/enums';
+import { OrigineFiche, TypeFiche, Trajet, MotifIntervention, TypePresence, DepotBonIntervention, Etat, TypeSite, CircuitVerification, AppelPourCR, OrigineConstatee, VerificationSysteme, AutoMC } from '../../model/enums';
 import { InterventionService } from "../../services/intervention.service";
 import { ConnectionStatus } from "../../services/connection.status";
 import { Subscription } from 'rxjs';
@@ -71,7 +71,7 @@ export class InterventionDetails implements  OnChanges
 
     @Input() public set intervention( value : Intervention )  {
         this._intervention = value;
-        
+
         // le changement d'intervention doit déclncher la détection des changements
        //  this.ref.markForCheck(); commenté car génère des erreurs
 
@@ -79,7 +79,7 @@ export class InterventionDetails implements  OnChanges
         if ( this.interventionChangeSubscription )
             this.interventionChangeSubscription.unsubscribe();
 
-        this.interventionChangeSubscription = 
+        this.interventionChangeSubscription =
             this._interService.newInterData$.pipe(filter( i => this.intervention && this.intervention.Id == i.Id  )).subscribe( i => this.detectChanges() );
 
         // je reinitialise le layout pour la nouvelle instruction
@@ -126,14 +126,14 @@ export class InterventionDetails implements  OnChanges
 
     public get readOnlySection()
     {
-        let readOnlySection = 
+        let readOnlySection =
             this._intervention.Etat == Etat.Annulee || this._intervention.Etat == Etat.Close
             || ! this._connectionStatus.connected
 
         return readOnlySection;
     }
 
-    public get telephonesSite() : Telephone[] { return Array.isArray( this.site.Telephones ) ? this.site.Telephones : [] } 
+    public get telephonesSite() : Telephone[] { return Array.isArray( this.site.Telephones ) ? this.site.Telephones : [] }
     public get intervention() : Intervention { return this._intervention; }
     private get rapport() : Rapport { return this.intervention.Rapport; }
     private get intervenant() : Intervenant { return this.intervention.Intervenant; }
@@ -147,39 +147,39 @@ export class InterventionDetails implements  OnChanges
     private get infosFacturation() : InfosFacturation { return this.intervention.InfosFacturation; }
 
     private get quellesLumieresAllumees() : RapportLumieresAllumees
-    { 
+    {
         // il se peut que le serveur mette cette valeur à null
         if ( ! this.rapport.Verifications.QuellesLumieresAllumees )
             this.rapport.Verifications.QuellesLumieresAllumees = new RapportLumieresAllumees();
 
         return this.rapport.Verifications.QuellesLumieresAllumees;
     }
-    
-    
+
+
     private get quellesIssuesOuvertes() : RapportIssuesConcernees
-    { 
+    {
         // il se peut que le serveur mette cette valeur à null
         if ( ! this.rapport.Verifications.QuellesIssuesOuvertes )
             this.rapport.Verifications.QuellesIssuesOuvertes = new RapportIssuesConcernees();
 
         return this.rapport.Verifications.QuellesIssuesOuvertes;
-    }    
+    }
     private get quellesEffractions() : RapportIssuesConcernees
-    { 
+    {
         // il se peut que le serveur mette cette valeur à null
         if ( ! this.rapport.Verifications.QuellesEffractions )
             this.rapport.Verifications.QuellesEffractions = new RapportIssuesConcernees();
 
         return this.rapport.Verifications.QuellesEffractions;
-    }    
+    }
     private get listMainCour() : MainCourante[] { return Array.isArray( this.intervention.MainCourantes ) ?  this.intervention.MainCourantes : [] };
-    // this.intervention && this.intervention.MainCourantes ? this.intervention.MainCourantes : 
+    // this.intervention && this.intervention.MainCourantes ? this.intervention.MainCourantes :
     private get listTypeMainCour() : ITypeMainCourante[]
     {
          return this._interService.listeTypeMaincour;
-    } 
+    }
 
-    public get AdresseComplete() : string 
+    public get AdresseComplete() : string
     {
         let adresse = this.site ?
             ( this.site.NumeroRue ? this.site.NumeroRue + ' ' : '' )
@@ -204,7 +204,7 @@ export class InterventionDetails implements  OnChanges
 
             else if ( ! intervenant || ! intervenant.Societe )
                 warning = "L'intervention ne peut pas être lancée car le numéro SIREN de la société d'intervention n'est pas renseigné.";
-            
+
             // else if ( ! site || ! site.Latitude || ! site.Longitude )
             //     warning = "L'intervention ne peut pas être lancée car les coordonnées géographiques du site ne sont pas renseignées.";
         }
@@ -233,15 +233,17 @@ export class InterventionDetails implements  OnChanges
 
     private CircuitVerification = CircuitVerification;
     private CircuitVerificationValues = Object.values(CircuitVerification).filter( (e : any) => typeof( e ) == "number" );
- 
+
     private AppelPourCR = AppelPourCR;
     private AppelPourCRValues = (<any> Object).values(AppelPourCR).filter( (e : any) => typeof( e ) == "number" );
-    
+
     private OrigineConstatee = OrigineConstatee;
     private OrigineConstateeValues = (<any> Object).values(OrigineConstatee).filter( (e : any) => typeof( e ) == "number" );
-    
 
-    private motifChoices: any[] = []; 
+    private VerificationSysteme = VerificationSysteme;
+    private VerificationSystemeValues = (<any> Object).values(VerificationSysteme).filter( (e : any) => typeof( e ) == "number" );
+
+    private motifChoices: any[] = [];
 
     // saisie d'une matin courante:
     public selectedMaincourType : ITypeMainCourante;
@@ -380,11 +382,11 @@ export class InterventionDetails implements  OnChanges
         //  L'appel de la fonction gridstack permet de rendre les composants de la doit être faite après la construction complète de la vue
         // console.log("column number : " + this.ColumnNumber);
         // var options = { width: this.ColumnNumber };
-        // let grid = jQuery('.grid-stack').gridstack(options); 
+        // let grid = jQuery('.grid-stack').gridstack(options);
     }
 
     /**
-     * 
+     *
      * @param key Retourne le libelle d'une main courante, connaissant son id
      */
     getTypeMaincourValue( key: number ) : string
@@ -402,7 +404,7 @@ export class InterventionDetails implements  OnChanges
     }
 
     private detailForm : FormGroup;
-    
+
 
 
     Capitalize( text: string) : string
@@ -547,11 +549,11 @@ export class InterventionDetails implements  OnChanges
         {
             let mainCours : MainCourante[] = this.intervention.MainCourantes ;
 
-            if ( this.intervention.Intervenant && this.intervention.Intervenant.IsAepiaManaged 
+            if ( this.intervention.Intervenant
                 &&  this.intervention.Etat != Etat.Annulee && this.intervention.Etat == Etat.Close )
                 updatable = true;
 
-            
+
             // else if (mainCours && mainCours.some( ( mc :MainCourante) => mc.Type == AutoMC.DemandeInterventionTransmise ) )
             //     updatable = true;
         }

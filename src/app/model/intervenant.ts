@@ -11,7 +11,7 @@ export class Intervenant
     Latitude : number;
     Longitude : number;
     DelaiMinutes : number;
-    IsAepiaManaged : boolean;
+    IsMobileManaged : boolean;
 
  //   get TelephonesN() : Telephone[] { return this.Telephones ? this.Telephones : this.Telephones = [] }
 
