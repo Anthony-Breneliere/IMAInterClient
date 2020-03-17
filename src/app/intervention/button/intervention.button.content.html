@@ -1,6 +1,5 @@
 <div class="interventionTypeContainer">
-    <div [attr.title]="typeFiche" class="ribbon" [ngClass]="{'intervention' : isTypeFicheIntervention, 'gardiennage' : isTypeFicheGardiennage, 'gardiennageALaDemande' : isTypeFicheGardiennageALaDemande,
-'ronde' : isTypeFicheRonde, 'rondeALaDemande' : isTypeFicheRondeALaDemande, 'testReseau' : isTypeFicheTestReseau}"></div>
+    <div [attr.title]="typeFiche" class="ribbon" [ngClass]="typeFiche"></div>
 </div>
 <div *ngIf="intervention.Site" class="client">
     <i class="mdi mdi-account"></i> {{intervention.NomComplet}}

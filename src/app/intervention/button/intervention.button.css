@@ -90,55 +90,55 @@ div.defaultBorder {
     bottom: -5px;
 }
 
-.ribbon.intervention {
+.ribbon.Intervention {
     background-color: var(--intervention);
 }
-.ribbon.intervention::before {
+.ribbon.Intervention::before {
     border-left: 5px solid var(--intervention);
     border-right: 5px solid var(--intervention);
     border-bottom: 5px solid transparent;
 }
 
-.ribbon.gardiennage {
+.ribbon.Gardiennage {
     background-color: var(--gardiennage);
 }
-.ribbon.gardiennage::before {
+.ribbon.Gardiennage::before {
     border-left: 5px solid var(--gardiennage);
     border-right: 5px solid var(--gardiennage);
     border-bottom: 5px solid transparent;
 }
 
-.ribbon.gardiennageALaDemande {
+.ribbon.GardiennageALaDemande {
     background-color: var(--gardiennageALaDemande);
 }
-.ribbon.gardiennageALaDemande::before {
+.ribbon.GardiennageALaDemande::before {
     border-left: 5px solid var(--gardiennageALaDemande);
     border-right: 5px solid var(--gardiennageALaDemande);
     border-bottom: 5px solid transparent;
 }
 
-.ribbon.ronde {
+.ribbon.Ronde {
     background-color: var(--ronde);
 }
-.ribbon.ronde::before {
+.ribbon.Ronde::before {
     border-left: 5px solid var(--ronde);
     border-right: 5px solid var(--ronde);
     border-bottom: 5px solid transparent;
 }
 
-.ribbon.rondeALaDemande {
+.ribbon.RondeALaDemande {
     background-color: var(--rondeALaDemande);
 }
-.ribbon.rondeALaDemande:before{
+.ribbon.RondeALaDemande:before{
     border-left: 5px solid var(--rondeALaDemande);
     border-right: 5px solid var(--rondeALaDemande);
     border-bottom: 5px solid transparent;
 }
 
-.ribbon.testReseau {
+.ribbon.TestReseau {
     background-color: var(--testReseau);
 }
-.ribbon.testReseau:before{
+.ribbon.TestReseau:before{
     border-left: 5px solid var(--testReseau);
     border-right: 5px solid var(--testReseau);
     border-bottom: 5px solid transparent;
