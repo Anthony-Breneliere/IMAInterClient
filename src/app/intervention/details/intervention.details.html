@@ -31,9 +31,12 @@
         <tr field label="N° Siren ">{{intervenant?.Societe}}</tr>
         <tr field label= "Adresse "><pre>{{Capitalize(intervenant?.Adresse)}}</pre></tr>
         <tr field *ngFor="let tel of intervenant?.Telephones " label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
-        <tr field label="Email">
-            <reactive-input [(ngModel)]="intervenant.Email"></reactive-input>
-        </tr>
+        <tr *ngIf="!(intervenant?.Nom | lowercase).includes('générique'); else editableEmail" field label="Email">{{intervenant?.Email}}</tr>
+        <ng-template #editableEmail>
+            <tr field label="Email">
+                <reactive-input [(ngModel)]="intervenant.Email"></reactive-input>
+            </tr>
+        </ng-template>
         <tr field label="Matricule">{{intervenant?.Matricule}}</tr>
         <tr *ngIf="!readOnly" field label="Géré par Aepia">
             <span *ngIf="intervenant?.IsAepiaManaged == true">Oui</span>
