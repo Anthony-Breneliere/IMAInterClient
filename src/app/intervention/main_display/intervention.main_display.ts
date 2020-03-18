@@ -120,17 +120,17 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
     {
         return false; // désactivée sans client mobile
 
-        let inter = this.selectedIntervention;
+        // let inter = this.selectedIntervention;
 
-        let interLancee : boolean =
-            inter && inter.Etat != Etat.Creee;
+        // let interLancee : boolean =
+        //     inter && inter.Etat != Etat.Creee;
 
-        let messages : boolean =
-            inter && inter.Chat && inter.Chat.length > 0;
+        // let messages : boolean =
+        //     inter && inter.Chat && inter.Chat.length > 0;
 
-        let chatDisplayed : boolean = interLancee || messages;
+        // let chatDisplayed : boolean = interLancee || messages;
 
-        return chatDisplayed;
+        // return chatDisplayed;
     }
 
     get isThereIntervenant() : boolean
