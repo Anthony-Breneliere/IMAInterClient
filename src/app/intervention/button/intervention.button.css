@@ -1,7 +1,3 @@
-
-
-
-
 div.bouton_intervention:hover {
     border: 1px solid hsl(var( --color1), var( --saturation), var( --hover-lightness));
     color: hsl( 0, 0%, var( --hover-lightness));
@@ -66,4 +62,84 @@ div.intervention_data {
 
 div.defaultBorder {
     border: 1px solid hsl(var( --color1), var( --saturation), var( --lightness));
+}
+
+.interventionTypeContainer {
+    position: relative;
+}
+
+.ribbon {
+    --intervention: dodgerblue;
+    --gardiennage: deeppink;
+    --gardiennageALaDemande: purple;
+    --ronde: lime;
+    --rondeALaDemande: darkorange;
+    --testReseau: silver;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    right: 0;
+    top: -12px;
+    cursor: help;
+}
+.ribbon:before {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    bottom: -5px;
+}
+
+.ribbon.Intervention {
+    background-color: var(--intervention);
+}
+.ribbon.Intervention::before {
+    border-left: 5px solid var(--intervention);
+    border-right: 5px solid var(--intervention);
+    border-bottom: 5px solid transparent;
+}
+
+.ribbon.Gardiennage {
+    background-color: var(--gardiennage);
+}
+.ribbon.Gardiennage::before {
+    border-left: 5px solid var(--gardiennage);
+    border-right: 5px solid var(--gardiennage);
+    border-bottom: 5px solid transparent;
+}
+
+.ribbon.GardiennageALaDemande {
+    background-color: var(--gardiennageALaDemande);
+}
+.ribbon.GardiennageALaDemande::before {
+    border-left: 5px solid var(--gardiennageALaDemande);
+    border-right: 5px solid var(--gardiennageALaDemande);
+    border-bottom: 5px solid transparent;
+}
+
+.ribbon.Ronde {
+    background-color: var(--ronde);
+}
+.ribbon.Ronde::before {
+    border-left: 5px solid var(--ronde);
+    border-right: 5px solid var(--ronde);
+    border-bottom: 5px solid transparent;
+}
+
+.ribbon.RondeALaDemande {
+    background-color: var(--rondeALaDemande);
+}
+.ribbon.RondeALaDemande:before{
+    border-left: 5px solid var(--rondeALaDemande);
+    border-right: 5px solid var(--rondeALaDemande);
+    border-bottom: 5px solid transparent;
+}
+
+.ribbon.TestReseau {
+    background-color: var(--testReseau);
+}
+.ribbon.TestReseau:before{
+    border-left: 5px solid var(--testReseau);
+    border-right: 5px solid var(--testReseau);
+    border-bottom: 5px solid transparent;
 }

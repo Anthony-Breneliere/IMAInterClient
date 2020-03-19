@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Intervention } from '../../model/intervention';
 import { InterventionService } from '../../services/intervention.service';
+import { TypeFiche } from '../../model/enums';
 
 @Component({
     moduleId: module.id,
@@ -34,4 +35,8 @@ export class InterventionButtonContent
         return this._interService.immobilizeIntervenant( this.intervention.Id );
     }
 
+    public get typeFiche() : string
+    {
+        return this.intervention.TypeFicheLabel;
+    }
 }
