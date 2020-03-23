@@ -431,22 +431,10 @@ export class InterventionService  {
         }
     }
 
-    public submit( intervention : Intervention ) : void
-    {
-        console.log(`Demande de transmission de la fiche ${intervention.Id}.`);
-        this._connectionStatus.proxyServer.submit( intervention.Id );
-    }
-
-
-    public submitByMail( intervention : Intervention ) : void
+    public transfer( intervention : Intervention ) : void
     {
         console.log(`Demande de transmission par mail de la fiche ${intervention.Id}.`);
-        this._connectionStatus.proxyServer.submitByMail( intervention.Id );
-    }
-
-    submitByFax(intervention: Intervention): any {
-        console.log(`Demande de transmission par FAX de la fiche ${intervention.Id}.`);
-        this._connectionStatus.proxyServer.submitByFax( intervention.Id );
+        this._connectionStatus.proxyServer.transfer( intervention.Id );
     }
 
     public close( intervention : Intervention ) : void
@@ -461,45 +449,54 @@ export class InterventionService  {
         this._connectionStatus.proxyServer.cancel( intervention.Id );
     }
 
+    public inProgress( intervention : Intervention ) : void
+    {
+        console.log(`Demande de passage de la fiche en cours ${intervention.Id}.`);
+        this._connectionStatus.proxyServer.inProgress( intervention.Id );
+    }
+
     public chat( numFi : number, message : string ) : void
     {
         console.log(`Envoi messages sur FI ${numFi}, texte: ${message}`);
         this._connectionStatus.proxyServer.chat( numFi, message );
     }
 
-    public authorizeDeparture( interId : number ) : void
-    {
-        console.log( "Authorisation de départ pour l'intervention " + interId );
-
-        this._connectionStatus.proxyServer.authorizeDeparture( interId );
-    }
-
-    public immobilizeIntervenant( interId : number ) : void
-    {
-        console.log( "Mise en statique de l'invervenant pour la fiche " + interId );
-
-        this._connectionStatus.proxyServer.immobilizeIntervenant( interId );
-    }
+    // Ces fonctions ne sont plus disponible tant qu'il n'y pas d'application mobile
 
 
+    // public authorizeDeparture( interId : number ) : void
+    // {
+    //     console.log( "Authorisation de départ pour l'intervention " + interId );
 
-    public waitingDeparture( intervention : Intervention ) : boolean
-    {
-        if ( intervention )
-            return intervention.Etat == Etat.DemandeDepart;
+    //     this._connectionStatus.proxyServer.authorizeDeparture( interId );
+    // }
 
-        return false;
-    }
+    // public immobilizeIntervenant( interId : number ) : void
+    // {
+    //     console.log( "Mise en statique de l'invervenant pour la fiche " + interId );
 
-    /**
-     * Demande de mise à jour de la liste des sociétés AEPIA
-     */
-    public updateSIList() : void
-    {
-        console.log(`Demande de mise à jour de la liste des sociétés AEPIA`);
+    //     this._connectionStatus.proxyServer.immobilizeIntervenant( interId );
+    // }
 
-        this._connectionStatus.proxyServer.updateSIList();
-    }
+
+
+    // public waitingDeparture( intervention : Intervention ) : boolean
+    // {
+    //     if ( intervention )
+    //         return intervention.Etat == Etat.DemandeDepart;
+
+    //     return false;
+    // }
+
+    // /**
+    //  * Demande de mise à jour de la liste des sociétés AEPIA
+    //  */
+    // public updateSIList() : void
+    // {
+    //     console.log(`Demande de mise à jour de la liste des sociétés AEPIA`);
+
+    //     this._connectionStatus.proxyServer.updateSIList();
+    // }
 
 
     public addNewIntervention(): Intervention

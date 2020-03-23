@@ -36,7 +36,7 @@ export class InterventionButton implements OnInit
 
     public ngOnInit()
     {
-        // quand une nouvelle intervention est créée et que le bouton apparait, le menu contextuel n'est pas initialisé par 
+        // quand une nouvelle intervention est créée et que le bouton apparait, le menu contextuel n'est pas initialisé par
         // défaut, on l'initialise pour l'ajouter au DOM
         this.contextMenuService.show.subscribe((el) => {
             const overlay = this.contextMenuService.getLastAttachedOverlay();
@@ -53,11 +53,11 @@ export class InterventionButton implements OnInit
          });
     }
 
-    public get notificationChange() : boolean { 
+    public get notificationChange() : boolean {
         return this.intervention.NotificationChange && this.isMyInter && ! this.selected
     };
 
-    public set notificationChange( value: boolean ) { 
+    public set notificationChange( value: boolean ) {
         this.intervention.NotificationChange = value
     };
 
@@ -68,29 +68,24 @@ export class InterventionButton implements OnInit
 
     }
 
-    submit() : void 
+    transfer() : void
     {
-        this._interService.submit( this.intervention );
+        this._interService.transfer( this.intervention );
     }
 
-    submitByMail() : void 
-    {
-        this._interService.submitByMail( this.intervention );
-    }
-
-    submitByFax() : void 
-    {
-        this._interService.submitByFax( this.intervention );
-    }
-
-    close() : void 
+    close() : void
     {
         this._interService.close( this.intervention );
     }
 
-    cancel() : void 
+    cancel() : void
     {
         this._interService.cancel( this.intervention );
+    }
+
+    inProgress() : void
+    {
+        this._interService.inProgress( this.intervention );
     }
 
     get connected() : boolean
@@ -98,74 +93,55 @@ export class InterventionButton implements OnInit
         return this._connectionStatus.connected;
     }
 
-    get canSubmit() : boolean 
+    get canTransfer() : boolean
     {
-        let intervenant = this.intervention.Intervenant;
-        let site = this.intervention.Site;
-        let canSubmit : boolean = false;
-
-        // if ( this.intervention.Etat == Etat.Creee
-        //     && intervenant && intervenant.Societe
-        //     && site && site.Latitude && site.Longitude )
-        //     canSubmit = true;                                // latitude longitude plus obligatoire
-
-        if ( this.connected && this.intervention.Etat == Etat.Creee 
-            && intervenant && intervenant.Societe )
-            canSubmit = true;
-
-        return canSubmit;
-    }
-
-    get canSubmitByMail() : boolean 
-    {
-        let canSubmit : boolean = false;
+        let canTransfer : boolean = false;
         let intervenant = this.intervention.Intervenant;
 
-        if ( this.connected && this.intervention.Etat == Etat.Creee && 
+        if ( this.connected && this.intervention.Etat == Etat.Creee &&
             intervenant && intervenant.Email && intervenant.Email != "")
-            canSubmit = true;
+            canTransfer = true;
 
-        return canSubmit;
+        return canTransfer;
     }
 
-
-    get canSubmitByFax() : boolean 
+    get canClose() : boolean
     {
-        if ( this.connected && this._intervenantFaxNumber )
-            return true;
-        else
-            return false;
-    }
-
-    get canClose() : boolean 
-    {
-        let canClose = this.connected && this.intervention.Etat != null && this.intervention.Etat == Etat.AttenteCloture;
+        let canClose = this.connected && this.intervention.Etat != null && this.intervention.Etat == Etat.EnCours;
         return canClose;
     }
 
-    get canCancel() : boolean 
+    get canCancel() : boolean
     {
         let canCancel = this.connected && this.intervention.Etat != null && this.intervention.Etat != Etat.Close && this.intervention.Etat != Etat.Annulee;
         return canCancel;
     }
 
-    public get waitingDeparture() : boolean
+    get inProgressPossible() : boolean
     {
-        if ( this.intervention )
-            return this._interService.waitingDeparture( this.intervention );
-        
-        return false;
+        let inProgressPossible = this.connected && this.intervention.Etat != null && this.intervention.Etat == Etat.Transmise;
+        return inProgressPossible;
     }
 
-    public authorizeDeparture() : void
-    {
-        return this._interService.authorizeDeparture( this.intervention.Id );
-    }
+    // ces fonctions seront disponibles quand il y a auroa l'application mobile
 
-    public immobilizeIntervenant(): void
-    {
-        return this._interService.immobilizeIntervenant( this.intervention.Id );
-    }
+    // public get waitingDeparture() : boolean
+    // {
+    //     if ( this.intervention )
+    //         return this._interService.waitingDeparture( this.intervention );
+
+    //     return false;
+    // }
+
+    // public authorizeDeparture() : void
+    // {
+    //     return this._interService.authorizeDeparture( this.intervention.Id );
+    // }
+
+    // public immobilizeIntervenant(): void
+    // {
+    //     return this._interService.immobilizeIntervenant( this.intervention.Id );
+    // }
 
 
     private _intervenantFaxNumber : string;

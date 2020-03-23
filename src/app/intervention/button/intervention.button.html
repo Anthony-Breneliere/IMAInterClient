@@ -3,7 +3,7 @@
     [contextMenu]="buttonMenu" [contextMenuSubject]="intervention" >
 
     <div class="intervention_data" *ngIf="intervention"  >
-        
+
         <!-- (contextMenu)="displayContextMenu($event, intervention)" -->
         <ng-Content></ng-Content>
 
@@ -18,16 +18,12 @@
         Actions sur {{intervention?.Id}}
     </ng-template>
 
-    <ng-template [visible]="canSubmit" contextMenuItem let-item (execute)="submit()">
-        Transmettre sur mobile
+    <ng-template [visible]="canTransfer" contextMenuItem let-item (execute)="transfer()">
+        Transmettre
     </ng-template>
 
-    <ng-template [visible]="canSubmitByMail" contextMenuItem let-item (execute)="submitByMail()">
-        Transmettre par mail
-    </ng-template>
-
-    <ng-template [visible]="canSubmitByFax" contextMenuItem let-item (execute)="submitByFax()">
-        Transmettre par fax
+    <ng-template [visible]="inProgressPossible" contextMenuItem let-item (execute)="inProgress()">
+      En cours
     </ng-template>
 
     <ng-template [visible]="canClose" contextMenuItem let-item (execute)="close()">
@@ -38,13 +34,14 @@
         Annuler
     </ng-template>
 
-    <ng-template [visible]="waitingDeparture" contextMenuItem let-item (execute)="authorizeDeparture()">
+
+    <!-- <ng-template [visible]="waitingDeparture" contextMenuItem let-item (execute)="authorizeDeparture()">
         Autoriser le départ
     </ng-template>
 
     <ng-template [visible]="waitingDeparture" contextMenuItem let-item (execute)="immobilizeIntervenant()">
         Mise en statique
-    </ng-template>
+    </ng-template> -->
 
 </context-menu>
 

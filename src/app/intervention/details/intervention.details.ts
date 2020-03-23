@@ -106,10 +106,10 @@ export class InterventionDetails implements  OnChanges
 
     updateLayout()
     {
-        if ( this.grid )
-        {
-            this.grid.layout();
-        }
+      setTimeout( () => {
+        this.grid = null;
+        this.detectChanges();
+      }, 50);
     }
 
     ngOnChanges( changes: SimpleChanges )
@@ -199,10 +199,12 @@ export class InterventionDetails implements  OnChanges
             let site = this.intervention.Site;
             let intervenant = this.intervention.Intervenant;
 
-            if ( this._interService.waitingDeparture( this.intervention ) )
-                warning = "L'intervenant est en attente d'une autorisation de départ.";
 
-            else if ( ! intervenant || ! intervenant.Societe )
+            // Désactivé: en attente d'application mobile
+            // if ( this._interService.waitingDeparture( this.intervention ) )
+            //     warning = "L'intervenant est en attente d'une autorisation de départ.";
+
+            if ( ! intervenant || ! intervenant.Societe )
                 warning = "L'intervention ne peut pas être lancée car le numéro SIREN de la société d'intervention n'est pas renseigné.";
 
             // else if ( ! site || ! site.Latitude || ! site.Longitude )
@@ -215,34 +217,15 @@ export class InterventionDetails implements  OnChanges
     // liste des enums
     private MotifIntervention = MotifIntervention;
     private MotifInterventionValues = (<any> Object).values(MotifIntervention).filter( (e : any) => typeof( e ) == "number" );
-
     private Trajet = Trajet;
-    private TrajetValues = (<any> Object).values(Trajet).filter( (e : any) => typeof( e ) == "number" );
-
     private TypePresence = TypePresence;
-    private TypePresenceValues = (<any> Object).values(TypePresence).filter( (e : any) => typeof( e ) == "number" );
-
     private DepotBonIntervention = DepotBonIntervention;
-    private DepotBonInterventionValues = (<any> Object).values(DepotBonIntervention).filter( (e : any) => typeof( e ) == "number" );
-
     private TypeSite = TypeSite;
-    private TypeSiteValues = (<any> Object).values(TypeSite).filter( (e : any) => typeof( e ) == "number" );
-
     private TypeFiche = TypeFiche;
-    private TypeFicheValues = (<any> Object).values(TypeFiche).filter( (e : any) => typeof( e ) == "number" );
-
     private CircuitVerification = CircuitVerification;
-    private CircuitVerificationValues = Object.values(CircuitVerification).filter( (e : any) => typeof( e ) == "number" );
-
     private AppelPourCR = AppelPourCR;
-    private AppelPourCRValues = (<any> Object).values(AppelPourCR).filter( (e : any) => typeof( e ) == "number" );
-
     private OrigineConstatee = OrigineConstatee;
-    private OrigineConstateeValues = (<any> Object).values(OrigineConstatee).filter( (e : any) => typeof( e ) == "number" );
-
     private VerificationSysteme = VerificationSysteme;
-    private VerificationSystemeValues = (<any> Object).values(VerificationSysteme).filter( (e : any) => typeof( e ) == "number" );
-
     private motifChoices: any[] = [];
 
     // saisie d'une matin courante:
@@ -564,4 +547,21 @@ export class InterventionDetails implements  OnChanges
     {
         return this.updateIsDateDepartUpdatable;
     }
+
+    rapportWasDisplayed : boolean = false;
+    public get rapportDisplayed() : boolean
+    {
+      let rapportIsDisplayed : boolean = (this.rapport && ! [Etat.Creee].includes( this.intervention.Etat ) );
+
+      if ( rapportIsDisplayed != this.rapportWasDisplayed )
+      {
+        // je réinitialise la grille car le nombre d'éléments est impacté par cette variable
+        this.updateLayout();
+
+        this.rapportWasDisplayed = rapportIsDisplayed;
+      }
+
+      return ( rapportIsDisplayed );
+    }
+
 }

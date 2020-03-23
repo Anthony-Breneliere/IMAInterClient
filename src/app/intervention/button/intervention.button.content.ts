@@ -16,22 +16,23 @@ export class InterventionButtonContent
     constructor( private _interService : InterventionService )
     {}
 
-    public get waitingDeparture() : boolean
-    {
-        if ( this.intervention )
-            return this._interService.waitingDeparture( this.intervention );
-        
-        return false;
-    }
+    // desactive
+    // public get waitingDeparture() : boolean
+    // {
+    //     if ( this.intervention )
+    //         return this._interService.waitingDeparture( this.intervention );
 
-    public authorizeDeparture() : void
-    {
-        return this._interService.authorizeDeparture( this.intervention.Id );
-    }
+    //     return false;
+    // }
 
-    public immobilizeIntervenant(): void
-    {
-        return this._interService.immobilizeIntervenant( this.intervention.Id );
-    }
+    // public authorizeDeparture() : void
+    // {
+    //     return this._interService.authorizeDeparture( this.intervention.Id );
+    // }
+
+    // public immobilizeIntervenant(): void
+    // {
+    //     return this._interService.immobilizeIntervenant( this.intervention.Id );
+    // }
 
 }

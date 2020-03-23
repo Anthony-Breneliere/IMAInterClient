@@ -8,25 +8,10 @@ Sinon l'état affiché ne correspond pas à l'état réel.
  */
 export enum Etat {
     Creee = 0,
-    EnAppel,
     Transmise,
-    Acceptee,
-    Dispatchee,
-    Affectee,
-    Rejetee,
-    Programmee,
-    ASL,
-    CompteRendu,
-    Traitee,
-    Statique,
-    DemandeDepart,
-    DepartAutorise,
+    EnCours,
     Annulee,
-    AttenteCloture,
-    Close,
-    AnnulTS,
-    AnnulITV,
-    NotAllowed
+    Close
 }
 
 export enum OrigineFiche {

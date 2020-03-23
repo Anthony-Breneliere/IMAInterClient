@@ -11,10 +11,13 @@
     <i class="mdi mdi-run"></i> {{intervention.Intervenant?.Nom}}
 </div>
 <div>
-    <i class="mdi mdi-alarm-multiple"></i>{{intervention.Creation | date:'long'}}</div> 
-<div *ngIf="waitingDeparture">
+    <i class="mdi mdi-alarm-multiple"></i>{{intervention.Creation | date:'long'}}
+</div>
+<!--
+   Fonctions à réactiver lors de l'ajout de l'application mobile
+  <div *ngIf="waitingDeparture">
     <button class="transition_1s" id="authDeparture" (click)="authorizeDeparture()">Autoriser le départ</button>
 </div>
 <div *ngIf="waitingDeparture">
     <button class="transition_1s" id="authDeparture" (click)="immobilizeIntervenant()">Mise en statique</button>
-</div>
+</div> -->
