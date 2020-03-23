@@ -404,8 +404,8 @@
         </tr>
 
         <tr field label="Mise en place">
-            <reactive-checkbox label="Mise en place ADS" [(ngModel)]="miseEnSecurite.MiseEnPlaceADS" (ngModelChange)="changeRapport({MiseEnSecurite:{MiseEnPlaceADS:$event}})"></reactive-checkbox>
-            <reactive-checkbox label="Maître chien" [(ngModel)]="miseEnSecurite.MiseEnPlaceMaitreChien" (ngModelChange)="changeRapport({MiseEnSecurite:{MiseEnPlaceMaitreChien:$event}})"></reactive-checkbox>
+            <reactive-checkbox label="Mise en place Gardiennage" [(ngModel)]="miseEnSecurite.Gardiennage" (ngModelChange)="changeRapport({MiseEnSecurite:{Gardiennage:$event}})"></reactive-checkbox>
+            <reactive-checkbox label="Ronde" [(ngModel)]="miseEnSecurite.Ronde" (ngModelChange)="changeRapport({MiseEnSecurite:{Ronde:$event}})"></reactive-checkbox>
             <reactive-checkbox label="Mise en place demandée par" [(ngModel)]="MiseEnPlaceDemandeeParChecked"></reactive-checkbox>
         </tr>
 
@@ -413,20 +413,6 @@
             <reactive-input [(ngModel)]="miseEnSecurite.MiseEnPlaceDemandeePar" (ngModelChange)="changeRapport({MiseEnSecurite:{MiseEnPlaceDemandeePar:$event}})"></reactive-input>
         </tr>
 
-        <!--
-        Supprimé en attente de confirmation Émilie
-
-        <tr field label="Animal">
-            <select [(ngModel)]="MiseEnPlaceAnimalChecked">
-                <option [ngValue]="null"></option>
-                <option [ngValue]="true">Oui</option>
-                <option [ngValue]="false">Non</option>
-            </select>
-        </tr>
-
-        <tr field label="Type de l'animal" *ngIf="MiseEnPlaceAnimalChecked">
-            <reactive-input [(ngModel)]="miseEnSecurite.MiseEnPlaceAnimal" (ngModelChange)="changeRapport({MiseEnSecurite:{MiseEnPlaceAnimal:$event}})"></reactive-input>
-        </tr> -->
 
     </section>
 

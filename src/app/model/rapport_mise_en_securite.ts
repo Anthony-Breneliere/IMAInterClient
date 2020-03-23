@@ -2,9 +2,7 @@
 export class RapportMiseEnSecurite
 {
     SiteRefermable: boolean;
-    MiseEnPlaceADS: boolean;
-    MiseEnPlaceMaitreChien: boolean;
-    MiseEnPlaceDemandee: boolean;
+    Gardiennage: boolean;
     MiseEnPlaceDemandeePar: string;
-    MiseEnPlaceAnimal: string;
+    Ronde: boolean;
 }

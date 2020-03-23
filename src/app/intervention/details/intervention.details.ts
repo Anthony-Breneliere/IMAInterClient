@@ -336,27 +336,14 @@ export class InterventionDetails implements  OnChanges
 
     public get MiseEnPlaceDemandeeParChecked() : boolean
     {
-        return this.miseEnSecurite && this.miseEnSecurite.MiseEnPlaceDemandeePar != null || this.miseEnSecurite.MiseEnPlaceDemandee;
+        return this.miseEnSecurite && this.miseEnSecurite.MiseEnPlaceDemandeePar != null;
     }
 
     public set MiseEnPlaceDemandeeParChecked( value : boolean )
     {
-        this.miseEnSecurite.MiseEnPlaceDemandee = value;
         this.miseEnSecurite.MiseEnPlaceDemandeePar = value ? "" : null;
 
         this.changeRapport({MiseEnSecurite:{MiseEnPlaceDemandeePar:value? '' : null}});
-    }
-
-    public get MiseEnPlaceAnimalChecked() : boolean
-    {
-        return this.miseEnSecurite && this.miseEnSecurite.MiseEnPlaceAnimal != null;
-    }
-
-    public set MiseEnPlaceAnimalChecked( value : boolean )
-    {
-        this.changeRapport({MiseEnSecurite:{MiseEnPlaceAnimal:value? '' : null}});
-
-        this.miseEnSecurite.MiseEnPlaceAnimal = value ? "" : null;
     }
 
     private gridStackInit = false;
