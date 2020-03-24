@@ -25,8 +25,6 @@ export class InterventionFactory  {
             DateArrivee: null,
             DateAnnulation: null,
             DateDepart: null,
-            DateDiffusion: null,
-            DateAffectation: null,
             Lancement: null,
             Cloture: null,
             Site: this.CreateBasicSite(),
@@ -37,13 +35,13 @@ export class InterventionFactory  {
                 Nom: "Générique intervenant",
                 Telephones : []
             },
-            Rapport: 
+            Rapport:
             {
                 ArriveeSurLieux :
                 {
                     NonAccesAuSite : {}
                 },
-                Verifications : 
+                Verifications :
                 {
                     QuellesLumieresAllumees : {},
                     QuellesIssuesOuvertes : {},
@@ -61,7 +59,7 @@ export class InterventionFactory  {
             NotificationChange: false,
 
             Operateur: operatorName
-            
+
         };
 
         return newIntervention;
