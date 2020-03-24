@@ -483,7 +483,7 @@ export class InterventionDetails implements  OnChanges
                 this.intervention.DateArrivee = arrivee;
 
                 // envoi du changement de date d'arrivée
-                this._interService.sendInterChange( { Id:this.intervention.Id, DateArrivee:arrivee } );
+                this._interService.sendInterChange( { Id:this.intervention.Id, DateArrivee: arrivee } );
             }
             catch( error )
             {
@@ -503,7 +503,7 @@ export class InterventionDetails implements  OnChanges
                 this.intervention.DateDepart = depart;
 
                 // envoi du changement de date de départ
-                this._interService.sendInterChange( { Id:this.intervention.Id, DateArrivee:depart } );
+                this._interService.sendInterChange( { Id:this.intervention.Id, DateDepart: depart } );
             }
             catch( error )
             {
@@ -517,15 +517,10 @@ export class InterventionDetails implements  OnChanges
         var updatable = false;
         if ( this.intervention )
         {
-            let mainCours : MainCourante[] = this.intervention.MainCourantes ;
-
             if ( this.intervention.Intervenant
-                &&  this.intervention.Etat != Etat.Annulee && this.intervention.Etat == Etat.Close )
+                &&  this.intervention.Etat == Etat.EnCours )
                 updatable = true;
 
-
-            // else if (mainCours && mainCours.some( ( mc :MainCourante) => mc.Type == AutoMC.DemandeInterventionTransmise ) )
-            //     updatable = true;
         }
         return updatable;
     }

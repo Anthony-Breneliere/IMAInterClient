@@ -14,7 +14,7 @@ import { InfosFacturation } from './infos_facturation';
  */
 
 
-export class Intervention 
+export class Intervention
 {
     Id : number;
     Etat : Etat;
@@ -24,24 +24,22 @@ export class Intervention
 
     Creation : Date;
     Lancement : Date;
-    DateDiffusion : Date;
-    DateAffectation : Date;
     DateArrivee : Date;
     DateAnnulation : Date;
     DateDepart : Date;
     Cloture : Date;
-    
+
     Site : Site;
     Alarme : Alarme;
     FicheQualite : FicheQualite;
     Intervenant: Intervenant;
     Rapport: Rapport;
-    MainCourantes: MainCourante[]; 
+    MainCourantes: MainCourante[];
 
     Chat: Message[];
 
     InfosFacturation : InfosFacturation;
-    
+
     NotificationChange : boolean;
 
     // get SiteN() : Site { return this.Site ? this.Site : (this.Site = new Site()) };
@@ -53,7 +51,7 @@ export class Intervention
     // get InfosFacturationN() : InfosFacturation { return this.InfosFacturation ? this.InfosFacturation : (this.InfosFacturation = new InfosFacturation()) };
 
     /**
-     * 
+     *
      * @param jsonData Données d'intervention
      */
     constructor()
@@ -70,7 +68,7 @@ export class Intervention
     public get NomComplet() : string
     {
         let s = this.Site;
-        
+
         if ( s )
             return `${s.Qualite ? s.Qualite + ' ' : ''} ${s.Nom ? s.Nom + ' ': ''} ${s.Prenom ? s.Prenom : ''}`
         else

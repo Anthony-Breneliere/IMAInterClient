@@ -13,13 +13,13 @@ import { formatDate } from '@angular/common'
 export class ReactiveDateInputComponent extends ReactiveBaseComponent {
 
   @Input() format: string;
-  @Output() dateOutput: EventEmitter<Date> = new EventEmitter();
+  @Output() dateOutput: EventEmitter<number> = new EventEmitter();
 
-  constructor( protected ref: ChangeDetectorRef ) { 
+  constructor( protected ref: ChangeDetectorRef ) {
     super( ref );
   }
 
-  private _validatedDate : Date;
+  private _validatedDate : number = null;
 
   // convertit la saisie en un date validee
   private set ValidatedDate( value: string )
@@ -28,9 +28,9 @@ export class ReactiveDateInputComponent extends ReactiveBaseComponent {
       this._validatedDate = null;
     else
       {
-        try 
+        try
         {
-          this._validatedDate = new Date( value );
+          this._validatedDate = Date.parse( value );
         }
         catch {}
       }
@@ -72,7 +72,7 @@ export class ReactiveDateInputComponent extends ReactiveBaseComponent {
         this.updatingState = null;
         this._ref.detectChanges();
       }, 100 );
-  
+
       // model value has change so changes must be detected (case ChangeDetectorStrategy is OnPush)
       this._ref.detectChanges();
     }
