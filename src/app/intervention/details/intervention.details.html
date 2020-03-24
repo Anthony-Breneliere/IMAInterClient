@@ -38,7 +38,7 @@
         <tr *ngIf="!(intervenant?.Nom | lowercase).includes('générique'); else editableEmail" field label="Email">{{intervenant?.Email}}</tr>
         <ng-template #editableEmail>
             <tr field label="Email">
-                <reactive-input [(ngModel)]="intervenant.Email"></reactive-input>
+                <reactive-input [(ngModel)]="intervenant.Email" (ngModelChange)="changeEmailIntervenantGenerique({Email:$event})"></reactive-input>
             </tr>
         </ng-template>
         <tr field label="Matricule">{{intervenant?.Matricule}}</tr>
