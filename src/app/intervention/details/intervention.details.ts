@@ -460,6 +460,19 @@ export class InterventionDetails implements  OnChanges
         } );
     }
 
+    public changeEmailIntervenantGenerique( data : any )
+    {
+        console.log( "Changement du mail d'intervenant générique à " + data );
+
+        var p = new Promise<void>( (resolve) => {
+
+            Lodash.merge( this.intervention, data);
+
+            // envoi du changement dans l'intervention
+            this._interService.sendInterChange( { Id:this.intervention.Id, Intervenant:data } );
+        } );
+    }
+
     public changeInfoFactu( data : any )
     {
         console.log( data );
