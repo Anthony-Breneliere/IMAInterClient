@@ -13,6 +13,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 import { RouterModule }   from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DlDateTimePickerDateModule } from 'angular-bootstrap-datetimepicker';
 
 /* Liste des services */
 import { InterventionService } from './services/intervention.service';
@@ -33,10 +34,11 @@ import { InterventionButtonContent } from './intervention/button/intervention.bu
 import { AppBar } from './app_bar/app_bar';
 import { InterventionMainDisplay } from './intervention/main_display/intervention.main_display';
 import { Location, LocationStrategy, PathLocationStrategy, HashLocationStrategy } from '@angular/common';
-import { DraggableDirective } from './tools/draggable'; 
+import { DraggableDirective } from './tools/draggable';
 import { SortInterventionByDateTime } from './intervention/groupe/sortInterPipe';
 import { Chat } from './intervention/chat/chat';
 import { Maincourantes } from './intervention/maincourantes/maincourantes';
+
 
 // import { ReactiveBaseComponent } from './intervention/reactive-components/reactive-base';
 import { ReactiveInputComponent } from './intervention/reactive-components/reactive-input.component';
@@ -48,7 +50,6 @@ import { ReactiveDateInputComponent } from './intervention/reactive-components/r
 import { TestComponent } from './test/test.component';
 
 // inclus pour le datepicker:
-// import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     imports:      [
@@ -56,16 +57,17 @@ import { TestComponent } from './test/test.component';
         BrowserAnimationsModule,
         ContextMenuModule.forRoot(),
         FormsModule,
-        HttpClientModule, 
+        HttpClientModule,
  //       NgbModule,
-        RouterModule.forRoot (appRoutes)
-    ],
+        RouterModule.forRoot (appRoutes),
+        DlDateTimePickerDateModule,
+      ],
     /*
        Déclaration des composants et des directives utilisées par le module. En les ajoutant ici
        on les rend disponibles pour chaque composant du module sans avoir à les déclarer en tant
        que directive du composant.
      */
-    declarations: [ 
+    declarations: [
         InterventionAppComponent,
         InterventionMainDisplay,
         InputTextbox,
@@ -93,7 +95,7 @@ import { TestComponent } from './test/test.component';
        Pour qu'un composant du module puisse utilise le service, il faut que celui soit ajouté
        en paramètre du constructeur. Une seule instance est créée pour chaque service.
      */
-    providers:    [ 
+    providers:    [
         { provide: LOCALE_ID, useValue: 'fr' },
         ConnectionStatus,
         InterventionService,
@@ -105,7 +107,7 @@ import { TestComponent } from './test/test.component';
     bootstrap:    [ InterventionAppComponent ],
 
     /* Permet d'utiliser dans le module des composants qui sont pas Angular, comme les composants Polymer
-     */ 
+     */
     schemas:    [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class AppModule {}

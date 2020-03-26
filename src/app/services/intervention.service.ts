@@ -504,7 +504,7 @@ export class InterventionService  {
         let newIntervention = new Intervention();
         newIntervention.Operateur = "abreneli";
         newIntervention.Id = 1;
-        newIntervention.Creation = new Date();
+        newIntervention.Creation = (new Date()).toISOString();
 
         this.loadedInterventionsDico.setValue( 1, newIntervention );
 

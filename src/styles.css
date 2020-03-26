@@ -1,4 +1,5 @@
 :root {
+    /* Couleurs */
     --hover_shadow: hsl( 0, 100%, 100%);
     --main-bg-color: hsl( 0, 0%, 20%);
     --selected-bg-color: hsl( 0, 0%, var( --bg-selected-lightness ) );
@@ -6,8 +7,9 @@
     --input-bg-color: hsl( 0, 0%, 23%);
     --dark-bg-color: hsl( 0, 0%, 30%);
     --changed-bg-color: hsl(56, 5%, 30%);
-    
     --change-detect-color: hsl(45, 100%, 50%);
+
+    /* Paramétrage des couleurs */
     --saturation: 50%;
     --lightness: 35%;
     --action-lightness: 70%;
@@ -16,6 +18,8 @@
     --bg-hover-lightness: 30%;
     --selected-lightness: 100%;
     --bg-selected-lightness: 40%;
+
+    /* Choix des teintes */
     --operateur_hue: 0;
     --intervenant_hue: 20;
     --maincourante_hue: 40;
@@ -29,6 +33,9 @@
     --color2: 180;
     --color3: 100;
     --colorAction: 15;
+
+    /* Couleurs paramétrées */
+    --defaut-font-color: hsl( var( --white_hue), var( --gray), var( --font-lightness));
     --context-menu-color: hsla( 0, 0%, 10%, 0.5);
     --main-color: hsl( var( --color1), var( --saturation), var( --lightness));
     --selected-main-color: hsl( var( --color1), var( --saturation), var( --selected-lightness));
@@ -38,12 +45,19 @@ html {
     height: 100%;
 }
 
+
 body {
     height: 100%;
     background: var( --main-bg-color);
-    color: hsl( var( --white_hue), var( --gray), var( --font-lightness));
-    color: hsl( 0, 0%, 70%);
+    color: var( --defaut-font-color );
     margin: 0px 0px 0px 0px;
+
+    /* Valeur boostrap: 1.5 */
+    line-height: 1.3;
+}
+
+.dropdown-menu {
+  color: var( --defaut-font-color );
 }
 
 * {
@@ -59,8 +73,12 @@ select,
 input,
 textarea {
     background-color: var( --input-bg-color);
-    color: hsl( 0, var( --gray), var( --font-lightness));
+    color: var( --defaut-font-color );
     resize: none;
+}
+
+::after, ::before {
+  box-sizing: content-box
 }
 
 select,
@@ -72,7 +90,7 @@ button {
 }
 
 button {
-    color: hsl( 0, var( --gray), var( --font-lightness));
+    color: var( --defaut-font-color );
 }
 
 button:hover {
@@ -135,7 +153,7 @@ button:hover:enabled {
 }
 
 .ngx-contextmenu a {
-    color: hsl( 0, var( --gray), var( --font-lightness));
+    color: var( --defaut-font-color );
     display: block;
     padding: 0.5em 1em;
     text-decoration: none;
@@ -173,6 +191,10 @@ button:hover:enabled {
 
 
 /* Customize the label (the container) */
+label
+{
+  margin: 0em;
+}
 
 .container {
     display: block;
@@ -185,6 +207,9 @@ button:hover:enabled {
     user-select: none
 }
 
+.crlf-return {
+  white-space: pre-wrap;
+}
 
 /* Hide the browser's default checkbox */
 

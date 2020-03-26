@@ -22,12 +22,12 @@ export class Intervention
     Origine : OrigineFiche;
     TypeFiche : TypeFiche;
 
-    Creation : Date;
-    Lancement : Date;
-    DateArrivee : Date;
-    DateAnnulation : Date;
-    DateDepart : Date;
-    Cloture : Date;
+    Creation : string;
+    Lancement : string;
+    stringArrivee : string;
+    stringAnnulation : string;
+    stringDepart : string;
+    Cloture : string;
 
     Site : Site;
     Alarme : Alarme;

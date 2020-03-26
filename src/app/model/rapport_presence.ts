@@ -7,11 +7,11 @@ export class RapportPresence
 {
     // public TypePresence : TypePresence;
     // public PresenceClientNom : string;
-    // public PresenceClientArrivee : Date;
+    // public PresenceClientArrivee : string;
     // public PresenceContact1Nom : string;
-    // public PresenceContact1Arrivee : Date;
+    // public PresenceContact1Arrivee : string;
     // public PresenceContact2Nom : string;
-    // public PresenceContact2Arrivee : Date;
+    // public PresenceContact2Arrivee : string;
 
     // présence sur site:
     public PresenceAnimale : boolean;

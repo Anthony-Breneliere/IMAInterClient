@@ -45,10 +45,11 @@ button {
 }
 
 .line:not(:last-child) {
-    padding: 0em 0.8em 0em 0em; 
+    padding: 0em 0.8em 0em 0em;
 }
 
 #listMainCour {
     max-height: 120px;
-    overflow-y: scroll
+    overflow-y: scroll;
+    line-height: 1.6em;
 }

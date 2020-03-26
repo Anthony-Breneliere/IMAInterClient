@@ -19,7 +19,7 @@ export class ReactiveCheckboxComponent extends ReactiveBaseComponent {
 
   @Input() label = '';
 
-  constructor( protected ref: ChangeDetectorRef ) { 
+  constructor( protected ref: ChangeDetectorRef ) {
     super( ref );
   }
 }

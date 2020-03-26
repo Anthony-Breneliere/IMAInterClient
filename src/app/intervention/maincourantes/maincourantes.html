@@ -1,7 +1,5 @@
 <div id="mainCourantes">
 
-    <div><strong>Maincourantes</strong> </div>
-
     <div id="listMainCour">
         <table>
             <tr *ngFor="let mainCour of listMainCour">
@@ -21,7 +19,7 @@
         </select>
 
         <input class="extensible" id="CommentMaincour" placeholder="Commentaire" [(ngModel)]="maincourComment"/>
-        
+
         <button class="cellinput" (click)="addNewMaincourante()">Ajouter</button>
 
     </div>

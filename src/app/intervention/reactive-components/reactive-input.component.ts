@@ -12,7 +12,7 @@ import { ReactiveBaseComponent } from './reactive-base'
 })
 export class ReactiveInputComponent extends ReactiveBaseComponent {
 
-  constructor( protected ref: ChangeDetectorRef ) { 
+  constructor( protected ref: ChangeDetectorRef ) {
     super( ref );
   }
 }
