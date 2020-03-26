@@ -16,3 +16,8 @@ textarea {
     width: 100%;
     resize: both
 }
+
+
+.cellinput {
+  padding: 4px 4px 4px 4px
+}

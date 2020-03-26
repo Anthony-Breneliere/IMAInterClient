@@ -12,12 +12,15 @@ import { trigger, style, animate, transition, keyframes } from '@angular/animati
 export class ReactiveBaseComponent implements ControlValueAccessor
 {
 
-  _value = '';
+  protected _value : any = null;
 
   // stores the action in the attribute (onModelChange) in the html template:
   propagateChange:any = ( change ) => {};
 
-  constructor( protected _ref: ChangeDetectorRef ) { }
+  constructor( protected _ref: ChangeDetectorRef )
+  {
+
+  }
 
   // gestion de l'affichage des changements par des tierses personnes:
   public updatingState : string = null;
@@ -39,14 +42,14 @@ export class ReactiveBaseComponent implements ControlValueAccessor
         this.updatingState = null;
         this._ref.detectChanges();
       }, 100 );
-  
+
       // model value has change so changes must be detected (case ChangeDetectorStrategy is OnPush)
       this._ref.detectChanges();
     }
 
     this._value = value;
   }
-  
+
   // change from the UI
   set value(event: any)
   {

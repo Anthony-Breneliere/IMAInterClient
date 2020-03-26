@@ -447,16 +447,16 @@ export class InterventionDetails implements  OnChanges
         } );
     }
 
-    public changeTypeFiche( data : any )
+    public changeIntervention( data : any )
     {
-        console.log( "Changement du type d'intervention vers " + TypeFiche[data] );
+        console.log( "Changement de l'intervention " + data );
 
         var p = new Promise<void>( (resolve) => {
 
             Lodash.merge( this.intervention, data);
 
             // envoi du changement dans l'intervention
-            this._interService.sendInterChange( { Id:this.intervention.Id, TypeFiche:data } );
+            this._interService.sendInterChange( { Id:this.intervention.Id, data } );
         } );
     }
 
@@ -472,7 +472,7 @@ export class InterventionDetails implements  OnChanges
             this._interService.sendInterChange( { Id:this.intervention.Id, InfosFacturation:data } );
         } );
     }
-
+/*
     public updateArrivee( dateString: string )
     {
         if ( dateString )
@@ -511,7 +511,7 @@ export class InterventionDetails implements  OnChanges
             }
         }
     }
-
+*/
     public get updateIsDateDepartUpdatable() : boolean
     {
         var updatable = false;

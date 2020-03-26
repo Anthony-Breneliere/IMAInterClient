@@ -12,11 +12,8 @@
 
         <div id="interventionAndChat"  >
             <intervention-details [intervention]="selectedIntervention"></intervention-details>
-
-            <!-- <div id="maincourantesChat"> -->
-                <maincourantes [intervention]="selectedIntervention"></maincourantes>
-                <chat *ngIf="chatDisplayed" [intervention]="selectedIntervention"></chat>
-            <!-- </div> -->
+            <maincourantes [intervention]="selectedIntervention"></maincourantes>
+            <chat *ngIf="chatDisplayed" [intervention]="selectedIntervention"></chat>
         </div>
 
     </div>
