@@ -24,7 +24,7 @@
               "src/styles.css",
               "node_modules/mdi/css/materialdesignicons.css"
             ],
-            "scripts": [ 
+            "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/signalr/jquery.signalR.js"
             ],
@@ -44,34 +44,9 @@
               "buildOptimizer": true,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "src/environments/environment.ts"
                 }
               ],
-              "i18nFormat": "xlf",
-              "i18nLocale": "fr"
-            },
-            "recette": {
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.recette.ts"
-                }
-              ],
-              "i18nFormat": "xlf",
-              "i18nLocale": "fr"
-            },
-            "fr": {
-              "aot": true,
               "i18nFormat": "xlf",
               "i18nLocale": "fr"
             }
@@ -85,9 +60,6 @@
           "configurations": {
             "production": {
               "browserTarget": "imainter:build:production"
-            },
-            "recette": {
-              "browserTarget": "imainter:build:recette"
             },
             "fr": {
               "browserTarget": "imainter:build:fr"
