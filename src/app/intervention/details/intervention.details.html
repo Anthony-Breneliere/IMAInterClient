@@ -42,7 +42,7 @@
         <tr *ngIf="!(intervenant?.Nom | lowercase).includes('générique'); else editableEmail" field label="Email">{{intervenant?.Email}}</tr>
         <ng-template #editableEmail>
             <tr field label="Email">
-                <reactive-input [(ngModel)]="intervenant.Email"></reactive-input>
+                <reactive-input [(ngModel)]="intervenant.Email" (ngModelChange)="changeEmailIntervenantGenerique({Email:$event})"></reactive-input>
             </tr>
         </ng-template>
         <tr field label="Matricule">{{intervenant?.Matricule}}</tr>
@@ -54,10 +54,6 @@
 
         <tr field label="Creation ">{{intervention.Creation | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
         <tr field label="Lancement ">{{intervention.Lancement | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
-
-        <!-- Pas sauvegardé dans le M1: -->
-        <tr field *ngIf="! readOnlySection" label="Diffusion">{{intervention.DateDiffusion | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
-        <tr field *ngIf="! readOnlySection" label="Affectation">{{intervention.DateAffectation | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
 
         <!-- Champs en lecture seule par Aepia que si l'intervenant est Aepia -->
         <tr field *ngIf="!updateIsDateArriveeUpdatable" label="Arrivée">{{intervention.DateArrivee | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
