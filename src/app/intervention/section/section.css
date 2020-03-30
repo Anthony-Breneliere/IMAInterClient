@@ -20,9 +20,7 @@ div.title {
     cursor: default;
     padding: 10px 10px 10px 10px;
     min-width: 270px;
-    background-color: transparent;
     border: var( --main-color) solid 1px;
-    z-index: 5
 }
 
 div.title:hover {
