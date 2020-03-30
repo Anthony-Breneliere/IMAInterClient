@@ -1,5 +1,5 @@
 #app_bar {
-    background-color: hsl( var( --color1), var( --saturation), var( --lightness));
+    background-color: var( --modal-border-color );
     color: hsl( 0, 0%, var( --font-lightness));
     padding: 10px 10px 10px 10px;
     box-shadow: rgba( 0, 0, 0, 0.5) 0px 2px 5px 0px;
@@ -111,7 +111,7 @@ color: hsl( 0, 0%, var( --hover-lightness))
 }
 
 .app-bar {
-background-color: hsl( var( --color1), var( --saturation), var( --lightness));
+background-color: var( --modal-border-color );
 color: hsl( 0, 0%, var( --font-lightness));
 margin: 0px 0px 0px 0px;
 padding: 10px 10px 10px 10px;
