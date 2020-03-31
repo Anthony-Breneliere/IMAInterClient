@@ -1,4 +1,4 @@
-import { Component, forwardRef, ChangeDetectorRef, Input, Output, EventEmitter, ElementRef, LOCALE_ID, Inject } from '@angular/core';
+import { Component, forwardRef, ChangeDetectorRef, Input, Output, EventEmitter, ElementRef, LOCALE_ID, Inject, ViewChild } from '@angular/core';
 import { ControlValueAccessor,  NG_VALUE_ACCESSOR  } from '@angular/forms';
 import { ReactiveBaseComponent } from './reactive-base'
 import { formatDate } from '@angular/common'
@@ -31,18 +31,20 @@ declare var $: any;
 {
   selector: 'reactive-date-input',
   template: `
-<input
-  class="cellinput dropdown-toggle date-dropdown"
-  [class.transition_1s]="!isThirdParty"
-  [class.borderhalo]="isThirdParty"
-  data-toggle="dropdown"
-  aria-label="Date"
-  aria-haspopup="true"
-  aria-expanded="false"
-  required readonly
-  dlDateTimeInput [(ngModel)]="value" />
-<div >
-  <div class="dropdown-menu" (click)="keepDropDownOpen($event)">
+<div id="eventReceiver" class="dropdown">
+  <input
+    id="dateInput"
+    class="cellinput date-dropdown"
+    [class.transition_1s]="!isThirdParty"
+    [class.borderhalo]="isThirdParty"
+    data-toggle="dropdown"
+    aria-label="Date"
+    aria-haspopup="true"
+    aria-expanded="false"
+    required readonly
+    dlDateTimeInput [(ngModel)]="value" />
+  <div
+    class="dropdown-menu" (click)="keepDropDownOpen($event)">
     <div style="width:360px;">
       <dl-date-time-picker
         startView="hour"
@@ -81,7 +83,7 @@ export class ReactiveDateInputComponent extends ReactiveBaseComponent {
   private _datePickerDate = null;
 
   ngAfterViewInit(): void {
-    const dropdownToggle = $('[data-toggle="dropdown"]', this._elementRef.nativeElement);
+    const dropdownToggle = $('#eventReceiver', this._elementRef.nativeElement);
     dropdownToggle.parent().on('show.bs.dropdown', () => {
       this._isPickerOpen = true;
     });
@@ -173,7 +175,7 @@ export class ReactiveDateInputComponent extends ReactiveBaseComponent {
    */
 
   keepDropDownOpen(event: Event) {
-    event.stopPropagation();
+   event.stopPropagation();
   }
 
   /**
@@ -190,7 +192,7 @@ export class ReactiveDateInputComponent extends ReactiveBaseComponent {
   dateSelected(event) {
     console.log('_isDropdownVisible', this._isPickerOpen);
     if (this._isPickerOpen && event.value) {
-      $('.date-dropdown').dropdown('toggle');
+      $('#dateInput', this._elementRef.nativeElement).dropdown('toggle');
     }
   }
 

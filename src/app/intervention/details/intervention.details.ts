@@ -29,8 +29,6 @@ import {
     ChangeDetectorRef,
     Component,
     Input,
-    ElementRef,
-    Renderer,
     SimpleChanges
 
 } from '@angular/core';
@@ -234,7 +232,7 @@ export class InterventionDetails implements  OnChanges
 
     private radioValue : MotifIntervention;
 
-    constructor( private r: Renderer, private el: ElementRef, private _connectionStatus: ConnectionStatus, private _interService: InterventionService, private ref: ChangeDetectorRef )
+    constructor( private _connectionStatus: ConnectionStatus, private _interService: InterventionService, private ref: ChangeDetectorRef )
     {
         // on transforme l'enum MotifIntervention en une structure clé/valeur qu'on peut binder
         this.motifChoices = Object.values(MotifIntervention).filter( (e : any) => typeof( e ) == "number" );
