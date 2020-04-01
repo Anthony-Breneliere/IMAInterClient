@@ -24,9 +24,9 @@ export class Intervention
 
     Creation : string;
     Lancement : string;
-    stringArrivee : string;
-    stringAnnulation : string;
-    stringDepart : string;
+    DateArrivee : string;
+    DateAnnulation : string;
+    DateDepart : string;
     Cloture : string;
 
     Site : Site;
