@@ -10,10 +10,10 @@ import { RapportTrajet } from '../../model/rapport_trajet';
 import { RapportIssuesConcernees } from '../../model/rapport_issues_concernees';
 import { RapportLumieresAllumees } from '../../model/rapport_lumieres';
 import { RapportVerifications } from '../../model/rapport_verifications';
-import {RapportPresence} from "../../model/rapport_presence";
-import {Alarme} from "../../model/alarme";
-import {RapportMiseEnSecurite} from '../../model/rapport_mise_en_securite';
-import {RapportArriveeSurLieux} from '../../model/rapport_arrivee_sur_lieux';
+import { RapportPresence} from "../../model/rapport_presence";
+import { Alarme} from "../../model/alarme";
+import { RapportMiseEnSecurite} from '../../model/rapport_mise_en_securite';
+import { RapportArriveeSurLieux} from '../../model/rapport_arrivee_sur_lieux';
 import { formatDate } from '@angular/common'
 
 import * as Lodash from 'lodash';
@@ -451,10 +451,10 @@ export class InterventionDetails implements  OnChanges
 
         var p = new Promise<void>( (resolve) => {
 
-            Lodash.merge( this.intervention, data);
+            data.Id = this.intervention.Id;
 
             // envoi du changement dans l'intervention
-            this._interService.sendInterChange( { Id:this.intervention.Id, data } );
+            this._interService.sendInterChange( data );
 
         } );
     }

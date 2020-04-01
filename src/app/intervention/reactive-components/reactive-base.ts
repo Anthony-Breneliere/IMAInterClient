@@ -53,8 +53,13 @@ export class ReactiveBaseComponent implements ControlValueAccessor
   // change from the UI
   set value(event: any)
   {
-    this._value = event;
-    this.propagateChange(event);
+    let change : boolean = (this._value != event);
+    if ( change )
+    {
+      this._value = event;
+      this.propagateChange(event);
+    }
+
     this.updatingState = null;
   }
 

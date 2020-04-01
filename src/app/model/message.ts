@@ -6,7 +6,7 @@ export class Message
 {
     Id: number;
     IdChannel: number;
-    string: string;
+    Date: string;
     Buddy: string;
     Texte: string;
 }

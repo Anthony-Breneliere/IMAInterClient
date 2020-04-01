@@ -38,6 +38,8 @@ import { DraggableDirective } from './tools/draggable';
 import { SortInterventionByDateTime } from './intervention/groupe/sortInterPipe';
 import { Chat } from './intervention/chat/chat';
 import { Maincourantes } from './intervention/maincourantes/maincourantes';
+import { DateInputComponent } from './tools/input/date-input.component';
+
 
 
 // import { ReactiveBaseComponent } from './intervention/reactive-components/reactive-base';
@@ -58,7 +60,6 @@ import { TestComponent } from './test/test.component';
         ContextMenuModule.forRoot(),
         FormsModule,
         HttpClientModule,
- //       NgbModule,
         RouterModule.forRoot (appRoutes),
         DlDateTimePickerDateModule,
       ],
@@ -74,6 +75,7 @@ import { TestComponent } from './test/test.component';
         Field,
         Section,
         Checkbox,
+        DateInputComponent,
         InterventionGroup,
         InterventionDetails,
         InterventionButton, InterventionButtonContent,
