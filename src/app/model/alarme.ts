@@ -4,7 +4,7 @@
 
 export class Alarme
 {
-    public Heure: Date;
+    public Heure: string;
     public Evenement : string;
     public CodeCanal : string;
     public Type : string;

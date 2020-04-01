@@ -75,7 +75,6 @@ export class InputTextbox implements ControlValueAccessor
     registerOnTouched(fn: any): void
     {
         this.onTouchedCallback = fn;
-
     }
 
     public setStyle(): any

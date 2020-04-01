@@ -3,12 +3,29 @@ import { SelectControlValueAccessor, ControlValueAccessor,  NG_VALUE_ACCESSOR  }
 import { trigger, style, animate, transition, keyframes } from '@angular/animations';
 import { ReactiveBaseComponent } from './reactive-base'
 
+    // [selectedIndex]="properties.selectedIndex"
+    // [value]="properties.value"
+
 @Component(
 {
   selector: 'reactive-select',
-  template: `<select [class.transition_1s]="!isThirdParty" [class.borderhalo]="isThirdParty" [(ngModel)]="value"><ng-content></ng-content></select>`,
+  template: `
+  <select
+    [class.transition_1s]="!isThirdParty" [class.borderhalo]="isThirdParty"
+    [selectedIndex]="properties.selectedIndex"
+    [value]="properties.value"
+    [(ngModel)]="value"
+    (ngModelChange)="newValue($event)">
+    (change)="onChange($event.target.value)"
+    <ng-content></ng-content>
+
+  </select>`,
   styleUrls: [ './reactive-base.css' ],
-  providers: [ { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ReactiveSelectComponent), multi: true } ]
+  providers: [
+    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ReactiveSelectComponent), multi: true },
+    { provide: SelectControlValueAccessor, useExisting: forwardRef(() => ReactiveSelectComponent), multi: true },
+
+   ]
 })
 export class ReactiveSelectComponent extends SelectControlValueAccessor
 {
@@ -24,12 +41,25 @@ export class ReactiveSelectComponent extends SelectControlValueAccessor
   // stores the action in the attribute (onModelChange) in the html template:
   propagateChange:any = ( change ) => {};
 
-  constructor( private _cdRef: ChangeDetectorRef, _renderer: Renderer2, _elementRef: ElementRef ) { super( _renderer, _elementRef ) ;}
+  readonly properties;
+  constructor( private _cdRef: ChangeDetectorRef, _renderer: Renderer2, _elementRef: ElementRef )
+  {
+    super(
+      <any>{
+        setProperty(_, property, value) {
+          this.properties = this.properties || {};
+          this.properties[property] = value;
+        }
+      },
+      null
+    );
+    this.properties = this.properties || {};
+  }
 
   // change from the model
   writeValue(value: any): void
   {
-    this._value = value; 
+    this._value = value;
     this.updatingState = 'otherWriting';
 
     window.setTimeout( () => {
@@ -40,9 +70,13 @@ export class ReactiveSelectComponent extends SelectControlValueAccessor
     // model value has change so changes must be detected (case ChangeDetectorStrategy is OnPush)
     this._cdRef.detectChanges();
 
+  }
+
+  public newValue(event: any )
+  {
 
   }
-  
+
   // change from the UI
   set value(event: any)
   {

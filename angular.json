@@ -21,14 +21,18 @@
               "src/imainter.ico"
             ],
             "styles": [
-              "src/styles.css",
-              "node_modules/mdi/css/materialdesignicons.css"
+              "node_modules/open-iconic/font/css/open-iconic-bootstrap.scss",
+              "node_modules/bootstrap/scss/bootstrap.scss",
+              "node_modules/mdi/css/materialdesignicons.css",
+              "sass/styles.scss"
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/moment/min/moment-with-locales.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.js",
               "node_modules/signalr/jquery.signalR.js"
             ],
-            "baseHref" : "/IMAInter/",
+            "baseHref": "/IMAInter/",
             "deployUrl": "/IMAInter/"
           },
           "configurations": {
@@ -45,6 +49,11 @@
               "fileReplacements": [],
               "i18nFormat": "xlf",
               "i18nLocale": "fr"
+            },
+            "development": {
+              "aot": true,
+              "i18nFormat": "xlf",
+              "i18nLocale": "fr"
             }
           }
         },
@@ -57,8 +66,8 @@
             "production": {
               "browserTarget": "imainter:build:production"
             },
-            "fr": {
-              "browserTarget": "imainter:build:fr"
+            "development": {
+              "browserTarget": "imainter:build:development"
             }
           }
         },
@@ -126,7 +135,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
-      "styleext": "css"
+      "styleext": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "app"

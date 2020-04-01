@@ -10,10 +10,10 @@ import { RapportTrajet } from '../../model/rapport_trajet';
 import { RapportIssuesConcernees } from '../../model/rapport_issues_concernees';
 import { RapportLumieresAllumees } from '../../model/rapport_lumieres';
 import { RapportVerifications } from '../../model/rapport_verifications';
-import {RapportPresence} from "../../model/rapport_presence";
-import {Alarme} from "../../model/alarme";
-import {RapportMiseEnSecurite} from '../../model/rapport_mise_en_securite';
-import {RapportArriveeSurLieux} from '../../model/rapport_arrivee_sur_lieux';
+import { RapportPresence} from "../../model/rapport_presence";
+import { Alarme} from "../../model/alarme";
+import { RapportMiseEnSecurite} from '../../model/rapport_mise_en_securite';
+import { RapportArriveeSurLieux} from '../../model/rapport_arrivee_sur_lieux';
 import { formatDate } from '@angular/common'
 
 import * as Lodash from 'lodash';
@@ -29,8 +29,6 @@ import {
     ChangeDetectorRef,
     Component,
     Input,
-    ElementRef,
-    Renderer,
     SimpleChanges
 
 } from '@angular/core';
@@ -234,7 +232,7 @@ export class InterventionDetails implements  OnChanges
 
     private radioValue : MotifIntervention;
 
-    constructor( private r: Renderer, private el: ElementRef, private _connectionStatus: ConnectionStatus, private _interService: InterventionService, private ref: ChangeDetectorRef )
+    constructor( private _connectionStatus: ConnectionStatus, private _interService: InterventionService, private ref: ChangeDetectorRef )
     {
         // on transforme l'enum MotifIntervention en une structure clé/valeur qu'on peut binder
         this.motifChoices = Object.values(MotifIntervention).filter( (e : any) => typeof( e ) == "number" );
@@ -447,29 +445,17 @@ export class InterventionDetails implements  OnChanges
         } );
     }
 
-    public changeTypeFiche( data : any )
+    public changeIntervention( data : any )
     {
-        console.log( "Changement du type d'intervention vers " + TypeFiche[data] );
+        console.log( "Changement de l'intervention " + data );
 
         var p = new Promise<void>( (resolve) => {
 
-            Lodash.merge( this.intervention, data);
+            data.Id = this.intervention.Id;
 
             // envoi du changement dans l'intervention
-            this._interService.sendInterChange( { Id:this.intervention.Id, TypeFiche:data } );
-        } );
-    }
+            this._interService.sendInterChange( data );
 
-    public changeEmailIntervenantGenerique( data : any )
-    {
-        console.log( "Changement du mail d'intervenant générique à " + data );
-
-        var p = new Promise<void>( (resolve) => {
-
-            Lodash.merge( this.intervention, data);
-
-            // envoi du changement dans l'intervention
-            this._interService.sendInterChange( { Id:this.intervention.Id, Intervenant:data } );
         } );
     }
 
@@ -485,7 +471,7 @@ export class InterventionDetails implements  OnChanges
             this._interService.sendInterChange( { Id:this.intervention.Id, InfosFacturation:data } );
         } );
     }
-
+/*
     public updateArrivee( dateString: string )
     {
         if ( dateString )
@@ -524,7 +510,7 @@ export class InterventionDetails implements  OnChanges
             }
         }
     }
-
+*/
     public get updateIsDateDepartUpdatable() : boolean
     {
         var updatable = false;

@@ -1,0 +1,37 @@
+
+
+.ngx-contextmenu .dropdown-menu {
+  /* border: solid 1px chartreuse; */
+  background-color: var( --modal-background-color );
+  padding: 0px 0px 0px 0px;
+  /* border: 1px solid hsl( var( --color1), var( --saturation), var( --lightness)); */
+  /* Toujours au dessus: */
+  z-index: 100;
+}
+
+.ngx-contextmenu li {
+  display: block;
+  text-align: left;
+}
+
+.ngx-contextmenu li:not(:first-child) {
+  border: 1px solid var( --component-border-color );
+}
+
+.ngx-contextmenu a {
+  color: var( --defaut-font-color );
+  display: block;
+  padding: 0.5em 1em;
+  text-decoration: none;
+}
+
+.ngx-contextmenu a:hover:not(:first-child) {
+  color: var( --modal-color );
+  transition: color 1s;
+}
+
+.ngx-contextmenu li:hover:not(:first-child) {
+  transition: border 1s, color 1s, box-shadow 1s, text-shadow 1s;
+  border: 1px solid var( --modal-border-color );
+  background-color: var( --hover-background-color );
+}

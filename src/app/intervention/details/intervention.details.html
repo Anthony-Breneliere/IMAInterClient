@@ -13,7 +13,7 @@
         <tr field label="Operateur ">{{intervention.Operateur}}</tr>
         <tr field label="Origine ">{{intervention.OrigineLabel}}</tr>
         <tr field label="Type ">
-            <select id="InterventionType" [(ngModel)]="intervention.TypeFiche" (ngModelChange)="changeTypeFiche($event)">
+            <select id="InterventionType" [(ngModel)]="intervention.TypeFiche" (ngModelChange)="changeIntervention({TypeFiche: $event})">
                 <option [ngValue]="TypeFiche.Intervention">Intervention</option>
                 <option [ngValue]="TypeFiche.Gardiennage">Gardiennage</option>
                 <option [ngValue]="TypeFiche.Ronde">Ronde</option>
@@ -30,14 +30,14 @@
     </section>
 
     <section title="Consignes" [readOnly]="readOnlySection" (resize)="updateLayout()">
-        <tr field label="Informations ">{{intervention.Site?.Informations}}</tr>
+        <tr field class=".crlf-return" label="Informations ">{{intervention.Site?.Informations}}</tr>
     </section>
 
     <section title="Intervenant" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
         <tr field label="Nom ">{{Capitalize(intervenant?.Nom)}}</tr>
         <tr field label="N° Siren ">{{intervenant?.Societe}}</tr>
-        <tr field label= "Adresse "><pre>{{Capitalize(intervenant?.Adresse)}}</pre></tr>
+        <tr field class=".crlf-return" label= "Adresse ">{{Capitalize(intervenant?.Adresse)}}</tr>
         <tr field *ngFor="let tel of intervenant?.Telephones " label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
         <tr *ngIf="!(intervenant?.Nom | lowercase).includes('générique'); else editableEmail" field label="Email">{{intervenant?.Email}}</tr>
         <ng-template #editableEmail>
@@ -62,11 +62,11 @@
         <!-- Valeur modifiable si l'intervenant est identifié non géré par Aepia -->
 
         <tr field label="Arrivée" *ngIf="updateIsDateArriveeUpdatable">
-            <reactive-date-input class="extensible" [ngModel]="intervention.DateArrivee" (dateOutput)="updateArrivee($event)"></reactive-date-input>
+            <reactive-date-input class="extensible" [ngModel]="intervention.DateArrivee" (ngModelChange)="changeIntervention({DateArrivee: $event})"></reactive-date-input>
         </tr>
 
         <tr field label="Départ" *ngIf="updateIsDateDepartUpdatable">
-            <reactive-date-input class="extensible" [ngModel]="intervention.DateDepart" (dateOutput)="updateDepart($event)"></reactive-date-input>
+            <reactive-date-input class="extensible" [ngModel]="intervention.DateDepart" (ngModelChange)="changeIntervention({DateDepart: $event})"></reactive-date-input>
         </tr>
 
         <tr field label="Clôture ">{{intervention.Cloture | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
@@ -348,6 +348,7 @@
 
     </section>
 
+
     <section *ngIf="rapportDisplayed && presence" title="Présence sur site" data-gs-width="auto" [readOnly]="readOnlySection" (resize)="updateLayout()">
         <tr field label="Type de présence">
             <reactive-checkbox label="Client" [(ngModel)]="presence.Client" (ngModelChange)="changeRapport({Presence:{Client:$event}})"></reactive-checkbox>
@@ -408,7 +409,6 @@
         <tr field label="À la demande de" *ngIf="MiseEnPlaceDemandeeParChecked">
             <reactive-input [(ngModel)]="miseEnSecurite.MiseEnPlaceDemandeePar" (ngModelChange)="changeRapport({MiseEnSecurite:{MiseEnPlaceDemandeePar:$event}})"></reactive-input>
         </tr>
-
 
     </section>
 

@@ -1,0 +1,72 @@
+/* Sélectionne l'élément racine du document */
+/* Pour un document HTML, c'est <html> */
+
+:root {
+
+
+  /* Couleurs */
+  --hover_shadow: hsl( 0, 100%, 100%);
+  --main-bg-color: hsl( 0, 0%, 20%);
+  --selected-bg-color: hsl( 0, 0%, var( --bg-selected-lightness ) );
+  --selected-color: hsl( 0, 0%, var( --selected-lightness ) );
+  --input-bg-color: hsl( 0, 0%, 23%);
+  --dark-bg-color: hsl( 0, 0%, 30%);
+  --changed-bg-color: hsl(56, 5%, 30%);
+  --change-detect-color: hsl(45, 100%, 50%);
+
+  /* Paramétrage des couleurs */
+  --saturation: 50%;
+  --lightness: 35%;
+  --action-lightness: 70%;
+  --font-lightness: 70%;
+  --hover-lightness: 100%;
+  --bg-hover-lightness: 30%;
+  --selected-lightness: 100%;
+  --bg-selected-lightness: 40%;
+
+  /* Choix des teintes */
+  --operateur_hue: 0;
+  --intervenant_hue: 20;
+  --maincourante_hue: 40;
+  --alarme_hue: 60;
+  --rapport_hue: 80;
+  --presence_hue: 100;
+  --verification_hue: 120;
+  --gray: 0%;
+  --white_hue: 0;
+  --color1: 220;
+  --color2: 180;
+  --color3: 100;
+  --colorAction: 15;
+
+  /* Couleurs paramétrées */
+  --defaut-font-color: hsl( var( --white_hue), var( --gray), var( --font-lightness));
+  --modal-background-color: hsla( 0, 0%, 10%, 75%);
+  --main-color: var( --modal-border-color );
+  --selected-main-color: hsl( var( --color1), var( --saturation), var( --selected-lightness));
+  --hover-border-color: hsl( var( --color1), var( --saturation), var( --hover-lightness));
+  --component-border-color: hsl( var( --color1), var( --saturation), var( --lightness));
+  --modal-border-color: hsl( var( --color1), var( --saturation), var( --lightness));
+  --hover-background-color: hsl( 0, var( --gray ), var( --bg-hover-lightness));
+  --modal-color: hsl( 0, var( --gray ), var( --hover-lightness ));
+
+}
+
+/* !! Personnalisation des variables scss !! */
+
+/* On préfère utiliser des variables css que des variables scss parce que
+cela permet de tester des couleurs directement dans le navigateur
+
+Tant pis pour la compatibilité IE 11
+*/
+
+$dl-abdtp-date-button-border-radius:  999px;
+$dl-abdtp-date-button-color:          orange !important;
+$dl-abdtp-disabled:                   rgba(0, 0, 0, 0.25);
+$dl-abdtp-hover-background:           var( --hover-background-color );
+$dl-abdtp-now-border-color:           rgba(0, 0, 0, 0.25);
+$dl-abdtp-past-future-color:          hsla(0, 0%, 0%, 0.04);
+$dl-abdtp-selected-background:        rgba(0, 82, 204, 0.75);
+$dl-abdtp-selected-color:             #ffffff;
+$dl-abdtp-selected-hover-background:  #0052cc;
+
