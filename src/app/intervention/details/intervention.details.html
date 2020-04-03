@@ -30,7 +30,9 @@
     </section>
 
     <section title="Consignes" [readOnly]="readOnlySection" (resize)="updateLayout()">
-        <tr field class=".crlf-return" label="Informations ">{{intervention.Site?.Informations}}</tr>
+        <tr field label="Instructions de demande par mail ">
+            <reactive-textarea id="instructionsDemandeParMail" [(ngModel)]="site.InstructionsDemandeParMail" (ngModelChange)="changeInstructionsDemandeParMail($event)"></reactive-textarea>
+        </tr>
     </section>
 
     <section title="Intervenant" [readOnly]="readOnlySection" (resize)="updateLayout()">
