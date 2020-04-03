@@ -39,10 +39,10 @@
         <tr field label="N° Siren ">{{intervenant?.Societe}}</tr>
         <tr field class=".crlf-return" label= "Adresse ">{{Capitalize(intervenant?.Adresse)}}</tr>
         <tr field *ngFor="let tel of intervenant?.Telephones " label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
-        <tr *ngIf="!(intervenant?.Nom | lowercase).includes('générique'); else editableEmail" field label="Email">{{intervenant?.Email}}</tr>
+        <tr *ngIf="!(intervenant?.Nom | lowercase).includes('générique'); else editableEmail" field label="Email">{{intervenant?.Emails?.join('\n')}}</tr>
         <ng-template #editableEmail>
-            <tr field label="Email">
-                <reactive-input [(ngModel)]="intervenant.Email" (ngModelChange)="changeEmailIntervenantGenerique({Email:$event})"></reactive-input>
+            <tr field label="Emails">
+                <reactive-input *ngFor="let email of intervenant?.Emails; let i = index" [(ngModel)]="intervenant.Emails[i]" (ngModelChange)="changeEmailIntervenantGenerique()"></reactive-input>
             </tr>
         </ng-template>
         <tr field label="Matricule">{{intervenant?.Matricule}}</tr>

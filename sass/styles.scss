@@ -1,11 +1,12 @@
 @import "variables";
 
 html {
-    height: 100%;
+    height: 100vh;
+    box-sizing: border-box;
 }
 
 body {
-    height: 94%;
+    height: 100vh;
     background: var( --main-bg-color);
     color: var( --defaut-font-color );
     margin: 0px 0px 0px 0px;
@@ -45,6 +46,7 @@ input,
 textarea,
 button {
     border: 1px solid var( --component-border-color );
+    font-size: medium;
 }
 
 button {
