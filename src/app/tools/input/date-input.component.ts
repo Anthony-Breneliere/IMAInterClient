@@ -26,10 +26,9 @@ export const DATAINPUT_CONTROL_VALUE_ACCESSOR: any = {
   moduleId: module.id,
   selector: 'date-input',
   template: `
-<div id="eventReceiver" class="dropdown">
+<div class="eventReceiver dropdown">
   <input
-    id="dateInput"
-    class="cellinput date-dropdown"
+    class="dateInput cellinput date-dropdown"
     data-toggle="dropdown"
     aria-label="Date"
     aria-haspopup="true"
@@ -77,7 +76,7 @@ export class DateInputComponent implements ControlValueAccessor {
 
   ngAfterViewInit(): void {
 
-    const dropdownToggle = $('#eventReceiver', this._elementRef.nativeElement);
+    const dropdownToggle = $('.eventReceiver', this._elementRef.nativeElement);
     dropdownToggle.parent().on('show.bs.dropdown', () => {
       this._isPickerOpen = true;
     });
@@ -122,7 +121,7 @@ export class DateInputComponent implements ControlValueAccessor {
     {
       this._datePickerDate = newDateSelected;
 
-      this.value = moment(newDateSelected).toISOString();
+      this.value = moment(newDateSelected).toISOString(true);
     }
   }
 
@@ -165,7 +164,7 @@ export class DateInputComponent implements ControlValueAccessor {
   dateSelected(event) {
     console.log('_isDropdownVisible', this._isPickerOpen);
     if (this._isPickerOpen && event.value) {
-      $('#dateInput', this._elementRef.nativeElement).dropdown('toggle');
+      $('.dateInput', this._elementRef.nativeElement).dropdown('toggle');
     }
   }
 

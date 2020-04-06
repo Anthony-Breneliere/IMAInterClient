@@ -465,7 +465,7 @@ export class InterventionDetails implements  OnChanges
     public changeEmailIntervenantGenerique()
     {
       let emails = this.intervenant.Emails;
-      this.changeRapport( { Intervenant: emails } );
+      this.changeRapport( { Intervenant: { Emails: emails } } );
     }
 
     public changeInfoFactu( data : any )
