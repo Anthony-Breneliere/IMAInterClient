@@ -99,7 +99,7 @@ export class InterventionButton implements OnInit
         let intervenant = this.intervention.Intervenant;
 
         if ( this.connected && this.intervention.Etat == Etat.Creee &&
-            intervenant && intervenant.Email && intervenant.Email != "")
+            intervenant && intervenant.Emails && intervenant.Emails.length > 0 )
             canTransfer = true;
 
         return canTransfer;
@@ -142,31 +142,6 @@ export class InterventionButton implements OnInit
     // {
     //     return this._interService.immobilizeIntervenant( this.intervention.Id );
     // }
-
-
-    private _intervenantFaxNumber : string;
-
-    public intervenantFaxNumber(): string
-    {
-        // pour les perfs on garde une propriété privée dans la vue du bouton comportant le numero de fax
-        if ( this._intervenantFaxNumber )
-            return this._intervenantFaxNumber;
-
-        let intervenant = this.intervention.Intervenant;
-
-        if ( intervenant && intervenant.Telephones)
-        {
-            let telFax = intervenant.Telephones.find( t => t.Type.toLowerCase().indexOf("fax") != -1);
-
-            if ( telFax )
-            {
-                this._intervenantFaxNumber = telFax.Numero;
-                return this._intervenantFaxNumber;
-            }
-        }
-
-        return null;
-    }
 
 
 

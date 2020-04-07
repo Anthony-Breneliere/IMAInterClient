@@ -459,6 +459,15 @@ export class InterventionDetails implements  OnChanges
         } );
     }
 
+    /** Envoi d'un changmeent d'email au service
+     *
+     */
+    public changeEmailIntervenantGenerique()
+    {
+      let emails = this.intervenant.Emails;
+      this.changeRapport( { Intervenant: { Emails: emails } } );
+    }
+
     public changeInfoFactu( data : any )
     {
         console.log( data );
@@ -544,5 +553,10 @@ export class InterventionDetails implements  OnChanges
 
       return ( rapportIsDisplayed );
     }
+
+    // public get concatenatedIntervenantEmails() : string { return this.intervention.Intervenant.Emails.join('\n'); }
+
+    // public set concatenatedIntervenantEmails( string emails ) : string { return this.intervention?.Intervenant?.Emails?.join('\n'); }
+
 
 }

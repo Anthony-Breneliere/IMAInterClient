@@ -4,7 +4,7 @@ export class Intervenant
 {
     Societe: string;
     Adresse: string;
-    Email: string;
+    Emails: string[];
     Matricule : string;
     Nom : string;
     Telephones: Telephone[];
