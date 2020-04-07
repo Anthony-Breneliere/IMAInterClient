@@ -12,16 +12,19 @@
         <tr field label="Etat ">{{intervention.EtatLabel}}</tr>
         <tr field label="Operateur ">{{intervention.Operateur}}</tr>
         <tr field label="Origine ">{{intervention.OrigineLabel}}</tr>
-        <tr field label="Type ">
-            <select id="InterventionType" [(ngModel)]="intervention.TypeFiche" (ngModelChange)="changeIntervention({TypeFiche: $event})">
-                <option [ngValue]="TypeFiche.Intervention">Intervention</option>
-                <option [ngValue]="TypeFiche.Gardiennage">Gardiennage</option>
-                <option [ngValue]="TypeFiche.Ronde">Ronde</option>
-                <option [ngValue]="TypeFiche.TestReseau">Test réseau</option>
-                <option [ngValue]="TypeFiche.GardiennageALaDemande">Gardiennage à la demande</option>
-                <option [ngValue]="TypeFiche.RondeALaDemande">Ronde à la demande</option>
-            </select>
-        </tr>
+        <tr *ngIf="!isEditableTypeFiche; else editableTypeFiche" field label="Type ">{{intervention?.TypeFicheLabel}}</tr>
+        <ng-template #editableTypeFiche>
+            <tr field label="Type ">
+                <select id="InterventionType" [(ngModel)]="intervention.TypeFiche" (ngModelChange)="changeIntervention( { TypeFiche: $event } )">
+                    <option [ngValue]="TypeFiche.Intervention">Intervention</option>
+                    <option [ngValue]="TypeFiche.Gardiennage">Gardiennage</option>
+                    <option [ngValue]="TypeFiche.Ronde">Ronde</option>
+                    <option [ngValue]="TypeFiche.TestReseau">Test réseau</option>
+                    <option [ngValue]="TypeFiche.GardiennageALaDemande">Gardiennage à la demande</option>
+                    <option [ngValue]="TypeFiche.RondeALaDemande">Ronde à la demande</option>
+                </select>
+            </tr>
+        </ng-template>
         <tr field label="Evenement Alarme ">{{intervention.Alarme?.Evenement}}</tr>
         <tr field label="Type Alarme ">{{intervention.Alarme?.Type}}</tr>
         <tr field label="Code Canal ">{{intervention.Alarme?.CodeCanal}}</tr>
@@ -30,7 +33,9 @@
     </section>
 
     <section title="Consignes" [readOnly]="readOnlySection" (resize)="updateLayout()">
-        <tr field class=".crlf-return" label="Informations ">{{intervention.Site?.Informations}}</tr>
+        <tr field label="Instructions de demande par mail ">
+            <reactive-textarea id="instructionsDemandeParMail" [(ngModel)]="site.InstructionsDemandeParMail" (ngModelChange)="changeIntervention({ InstructionsDemandeParMail:$event})"></reactive-textarea>
+        </tr>
     </section>
 
     <section title="Intervenant" [readOnly]="readOnlySection" (resize)="updateLayout()">
@@ -39,9 +44,9 @@
         <tr field label="N° Siren ">{{intervenant?.Societe}}</tr>
         <tr field class=".crlf-return" label= "Adresse ">{{Capitalize(intervenant?.Adresse)}}</tr>
         <tr field *ngFor="let tel of intervenant?.Telephones " label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
-        <tr *ngIf="!(intervenant?.Nom | lowercase).includes('générique'); else editableEmail" field label="Email">{{intervenant?.Emails?.join('\n')}}</tr>
+        <tr *ngIf="!isEditableIntervenantEmail; else editableEmail" field label="Email ">{{intervenant?.Emails?.join('\n')}}</tr>
         <ng-template #editableEmail>
-            <tr field label="Emails">
+            <tr field label="Email ">
                 <reactive-input *ngFor="let email of intervenant?.Emails; let i = index" [(ngModel)]="intervenant.Emails[i]" (ngModelChange)="changeEmailIntervenantGenerique()"></reactive-input>
             </tr>
         </ng-template>

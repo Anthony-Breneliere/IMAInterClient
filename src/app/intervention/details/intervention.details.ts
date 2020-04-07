@@ -445,6 +445,16 @@ export class InterventionDetails implements  OnChanges
         } );
     }
 
+    public get isEditableTypeFiche() : boolean
+    {
+        return this.intervention.Etat == Etat.Creee;
+    }
+
+    public get isEditableIntervenantEmail() : boolean
+    {
+        return this.intervention.Intervenant.Nom.toLowerCase().includes('générique');
+    }
+
     public changeIntervention( data : any )
     {
         console.log( "Changement de l'intervention " + data );
@@ -465,8 +475,9 @@ export class InterventionDetails implements  OnChanges
     public changeEmailIntervenantGenerique()
     {
       let emails = this.intervenant.Emails;
-      this.changeRapport( { Intervenant: { Emails: emails } } );
+      this.changeIntervention( { Intervenant: { Emails: emails } } );
     }
+
 
     public changeInfoFactu( data : any )
     {
