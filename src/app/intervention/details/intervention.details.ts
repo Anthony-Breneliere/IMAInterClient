@@ -445,6 +445,16 @@ export class InterventionDetails implements  OnChanges
         } );
     }
 
+    public get isEditableTypeFiche() : boolean
+    {
+        return this.intervention.Etat == Etat.Creee;
+    }
+
+    public get isEditableIntervenantEmail() : boolean
+    {
+        return this.intervention.Intervenant.Nom.toLowerCase().includes('générique');
+    }
+
     public changeIntervention( data : any )
     {
         console.log( "Changement de l'intervention " + data );
@@ -468,18 +478,6 @@ export class InterventionDetails implements  OnChanges
       this.changeRapport( { Intervenant: { Emails: emails } } );
     }
 
-    public changeInstructionsDemandeParMail( data : any )
-    {
-        console.log( "Changement des instructions de demande par mail de l'intervention à " + data );
-
-        var p = new Promise<void>( (resolve) => {
-
-            Lodash.merge( this.intervention, data);
-
-            // envoi du changement dans le site
-            this._interService.sendInterChange( { Id:this.intervention.Id, InstructionsDemandeParMail:data } );
-        } );
-    }
 
     public changeInfoFactu( data : any )
     {
