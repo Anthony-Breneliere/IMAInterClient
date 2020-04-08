@@ -31,19 +31,19 @@ export class Maincourantes {
     private newInterDataSource = new Subject< Intervention >();
 
     newInterSub : Subscription;
-    
+
     // l'intervention affichée est passée en paramètre du composant
     private _intervention: Intervention;
-    
+
     @Input() public set intervention( value : Intervention )  {
         this._intervention = value;
-        
+
         // à chaque changement d'intervention affichée le composant s'abonne aux changements de l'intervention correspondante
         if ( this.newInterSub )
             this.newInterSub.unsubscribe();
 
         // on filtre les message sur l'instance de l'intervention qui est actuellement affichée
-        this.newInterSub = 
+        this.newInterSub =
             this.interService.newInterData$
             .pipe( filter( i => this.intervention && this.intervention.Id == i.Id ) )
             .subscribe( i => { this.detectChanges(); } );
@@ -57,12 +57,12 @@ export class Maincourantes {
     }
 
     public get listMainCour() : MainCourante[]
-    { 
+    {
         if ( ! this._intervention || ! Array.isArray( this._intervention.MainCourantes ) )
             return [];
 
         var displayedMainCour =
-            this._intervention.MainCourantes.sort( (m1, m2) => { 
+            this._intervention.MainCourantes.sort( (m1, m2) => {
                 return m1.Date > m2.Date ? 1 :  m1.Date < m2.Date ? -1 : 0;
             });
 
@@ -70,12 +70,12 @@ export class Maincourantes {
     };
 
 
-    // this.intervention && this.intervention.MainCourantes ? this.intervention.MainCourantes : 
+    // this.intervention && this.intervention.MainCourantes ? this.intervention.MainCourantes :
     public get listTypeMainCour() : ITypeMainCourante[]
     {
          return this.interService.listeTypeMaincour.filter( mc => mc != null );
-    } 
-    
+    }
+
     public get intervention()  {  return this._intervention; }
 
     constructor( private interService: InterventionService, private ref: ChangeDetectorRef )
@@ -98,14 +98,14 @@ export class Maincourantes {
     }
 
     /**
-     * 
+     *
      * @param key Retourne le libelle d'une main courante, connaissant son id
      */
     getTypeMaincourValue( key: number ) : string
     {
         // retourne le libellé du type de main courante ou "inconnu" si le type n'existe pas:
-        let foundMainCour =  this.interService.listeTypeMaincour.find( e => e.Type == key )
-            || this.interService.listeM1LibelleDivers.find( e => e.Type == key );
+        let foundMainCour =  this.interService.listeTypeMaincour.find( e => e.Id == key )
+            || this.interService.listeM1LibelleDivers.find( e => e.Id == key );
 
         return foundMainCour ? foundMainCour.Libelle : "Type inconnu";
     }
@@ -118,7 +118,7 @@ export class Maincourantes {
     get canChat() : boolean
     {
         let inter = this._intervention;
-        let canChat : boolean = 
+        let canChat : boolean =
             inter &&  inter.Etat != Etat.Annulee
             && inter.Etat != Etat.Close;
         return canChat;

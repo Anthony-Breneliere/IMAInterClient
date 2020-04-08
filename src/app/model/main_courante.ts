@@ -5,7 +5,7 @@
 export class MainCourante
 {
     Id: number;
-    Type: number;
+    Type: string;
     Date: string;
     Operateur: string;
     Commentaire: string;

@@ -5,7 +5,7 @@
             <tr *ngFor="let mainCour of listMainCour">
                 <td class="line">{{mainCour.Date | date:'short'}} </td>
                 <td class="line">{{mainCour.Operateur}}</td>
-                <td class="line">{{getTypeMaincourValue(mainCour.Type)}}</td>
+                <td class="line">{{mainCour.Type}}</td>
                 <td class="line">{{mainCour.Commentaire}}</td>
             </tr>
         </table>

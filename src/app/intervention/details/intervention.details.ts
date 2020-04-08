@@ -360,8 +360,8 @@ export class InterventionDetails implements  OnChanges
     getTypeMaincourValue( key: number ) : string
     {
         // retourne le libellé du type de main courante ou "inconnu" si le type n'existe pas:
-        let foundMainCour =  this._interService.listeTypeMaincour.find( e => e.Type == key )
-            || this._interService.listeM1LibelleDivers.find( e => e.Type == key );
+        let foundMainCour =  this._interService.listeTypeMaincour.find( e => e.Id == key )
+            || this._interService.listeM1LibelleDivers.find( e => e.Id == key );
 
         return foundMainCour ? foundMainCour.Libelle : "Type inconnu";
     }

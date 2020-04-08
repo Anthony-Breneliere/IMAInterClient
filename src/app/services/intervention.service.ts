@@ -384,7 +384,7 @@ export class InterventionService  {
         console.log("Envoi d'une main courante au serveur: ");
         console.log({"login":this._connectionStatus.login, "numFi": numFi, "typeMaincour": typeMaincour, "comment":comment});
 
-        this._connectionStatus.proxyServer.addNewMaincourante( numFi, typeMaincour.Type, comment);
+        this._connectionStatus.proxyServer.addNewMaincourante( numFi, typeMaincour.Libelle, comment);
     }
 
     // private protectedDataFromWrites : Any;
