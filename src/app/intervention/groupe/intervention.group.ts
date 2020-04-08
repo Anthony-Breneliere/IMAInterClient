@@ -35,7 +35,7 @@ export class InterventionGroup  {
     @Input() public Expanded: boolean;
     @Output() onSelectedButton = new EventEmitter<InterventionButton>();
 
-    private isMyInters : boolean = false; 
+    private isMyInters : boolean = false;
 
     public GroupTypeEnum = GroupTypeEnum; // <- using enum in html
 
@@ -43,9 +43,13 @@ export class InterventionGroup  {
 
     private _currentlyUpdatedInters : number[] = [];
 
+    private _currentInterOperators : string[] = []
+    private _currentInterClients : string[] = []
+    private _currentIntervenants : string[] = []
+
     interventionChangeSubscription : Subscription;
     interventionMessageSubscription : Subscription;
-    
+
     public get groupInterventions(): Intervention[]
     {
         return this._groupInterventions;
@@ -59,10 +63,10 @@ export class InterventionGroup  {
     {
         // on inscrit le composant à la détection des changements d'interventions
         // cela permet (entre autres) d'afficher un petit halo sur le bouton quand une intervention a changé
-        this.interventionChangeSubscription = 
+        this.interventionChangeSubscription =
             this.interService.newInterData$.pipe( delay(1000) ).subscribe( inter =>  {
 
-                // à chaque fois qu'on reçoit des datas sur les interventions avec les infos d'opérateur, 
+                // à chaque fois qu'on reçoit des datas sur les interventions avec les infos d'opérateur,
                 // on met à jour la liste des interventions du groupe,
                 // car une nouvelle intervention a pu arriver, ou bien un intervention a pu se fermer, changer d'opérateur, etc..
                if ( inter.Operateur != null )
@@ -75,7 +79,7 @@ export class InterventionGroup  {
             } );
 
         this.interventionMessageSubscription = this.interService.newMessages$
-            .subscribe( notif  => { 
+            .subscribe( notif  => {
                 this.interventionChangeHighlight( notif["0"].Id );
             } );
 
@@ -86,7 +90,7 @@ export class InterventionGroup  {
 
     ngOnDestroy()
     {
-        // avant la destruction on veille à se désinscrire le composant aux changements d'intervention  
+        // avant la destruction on veille à se désinscrire le composant aux changements d'intervention
         // ou sinon ChangeDetectorRef.detectChanges() plante
         this.interventionChangeSubscription.unsubscribe();
 
@@ -136,16 +140,22 @@ export class InterventionGroup  {
         let currentInterventions = this.interService.getLoadedInterventions();
 
         let interList = currentInterventions.filter(
-            (i: Intervention) => { return this.connStatus.operatorNameEqual( i.Operateur ) && 
+            (i: Intervention) => { return this.connStatus.operatorNameEqual( i.Operateur ) &&
                 ( i.Etat != Etat.Close && i.Etat != Etat.Annulee) } );
-        
+
         return interList;
     }
+
 
     public get OtherInterventions(): Intervention[]
     {
         let otherInterventions = this.interService.getLoadedInterventions().filter(
             (i: Intervention) => { return (! i.Operateur || !this.connStatus.operatorNameEqual( i.Operateur )) && i.Etat != Etat.Close && i.Etat != Etat.Annulee } );
+
+        this._currentInterOperators = otherInterventions.map( i => i.Operateur );
+        this._currentInterClients = otherInterventions.map( i => i.NomComplet );
+        this._currentIntervenants = otherInterventions.map( i => i.Intervenant.Societe );
+
         return otherInterventions;
     }
 
@@ -155,7 +165,7 @@ export class InterventionGroup  {
             (i: Intervention) => { return i.Etat == Etat.Close || i.Etat == Etat.Annulee } );
         return closed;
     }
-    
+
     isCurrentlyUpdated( interId : number ) : boolean
     {
         if ( this._currentlyUpdatedInters )
