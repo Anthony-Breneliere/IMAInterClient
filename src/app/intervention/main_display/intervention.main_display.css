@@ -54,4 +54,5 @@ chat {
 app-bar {
     z-index: 50;
     height: 7%;
+    min-height: 64px;
 }
