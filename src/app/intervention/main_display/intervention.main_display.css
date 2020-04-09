@@ -7,9 +7,7 @@
 
 #content {
     width: 100%;
-    height: -moz-calc(100% - 64px); /* Firefox */
-    height: -webkit-calc(100% - 64px); /* Chrome, Safari */
-    height: calc(100% - 64px); /* IE9+ and future browsers */
+    height: 1%; /* Hack, ca va prendre sa taille maximale avec flex-grow: 1 */
     display: flex;
     max-height: 100%;
     flex-grow: 1;
@@ -55,5 +53,4 @@ chat {
 
 app-bar {
     z-index: 50;
-    height: 64px;
 }
