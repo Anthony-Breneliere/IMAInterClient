@@ -18,7 +18,7 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/imainter.ico"
+              "src/assets/imainter.ico"
             ],
             "styles": [
               "node_modules/open-iconic/font/css/open-iconic-bootstrap.scss",
@@ -91,7 +91,7 @@
             ],
             "assets": [
               "src/assets",
-              "src/imainter.ico"
+              "src/assets/imainter.ico"
             ]
           }
         },

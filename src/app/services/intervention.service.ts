@@ -17,6 +17,7 @@ import { SearchQuery } from './searchQuery';
 
 import 'signalr';
 
+import { PushNotificationService } from './push-notification.service';
 
 export enum InterventionDataType {
     Full,
@@ -58,7 +59,7 @@ export class InterventionService  {
      * Constructeur, il charge le fichier de config qui contient l'adresse de connexion
      * au serveur.
      */
-    constructor(private _connectionStatus: ConnectionStatus ) {
+    constructor(private _connectionStatus: ConnectionStatus, private pushNotificationService: PushNotificationService ) {
         console.log("Conctructor InterventionService");
 
         // le chargement du script doit être effectué avant de pouvoir initialiser les callbacks de notre service InterventionService
@@ -119,6 +120,17 @@ export class InterventionService  {
 
         // chargement de la liste des libelles divers du M1, car ils sont utilisés par certaiens maincourante generies:
         this.loadM1LibelleDivers();
+
+        this.subscribeNotifications();
+    }
+
+    /** Cette fonction permet à l'utilisateur de souscrire aux notifications push
+     * Remarque: cette méthode est automatiquement appelée à la connection.
+     */
+    private subscribeNotifications() : void
+    {
+        this.pushNotificationService.subscribeUserIfNot();
+
     }
 
     /** Cette fonction charge les interventions qui sont en cours

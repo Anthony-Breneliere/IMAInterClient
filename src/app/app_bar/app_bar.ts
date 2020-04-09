@@ -6,6 +6,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { ConnectionStatus } from '../services/connection.status';
 import { ChangeDetectorRef } from '@angular/core';
 import { InterventionService } from '../services/intervention.service';
+import { PushNotificationService } from 'app/services/push-notification.service';
 @Component({
     moduleId: module.id,
     selector: 'app-bar',
@@ -19,7 +20,7 @@ export class AppBar {
 
     private _connected : boolean;
 
-    constructor( public connectionStatus: ConnectionStatus, public interService: InterventionService, private cd: ChangeDetectorRef  )
+    constructor( public connectionStatus: ConnectionStatus, public interService: InterventionService,public pushNotifService: PushNotificationService, private cd: ChangeDetectorRef  )
     {
         // inialisation de l'affichage du statut de connexion
         this._connected = connectionStatus.connected;
@@ -37,6 +38,11 @@ export class AppBar {
     get ErrorMessages() : [number, string][] {
         return this.connectionStatus.errorMessages;
     }
+
+    ngOnInit(){
+        // appeler ici pour initialiser le service worker si le navigateur le permet
+        this.pushNotifService.init();
+      }
 
    
     // m1State() : string {

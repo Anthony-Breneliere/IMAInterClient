@@ -7,5 +7,7 @@ export const environment = {
   production: false,
   server: 'http://localhost:5000',
   envName: 'dev',
-  admins: [ "lpapillo", "abreneli", "bkervich", "gmace", "alapeyre", "rbillaul", "elhereec" ]
+  admins: [ "lpapillo", "abreneli", "bkervich", "gmace", "alapeyre", "rbillaul", "elhereec" ],
+  applicationServerPublicKey:'BPx2_IoQGYIdeTn10pGi8FIRAfsa5Z0teNhy552i7-jg0kaFpvZJDmlbUUGBuSAcFIBMfaP8Nxl50vF5RCTa4hk'  
+  //applicationServerPublicKey:'BPGoR8IWVkUwzgYs1oy0D-K-_S2_IdPSDAB1qt0Nj29MhbW8ZCV4UQsQKBGWgXpSzkljofdt2I8SdpiORbW-LY4'
 };

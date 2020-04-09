@@ -79,7 +79,7 @@ export class ConnectionStatus
 
 
     /**
-     * vérifiécation de l'utilisateur logué
+     * vérification de l'utilisateur logué
      * @param name 
      */
     public operatorNameEqual( name: string ) : boolean
