@@ -6,21 +6,61 @@
         <i *ngIf="Expanded == true" class="mdi mdi-menu-down"></i>
     </div>
 
-    <div *ngIf="GroupType == GroupTypeEnum.interventionsCloses && Expanded === true" class="search transition_1s" >
-
-        <input #searchInput (change)="searchInterventions(searchInput.value)" placeholder="Numero, date, contrat, CP, ville, client" />
-        <i class="mdi mdi-magnify"></i>
-
-    </div>
 
     <div *ngIf="GroupType == GroupTypeEnum.autresInterventions && Expanded === true" class="search transition_1s" >
 
-      <select id="selectOperator" [(ngModel)]="SelectedOperator" placeholder="Operateur">
+      <label>Opérateur</label>
+      <select id="selectOperator" [(ngModel)]="SelectedOperator" >
           <option [ngValue]="null"></option>
           <option *ngFor="let operator of CurrentInterOperators">{{operator}}</option>
       </select>
 
+      <br>
+
+      <label>Client</label>
+      <select id="selectClient" [(ngModel)]="SelectedClient" >
+          <option [ngValue]="null"></option>
+          <option *ngFor="let client of CurrentInterClients">{{client}}</option>
+      </select>
+
+      <br>
+
+      <label>Intervenant</label>
+      <select id="selectIntervenant" [(ngModel)]="SelectedIntervenant" >
+          <option [ngValue]="null"></option>
+          <option *ngFor="let client of CurrentIntervenants">{{client}}</option>
+      </select>
+
     </div>
+
+    <div *ngIf="GroupType == GroupTypeEnum.interventionsCloses && Expanded === true" class="search transition_1s" >
+
+      <label>Numero, contrat, CP, ville, client</label>
+      <input #searchInput [(ngModel)]="Search.FreeQuery" (ngModelChange)="searchInterventions()" [disabled]="readOnly"/>
+
+      <label>Date de début</label>
+      <date-input [(ngModel)]="Search.StartDate" (ngModelChange)="searchInterventions()" [disabled]="readOnly" ></date-input>
+
+      <label>Date de fin</label>
+      <date-input [(ngModel)]="Search.EndDate" (ngModelChange)="searchInterventions()"  [disabled]="readOnly"></date-input>
+
+      <label>Type d'intervention</label>
+      <select id="selectIntervenant" [(ngModel)]="Search.TypeIntervention" (ngModelChange)="searchInterventions()" [disabled]="readOnly">
+
+        <option [ngValue]="null"></option>
+        <option>Intervention</option>
+        <option>Gardiennage</option>
+        <option>Ronde</option>
+        <option>Gardiennage à la demande</option>
+        <option>Ronde à la demande</option>
+        <option>Maintenance</option>
+        <option>SAV</option>
+        <option>Test réseau</option>
+
+      </select>
+
+    </div>
+
 
     <div *ngIf="Expanded == true">
 

@@ -12,6 +12,7 @@ import { filter, delay } from 'rxjs/operators';
 import { Message } from '../../model/message';
 import { ConnectionStatus } from '../../services/connection.status';
 import { Etat } from "../../model/enums";
+import { SearchQuery } from 'app/services/searchQuery';
 
 export enum GroupTypeEnum
 {
@@ -24,7 +25,7 @@ export enum GroupTypeEnum
     moduleId: module.id,
     selector: 'intervention-group',
     templateUrl: './intervention.group.html',
-    styleUrls:  ['./intervention.group.css']
+    styleUrls:  ['./intervention.group.scss']
 })
 
 export class InterventionGroup  {
@@ -35,6 +36,8 @@ export class InterventionGroup  {
     @Input() public Expanded: boolean;
     @Output() onSelectedButton = new EventEmitter<InterventionButton>();
 
+    public Search : SearchQuery = new SearchQuery();
+
     private isMyInters : boolean = false;
 
     public GroupTypeEnum = GroupTypeEnum; // <- using enum in html
@@ -43,9 +46,36 @@ export class InterventionGroup  {
 
     private _currentlyUpdatedInters : number[] = [];
 
-    public CurrentInterOperators : string[] = []
-    public CurrentInterClients : string[] = []
-    public CurrentIntervenants : string[] = []
+    public CurrentInterOperators : string[] = [];
+    public CurrentInterClients : string[] = [];
+    public CurrentIntervenants : string[] = [];
+
+    public _selectedOperator : string = "";
+    public get SelectedOperator() : string { return this._selectedOperator; }
+    public set SelectedOperator( value : string ) {
+      this._selectedOperator = value;
+      this._selectedClient = "";
+      this._selectedIntervenant = "";
+      this.updateGroupInterventions(); }
+
+    public _selectedClient : string = "";
+    public get SelectedClient() : string { return this._selectedClient; }
+    public set SelectedClient( value : string ) {
+      this._selectedOperator = "";
+      this._selectedClient = value;
+      this._selectedIntervenant = "";
+      this.updateGroupInterventions();
+    }
+
+    public _selectedIntervenant : string = "";
+    public get SelectedIntervenant() : string { return this._selectedIntervenant; }
+    public set SelectedIntervenant( value : string ) {
+      this._selectedOperator = "";
+      this._selectedClient = "";
+      this._selectedIntervenant = value;
+      this.updateGroupInterventions();
+    }
+
 
     interventionChangeSubscription : Subscription;
     interventionMessageSubscription : Subscription;
@@ -55,8 +85,9 @@ export class InterventionGroup  {
         return this._groupInterventions;
     }
 
-    constructor( private interService : InterventionService, private connStatus : ConnectionStatus, protected _ref: ChangeDetectorRef )
+    constructor( private interService : InterventionService, private _connectionStatus : ConnectionStatus, protected _cdref: ChangeDetectorRef )
     {
+
     }
 
     ngOnInit()
@@ -108,7 +139,7 @@ export class InterventionGroup  {
         window.setTimeout( () => {
             let index = this._currentlyUpdatedInters.indexOf( interId );
             this._currentlyUpdatedInters.splice( index, 1 );
-            this._ref.detectChanges();
+            this._cdref.detectChanges();
         }, 500 );
     }
 
@@ -132,7 +163,7 @@ export class InterventionGroup  {
                 this.isMyInters = true;
         };
 
-        this._ref.detectChanges();
+        this._cdref.detectChanges();
     }
 
     public get MyInterventions(): Intervention[]
@@ -140,7 +171,7 @@ export class InterventionGroup  {
         let currentInterventions = this.interService.getLoadedInterventions();
 
         let interList = currentInterventions.filter(
-            (i: Intervention) => { return this.connStatus.operatorNameEqual( i.Operateur ) &&
+            (i: Intervention) => { return this._connectionStatus.operatorNameEqual( i.Operateur ) &&
                 ( i.Etat != Etat.Close && i.Etat != Etat.Annulee) } );
 
         return interList;
@@ -150,13 +181,20 @@ export class InterventionGroup  {
     public get OtherInterventions(): Intervention[]
     {
         let otherInterventions = this.interService.getLoadedInterventions().filter(
-            (i: Intervention) => { return (! i.Operateur || !this.connStatus.operatorNameEqual( i.Operateur )) && i.Etat != Etat.Close && i.Etat != Etat.Annulee } );
+            (i: Intervention) => { return (! i.Operateur || !this._connectionStatus.operatorNameEqual( i.Operateur )) && i.Etat != Etat.Close && i.Etat != Etat.Annulee } );
 
         this.CurrentInterOperators = otherInterventions.map( i => i.Operateur ).reduce( (unique, item) => unique.includes(item) ? unique : [...unique, item], [] );
         this.CurrentInterClients = otherInterventions.map( i => i.NomComplet ).reduce( (unique, item) => unique.includes(item) ? unique : [...unique, item], [] );
-        this.CurrentIntervenants = otherInterventions.map( i => i.Intervenant.Societe ).reduce( (unique, item) => unique.includes(item) ? unique : [...unique, item], [] );
+        this.CurrentIntervenants = otherInterventions.map( i => i.Intervenant.Nom ).reduce( (unique, item) => unique.includes(item) ? unique : [...unique, item], [] );
 
-        return otherInterventions;
+        let filteredOtherInterventions = otherInterventions.filter(
+          (i: Intervention) => {
+            return (  !this.SelectedClient || this.SelectedClient == i.NomComplet )
+              && (  !this.SelectedOperator || this.SelectedOperator == i.Operateur )
+              && (  !this.SelectedIntervenant || this.SelectedIntervenant == i.Intervenant.Nom );
+          }
+        )
+        return filteredOtherInterventions;
     }
 
     public get CloseInterventions(): Intervention[]
@@ -186,20 +224,36 @@ export class InterventionGroup  {
 
     }
 
-    searchInterventions( queryString : string )
+    searchInterventions(  )
     {
-        // on recherche les interventions à partir de 4 caractères saisis
-        if ( queryString.length >= 4 )
-        {
-            // on vide les interventions du groupe
-            this._groupInterventions = [];
+      let query = this.Search;
 
-            this.interService.searchInterventions( queryString );
+      // on recherche les interventions à partir de 4 caractères saisis
+      if ( query )
+      {
+        var acceptableQuery = (query.FreeQuery && query.FreeQuery.length) > 3
+          || query.StartDate != null
+          || query.TypeIntervention;
+
+        if( acceptableQuery )
+        {
+          // on vide les interventions du groupe
+          this._groupInterventions = [];
+
+          this.interService.searchInterventions( this.Search );
         }
+      }
+
     }
 
     addNewIntervention()
     {
         this.interService.addNewIntervention();
+    }
+
+    public get readOnly()
+    {
+        return ! this._connectionStatus.connected
+
     }
 }
