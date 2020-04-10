@@ -6,15 +6,21 @@
         <i *ngIf="Expanded == true" class="mdi mdi-menu-down"></i>
     </div>
 
-    <div *ngIf="GroupType == GroupTypeEnum.interventionsCloses && Expanded === true" class="interventionGroupHeader transition_1s search" >
+    <div *ngIf="GroupType == GroupTypeEnum.interventionsCloses && Expanded === true" class="search transition_1s" >
+
         <input #searchInput (change)="searchInterventions(searchInput.value)" placeholder="Numero, date, contrat, CP, ville, client" />
         <i class="mdi mdi-magnify"></i>
+
     </div>
 
-    <div *ngIf="GroupType == GroupTypeEnum.autresInterventions && Expanded === true" class="interventionGroupHeader transition_1s search" >
-      <input #searchInput (change)="searchInterventions(searchInput.value)" placeholder="Numero, date, contrat, CP, ville, client" />
-      <i class="mdi mdi-magnify"></i>
-  </div>
+    <div *ngIf="GroupType == GroupTypeEnum.autresInterventions && Expanded === true" class="search transition_1s" >
+
+      <select id="selectOperator" [(ngModel)]="SelectedOperator" placeholder="Operateur">
+          <option [ngValue]="null"></option>
+          <option *ngFor="let operator of CurrentInterOperators">{{operator}}</option>
+      </select>
+
+    </div>
 
     <div *ngIf="Expanded == true">
 

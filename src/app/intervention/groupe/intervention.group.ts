@@ -43,9 +43,9 @@ export class InterventionGroup  {
 
     private _currentlyUpdatedInters : number[] = [];
 
-    private _currentInterOperators : string[] = []
-    private _currentInterClients : string[] = []
-    private _currentIntervenants : string[] = []
+    public CurrentInterOperators : string[] = []
+    public CurrentInterClients : string[] = []
+    public CurrentIntervenants : string[] = []
 
     interventionChangeSubscription : Subscription;
     interventionMessageSubscription : Subscription;
@@ -152,9 +152,9 @@ export class InterventionGroup  {
         let otherInterventions = this.interService.getLoadedInterventions().filter(
             (i: Intervention) => { return (! i.Operateur || !this.connStatus.operatorNameEqual( i.Operateur )) && i.Etat != Etat.Close && i.Etat != Etat.Annulee } );
 
-        this._currentInterOperators = otherInterventions.map( i => i.Operateur );
-        this._currentInterClients = otherInterventions.map( i => i.NomComplet );
-        this._currentIntervenants = otherInterventions.map( i => i.Intervenant.Societe );
+        this.CurrentInterOperators = otherInterventions.map( i => i.Operateur ).reduce( (unique, item) => unique.includes(item) ? unique : [...unique, item], [] );
+        this.CurrentInterClients = otherInterventions.map( i => i.NomComplet ).reduce( (unique, item) => unique.includes(item) ? unique : [...unique, item], [] );
+        this.CurrentIntervenants = otherInterventions.map( i => i.Intervenant.Societe ).reduce( (unique, item) => unique.includes(item) ? unique : [...unique, item], [] );
 
         return otherInterventions;
     }
