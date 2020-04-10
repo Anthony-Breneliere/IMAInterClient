@@ -1,5 +1,7 @@
 'use strict'; 
 
+var url = 'http://localhost:4200/IMAInter/#/intervention/';
+
 // Function permettant de savoir si un client est sur l'imaInter ou pas
 // TODO GMA fonction a supprimer ?
 function isClientFocused() { 
@@ -24,70 +26,19 @@ function isClientFocused() {
 
 // gestion de l'affichage des notifications push
 self.addEventListener('push', function (event) {
-    console.log('[Service Worker] Push Received.');
     var data = event.data.json();
-
-    console.log('[Service Worker] Push Received.');
-    //console.log(`[Service Worker] Push had this data: "${data}"`);
+    console.log(`[Service Worker] Push Received: "${data}"`);
     
-    // const promiseChain = isClientFocused()
+    const title = data.Title;
+    const options = {
+        body: data.Message,
+        icon: 'imainter.ico',
+        badge: 'imainter.bmp',
+        data: url + data.InterventionId
+    };
 
-    //     .then((clientIsFocused) => {
-    //         if (clientIsFocused) {
-    //             return clients.matchAll({
-    //                 type: 'window',
-    //                 includeUncontrolled: true
-    //             }).then(function (windowClients) {
-    //                 windowClients.forEach(function (windowClient) {
-    //                     windowClient.postMessage(data);
-    //                 });
-    //             });
-    //         }
-
-            // TODO GMA revoir pourquoi on a plus les images de nouveaux ?
-            const title = data.Title;
-            const options = {
-                body: data.Message,
-                icon: 'imainter.ico',
-                badge: 'imainter.bmp',
-                // TODO GMA revoir pour ne passer que le numero d'intervention et generer l'url coté client
-                data: data.Url
-            };
-
-            // Client isn't focused, we need to show a notification.
-            return self.registration.showNotification(title, options);
-    //     });
-
-    // event.waitUntil(promiseChain);
-
-    // Notifie que si le client n'est pas focus sur l'imainter
-    // const promiseChain = isClientFocused()
-
-    //     .then((clientIsFocused) => {
-    //         if (clientIsFocused) {
-    //             return clients.matchAll({
-    //                 type: 'window',
-    //                 includeUncontrolled: true
-    //             }).then(function (windowClients) {
-    //                 windowClients.forEach(function (windowClient) {
-    //                     windowClient.postMessage(data);
-    //                 });
-    //             });
-    //         }
-
-    //         const title = data.Title;
-    //         const options = {
-    //             body: data.Message,
-    //             icon: 'imainter.ico',
-    //             badge: 'imainter.ico',
-    //             data: data.Url
-    //         };
-
-    //         // Client isn't focused, we need to show a notification.
-    //         return self.registration.showNotification(title, options);
-    //    });
-
-    //event.waitUntil(promiseChain);
+    // Client isn't focused, we need to show a notification.
+    return self.registration.showNotification(title, options);    
 }); 
 
 // Gestion du click sur la notification
