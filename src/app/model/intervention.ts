@@ -70,7 +70,7 @@ export class Intervention
         let s = this.Site;
 
         if ( s )
-            return `${s.Qualite ? s.Qualite + ' ' : ''} ${s.Nom ? s.Nom + ' ': ''} ${s.Prenom ? s.Prenom : ''}`
+            return `${s.Qualite ? s.Qualite + ' ' : ''}${s.Nom ? s.Nom + ' ': ''}${s.Prenom ? s.Prenom : ''}`
         else
             return "";
     }

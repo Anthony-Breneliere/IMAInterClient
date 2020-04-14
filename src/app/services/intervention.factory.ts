@@ -6,9 +6,10 @@ import { Telephone } from '../model/telephone';
 import { InterventionState } from '../model/intervention_state';
 import { OrigineFiche, TypeFiche, MotifIntervention, Trajet, TypePresence, DepotBonIntervention, Etat } from '../model/enums';
 import { ITypeMainCourante } from "../model/type_maincour";
-import {Message} from "../model/Message";
+import { Message } from "../model/Message";
 
 import { Injectable } from '@angular/core';
+
 
 @Injectable()
 export class InterventionFactory  {

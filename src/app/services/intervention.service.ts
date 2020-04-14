@@ -13,7 +13,7 @@ import * as Lodash from 'lodash';
 import { ConnectionStatus } from './connection.status';
 import * as Collections from 'typescript-collections';
 import { Observable } from 'rxjs-compat/Observable';
-
+import { SearchQuery } from './searchQuery';
 
 import 'signalr';
 import { jsonpCallbackContext } from '@angular/common/http/src/module';
@@ -408,15 +408,14 @@ export class InterventionService  {
      * Recheche des anciennes interventions avec la requête suivante
      * @param queryString string
      */
-    public searchInterventions( queryString : string )
+    public searchInterventions( query : SearchQuery )
     {
+
         this.clearSearchResults();
 
-        if ( queryString )
-        {
-            console.log(`Recherche des anciennes interventions avec la requête suivante: '${queryString}'`);
-            this._connectionStatus.proxyServer.searchInterventions( queryString );
-        }
+        console.log(`Recherche des anciennes interventions avec la requête suivante: '${query}'`);
+        this._connectionStatus.proxyServer.searchInterventions( query );
+
     }
 
     /**

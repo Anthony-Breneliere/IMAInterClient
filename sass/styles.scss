@@ -58,13 +58,14 @@ button:hover {
 }
 
 button:active {
-    background-color: var( --input-bg-color);
+    background-color: var( --input-compo-color);
 }
 
+select:disabled,
 input:disabled,
 textarea:disabled,
 button {
-    background-color: var( --main-bg-color);
+    background-color: var( --main-compo-color);
 }
 
 .transition_1s {

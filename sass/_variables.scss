@@ -6,7 +6,8 @@
 
   /* Couleurs */
   --hover_shadow: hsl( 0, 100%, 100%);
-  --main-bg-color: hsl( 0, 0%, 20%);
+  --main-bg-color: hsl( 0, 0%, 16%);
+  --main-compo-color: hsl( 0, 0%, 20%);
   --selected-bg-color: hsl( 0, 0%, var( --bg-selected-lightness ) );
   --selected-color: hsl( 0, 0%, var( --selected-lightness ) );
   --input-bg-color: hsl( 0, 0%, 23%);
@@ -41,6 +42,7 @@
 
   /* Couleurs paramétrées */
   --defaut-font-color: hsl( var( --white_hue), var( --gray), var( --font-lightness));
+  --discrete-font-color: hsl( var( --white_hue), var( --gray), 50% );
   --modal-background-color: hsla( 0, 0%, 10%, 75%);
   --main-color: var( --modal-border-color );
   --selected-main-color: hsl( var( --color1), var( --saturation), var( --selected-lightness));

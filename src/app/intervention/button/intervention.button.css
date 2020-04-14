@@ -7,7 +7,7 @@ div.buttonMenu:hover {
     border: 1px solid hsl(var( --colorAction), 100%, var( --action-lightness));
     outline: 1px solid hsl(var( --colorAction), 100%, var( --action-lightness));
     color: hsl(var( --colorAction), 100%, var( --action-lightness));
-    background-color: var( --dark-bg-color)
+    background-color: var( --dark-bg-color )
 }
 
 i {
@@ -21,6 +21,7 @@ i {
     background-color: var( --selected-bg-color );
     color: var( --selected-color );
 }
+
 
 .unselected:hover {
     background-color: hsl( 0, 0%, var( --bg-hover-lightness));

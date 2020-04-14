@@ -33,12 +33,12 @@ export const DATAINPUT_CONTROL_VALUE_ACCESSOR: any = {
     aria-label="Date"
     aria-haspopup="true"
     aria-expanded="false"
-    required readonly
+    required
+    [disabled]="disabled"
     [class.transition_1s]="!changeFromModel"
     [class.borderhalo]="changeFromModel"
     dlDateTimeInput [ngModel]="formattedValue" />
-  <div
-    class="dropdown-menu" (click)="keepDropDownOpen($event)">
+  <div class="dropdown-menu" (click)="keepDropDownOpen($event)">
     <div style="width:360px;">
       <dl-date-time-picker
         startView="hour"
@@ -62,6 +62,7 @@ export class DateInputComponent implements ControlValueAccessor {
   format: string = 'DD/MM/YYYY HH:mm:ss';
 
   @Input() changeFromModel : boolean;
+  @Input() disabled : boolean;
 
   constructor(
     private _elementRef: ElementRef,

@@ -5,10 +5,10 @@ table {
 
 fieldset.section,
 div.section {
-    border: 1px solid var( --dark-bg-color);
+    border: 1px solid var( --main-compo-color );
     margin: 10px 10px 10px 10px;
     box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.5);
-    background-color: var( --main-bg-color);
+    background-color: var( --main-compo-color );
     padding: 0px;
     z-index: 500
 }
