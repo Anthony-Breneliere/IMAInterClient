@@ -16,7 +16,7 @@ import { Observable } from 'rxjs-compat/Observable';
 import { SearchQuery } from './searchQuery';
 
 import 'signalr';
-import { jsonpCallbackContext } from '@angular/common/http/src/module';
+
 
 export enum InterventionDataType {
     Full,

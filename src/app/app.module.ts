@@ -10,10 +10,10 @@
 import { HttpClientModule } from '@angular/common/http';
 import { LOCALE_ID, NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule }   from '@angular/forms';
 import { RouterModule }   from '@angular/router';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DlDateTimePickerDateModule } from 'angular-bootstrap-datetimepicker';
+import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
 
 /* Liste des services */
 import { InterventionService } from './services/intervention.service';
@@ -61,7 +61,8 @@ import { TestComponent } from './test/test.component';
         FormsModule,
         HttpClientModule,
         RouterModule.forRoot (appRoutes),
-        DlDateTimePickerDateModule,
+        DlDateTimeDateModule,  // <--- Determines the data type of the model
+        DlDateTimePickerModule,
       ],
     /*
        Déclaration des composants et des directives utilisées par le module. En les ajoutant ici

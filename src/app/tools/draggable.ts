@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer, OnDestroy, OnInit, AfterViewInit, Input } from '@angular/core';
+import { Directive, ElementRef, OnDestroy, OnInit, AfterViewInit, Input, Renderer2 } from '@angular/core';
 
 
 @Directive({
@@ -22,13 +22,13 @@ export class DraggableDirective implements OnDestroy, OnInit, AfterViewInit {
   }
   private mustBePosition: Array<string> = ['absolute', 'fixed', 'relative'];
   constructor(
-    private el: ElementRef, private renderer: Renderer
+    private el: ElementRef, private renderer: Renderer2
   ) {
     
   }
   
   ngOnInit(): void {
-    this.renderer.setElementAttribute(this.el.nativeElement, 'draggable', 'false');
+    __ngRendererSetElementAttributeHelper(this.renderer, this.el.nativeElement, 'draggable', 'false');
   }
   
   ngAfterViewInit(){
@@ -42,7 +42,7 @@ export class DraggableDirective implements OnDestroy, OnInit, AfterViewInit {
     }
   }
   ngOnDestroy(): void {
-    this.renderer.setElementAttribute(this.el.nativeElement, 'draggable', 'false');
+    __ngRendererSetElementAttributeHelper(this.renderer, this.el.nativeElement, 'draggable', 'false');
   }
   
   onDragStart(event: MouseEvent) {
@@ -63,9 +63,28 @@ export class DraggableDirective implements OnDestroy, OnInit, AfterViewInit {
 
   doTranslation(x: number, y: number) {
     if (!x || !y) return;
-    this.renderer.setElementStyle(this.el.nativeElement, 'top', (y - this.Δy) + 'px');
-    this.renderer.setElementStyle(this.el.nativeElement, 'left', (x - this.Δx) + 'px');
+    this.renderer.setStyle(this.el.nativeElement, 'top', (y - this.Δy) + 'px');
+    this.renderer.setStyle(this.el.nativeElement, 'left', (x - this.Δx) + 'px');
   }
   
 
+}
+type AnyDuringRendererMigration = any;
+
+function __ngRendererSplitNamespaceHelper(name: AnyDuringRendererMigration) {
+    if (name[0] === ":") {
+        const match = name.match(/^:([^:]+):(.+)$/);
+        return [match[1], match[2]];
+    }
+    return ["", name];
+}
+
+function __ngRendererSetElementAttributeHelper(renderer: AnyDuringRendererMigration, element: AnyDuringRendererMigration, namespaceAndName: AnyDuringRendererMigration, value?: AnyDuringRendererMigration) {
+    const [namespace, name] = __ngRendererSplitNamespaceHelper(namespaceAndName);
+    if (value != null) {
+        renderer.setAttribute(element, name, value, namespace);
+    }
+    else {
+        renderer.removeAttribute(element, name, namespace);
+    }
 }

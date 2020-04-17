@@ -8,9 +8,9 @@
             "name": "Chrome ImaInter",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost:4512/#/",
+            "url": "http://localhost:4512/IMAInter",
             "sourceMaps": true,
-            "sourceMapPathOverrides": { 
+            "sourceMapPathOverrides": {
                 "webpack:/*": "${webRoot}/*"
             },
             "webRoot": "${workspaceFolder}",
@@ -23,9 +23,9 @@
             "name": "Chrome TestPage",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost:4512/#/test",
+            "url": "http://localhost:4512/test",
             "sourceMaps": true,
-            "sourceMapPathOverrides": { 
+            "sourceMapPathOverrides": {
                 "webpack:/*": "${webRoot}/*"
             },
             "webRoot": "${workspaceFolder}",
