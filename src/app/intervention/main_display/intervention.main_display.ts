@@ -3,7 +3,7 @@
  * Created by abreneli on 04/07/2016.
  */
 
-import {Component, ViewChild, OnInit, AfterViewInit, Input, ChangeDetectorRef } from '@angular/core';
+import {Component, ViewChild, OnInit, AfterContentInit, Input, ChangeDetectorRef } from '@angular/core';
 import {InterventionGroup, GroupTypeEnum} from '../groupe/intervention.group';
 import {Intervention} from "../../model/intervention";
 import {Etat} from "../../model/enums";
@@ -23,7 +23,7 @@ import 'rxjs-compat/add/operator/switchMap';
     styleUrls:  ['./intervention.main_display.css'],
 })
 
-export class InterventionMainDisplay implements OnInit, AfterViewInit {
+export class InterventionMainDisplay implements OnInit, AfterContentInit {
 
     public GroupTypeEnum = GroupTypeEnum; // <- using enum in html
 
@@ -142,10 +142,10 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
         return isThereIntervenant;
     }
 
-    ngAfterViewInit() {
+    ngAfterContentInit() {
         // code exécuté après l'initialisation des vues @ViewChild
 
-        console.log( "InterventionMainDisplay.ngAfterViewInit");
+        console.log( "InterventionMainDisplay.ngAfterContentInit");
         if ( this.afficheNavigation  )
             this.deployGroup( this.selectedIntervention );
     }

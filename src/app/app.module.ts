@@ -28,6 +28,7 @@ import { Checkbox } from './tools/checkbox/checkbox';
 import { Section } from './intervention/section/section';
 import { Field } from './intervention/section/field';
 import { InterventionGroup } from './intervention/groupe/intervention.group';
+import { GroupFilter } from './intervention/groupe/groupFilter';
 import { InterventionDetails } from './intervention/details/intervention.details';
 import { InterventionButton } from './intervention/button/intervention.button';
 import { InterventionButtonContent } from './intervention/button/intervention.button.content';
@@ -78,6 +79,7 @@ import { TestComponent } from './test/test.component';
         Checkbox,
         DateInputComponent,
         InterventionGroup,
+        GroupFilter,
         InterventionDetails,
         InterventionButton, InterventionButtonContent,
         DraggableDirective,
