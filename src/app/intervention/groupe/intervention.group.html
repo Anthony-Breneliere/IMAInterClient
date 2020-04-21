@@ -24,10 +24,10 @@
       <input #searchInput [(ngModel)]="Search.FreeQuery" (ngModelChange)="searchInterventions()" [disabled]="readOnly"/>
 
       <label>Date de début</label>
-      <date-input [(ngModel)]="Search.StartDate" (ngModelChange)="searchInterventions()" [disabled]="readOnly" ></date-input>
+      <date-input #dateDebut [(ngModel)]="Search.StartDate" (ngModelChange)="searchInterventions()" width="265px" [disabled]="readOnly" ></date-input>
 
       <label>Date de fin</label>
-      <date-input [(ngModel)]="Search.EndDate" (ngModelChange)="searchInterventions()"  [disabled]="readOnly"></date-input>
+      <date-input #dateFin [(ngModel)]="Search.EndDate" (ngModelChange)="searchInterventions()" width="265px" [disabled]="readOnly"></date-input>
 
       <label>Type d'intervention</label>
       <select id="selectIntervenant" [(ngModel)]="Search.TypeIntervention" (ngModelChange)="searchInterventions()" [disabled]="readOnly">
