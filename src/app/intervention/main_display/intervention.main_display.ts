@@ -2,7 +2,6 @@
 /**
  * Created by abreneli on 04/07/2016.
  */
-import { Connection } from '@angular/http';
 
 import {Component, ViewChild, OnInit, AfterViewInit, Input, ChangeDetectorRef } from '@angular/core';
 import {InterventionGroup, GroupTypeEnum} from '../groupe/intervention.group';

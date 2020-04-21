@@ -41,7 +41,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Telephone } from '../../model/telephone';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
+import { OnChanges } from '@angular/core';
 
 declare var require: any;
 var Masonry  = require( 'masonry-layout' );
@@ -564,10 +564,6 @@ export class InterventionDetails implements  OnChanges
 
       return ( rapportIsDisplayed );
     }
-
-    // public get concatenatedIntervenantEmails() : string { return this.intervention.Intervenant.Emails.join('\n'); }
-
-    // public set concatenatedIntervenantEmails( string emails ) : string { return this.intervention?.Intervenant?.Emails?.join('\n'); }
 
 
 }
