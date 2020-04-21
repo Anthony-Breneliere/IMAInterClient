@@ -129,7 +129,7 @@ export class InterventionService  {
      */
     private subscribeNotifications() : void
     {
-        this.pushNotificationService.subscribeUserIfNot();
+        this.pushNotificationService.subscribeUser();
 
     }
 
