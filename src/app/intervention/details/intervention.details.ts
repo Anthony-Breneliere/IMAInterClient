@@ -42,6 +42,7 @@ import { filter } from 'rxjs/operators';
 import { Telephone } from '../../model/telephone';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OnChanges } from '@angular/core';
+import { isArray } from 'util';
 
 declare var require: any;
 var Masonry  = require( 'masonry-layout' );
@@ -196,7 +197,6 @@ export class InterventionDetails implements  OnChanges
         {
             let site = this.intervention.Site;
             let intervenant = this.intervention.Intervenant;
-
 
             // Désactivé: en attente d'application mobile
             // if ( this._interService.waitingDeparture( this.intervention ) )
@@ -476,6 +476,21 @@ export class InterventionDetails implements  OnChanges
     {
       let emails = this.intervenant.Emails;
       this.changeIntervention( { Intervenant: { Emails: emails } } );
+    }
+
+    /** Envoi d'un changmeent d'email au service
+     *
+     */
+    public get concatenatedEmails() : string
+    {
+      let concatenated = "";
+      let emails : any = this.intervenant?.Emails;
+      if ( emails )
+      {
+        Object.keys(emails).map( k => concatenated += ( emails[k] + " ") );
+      }
+
+      return concatenated;
     }
 
 

@@ -8,11 +8,13 @@
 
 
     <div *ngIf="GroupType === GroupTypeEnum.mesInterventions && Expanded === true" class="search" >
-      <group-filter #filterMine (update)="updateGroupInterventions()" [AllTypeChoices]="['Contrat']"></group-filter>
+      <group-filter #filterMine (update)="filterUpdate($event)" [AllTypeChoices]="['Contrat']"
+        [UnfilteredInterventions]="UnfilteredMyInterventions"></group-filter>
     </div>
 
     <div *ngIf="GroupType === GroupTypeEnum.autresInterventions && Expanded === true" class="search" >
-      <group-filter #filterOthers (update)="updateGroupInterventions()" [AllTypeChoices]="['Operateur', 'Client', 'Intervenant', 'Contrat']"></group-filter>
+      <group-filter #filterOthers (update)="filterUpdate($event)" [AllTypeChoices]="['Operateur', 'Client', 'Intervenant', 'Contrat']"
+        [UnfilteredInterventions]="UnfilteredOtherInterventions"></group-filter>
     </div>
 
 

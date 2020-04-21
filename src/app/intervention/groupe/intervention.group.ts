@@ -2,7 +2,8 @@
  * Created by abreneli on 04/07/2016.
  */
 
-import { Component,  Input, Output, EventEmitter, ViewChild, ChangeDetectorRef, AfterViewInit, AfterContentChecked } from '@angular/core';
+import { Component,  Input, Output, EventEmitter, ChangeDetectionStrategy,
+  ViewChild, ChangeDetectorRef, AfterViewInit, AfterContentChecked } from '@angular/core';
 import { InterventionButton } from '../button/intervention.button';
 import { Intervention } from '../../model/intervention';
 import { InterventionService } from '../../services/intervention.service';
@@ -14,6 +15,8 @@ import { Message } from '../../model/message';
 import { ConnectionStatus } from '../../services/connection.status';
 import { Etat } from "../../model/enums";
 import { SearchQuery } from 'app/services/searchQuery';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+
 
 export enum GroupTypeEnum
 {
@@ -38,34 +41,11 @@ export class InterventionGroup implements AfterContentChecked
     @Input() public Expanded: boolean;
     @Output() onSelectedButton = new EventEmitter<InterventionButton>();
 
-    @ViewChild('filterOthers', {static: false}) set filterOthers( createdFilter: GroupFilter )
-    {
-      // cas d'un ViewChild sur élément dans ngIf: https://stackoverflow.com/questions/39366981/viewchild-in-ngif
-      // il faut l'initialiser au moment où on l'affiche
-      if ( createdFilter && this._filterOthers != createdFilter )
-      {
-        if ( createdFilter )
-          createdFilter.InitFilterChoices( this.UnfilteredOtherInterventions );
+    @ViewChild('filterOthers', {static: false}) filterOthers;
+    @ViewChild('filterMine', {static: false}) filterMine;
 
-        this._filterOthers = createdFilter;
-      }
-    }
-
-    @ViewChild('filterMine', {static: false}) set filterMine( createdFilter: GroupFilter )
-    {
-      // cas d'un ViewChild sur élément dans ngIf: https://stackoverflow.com/questions/39366981/viewchild-in-ngif
-      // il faut l'initialiser au moment où on l'affiche
-      if ( createdFilter && this._filterMine != createdFilter )
-      {
-        if ( createdFilter )
-          createdFilter.InitFilterChoices( this.UnfilteredMyInterventions );
-
-        this._filterMine = createdFilter;
-      }
-    }
-
-    private _filterOthers: GroupFilter;
-    private _filterMine: GroupFilter;
+    private paramsSubscription : Subscription;
+    private queryParamsSubscription : Subscription;
 
     public Search : SearchQuery = new SearchQuery();
 
@@ -89,36 +69,65 @@ export class InterventionGroup implements AfterContentChecked
         return this._groupInterventions;
     }
 
-    constructor( private interService : InterventionService, private _connectionStatus : ConnectionStatus, protected _cdref: ChangeDetectorRef )
+    constructor(
+      private _interService : InterventionService,
+      private _connectionStatus : ConnectionStatus,
+      protected _cdref: ChangeDetectorRef,
+      private route: ActivatedRoute )
     {
     }
 
     ngOnInit()
     {
-        // on inscrit le composant à la détection des changements d'interventions
-        // cela permet (entre autres) d'afficher un petit halo sur le bouton quand une intervention a changé
-        this.interventionChangeSubscription =
-            this.interService.newInterData$.pipe( delay(1000) ).subscribe( inter =>  {
+      // on inscrit le composant à la détection des changements d'interventions
+      // cela permet (entre autres) d'afficher un petit halo sur le bouton quand une intervention a changé
+      this.interventionChangeSubscription =
 
-                // à chaque fois qu'on reçoit des datas sur les interventions avec les infos d'opérateur,
-                // on met à jour la liste des interventions du groupe,
-                // car une nouvelle intervention a pu arriver, ou bien un intervention a pu se fermer, changer d'opérateur, etc..
-               if ( inter.Operateur != null )
-                this.updateGroupInterventions();
+          this._interService.newInterData$.pipe( delay(1000) ).subscribe( inter =>  {
 
-            } );
+              // à chaque fois qu'on reçoit des datas sur les interventions avec les infos d'opérateur,
+              // on met à jour la liste des interventions du groupe,
+              // car une nouvelle intervention a pu arriver, ou bien un intervention a pu se fermer, changer d'opérateur, etc..
+              if ( inter.Operateur != null )
+              this.updateGroupInterventions();
 
-            this.interService.newInterData$.subscribe( inter =>  {
-                 this.interventionChangeHighlight( inter.Id );
-            } );
+          } );
 
-        this.interventionMessageSubscription = this.interService.newMessages$
-            .subscribe( notif  => {
-                this.interventionChangeHighlight( notif["0"].Id );
-            } );
+          this._interService.newInterData$.subscribe( inter =>  {
+                this.interventionChangeHighlight( inter.Id );
+          } );
 
-        // initialise la liste des interventions
-        this.updateGroupInterventions();
+      this.interventionMessageSubscription = this._interService.newMessages$
+          .subscribe( notif  => {
+              this.interventionChangeHighlight( notif["0"].Id );
+          } );
+
+      // initialise la liste des interventions
+      this.updateGroupInterventions();
+
+      // gestion des url de recherche
+      if ( this.route.routeConfig.path.startsWith( 'search' ) )
+      {
+        this.paramsSubscription = this.route.queryParams.subscribe( params =>
+        {
+          let contrat : string = params['contrat'];
+
+          if( this.GroupType === GroupTypeEnum.interventionsCloses)
+          {
+            this.Search =
+            {
+              FreeQuery: contrat,
+              EndDate: params['dateFin'],
+              StartDate: params['dateDebut'],
+              TypeIntervention:  params['typeIntervention']
+            }
+
+            this.searchInterventions();
+          }
+
+        } );
+      }
+
     }
 
 
@@ -185,19 +194,17 @@ export class InterventionGroup implements AfterContentChecked
      */
     public get MyInterventions(): Intervention[]
     {
-        let currentInterventions = this.interService.getLoadedInterventions();
-
-        let interList = currentInterventions.filter(
-            (i: Intervention) => { return this._connectionStatus.operatorNameEqual( i.Operateur ) &&
-                ( i.Etat != Etat.Close && i.Etat != Etat.Annulee) } );
-
-        return interList;
+      return this.filterMine ? this.filterMine.FilteredInterventions : this.UnfilteredMyInterventions;
     }
 
+    filterUpdate( event: any )
+    {
+      this.updateGroupInterventions();
+    }
 
     private get UnfilteredMyInterventions(): Intervention[]
     {
-      let currentInterventions = this.interService.getLoadedInterventions();
+      let currentInterventions = this._interService.getLoadedInterventions();
 
       let myInterventions = currentInterventions.filter(
         (i: Intervention) => { return this._connectionStatus.operatorNameEqual( i.Operateur ) &&
@@ -211,17 +218,12 @@ export class InterventionGroup implements AfterContentChecked
      */
     public get OtherInterventions(): Intervention[]
     {
-        let otherInterventions = this.UnfilteredOtherInterventions;
-
-        if( this._filterOthers )
-          otherInterventions = this._filterOthers.FilterInterventions( otherInterventions );
-
-        return otherInterventions;
+        return this.filterOthers ? this.filterOthers.FilteredInterventions : this.UnfilteredOtherInterventions;
     }
 
     private get UnfilteredOtherInterventions(): Intervention[]
     {
-      let otherInterventions = this.interService.getLoadedInterventions().filter(
+      let otherInterventions = this._interService.getLoadedInterventions().filter(
         (i: Intervention) => { return (! i.Operateur || !this._connectionStatus.operatorNameEqual( i.Operateur )) && i.Etat != Etat.Close && i.Etat != Etat.Annulee } );
 
       return otherInterventions;
@@ -233,7 +235,7 @@ export class InterventionGroup implements AfterContentChecked
      */
     public get CloseInterventions(): Intervention[]
     {
-        let closed = this.interService.getLoadedInterventions().filter(
+        let closed = this._interService.getLoadedInterventions().filter(
             (i: Intervention) => { return i.Etat == Etat.Close || i.Etat == Etat.Annulee } );
         return closed;
     }
@@ -274,8 +276,11 @@ export class InterventionGroup implements AfterContentChecked
         {
           // on vide les interventions du groupe
           this._groupInterventions = [];
+          this._interService.searchInterventions( this.Search ).catch( reason => {
+            console.log( "La recherche d'intervention a échoué " + reason + ":" );
+            console.log( this.Search );
+          });
 
-          this.interService.searchInterventions( this.Search );
         }
       }
 
@@ -283,7 +288,7 @@ export class InterventionGroup implements AfterContentChecked
 
     addNewIntervention()
     {
-        this.interService.addNewIntervention();
+        this._interService.addNewIntervention();
     }
 
 

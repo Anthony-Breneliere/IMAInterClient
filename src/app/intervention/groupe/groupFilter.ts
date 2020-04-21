@@ -1,12 +1,14 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, OnChanges } from '@angular/core';
 
 import { Intervention } from '../../model/intervention';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'group-filter',
   template: `
   <label>Filtre</label>
-  <select id="filterType" [(ngModel)]="TypeChoice" >
+  <select id="filterType" [(ngModel)]="TypeChoice" (change)="UpdateType" >
       <option [ngValue]="null"></option>
       <option *ngFor="let operator of AllTypeChoices">{{operator}}</option>
   </select>
@@ -18,9 +20,11 @@ import { Intervention } from '../../model/intervention';
   `,
   styleUrls:  ['./groupFilter.scss']
 })
-export class GroupFilter
+export class GroupFilter implements OnChanges, OnInit
 {
   @Output() update = new EventEmitter();
+
+  @Input() UnfilteredInterventions : Intervention[];
 
   private _loadedChoices = {}
 
@@ -51,40 +55,44 @@ export class GroupFilter
   public _allChoices : string[] = [];
   public get AllChoices() : string[] { return this._allChoices; }
 
-
-  // public AllOperatorChoices : string[] = [];
-  // public AllClientChoices : string[] = [];
-  // public AllIntervenantChoices : string[] = [];
-
-  // public _selectedOperator : string = "";
-  // public get SelectedOperator() : string { return this._selectedOperator; }
-  // public set SelectedOperator( value : string ) {
-  //   this._selectedOperator = value;
-  //   this._selectedClient = "";
-  //   this._selectedIntervenant = "";
-  //   this.OnFilterUpdate(); }
-
-  // public _selectedClient : string = "";
-  // public get SelectedClient() : string { return this._selectedClient; }
-  // public set SelectedClient( value : string ) {
-  //   this._selectedOperator = "";
-  //   this._selectedClient = value;
-  //   this._selectedIntervenant = "";
-  //   this.OnFilterUpdate();
-  // }
-
-  // public _selectedIntervenant : string = "";
-  // public get SelectedIntervenant() : string { return this._selectedIntervenant; }
-  // public set SelectedIntervenant( value : string ) {
-  //   this._selectedOperator = "";
-  //   this._selectedClient = "";
-  //   this._selectedIntervenant = value;
-  //   this.OnFilterUpdate();
-  // }
-
-  public FilterInterventions( inters: Intervention[] ): Intervention[]
+  public UpdateType()
   {
-    let filteredInters = inters.filter(
+    this._chosenValue = "";
+  }
+
+  private paramsSubscription : Subscription;
+  private queryParamsSubscription : Subscription;
+
+  constructor( private route: ActivatedRoute )
+  {
+
+  }
+
+  ngOnInit()
+  {
+    this.paramsSubscription = this.route.queryParams.subscribe( params =>
+    {
+      let contrat : string = params['contrat'];
+
+      if ( contrat && contrat.length > 3 )
+      {
+        this.TypeChoice = "Contrat";
+        this.ChosenValue = contrat;
+      }
+    } );
+  }
+
+  private _interventionCount : number = 0;
+
+
+  ngOnChanges()
+  {
+    this.InitFilterChoices();
+  }
+
+  public get FilteredInterventions(): Intervention[]
+  {
+    let filteredInters = this.UnfilteredInterventions.filter(
       (i: Intervention) => {
         return ! this.TypeChoice
           || ! this.ChosenValue
@@ -93,20 +101,18 @@ export class GroupFilter
           || ( this.TypeChoice == "Intervenant" && this._chosenValue == i.Intervenant.Nom )
           || ( this.TypeChoice == "Contrat" && this._chosenValue == i.Site.Contrat );
        }
-
-
     )
     return filteredInters;
   }
 
-  public InitFilterChoices( interventions: Intervention[] )
+  private InitFilterChoices()
   {
-    this._loadedChoices["Operateur"] = this.getDistinctChoices( interventions, (i : Intervention) => i.Operateur );
-    this._loadedChoices["Client"] = this.getDistinctChoices( interventions, (i : Intervention) => i.NomComplet );
-    this._loadedChoices["Intervenant"] = this.getDistinctChoices( interventions, (i : Intervention) => i.Intervenant.Nom );
-    this._loadedChoices["Contrat"] = this.getDistinctChoices( interventions, (i : Intervention) => i.Site.Contrat );
+    this._loadedChoices["Operateur"] = this.getDistinctChoices( this.UnfilteredInterventions, (i : Intervention) => i.Operateur );
+    this._loadedChoices["Client"] = this.getDistinctChoices( this.UnfilteredInterventions, (i : Intervention) => i.NomComplet );
+    this._loadedChoices["Intervenant"] = this.getDistinctChoices( this.UnfilteredInterventions, (i : Intervention) => i.Intervenant.Nom );
+    this._loadedChoices["Contrat"] = this.getDistinctChoices( this.UnfilteredInterventions, (i : Intervention) => i.Site.Contrat );
 
-    console.log( "Loaded choices initialized with " + interventions.length + " interventions.");
+    console.log( "Loaded choices initialized with " + this.UnfilteredInterventions.length + " interventions.");
   }
 
   // todo ABR: voir dans une prochane version de type script si on peut typer la fonction mappingFunc

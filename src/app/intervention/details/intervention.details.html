@@ -44,7 +44,7 @@
         <tr field label="N° Siren ">{{intervenant?.Societe}}</tr>
         <tr field class=".crlf-return" label= "Adresse ">{{Capitalize(intervenant?.Adresse)}}</tr>
         <tr field *ngFor="let tel of intervenant?.Telephones " label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
-        <tr *ngIf="!isEditableIntervenantEmail; else editableEmail" field label="Email ">{{intervenant?.Emails?.join('\n')}}</tr>
+        <tr *ngIf="!isEditableIntervenantEmail; else editableEmail" field label="Email ">{{concatenatedEmails}}</tr>
         <ng-template #editableEmail>
             <tr field label="Email ">
                 <reactive-input *ngFor="let email of intervenant?.Emails; let i = index" [(ngModel)]="intervenant.Emails[i]" (ngModelChange)="changeEmailIntervenantGenerique()"></reactive-input>

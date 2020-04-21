@@ -420,14 +420,19 @@ export class InterventionService  {
      * Recheche des anciennes interventions avec la requête suivante
      * @param queryString string
      */
-    public searchInterventions( query : SearchQuery )
+    public searchInterventions( query : SearchQuery ) : Promise<any>
     {
+      console.log(`Recherche des anciennes interventions avec la requête suivante: '${query}'`);
 
-        this.clearSearchResults();
+      this.clearSearchResults();
 
-        console.log(`Recherche des anciennes interventions avec la requête suivante: '${query}'`);
-        this._connectionStatus.proxyServer.searchInterventions( query );
+      // on s'assure qu'on est connecté, car la recherche peut se faire au démarrage sur la query
+      let connectAndSearchPromise = this._connectionStatus.waitForReconnection().then( () =>
+      {
+        return this._connectionStatus.proxyServer.searchInterventions( query );
+      } );
 
+      return connectAndSearchPromise;
     }
 
     /**
