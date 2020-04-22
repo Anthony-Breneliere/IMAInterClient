@@ -13,6 +13,10 @@ export const appRoutes: Routes = [
         component: InterventionMainDisplay
     },
     {
+      path: 'search',
+      component: InterventionMainDisplay
+    },
+    {
         path: 'test',
         component: TestComponent
     },

@@ -39,7 +39,7 @@ export const DATAINPUT_CONTROL_VALUE_ACCESSOR: any = {
     [class.borderhalo]="changeFromModel"
     dlDateTimeInput [ngModel]="formattedValue" />
   <div class="dropdown-menu" (click)="keepDropDownOpen($event)">
-    <div style="width:360px;">
+    <div style="width:{{width}};">
       <dl-date-time-picker
         startView="hour"
         minView="minute"
@@ -63,6 +63,7 @@ export class DateInputComponent implements ControlValueAccessor {
 
   @Input() changeFromModel : boolean;
   @Input() disabled : boolean;
+  @Input() width : string = "360px";
 
   constructor(
     private _elementRef: ElementRef,

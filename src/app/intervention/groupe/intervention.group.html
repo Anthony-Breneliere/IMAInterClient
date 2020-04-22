@@ -2,36 +2,21 @@
 
     <div class="interventionGroupHeader transition_1s" (click)="onClickHeader()">
         {{GroupName}}
-        <i *ngIf="Expanded == false" class="mdi mdi-menu-up"></i>
-        <i *ngIf="Expanded == true" class="mdi mdi-menu-down"></i>
+        <i *ngIf="Expanded === false" class="mdi mdi-menu-up"></i>
+        <i *ngIf="Expanded === true" class="mdi mdi-menu-down"></i>
     </div>
 
 
-    <div *ngIf="GroupType == GroupTypeEnum.autresInterventions && Expanded === true" class="search transition_1s" >
-
-      <label>Opérateur</label>
-      <select id="selectOperator" [(ngModel)]="SelectedOperator" >
-          <option [ngValue]="null"></option>
-          <option *ngFor="let operator of CurrentInterOperators">{{operator}}</option>
-      </select>
-
-      <br>
-
-      <label>Client</label>
-      <select id="selectClient" [(ngModel)]="SelectedClient" >
-          <option [ngValue]="null"></option>
-          <option *ngFor="let client of CurrentInterClients">{{client}}</option>
-      </select>
-
-      <br>
-
-      <label>Intervenant</label>
-      <select id="selectIntervenant" [(ngModel)]="SelectedIntervenant" >
-          <option [ngValue]="null"></option>
-          <option *ngFor="let client of CurrentIntervenants">{{client}}</option>
-      </select>
-
+    <div *ngIf="GroupType === GroupTypeEnum.mesInterventions && Expanded === true" class="search" >
+      <group-filter #filterMine (update)="filterUpdate($event)" [AllTypeChoices]="['Contrat']"
+        [UnfilteredInterventions]="UnfilteredMyInterventions"></group-filter>
     </div>
+
+    <div *ngIf="GroupType === GroupTypeEnum.autresInterventions && Expanded === true" class="search" >
+      <group-filter #filterOthers (update)="filterUpdate($event)" [AllTypeChoices]="['Operateur', 'Client', 'Intervenant', 'Contrat']"
+        [UnfilteredInterventions]="UnfilteredOtherInterventions"></group-filter>
+    </div>
+
 
     <div *ngIf="GroupType == GroupTypeEnum.interventionsCloses && Expanded === true" class="search transition_1s" >
 
@@ -39,10 +24,10 @@
       <input #searchInput [(ngModel)]="Search.FreeQuery" (ngModelChange)="searchInterventions()" [disabled]="readOnly"/>
 
       <label>Date de début</label>
-      <date-input [(ngModel)]="Search.StartDate" (ngModelChange)="searchInterventions()" [disabled]="readOnly" ></date-input>
+      <date-input #dateDebut [(ngModel)]="Search.StartDate" (ngModelChange)="searchInterventions()" width="265px" [disabled]="readOnly" ></date-input>
 
       <label>Date de fin</label>
-      <date-input [(ngModel)]="Search.EndDate" (ngModelChange)="searchInterventions()"  [disabled]="readOnly"></date-input>
+      <date-input #dateFin [(ngModel)]="Search.EndDate" (ngModelChange)="searchInterventions()" width="265px" [disabled]="readOnly"></date-input>
 
       <label>Type d'intervention</label>
       <select id="selectIntervenant" [(ngModel)]="Search.TypeIntervention" (ngModelChange)="searchInterventions()" [disabled]="readOnly">
@@ -61,8 +46,7 @@
 
     </div>
 
-
-    <div *ngIf="Expanded == true">
+    <div *ngIf="Expanded === true">
 
         <!--<button *ngIf="GroupType == GroupTypeEnum.mesInterventions">-->
         <!--<svg viewBox="0 0 463.307 463.307">-->

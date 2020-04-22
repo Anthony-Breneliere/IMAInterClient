@@ -3,7 +3,7 @@
  * Created by abreneli on 04/07/2016.
  */
 
-import {Component, ViewChild, OnInit, AfterViewInit, Input, ChangeDetectorRef } from '@angular/core';
+import {Component, ViewChild, OnInit, AfterContentInit, Input, ChangeDetectorRef } from '@angular/core';
 import {InterventionGroup, GroupTypeEnum} from '../groupe/intervention.group';
 import {Intervention} from "../../model/intervention";
 import {Etat} from "../../model/enums";
@@ -15,6 +15,7 @@ import { Chat } from '../chat/chat';
 import {Subscription} from 'rxjs';
 
 import 'rxjs-compat/add/operator/switchMap';
+import { SearchQuery } from 'app/services/searchQuery';
 
 @Component({
     moduleId: module.id,
@@ -23,7 +24,7 @@ import 'rxjs-compat/add/operator/switchMap';
     styleUrls:  ['./intervention.main_display.css'],
 })
 
-export class InterventionMainDisplay implements OnInit, AfterViewInit {
+export class InterventionMainDisplay implements OnInit, AfterContentInit {
 
     public GroupTypeEnum = GroupTypeEnum; // <- using enum in html
 
@@ -40,9 +41,9 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
 
     public updatingIntervention : boolean = false;
 
-    @ViewChild("myGroup") myGroup : InterventionGroup;
-    @ViewChild("othersGroup") othersGroup : InterventionGroup;
-    @ViewChild("searchGroup") searchGroup : InterventionGroup;
+    @ViewChild("myGroup" ) myGroup : InterventionGroup;
+    @ViewChild("othersGroup" ) othersGroup : InterventionGroup;
+    @ViewChild("searchGroup" ) searchGroup : InterventionGroup;
 
     constructor(
         private connectionStatus: ConnectionStatus,
@@ -65,55 +66,58 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
     }
 
     ngOnDestroy() {
-        this.paramsSubscription.unsubscribe();
-        this.queryParamsSubscription.unsubscribe();
+        this.paramsSubscription?.unsubscribe();
+        this.queryParamsSubscription?.unsubscribe();
 
         console.log("Vue InterventionMainDisplay détruite.");
     }
 
     ngOnInit() {
 
+      // gestion des url par id d'intervention
+      if ( this.route.routeConfig.path.startsWith( 'intervention' ) )
+      {
         // le changement de l'id dans la route doit charger l'intervention et déployer
         // le groupe correspondant à l'intervention dans la barre de navigation.
-        this.paramsSubscription = this.route.params
-            .subscribe( params =>
+
+        this.paramsSubscription = this.route.params.subscribe( params =>
+        {
+          let id : number = params['id'];
+
+          this.urlInterventionId = id;
+          if ( this.urlInterventionId > 0 )
+          {
+            // une fois la connection établie et l'intervention id complète reçu du serveur, alors
+            // on sélectionne et affiche l'intervention
+            this._interService.connectAndLoadIntervention( this.urlInterventionId ).then( (inter : Intervention) =>
             {
-                let id : number = params['id'];
+              this.selectedIntervention = inter;
 
-                this.urlInterventionId = id;
-                if ( this.urlInterventionId > 0 )
-                {
-                    // une fois la connection établie et l'intervention id complète reçu du serveur, alors
-                    // on sélectionne et affiche l'intervention
-                    this._interService.connectAndLoadIntervention( this.urlInterventionId )
-                    .then( (inter : Intervention) => {
-                        this.selectedIntervention = inter;
+              // ouverture du groupe de l'intervention
+              this.deployGroup( inter );
+            } )
 
-                        // ouverture du groupe de l'intervention
-                        this.deployGroup( inter );
-                    } )
+            .catch( (reason : any) => { console.error( "Erreur de chargement de l'intervention" + id + ": " + reason ); })
+          }
+        } );
+      }
 
-                    .catch( (reason : any) => { console.error( "erreur de chargement de l'intervention: " + reason ); })
-                }
-             } );
 
-             this.queryParamsSubscription =
-                this.route.queryParams.subscribe( queryParams =>
-            {
-                // délai pour l'affichage des boutons, sinon le menu contextuel ne peut être affiché
-                // setTimeout( () => {
-                //     this.afficheNavigation = queryParams['nav'] != 0;
-                // }, 2000 );
 
-                this.afficheNavigation = queryParams['nav'] != 0;
-                this.afficheBarre = queryParams['bar'] != 0;
+      this.queryParamsSubscription = this.route.queryParams.subscribe( queryParams =>
+      {
+        this.afficheNavigation = queryParams['nav'] != 0;
+        this.afficheBarre = queryParams['bar'] != 0;
 
-                if ( this.afficheNavigation  )
-                    this.deployGroup( this.selectedIntervention );
+        if ( this.afficheNavigation  )
+        this.deployGroup( this.selectedIntervention );
 
-            } );
+      } );
+
 
     }
+
+
 
     get chatDisplayed() : boolean
     {
@@ -142,12 +146,31 @@ export class InterventionMainDisplay implements OnInit, AfterViewInit {
         return isThereIntervenant;
     }
 
-    ngAfterViewInit() {
+    ngAfterContentInit()
+    {
         // code exécuté après l'initialisation des vues @ViewChild
 
-        console.log( "InterventionMainDisplay.ngAfterViewInit");
+        console.log( "InterventionMainDisplay.ngAfterContentInit");
+
         if ( this.afficheNavigation  )
             this.deployGroup( this.selectedIntervention );
+    }
+
+    ngAfterViewInit()
+    {
+      // e cas de recherche on déploie tous les groupe pour afficher à la fois les interventions closes/ en cours
+      if ( this.route.routeConfig.path.startsWith( 'search' ) )
+      {
+        setTimeout( () => {
+          if ( this.myGroup )
+            this.myGroup.Expanded = true;
+          if ( this.othersGroup )
+            this.othersGroup.Expanded = true;
+          if ( this.searchGroup )
+            this.searchGroup.Expanded = true;
+        }, 20 );
+      }
+
     }
 
     private _selectedIntervention : Intervention;

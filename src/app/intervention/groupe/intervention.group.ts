@@ -2,17 +2,21 @@
  * Created by abreneli on 04/07/2016.
  */
 
-import { Component,  Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component,  Input, Output, EventEmitter, ChangeDetectionStrategy,
+  ViewChild, ChangeDetectorRef, AfterViewInit, AfterContentChecked } from '@angular/core';
 import { InterventionButton } from '../button/intervention.button';
 import { Intervention } from '../../model/intervention';
 import { InterventionService } from '../../services/intervention.service';
 import { SortInterventionByDateTime } from './sortInterPipe';
+import { GroupFilter } from './groupFilter';
 import { Subscription } from 'rxjs';
 import { filter, delay } from 'rxjs/operators';
 import { Message } from '../../model/message';
 import { ConnectionStatus } from '../../services/connection.status';
 import { Etat } from "../../model/enums";
 import { SearchQuery } from 'app/services/searchQuery';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+
 
 export enum GroupTypeEnum
 {
@@ -28,13 +32,20 @@ export enum GroupTypeEnum
     styleUrls:  ['./intervention.group.scss']
 })
 
-export class InterventionGroup  {
+export class InterventionGroup implements AfterContentChecked
+{
 
     @Input() public GroupName: string;
     @Input() public GroupType: GroupTypeEnum;
     @Input() public SelectedIntervention: Intervention;
     @Input() public Expanded: boolean;
     @Output() onSelectedButton = new EventEmitter<InterventionButton>();
+
+    @ViewChild('filterOthers', {static: false}) filterOthers;
+    @ViewChild('filterMine', {static: false}) filterMine;
+
+    private paramsSubscription : Subscription;
+    private queryParamsSubscription : Subscription;
 
     public Search : SearchQuery = new SearchQuery();
 
@@ -46,36 +57,9 @@ export class InterventionGroup  {
 
     private _currentlyUpdatedInters : number[] = [];
 
-    public CurrentInterOperators : string[] = [];
-    public CurrentInterClients : string[] = [];
-    public CurrentIntervenants : string[] = [];
-
-    public _selectedOperator : string = "";
-    public get SelectedOperator() : string { return this._selectedOperator; }
-    public set SelectedOperator( value : string ) {
-      this._selectedOperator = value;
-      this._selectedClient = "";
-      this._selectedIntervenant = "";
-      this.updateGroupInterventions(); }
-
-    public _selectedClient : string = "";
-    public get SelectedClient() : string { return this._selectedClient; }
-    public set SelectedClient( value : string ) {
-      this._selectedOperator = "";
-      this._selectedClient = value;
-      this._selectedIntervenant = "";
-      this.updateGroupInterventions();
-    }
-
-    public _selectedIntervenant : string = "";
-    public get SelectedIntervenant() : string { return this._selectedIntervenant; }
-    public set SelectedIntervenant( value : string ) {
-      this._selectedOperator = "";
-      this._selectedClient = "";
-      this._selectedIntervenant = value;
-      this.updateGroupInterventions();
-    }
-
+    public CurrentInterOperators : string[] = []
+    public CurrentInterClients : string[] = []
+    public CurrentIntervenants : string[] = []
 
     interventionChangeSubscription : Subscription;
     interventionMessageSubscription : Subscription;
@@ -85,37 +69,65 @@ export class InterventionGroup  {
         return this._groupInterventions;
     }
 
-    constructor( private interService : InterventionService, private _connectionStatus : ConnectionStatus, protected _cdref: ChangeDetectorRef )
+    constructor(
+      private _interService : InterventionService,
+      private _connectionStatus : ConnectionStatus,
+      protected _cdref: ChangeDetectorRef,
+      private route: ActivatedRoute )
     {
-
     }
 
     ngOnInit()
     {
-        // on inscrit le composant à la détection des changements d'interventions
-        // cela permet (entre autres) d'afficher un petit halo sur le bouton quand une intervention a changé
-        this.interventionChangeSubscription =
-            this.interService.newInterData$.pipe( delay(1000) ).subscribe( inter =>  {
+      // on inscrit le composant à la détection des changements d'interventions
+      // cela permet (entre autres) d'afficher un petit halo sur le bouton quand une intervention a changé
+      this.interventionChangeSubscription =
 
-                // à chaque fois qu'on reçoit des datas sur les interventions avec les infos d'opérateur,
-                // on met à jour la liste des interventions du groupe,
-                // car une nouvelle intervention a pu arriver, ou bien un intervention a pu se fermer, changer d'opérateur, etc..
-               if ( inter.Operateur != null )
-                this.updateGroupInterventions();
+          this._interService.newInterData$.pipe( delay(1000) ).subscribe( inter =>  {
 
-            } );
+              // à chaque fois qu'on reçoit des datas sur les interventions avec les infos d'opérateur,
+              // on met à jour la liste des interventions du groupe,
+              // car une nouvelle intervention a pu arriver, ou bien un intervention a pu se fermer, changer d'opérateur, etc..
+              if ( inter.Operateur != null )
+              this.updateGroupInterventions();
 
-            this.interService.newInterData$.subscribe( inter =>  {
-                 this.interventionChangeHighlight( inter.Id );
-            } );
+          } );
 
-        this.interventionMessageSubscription = this.interService.newMessages$
-            .subscribe( notif  => {
-                this.interventionChangeHighlight( notif["0"].Id );
-            } );
+          this._interService.newInterData$.subscribe( inter =>  {
+                this.interventionChangeHighlight( inter.Id );
+          } );
 
-        // initialise la liste des interventions
-        this.updateGroupInterventions();
+      this.interventionMessageSubscription = this._interService.newMessages$
+          .subscribe( notif  => {
+              this.interventionChangeHighlight( notif["0"].Id );
+          } );
+
+      // initialise la liste des interventions
+      this.updateGroupInterventions();
+
+      // gestion des url de recherche
+      if ( this.route.routeConfig.path.startsWith( 'search' ) )
+      {
+        this.paramsSubscription = this.route.queryParams.subscribe( params =>
+        {
+          let contrat : string = params['contrat'];
+
+          if( this.GroupType === GroupTypeEnum.interventionsCloses)
+          {
+            this.Search =
+            {
+              FreeQuery: contrat,
+              EndDate: params['dateFin'],
+              StartDate: params['dateDebut'],
+              TypeIntervention:  params['typeIntervention']
+            }
+
+            this.searchInterventions();
+          }
+
+        } );
+      }
+
     }
 
 
@@ -127,6 +139,17 @@ export class InterventionGroup  {
 
         // désinscription aux messages
         this.interventionMessageSubscription.unsubscribe();
+    }
+
+
+    ngAfterContentChecked()
+    {
+      if ( this.GroupType == GroupTypeEnum.autresInterventions && this.Expanded )
+      {
+        this._cdref.detectChanges();
+
+        this.updateGroupInterventions();
+      }
     }
 
     public interventionChangeHighlight( interId : number )
@@ -146,7 +169,7 @@ export class InterventionGroup  {
 
 
     /* on met à jour les interventions du groupe */
-    private updateGroupInterventions() : void
+    public updateGroupInterventions() : void
     {
         switch( this.GroupType )
         {
@@ -166,43 +189,57 @@ export class InterventionGroup  {
         this._cdref.detectChanges();
     }
 
+    /**
+     * Mes interventions en cours
+     */
     public get MyInterventions(): Intervention[]
     {
-        let currentInterventions = this.interService.getLoadedInterventions();
-
-        let interList = currentInterventions.filter(
-            (i: Intervention) => { return this._connectionStatus.operatorNameEqual( i.Operateur ) &&
-                ( i.Etat != Etat.Close && i.Etat != Etat.Annulee) } );
-
-        return interList;
+      return this.filterMine ? this.filterMine.FilteredInterventions : this.UnfilteredMyInterventions;
     }
 
+    filterUpdate( event: any )
+    {
+      this.updateGroupInterventions();
+    }
 
+    private get UnfilteredMyInterventions(): Intervention[]
+    {
+      let currentInterventions = this._interService.getLoadedInterventions();
+
+      let myInterventions = currentInterventions.filter(
+        (i: Intervention) => { return this._connectionStatus.operatorNameEqual( i.Operateur ) &&
+            ( i.Etat != Etat.Close && i.Etat != Etat.Annulee) } );
+
+      return myInterventions;
+    }
+
+    /**
+     * Les interventions en cours des autres
+     */
     public get OtherInterventions(): Intervention[]
     {
-        let otherInterventions = this.interService.getLoadedInterventions().filter(
-            (i: Intervention) => { return (! i.Operateur || !this._connectionStatus.operatorNameEqual( i.Operateur )) && i.Etat != Etat.Close && i.Etat != Etat.Annulee } );
-
-        this.CurrentInterOperators = otherInterventions.map( i => i.Operateur ).reduce( (unique, item) => unique.includes(item) ? unique : [...unique, item], [] );
-        this.CurrentInterClients = otherInterventions.map( i => i.NomComplet ).reduce( (unique, item) => unique.includes(item) ? unique : [...unique, item], [] );
-        this.CurrentIntervenants = otherInterventions.map( i => i.Intervenant.Nom ).reduce( (unique, item) => unique.includes(item) ? unique : [...unique, item], [] );
-
-        let filteredOtherInterventions = otherInterventions.filter(
-          (i: Intervention) => {
-            return (  !this.SelectedClient || this.SelectedClient == i.NomComplet )
-              && (  !this.SelectedOperator || this.SelectedOperator == i.Operateur )
-              && (  !this.SelectedIntervenant || this.SelectedIntervenant == i.Intervenant.Nom );
-          }
-        )
-        return filteredOtherInterventions;
+        return this.filterOthers ? this.filterOthers.FilteredInterventions : this.UnfilteredOtherInterventions;
     }
 
+    private get UnfilteredOtherInterventions(): Intervention[]
+    {
+      let otherInterventions = this._interService.getLoadedInterventions().filter(
+        (i: Intervention) => { return (! i.Operateur || !this._connectionStatus.operatorNameEqual( i.Operateur )) && i.Etat != Etat.Close && i.Etat != Etat.Annulee } );
+
+      return otherInterventions;
+    }
+
+
+    /**
+     * Les interventions closes issues de la recheche
+     */
     public get CloseInterventions(): Intervention[]
     {
-        let closed = this.interService.getLoadedInterventions().filter(
+        let closed = this._interService.getLoadedInterventions().filter(
             (i: Intervention) => { return i.Etat == Etat.Close || i.Etat == Etat.Annulee } );
         return closed;
     }
+
 
     isCurrentlyUpdated( interId : number ) : boolean
     {
@@ -239,8 +276,11 @@ export class InterventionGroup  {
         {
           // on vide les interventions du groupe
           this._groupInterventions = [];
+          this._interService.searchInterventions( this.Search ).catch( reason => {
+            console.log( "La recherche d'intervention a échoué " + reason + ":" );
+            console.log( this.Search );
+          });
 
-          this.interService.searchInterventions( this.Search );
         }
       }
 
@@ -248,12 +288,14 @@ export class InterventionGroup  {
 
     addNewIntervention()
     {
-        this.interService.addNewIntervention();
+        this._interService.addNewIntervention();
     }
+
 
     public get readOnly()
     {
         return ! this._connectionStatus.connected
 
     }
+
 }

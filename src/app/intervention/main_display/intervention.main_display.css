@@ -14,8 +14,8 @@
 }
 
 #interventionNavigation {
-    min-width: 200px;
-    width: 20%;
+    min-width: 260px;
+    width: 25%;
     height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
