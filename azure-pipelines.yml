@@ -17,9 +17,9 @@ trigger:
     
 steps:
 
-- script:
-    npm install -g npm@latest
-  displayName: 'Install npm lastest globally'
+# - script:
+#     npm install -g npm@latest
+#   displayName: 'Install npm lastest globally'
 
 - script:
     npm install -g @angular/cli
