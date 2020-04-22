@@ -52,6 +52,11 @@ import { ReactiveDateInputComponent } from './intervention/reactive-components/r
 
 import { TestComponent } from './test/test.component';
 
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+
+registerLocaleData(localeFr); 
+
 // inclus pour le datepicker:
 
 @NgModule({
@@ -101,7 +106,7 @@ import { TestComponent } from './test/test.component';
        en paramètre du constructeur. Une seule instance est créée pour chaque service.
      */
     providers:    [
-        { provide: LOCALE_ID, useValue: 'fr' },
+        { provide: LOCALE_ID, useValue: 'fr-FR' },
         ConnectionStatus,
         InterventionService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }],
