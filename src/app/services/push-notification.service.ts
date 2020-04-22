@@ -50,17 +50,6 @@ export class PushNotificationService {
 
   }
 
-  //  /** Cette fonction vérifie que le pushManager du serviceworker dispose d'une souscription
-  //    */
-  // checkSubscription() {
-  //   this.swRegistration.pushManager.getSubscription()
-  //     .then(subscription => {
-  //       //console.log(subscription);
-  //       console.log("Subscription : " + JSON.stringify(subscription));        
-  //       this.pushNotificationStatus.isSubscribed = !(subscription === null);
-  //     });
-  // }
-
   /** Cette fonction créé une souscription, si l'utilisateur n'a pas deja une souscription, dans le pushManager du service worker
    * et envoie les infos de la souscription au serveur ImaInter
    */
@@ -78,19 +67,15 @@ export class PushNotificationService {
               applicationServerKey: applicationServerKey
             })
               .then(subscription => {
-                console.log(`user "${this._connectionStatus.login}"`)
-                
+                console.log(`utilisateur "${this._connectionStatus.login}"`)
+
                 // On envoie les informations de la souscription utilisateur à ImaInterService
-                var newSub = subscription.toJSON();                
-                this._connectionStatus.proxyServer.addOrUpdateUserSubscription(this._connectionStatus.login, {
-                  auth: newSub.keys.auth,
-                  p256DH: newSub.keys.p256dh,
-                  endPoint: newSub.endpoint
-                });
+                this.addOrUpdateUserSubscription(this._connectionStatus.login, subscription);
                 this.pushNotificationStatus.isSubscribed = true;
+                console.log('une nouvelle souscription a été créé');
               })
               .catch(err => {
-                console.log('Failed to subscribe the user: ', err);
+                console.error('Erreur à la création de la souscription: ', err);
                 // console.log('DOMEXCEPTION MESSAGE: ', err.message);
                 // console.log('DOMEXCEPTION NAME: ', err.name);
                 // console.log('DOMEXCEPTION CODE: ', err.code);
@@ -100,22 +85,28 @@ export class PushNotificationService {
           // Si la souscription utilisateur existe deja,
           // On envoie toute de meme les informations au cas ou celle ci n'aurait pas été envoyé au serveur
           else {
-            var newSub = subscription.toJSON();            
-            this._connectionStatus.proxyServer.addOrUpdateUserSubscription(this._connectionStatus.login, {
-              auth: newSub.keys.auth,
-              p256DH: newSub.keys.p256dh,
-              endPoint: newSub.endpoint
-            });
+            this.addOrUpdateUserSubscription(this._connectionStatus.login, subscription);
+            console.log('la souscription existante a été récupéré');
           }
-          console.log("souscription :" + subscription);
+          console.log(subscription);
         }
       )
   }
 
+  /** Cette fonction appelle le hub pour ajouter ou mettre à jour une souscription utilisateur
+     */
+  private addOrUpdateUserSubscription(username: string, subscription: PushSubscription) {
+    var newSub = subscription.toJSON();
+    this._connectionStatus.proxyServer.addOrUpdateUserSubscription(username, {
+      auth: newSub.keys.auth,
+      p256DH: newSub.keys.p256dh,
+      endPoint: newSub.endpoint
+    });
+  }
 
   /** Cette fonction encode un string en base 64 en tableau d'Uint8
      */
-  urlB64ToUint8Array(base64String) {
+  private urlB64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
       .replace(/\-/g, '+')
