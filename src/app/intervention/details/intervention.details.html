@@ -406,12 +406,12 @@
         </tr>
 
         <tr field label="Mise en place">
-            <reactive-checkbox label="Mise en place Gardiennage" [(ngModel)]="miseEnSecurite.Gardiennage" (ngModelChange)="changeRapport({MiseEnSecurite:{Gardiennage:$event}})"></reactive-checkbox>
+            <reactive-checkbox label="Gardiennage" [(ngModel)]="miseEnSecurite.Gardiennage" (ngModelChange)="changeRapport({MiseEnSecurite:{Gardiennage:$event}})"></reactive-checkbox>
             <reactive-checkbox label="Ronde" [(ngModel)]="miseEnSecurite.Ronde" (ngModelChange)="changeRapport({MiseEnSecurite:{Ronde:$event}})"></reactive-checkbox>
-            <reactive-checkbox label="Mise en place demandée par" [(ngModel)]="MiseEnPlaceDemandeeParChecked"></reactive-checkbox>
+            <!--reactive-checkbox label="Mise en place demandée par" [(ngModel)]="MiseEnPlaceDemandeeParChecked"></reactive-checkbox-->
         </tr>
 
-        <tr field label="À la demande de" *ngIf="MiseEnPlaceDemandeeParChecked">
+        <tr field label="À la demande de" *ngIf="GardiennageOuRondeChecked">
             <reactive-input [(ngModel)]="miseEnSecurite.MiseEnPlaceDemandeePar" (ngModelChange)="changeRapport({MiseEnSecurite:{MiseEnPlaceDemandeePar:$event}})"></reactive-input>
         </tr>
 
