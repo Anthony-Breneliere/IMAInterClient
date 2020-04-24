@@ -68,3 +68,10 @@
   cursor: default;
   color: $dl-abdtp-disabled;
 }
+
+.dl-abdtp-date-button.dl-abdtp-disabled.aria-disabled,
+.dl-abdtp-date-button.dl-abdtp-disabled.aria-disabled:hover {
+  color: var( --discrete-font-color ) !important;
+  cursor: not-allowed;
+  background: var( --modal-background-color ) !important;
+}

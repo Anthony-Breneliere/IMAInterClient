@@ -48,7 +48,7 @@
   /* Couleurs paramétrées */
   --defaut-font-color: hsl( var( --white_hue), var( --gray), var( --font-lightness));
   --discrete-font-color: hsl( var( --white_hue), var( --gray), 50% );
-  --modal-background-color: hsla( 0, 0%, 10%, 75%);
+  --modal-background-color: hsla( 0, 0%, 15%, 100%);
   --main-color: hsl( var( --color1), var( --saturation), var( --lightness ));
   --selected-main-color: hsl( var( --color1), var( --saturation), var( --selected-lightness));
   --hover-border-color: hsl( var( --color1), var( --saturation), var( --hover-lightness));
