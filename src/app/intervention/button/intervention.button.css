@@ -10,6 +10,7 @@ div.buttonMenu:hover {
     background-color: var( --dark-bg-color )
 }
 
+
 i {
     font-size: 1.3em;
     margin: 0px 8px 0px 0px;
@@ -21,7 +22,6 @@ i {
     background-color: var( --selected-bg-color );
     color: var( --selected-color );
 }
-
 
 .unselected:hover {
     background-color: hsl( 0, 0%, var( --bg-hover-lightness));
@@ -53,7 +53,7 @@ div.intervention_data {
 }
 
 div.defaultBorder {
-    border-color: hsl(var( --color1), var( --saturation), var( --lightness));
+    border-color: var( --component-border-color );
 }
 
 .interventionTypeContainer {
@@ -61,12 +61,12 @@ div.defaultBorder {
 }
 
 .ribbon {
-    --intervention: dodgerblue;
-    --gardiennage: deeppink;
-    --gardiennageALaDemande: purple;
-    --ronde: lime;
-    --rondeALaDemande: darkorange;
-    --testReseau: silver;
+    --intervention: hsl(210, 70%, 56%);
+    --gardiennage: hsl(328, 70%, 54%);
+    --gardiennageALaDemande: hsl(300, 70%, 25%);
+    --ronde: hsl(120, 70%, 50%);
+    --rondeALaDemande: hsl(33, 70%, 50%);
+    --testReseau: hsl(0, 0%, 75%);
     width: 10px;
     height: 10px;
     position: absolute;

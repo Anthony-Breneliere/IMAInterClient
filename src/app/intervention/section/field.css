@@ -1,14 +1,15 @@
 td {
     /*border: 2px solid var(--main-bg-color);*/
     background-color: var(--input-bg-color);
-    padding: 4px 4px 4px 4px;
+    /* padding: 4px 4px 4px 4px; */
+    padding: 0px;
     font-size: 0.9em;
     vertical-align: middle;
     /* permet de conserver les retours à la ligne, par exemple pour les adresses */
     user-select: text
 }
 
-td.value 
+td.value
 {
     width: 10em;
 

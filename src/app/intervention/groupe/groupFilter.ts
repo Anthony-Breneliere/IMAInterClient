@@ -87,7 +87,11 @@ export class GroupFilter implements OnChanges, OnInit
 
   ngOnChanges()
   {
-    this.InitFilterChoices();
+    if ( this._interventionCount != this.UnfilteredInterventions?.length )
+    {
+      this._interventionCount = this.UnfilteredInterventions?.length;
+      this.InitFilterChoices();
+    }
   }
 
   public get FilteredInterventions(): Intervention[]

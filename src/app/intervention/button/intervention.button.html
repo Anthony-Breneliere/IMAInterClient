@@ -4,12 +4,10 @@
 
     <div class="intervention_data" *ngIf="intervention"  >
 
-        <!-- (contextMenu)="displayContextMenu($event, intervention)" -->
         <ng-Content></ng-Content>
 
     </div>
 
-    <!-- <div class="tooltiptext">Coucou</div> -->
 </div>
 
 <context-menu #buttonMenu>
@@ -33,15 +31,6 @@
     <ng-template [visible]="canCancel" contextMenuItem let-item (execute)="cancel()">
         Annuler
     </ng-template>
-
-
-    <!-- <ng-template [visible]="waitingDeparture" contextMenuItem let-item (execute)="authorizeDeparture()">
-        Autoriser le départ
-    </ng-template>
-
-    <ng-template [visible]="waitingDeparture" contextMenuItem let-item (execute)="immobilizeIntervenant()">
-        Mise en statique
-    </ng-template> -->
 
 </context-menu>
 

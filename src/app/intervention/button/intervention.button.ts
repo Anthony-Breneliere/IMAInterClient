@@ -8,7 +8,7 @@ import { Intervention } from '../../model/intervention';
 import { InterventionService } from '../../services/intervention.service';
 import { ConnectionStatus } from '../../services/connection.status';
 import { ContextMenuService } from 'ngx-contextmenu';
-import { Etat } from '../../model/enums';
+import { Etat, RapportValidationStatusEnum } from '../../model/enums';
 
 @Component({
     moduleId: module.id,
@@ -38,6 +38,7 @@ export class InterventionButton implements OnInit
     {
         // quand une nouvelle intervention est créée et que le bouton apparait, le menu contextuel n'est pas initialisé par
         // défaut, on l'initialise pour l'ajouter au DOM
+        /*
         this.contextMenuService.show.subscribe((el) => {
             const overlay = this.contextMenuService.getLastAttachedOverlay();
             if ( overlay )
@@ -51,6 +52,7 @@ export class InterventionButton implements OnInit
                 comp.changeDetector.detectChanges();
             }
          });
+         */
     }
 
     public get notificationChange() : boolean {
@@ -75,7 +77,8 @@ export class InterventionButton implements OnInit
 
     close() : void
     {
-        this._interService.close( this.intervention );
+        if ( this.intervention?.Rapport?.ValidationStatus != RapportValidationStatusEnum.Valid )
+          this._interService.close( this.intervention );
     }
 
     cancel() : void
@@ -107,8 +110,22 @@ export class InterventionButton implements OnInit
 
     get canClose() : boolean
     {
-        let canClose = this.connected && this.intervention.Etat != null && this.intervention.Etat == Etat.EnCours;
+        let canClose =
+          this.connected
+          && this.intervention.Etat
+          && this.intervention.Etat === Etat.EnCours
+          && this.intervention?.Rapport?.ValidationStatus === RapportValidationStatusEnum.Valid;
+
         return canClose;
+    }
+
+    /**
+     * this.intervention?.Rapport?.ValidationStatus === RapportValidationStatusEnum.Valid
+     */
+    get closeEnabled() : boolean
+    {
+      return false;
+      // return this.intervention?.Rapport?.ValidationStatus === RapportValidationStatusEnum.Valid;
     }
 
     get canCancel() : boolean

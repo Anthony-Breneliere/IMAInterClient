@@ -109,3 +109,10 @@ export enum AutoMC
     ReceptionVideo = 6121,
     MiseEnStatique = 10380696
 }
+
+export enum RapportValidationStatusEnum
+{
+    Unknown,
+    Valid,
+    Invalid
+}
