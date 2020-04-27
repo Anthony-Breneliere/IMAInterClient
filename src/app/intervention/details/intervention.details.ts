@@ -332,16 +332,9 @@ export class InterventionDetails implements  OnChanges
             this.changeRapport({Presence:{TypeVehicule:null, CouleurVehicule:null, PlaqueVehicule:null}});
      }
 
-    public get MiseEnPlaceDemandeeParChecked() : boolean
+    public get GardiennageOuRondeChecked() : boolean
     {
-        return this.miseEnSecurite && this.miseEnSecurite.MiseEnPlaceDemandeePar != null;
-    }
-
-    public set MiseEnPlaceDemandeeParChecked( value : boolean )
-    {
-        this.miseEnSecurite.MiseEnPlaceDemandeePar = value ? "" : null;
-
-        this.changeRapport({MiseEnSecurite:{MiseEnPlaceDemandeePar:value? '' : null}});
+        return this.miseEnSecurite && (this.miseEnSecurite.Gardiennage || this.miseEnSecurite.Ronde);
     }
 
     private gridStackInit = false;
