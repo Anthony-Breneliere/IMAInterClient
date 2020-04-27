@@ -15,7 +15,6 @@ export class Rapport
     DepotBonIntervention : boolean;
     LieuDepotBon : DepotBonIntervention;
     AutreLieuDepot : string;
-    Commentaires: string;
     Observations: string;
 
     MotifIntervention : MotifIntervention;

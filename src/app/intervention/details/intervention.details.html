@@ -136,11 +136,6 @@
         <tr field *ngIf="rapport.LieuDepotBon==DepotBonIntervention.Autre" label="Autre lieu">
             <reactive-input [(ngModel)]="rapport.AutreLieuDepot" (ngModelChange)="changeRapport({AutreLieuDepot:$event})"></reactive-input>
         </tr>
-
-        <tr field label="Commentaires">
-            <reactive-textarea class="extensible" #commentaires [(ngModel)]="rapport.Commentaires" (ngModelChange)="changeRapport({Commentaires:$event})"></reactive-textarea>
-        </tr>
-
         <tr field label="Observations">
             <reactive-textarea class="extensible" #observations [(ngModel)]="rapport.Observations" (ngModelChange)="changeRapport({Observations:$event})"></reactive-textarea>
         </tr>
