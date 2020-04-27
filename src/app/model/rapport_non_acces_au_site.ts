@@ -2,9 +2,11 @@
 
 export class RapportNonAccesAuSite
 {
-    PortailInfranchissable: boolean;
+    BloquePortail: boolean;
     AbsenceMoyensAcces: boolean;
-    AbsenceDigicode: boolean;
-    NonAccesPortePalliere: boolean;
-    AutreRaison: string;
+    AbsenceErreurDigicode: boolean;
+    NonAccesPortePaliere: boolean;    
+    PresenceAnimale: boolean;
+    Autre: string;
+    
 }

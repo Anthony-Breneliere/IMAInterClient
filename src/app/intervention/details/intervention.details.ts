@@ -252,15 +252,15 @@ export class InterventionDetails implements  OnChanges
             console.log("Détection des changements pour l'affichage de l'intervention " + this._intervention.Id );
     }
 
-    public get NonVerifAutreRaisonChecked() : boolean
+    public get NonVerifAutreChecked() : boolean
     {
-        return this.nonAccesAuSite.AutreRaison != null;
+        return this.nonAccesAuSite.Autre != null;
     }
 
-    public set NonVerifAutreRaisonChecked( value : boolean )
+    public set NonVerifAutreChecked( value : boolean )
     {
-        this.changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AutreRaison: value? '' : null}}})
-        this.nonAccesAuSite.AutreRaison = value ? "" : null;
+        this.changeRapport({ArriveeSurLieux:{NonAccesAuSite:{Autre: value? '' : null}}})
+        this.nonAccesAuSite.Autre = value ? '' : null;
     }
 
     public get AutrePieceChecked() : boolean
