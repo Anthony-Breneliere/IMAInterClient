@@ -36,9 +36,9 @@ section tr:first-child {
     margin: 0;
 }
 
-select {
-    height: 2em;
-    width: 100%
+select, reactive-input {
+  width: 100%;
+  height: 2.5em;
 }
 
 #saisieMainCour {
@@ -62,85 +62,31 @@ td.table {
     border-left: 2px solid var( --main-bg-color );
 }
 
-
-/*checkbox,
-input-textbox,
-.from_elem {
-    display: inline-block;
-    vertical-align: top;
-    margin: 10px 25px 5px 0px;
-}*/
-
-
-/*
-div.intervenant {
-    width: 100%;
-    margin: 0px 0px 0px 0px;
-    display: inline-flex;
+.ng-valid[required], .ng-valid.required  {
+  border-left: 4px solid var( --valid-color ); /* green */
 }
 
-
-/*
-div.intervenant:hover {
-    border: hsl(var(--intervenant_hue), var(--saturation), var(--lightness)) solid 1px;
+.ng-valid[minimumCheckedRequired], .ng-valid.minimumCheckedRequired  {
+  border-left: 4px solid var( --valid-color ); /* green */
 }
 
-div.operateur {
-    color: hsl( var(--operateur_hue), var( --saturation), var( --lightness));
+.ng-valid[ng-reflect-min-date-required], .ng-valid.ng-reflect-min-date-required  {
+  border-left: 4px solid var( --valid-color ); /* green */
 }
 
-div.operateur:hover {
-    border: hsl(var(--operateur_hue), var(--saturation), var(--lightness)) solid 1px;
+.ng-invalid:not(form)  {
+  border-left: 4px solid var( --invalid-color ); /* red */
 }
 
-div.maincourante {
-    color: hsl( var(--maincourante_hue), var( --saturation), var( --lightness));
+reactive-textarea#instructionsDemandeParMail textarea {
+  resize: vertical;
+  min-height: 8em;
 }
 
-div.maincourante:hover {
-    border: hsl(var(--maincourante_hue), var(--saturation), var(--lightness)) solid 1px;
+reactive-checkbox {
+  padding-left: 0.2em;
 }
 
-div.alarme {
-    color: hsl( var(--alarme_hue), var( --saturation), var( --lightness));
-}
-
-div.alarme:hover {
-    border: hsl(var(--alarme_hue), var(--saturation), var(--lightness)) solid 1px;
-}
-
-div.rapport {
-    color: hsl( var(--rapport_hue), var( --saturation), var( --lightness));
-}
-
-div.rapport:hover {
-    border: hsl(var(--rapport_hue), var(--saturation), var(--lightness)) solid 1px;
-}
-
-div.presence {
-    color: hsl( var(--presence_hue), var( --saturation), var( --lightness));
-}
-
-div.presence:hover {
-    border: hsl(var(--presence_hue), var(--saturation), var(--lightness)) solid 1px;
-}
-
-div.verification {
-    color: hsl( var(--verification_hue), var( --saturation), var( --lightness));
-}
-
-div.verification:hover {
-    border: hsl(var(--verification_hue), var(--saturation), var(--lightness)) solid 1px;
-}*/
-
-
-/*#InterventionAdresseInput {   width: 300px; }*/
-
-
-/*#CreationDate {   width: 80px; }*/
-
-
-/*#CreationHeure {   width: 80px; }*/
 
 table {
     border-collapse: collapse;
@@ -183,3 +129,4 @@ i {
     font-size: 1.3em;
     padding: 4px 8px 0px 0px
 }
+

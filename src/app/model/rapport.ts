@@ -2,7 +2,7 @@ import { RapportTrajet } from './rapport_trajet';
 import {RapportVerifications} from "./rapport_verifications";
 import {RapportPresence} from "./rapport_presence";
 import {Alarme} from "./alarme";
-import {MotifIntervention,  Trajet, DepotBonIntervention} from "./enums";
+import {MotifIntervention,  RapportValidationStatusEnum, DepotBonIntervention} from "./enums";
 import {RapportMiseEnSecurite} from './rapport_mise_en_securite';
 import {RapportArriveeSurLieux} from './rapport_arrivee_sur_lieux';
 
@@ -27,6 +27,8 @@ export class Rapport
     Presence : RapportPresence;
     Trajet : RapportTrajet;
 
+    ValidationStatus: RapportValidationStatusEnum;
+
     // get ArriveeSurLieuxN() : RapportArriveeSurLieux { return this.ArriveeSurLieux ? this.ArriveeSurLieux : this.ArriveeSurLieux = new RapportArriveeSurLieux() }
     // get VerificationsN() : RapportVerifications { return this.Verifications ? this.Verifications : this.Verifications = new RapportVerifications() }
     // get MiseEnSecuriteN() : RapportMiseEnSecurite { return this.MiseEnSecurite ? this.MiseEnSecurite : this.MiseEnSecurite = new RapportMiseEnSecurite() }
@@ -40,6 +42,7 @@ export class Rapport
         this.MiseEnSecurite = new RapportMiseEnSecurite();
         this.Presence = new RapportPresence();
         this.Trajet = new RapportTrajet();
+        this.ValidationStatus = RapportValidationStatusEnum.Unknown;
     }
 }
 

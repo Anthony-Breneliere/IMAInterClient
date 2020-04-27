@@ -14,8 +14,6 @@ import { RapportPresence} from "../../model/rapport_presence";
 import { Alarme} from "../../model/alarme";
 import { RapportMiseEnSecurite} from '../../model/rapport_mise_en_securite';
 import { RapportArriveeSurLieux} from '../../model/rapport_arrivee_sur_lieux';
-import { formatDate } from '@angular/common'
-
 import * as Lodash from 'lodash';
 
 
@@ -29,25 +27,24 @@ import {
     ChangeDetectorRef,
     Component,
     Input,
-    SimpleChanges
+    Output,
+    EventEmitter,
+    ViewChild
 
 } from '@angular/core';
 
 import { Intervention } from '../../model/intervention';
-import { OrigineFiche, TypeFiche, Trajet, MotifIntervention, TypePresence, DepotBonIntervention, Etat, TypeSite, CircuitVerification, AppelPourCR, OrigineConstatee, VerificationSysteme, AutoMC } from '../../model/enums';
+import { OrigineFiche, TypeFiche, Trajet, MotifIntervention, TypePresence, DepotBonIntervention, Etat, TypeSite, CircuitVerification, AppelPourCR, OrigineConstatee, VerificationSysteme, AutoMC, RapportValidationStatusEnum } from '../../model/enums';
 import { InterventionService } from "../../services/intervention.service";
 import { ConnectionStatus } from "../../services/connection.status";
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Telephone } from '../../model/telephone';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { OnChanges } from '@angular/core';
-import { isArray } from 'util';
+import { NgForm, FormBuilder } from '@angular/forms';
+
 
 declare var require: any;
 var Masonry  = require( 'masonry-layout' );
-
-
 
 @Component({
     moduleId: module.id,
@@ -59,31 +56,35 @@ var Masonry  = require( 'masonry-layout' );
     changeDetection : ChangeDetectionStrategy.OnPush
 })
 
-
-export class InterventionDetails implements  OnChanges
+export class InterventionDetails
 {
     interventionChangeSubscription : Subscription;
 
     // l'intervention affichée est passée en paramètre du composant
     private _intervention: Intervention;
 
-
     @Input() public set intervention( value : Intervention )  {
         this._intervention = value;
-
-        // le changement d'intervention doit déclncher la détection des changements
-       //  this.ref.markForCheck(); commenté car génère des erreurs
 
         // à chaque changement d'intervention affichée le composant s'abonne aux changements de l'intervention correspondante
         if ( this.interventionChangeSubscription )
             this.interventionChangeSubscription.unsubscribe();
 
         this.interventionChangeSubscription =
-            this._interService.newInterData$.pipe(filter( i => this.intervention && this.intervention.Id == i.Id  )).subscribe( i => this.detectChanges() );
+            this._interService.newInterData$.pipe(
+              filter( i => this.intervention && this.intervention.Id == i.Id  ) )
+            .subscribe( i => this.detectChanges() );
 
         // je reinitialise le layout pour la nouvelle instruction
         this.grid = null;
     }
+
+    @ViewChild('interventionForm')
+    set interventionForm( form : NgForm )
+    {
+      form?.statusChanges.subscribe( status => this.setInterventionStatus( status ) );
+    }
+
 
     private grid : any;
 
@@ -103,18 +104,43 @@ export class InterventionDetails implements  OnChanges
         }
     }
 
+    setInterventionStatus( status )
+    {
+      if ( this.intervention?.Rapport )
+      {
+        let oldStatus = this.intervention.Rapport.ValidationStatus;
+
+        switch( status )
+        {
+          case 'VALID':
+            this.intervention.Rapport.ValidationStatus = RapportValidationStatusEnum.Valid; break;
+
+          case 'INVALID':
+            this.intervention.Rapport.ValidationStatus = RapportValidationStatusEnum.Invalid; break;
+
+          default:
+            this.intervention.Rapport.ValidationStatus = RapportValidationStatusEnum.Unknown; break;
+        }
+
+        // envoi du changement
+        if ( oldStatus != this.intervention.Rapport.ValidationStatus )
+        {
+          console.log( "Intervention " + this.intervention?.Id  + " passée à l'état " + status);
+          this.changeRapport( { ValidationStatus: this.intervention.Rapport.ValidationStatus } );
+        }
+      }
+
+
+
+
+    }
+
     updateLayout()
     {
       setTimeout( () => {
         this.grid = null;
         this.detectChanges();
       }, 50);
-    }
-
-    ngOnChanges( changes: SimpleChanges )
-    {
-        // console.log("Changements détectés sur intervention :");
-        // console.log( changes );
     }
 
     ngOnDestroy()
@@ -163,6 +189,8 @@ export class InterventionDetails implements  OnChanges
 
         return this.rapport.Verifications.QuellesIssuesOuvertes;
     }
+
+
     private get quellesEffractions() : RapportIssuesConcernees
     {
         // il se peut que le serveur mette cette valeur à null
@@ -171,6 +199,8 @@ export class InterventionDetails implements  OnChanges
 
         return this.rapport.Verifications.QuellesEffractions;
     }
+
+
     private get listMainCour() : MainCourante[] { return Array.isArray( this.intervention.MainCourantes ) ?  this.intervention.MainCourantes : [] };
     // this.intervention && this.intervention.MainCourantes ? this.intervention.MainCourantes :
     private get listTypeMainCour() : ITypeMainCourante[]
@@ -232,12 +262,11 @@ export class InterventionDetails implements  OnChanges
 
     private radioValue : MotifIntervention;
 
-    constructor( private _connectionStatus: ConnectionStatus, private _interService: InterventionService, private ref: ChangeDetectorRef )
+
+    constructor( private _connectionStatus: ConnectionStatus, private _interService: InterventionService, private ref: ChangeDetectorRef, private _fb : FormBuilder )
     {
         // on transforme l'enum MotifIntervention en une structure clé/valeur qu'on peut binder
         this.motifChoices = Object.values(MotifIntervention).filter( (e : any) => typeof( e ) == "number" );
-
-        console.log( CircuitVerification.VerificationKO );
     }
 
     /**
@@ -337,15 +366,6 @@ export class InterventionDetails implements  OnChanges
         return this.miseEnSecurite && (this.miseEnSecurite.Gardiennage || this.miseEnSecurite.Ronde);
     }
 
-    private gridStackInit = false;
-    public ngAfterViewChecked() : void
-    {
-        //  L'appel de la fonction gridstack permet de rendre les composants de la doit être faite après la construction complète de la vue
-        // console.log("column number : " + this.ColumnNumber);
-        // var options = { width: this.ColumnNumber };
-        // let grid = jQuery('.grid-stack').gridstack(options);
-    }
-
     /**
      *
      * @param key Retourne le libelle d'une main courante, connaissant son id
@@ -363,10 +383,6 @@ export class InterventionDetails implements  OnChanges
     {
         return this.rapport && this.rapport.MotifIntervention == value;
     }
-
-    private detailForm : FormGroup;
-
-
 
     Capitalize( text: string) : string
     {
@@ -427,6 +443,7 @@ export class InterventionDetails implements  OnChanges
 
     public changeRapport( data : any )
     {
+
         console.log( data );
 
         var p = new Promise<void>( (resolve) => {
@@ -498,6 +515,19 @@ export class InterventionDetails implements  OnChanges
             // envoi du changement dans le rapport
             this._interService.sendInterChange( { Id:this.intervention.Id, InfosFacturation:data } );
         } );
+    }
+
+    public validateForm( event: any)
+    {
+      console.warn("Validate Form");
+      console.warn( event );
+    }
+
+    public verifCircuitKO() : boolean
+    {
+      // if ( this.arriveeSurLieux.CircuitVerification == CircuitVerification.VerificationKO
+      //   && this.arriveeSurLieux.
+      return false;
     }
 /*
     public updateArrivee( dateString: string )

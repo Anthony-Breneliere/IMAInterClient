@@ -11,7 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LOCALE_ID, NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule }   from '@angular/forms';
+import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { RouterModule }   from '@angular/router';
 import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
 
@@ -54,8 +54,10 @@ import { TestComponent } from './test/test.component';
 
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { MinimumCheckedRequiredDirective } from './tools/validators/multiple_checkbox.validator.directive';
+import { MinimumDateRequiredDirective } from './tools/validators/min_date.validator.directive';
 
-registerLocaleData(localeFr); 
+registerLocaleData(localeFr);
 
 // inclus pour le datepicker:
 
@@ -65,6 +67,7 @@ registerLocaleData(localeFr);
         BrowserAnimationsModule,
         ContextMenuModule.forRoot(),
         FormsModule,
+        ReactiveFormsModule,
         HttpClientModule,
         RouterModule.forRoot (appRoutes),
         DlDateTimeDateModule,  // <--- Determines the data type of the model
@@ -98,6 +101,8 @@ registerLocaleData(localeFr);
         ReactiveCheckboxComponent,
         ReactiveDateInputComponent,
         TestComponent,
+        MinimumCheckedRequiredDirective,
+        MinimumDateRequiredDirective
         ],
 
     /*

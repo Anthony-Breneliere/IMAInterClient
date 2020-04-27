@@ -1,5 +1,5 @@
 #app_bar {
-    background-color: var( --modal-border-color );
+    background-color: var( --main-color );
     color: hsl( 0, 0%, var( --font-lightness));
     padding: 10px 10px 10px 10px;
     box-shadow: rgba( 0, 0, 0, 0.5) 0px 2px 5px 0px;
@@ -37,12 +37,16 @@
 }
 
 #app_bar #title {
-    font-size: 2em;
-    flex: 2
+  color: var( --selected-color );
+  text-shadow: 0 0px 15px var( --selected-color );
+  padding-left: 1em;
+  font-size: 1.5em;
+  flex: 2
 }
 
 #app_bar #menu {
     font-size: 2em;
+    max-width: 1.3em;
     cursor: pointer;
     flex: 1
 }
@@ -111,7 +115,7 @@ color: hsl( 0, 0%, var( --hover-lightness))
 }
 
 .app-bar {
-background-color: var( --modal-border-color );
+background-color: var( --component-border-color );
 color: hsl( 0, 0%, var( --font-lightness));
 margin: 0px 0px 0px 0px;
 padding: 10px 10px 10px 10px;

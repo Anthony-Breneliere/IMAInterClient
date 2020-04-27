@@ -4,6 +4,17 @@
 :root {
 
 
+  /* Paramétrage des couleurs */
+  --saturation: 44%;
+  --lightness: 20%;
+  --border-lightness: 35%;
+  --action-lightness: 70%;
+  --font-lightness: 70%;
+  --hover-lightness: 100%;
+  --bg-hover-lightness: 30%;
+  --selected-lightness: 100%;
+  --bg-selected-lightness: 40%;
+
   /* Couleurs */
   --hover_shadow: hsl( 0, 100%, 100%);
   --main-bg-color: hsl( 0, 0%, 16%);
@@ -14,16 +25,10 @@
   --dark-bg-color: hsl( 0, 0%, 30%);
   --changed-bg-color: hsl(56, 5%, 30%);
   --change-detect-color: hsl(45, 100%, 50%);
+  --valid-color: hsl(123, var( --saturation ), var( --border-lightness ));
+  --invalid-color: hsl(1, var( --saturation ), var( --border-lightness ));
 
-  /* Paramétrage des couleurs */
-  --saturation: 50%;
-  --lightness: 35%;
-  --action-lightness: 70%;
-  --font-lightness: 70%;
-  --hover-lightness: 100%;
-  --bg-hover-lightness: 30%;
-  --selected-lightness: 100%;
-  --bg-selected-lightness: 40%;
+
 
   /* Choix des teintes */
   --operateur_hue: 0;
@@ -44,11 +49,10 @@
   --defaut-font-color: hsl( var( --white_hue), var( --gray), var( --font-lightness));
   --discrete-font-color: hsl( var( --white_hue), var( --gray), 50% );
   --modal-background-color: hsla( 0, 0%, 10%, 75%);
-  --main-color: var( --modal-border-color );
+  --main-color: hsl( var( --color1), var( --saturation), var( --lightness ));
   --selected-main-color: hsl( var( --color1), var( --saturation), var( --selected-lightness));
   --hover-border-color: hsl( var( --color1), var( --saturation), var( --hover-lightness));
-  --component-border-color: hsl( var( --color1), var( --saturation), var( --lightness));
-  --modal-border-color: hsl( var( --color1), var( --saturation), var( --lightness));
+  --component-border-color: hsl( var( --color1), var( --saturation), var(--border-lightness ));
   --hover-background-color: hsl( 0, var( --gray ), var( --bg-hover-lightness));
   --modal-color: hsl( 0, var( --gray ), var( --hover-lightness ));
 

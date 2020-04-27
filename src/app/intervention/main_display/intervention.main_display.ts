@@ -222,21 +222,19 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
             this.selectedButton = newSelectedButton;
             this.selectedIntervention = newSelectedButton.intervention;
 
-            // un bouton d'intervention a été cliqué, je charge l'intervention si elle n'est pas chargée
-            let interSelected = this.selectedButton.intervention;
-
-            // récupération de l'intervention auprès des services de sa majesté IMAInter
-            // chargement de l'intervention complètege effectué dans le ngOnInit, on désactive celle-ci:
-            // this.interventionService.getFullIntervention( interSelected.Id, interSelected.Site ? interSelected.Site.Id : null);
-            this.cdref.detectChanges();
         }
+        else
+        {
+          // on désélectionne le bouton et l'intervention
+          this.selectedButton = null;
+          this.selectedIntervention = null;
+        }
+
+        // récupération de l'intervention auprès des services de sa majesté IMAInter
+        // chargement de l'intervention complètege effectué dans le ngOnInit, on désactive celle-ci:
+        // this.interventionService.getFullIntervention( interSelected.Id, interSelected.Site ? interSelected.Site.Id : null);
+        this.cdref.detectChanges();
     }
 
-    onTestClick()
-    {
-        if ( this.connectionStatus.errorMessages )
-            this.connectionStatus.addErrorMessage( "Message de test" );
-        this.connectionStatus.connected = ! this.connectionStatus.connected;
-    }
 
 }

@@ -32,6 +32,6 @@
 
 .ngx-contextmenu li:hover:not(:first-child) {
   transition: border 1s, color 1s, box-shadow 1s, text-shadow 1s;
-  border: 1px solid var( --modal-border-color );
+  border: 1px solid var( --component-border-color );
   background-color: var( --hover-background-color );
 }

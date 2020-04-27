@@ -407,7 +407,7 @@ export class InterventionService  {
      */
     public sendInterChange( jsonInterChange : any ) : void
     {
-        console.log(`Envoi d'un changement d'intervention: ${jsonInterChange}`);
+        console.log(`Envoi d'un changement d'intervention:`);
         console.log(jsonInterChange);
 
         // this.protectedDataFromWrites = jsonInterChange;
