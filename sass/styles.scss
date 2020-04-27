@@ -124,3 +124,10 @@ reactive-textarea#instructionsDemandeParMail textarea {
   background-color: var( --modal-background-color );
   border: 1px solid var( --modal-border-color );
 }
+
+/* On cache les rubans colorés de typage d'intervention dans le résultat des recherches */
+/* TODO - Supprimer ce css et afficher les vrais rubans en résultat de recherche quand on aura la persistance en base */
+
+[groupname="Interventions closes"] .ribbon {
+    display: none !important;
+}
