@@ -11,7 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LOCALE_ID, NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
+import { FormsModule }   from '@angular/forms';
 import { RouterModule }   from '@angular/router';
 import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
 
@@ -34,14 +34,12 @@ import { InterventionButton } from './intervention/button/intervention.button';
 import { InterventionButtonContent } from './intervention/button/intervention.button.content';
 import { AppBar } from './app_bar/app_bar';
 import { InterventionMainDisplay } from './intervention/main_display/intervention.main_display';
-import { Location, LocationStrategy, PathLocationStrategy, HashLocationStrategy } from '@angular/common';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { DraggableDirective } from './tools/draggable';
 import { SortInterventionByDateTime } from './intervention/groupe/sortInterPipe';
 import { Chat } from './intervention/chat/chat';
 import { Maincourantes } from './intervention/maincourantes/maincourantes';
 import { DateInputComponent } from './tools/input/date-input.component';
-
-
 
 // import { ReactiveBaseComponent } from './intervention/reactive-components/reactive-base';
 import { ReactiveInputComponent } from './intervention/reactive-components/reactive-input.component';
@@ -67,7 +65,6 @@ registerLocaleData(localeFr);
         BrowserAnimationsModule,
         ContextMenuModule.forRoot(),
         FormsModule,
-        ReactiveFormsModule,
         HttpClientModule,
         RouterModule.forRoot (appRoutes),
         DlDateTimeDateModule,  // <--- Determines the data type of the model

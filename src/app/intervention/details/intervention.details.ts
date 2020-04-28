@@ -123,7 +123,9 @@ export class InterventionDetails
         }
 
         // envoi du changement
-        if ( oldStatus != this.intervention.Rapport.ValidationStatus )
+        if ( oldStatus != this.intervention.Rapport.ValidationStatus
+          && this.intervention.Etat != Etat.Annulee
+          && this.intervention.Etat != Etat.Close  )
         {
           console.log( "Intervention " + this.intervention?.Id  + " passée à l'état " + status);
           this.changeRapport( { ValidationStatus: this.intervention.Rapport.ValidationStatus } );
