@@ -20,7 +20,7 @@
 
     <div *ngIf="GroupType == GroupTypeEnum.interventionsCloses && Expanded === true" class="search transition_1s" >
 
-      <label>Numero, contrat, CP, ville, client</label>
+      <label>N° intervention/N° contrat/Intervenant/Nom client/Ville/CP</label>
       <input #searchInput [(ngModel)]="Search.FreeQuery" (ngModelChange)="searchInterventions()" [disabled]="readOnly"/>
 
       <label>Date de début</label>

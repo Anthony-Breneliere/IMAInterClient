@@ -193,7 +193,7 @@
             </select>
         </tr>
 
-        <tr field label="Raison non vérification des issues" *ngIf=" ! arriveeSurLieux.VerifIntegraleIssues">
+        <tr field label="Raison non vérification des issues" *ngIf="arriveeSurLieux.VerifIntegraleIssues === false">
             <reactive-input name="verifRaisonNonVerification" id="RaisonNonVerificationIssues" [(ngModel)]="arriveeSurLieux.RaisonNonVerificationIssues" (ngModelChange)="changeRapport({ArriveeSurLieux:{RaisonNonVerificationIssues:$event}})"></reactive-input>
         </tr>
 

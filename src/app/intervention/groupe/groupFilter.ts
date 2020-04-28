@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   selector: 'group-filter',
   template: `
   <label>Filtre</label>
-  <select id="filterType" [(ngModel)]="TypeChoice" (change)="UpdateType" >
+  <select id="filterType" [(ngModel)]="TypeChoice" >
       <option [ngValue]="null"></option>
       <option *ngFor="let operator of AllTypeChoices">{{operator}}</option>
   </select>
@@ -33,7 +33,7 @@ export class GroupFilter implements OnChanges, OnInit
   public set TypeChoice( value : string )
   {
     this._typeChoice = value;
-    this._chosenValue = "";
+    this.ChosenValue = "";
     this._allChoices = this._loadedChoices[value];
   }
 
@@ -54,11 +54,6 @@ export class GroupFilter implements OnChanges, OnInit
 
   public _allChoices : string[] = [];
   public get AllChoices() : string[] { return this._allChoices; }
-
-  public UpdateType()
-  {
-    this._chosenValue = "";
-  }
 
   private paramsSubscription : Subscription;
   private queryParamsSubscription : Subscription;
