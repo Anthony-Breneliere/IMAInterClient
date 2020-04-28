@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectorRef, ElementRef, 
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, DefaultValueAccessor  } from '@angular/forms';
 import { DateButton } from 'angular-bootstrap-datetimepicker';
 import * as _moment from 'moment';
+import {unitOfTime} from 'moment';
 
 
 let moment = _moment;
@@ -64,6 +65,7 @@ export class DateInputComponent implements ControlValueAccessor {
   @Input() changeFromModel : boolean;
   @Input() disabled : boolean;
   @Input() width : string = "360px";
+  @Input() minDateRequired : Date;
 
   constructor(
     private _elementRef: ElementRef,
@@ -93,6 +95,9 @@ export class DateInputComponent implements ControlValueAccessor {
   }
 
   datePickerFilter = (dateButton: DateButton, viewName: string) => {
+    if(this.minDateRequired != null) {
+      return dateButton.value >= moment(this.minDateRequired).startOf(viewName as unitOfTime.StartOf).valueOf();
+    }
     return  true;
   }
 

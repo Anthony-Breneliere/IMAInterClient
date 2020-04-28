@@ -8,12 +8,14 @@ declare var $: any;
 {
   selector: 'reactive-date-input',
   template: `
-    <date-input [changeFromModel]="isThirdParty" [(ngModel)]="value" ></date-input>
+    <date-input [changeFromModel]="isThirdParty" [(ngModel)]="value" [minDateRequired]="minDateRequired" ></date-input>
 `,
   styleUrls: [ './reactive-base.css' ],
   providers: [ { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ReactiveDateInputComponent), multi: true } ]
 })
 export class ReactiveDateInputComponent extends ReactiveBaseComponent {
+
+  @Input() minDateRequired : Date;
 
   constructor(
     protected ref: ChangeDetectorRef )
