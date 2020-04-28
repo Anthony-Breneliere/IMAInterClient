@@ -66,13 +66,13 @@
 
           <tr field label="Arrivée" *ngIf="updateIsDateArriveeUpdatable">
               <reactive-date-input name="dateArrivee" class="extensible"
-                [(ngModel)]="intervention.DateArrivee" (ngModelChange)="changeIntervention({DateArrivee: $event})"
+                [ngModel]="intervention.DateArrivee" (ngModelChange)="changeIntervention({DateArrivee: $event})"
                 [minDateRequired]="intervention.Lancement">
               </reactive-date-input>
           </tr>
 
           <tr field label="Départ" *ngIf="updateIsDateDepartUpdatable">
-              <reactive-date-input name="dateDepart" class="extensible" [(ngModel)]="intervention.DateDepart"
+              <reactive-date-input name="dateDepart" class="extensible" [ngModel]="intervention.DateDepart"
                 (ngModelChange)="changeIntervention({DateDepart: $event})"
                 [minDateRequired]="intervention.DateArrivee">
               </reactive-date-input>
