@@ -265,7 +265,7 @@ export class InterventionDetails
     private radioValue : MotifIntervention;
 
 
-    constructor( private _connectionStatus: ConnectionStatus, private _interService: InterventionService, private ref: ChangeDetectorRef )
+    constructor( private _connectionStatus: ConnectionStatus, private _interService: InterventionService, private _changeDetector: ChangeDetectorRef )
     {
         // on transforme l'enum MotifIntervention en une structure clé/valeur qu'on peut binder
         this.motifChoices = Object.values(MotifIntervention).filter( (e : any) => typeof( e ) == "number" );
@@ -277,7 +277,7 @@ export class InterventionDetails
      */
     public detectChanges() : void
     {
-        this.ref.detectChanges();
+        this._changeDetector.detectChanges();
 
         if ( this._intervention )
             console.log("Détection des changements pour l'affichage de l'intervention " + this._intervention.Id );
@@ -455,6 +455,10 @@ export class InterventionDetails
             // envoi du changement dans le rapport
             this._interService.sendInterChange( { Id:this.intervention.Id, Rapport:data } );
         } );
+
+        // parfois les styles de validation des groupes de checkoxes ne se mettent pas à jour quand
+        // on modifie la valeur d'une checkbox
+        this._changeDetector.detectChanges();
     }
 
     public get isEditableTypeFiche() : boolean
