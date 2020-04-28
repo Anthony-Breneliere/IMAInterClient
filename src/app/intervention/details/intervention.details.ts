@@ -40,7 +40,7 @@ import { ConnectionStatus } from "../../services/connection.status";
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Telephone } from '../../model/telephone';
-import { NgForm, FormBuilder } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 
 
 declare var require: any;
@@ -265,7 +265,7 @@ export class InterventionDetails
     private radioValue : MotifIntervention;
 
 
-    constructor( private _connectionStatus: ConnectionStatus, private _interService: InterventionService, private ref: ChangeDetectorRef, private _fb : FormBuilder )
+    constructor( private _connectionStatus: ConnectionStatus, private _interService: InterventionService, private ref: ChangeDetectorRef )
     {
         // on transforme l'enum MotifIntervention en une structure clé/valeur qu'on peut binder
         this.motifChoices = Object.values(MotifIntervention).filter( (e : any) => typeof( e ) == "number" );
