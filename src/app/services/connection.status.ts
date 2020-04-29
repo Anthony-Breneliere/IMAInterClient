@@ -14,7 +14,7 @@ export class ConnectionStatus
     private _username : string;
     private reconnectionResolve : () => void;
     private _messNumber : number = 0;
-    
+
     public get errorMessages() : [number, string][] { return this._errorMessages; }
     public addErrorMessage( mess : string ) { console.log( this._errorMessages ); this._errorMessages.push( [++this._messNumber, mess] ) }
     public removeErrorMessage( id : number ) { this._errorMessages = this._errorMessages.filter( m => m[0] != id) }
@@ -36,10 +36,10 @@ export class ConnectionStatus
     }
 
     // accesseurs publics:
-    get connected() : boolean { 
+    get connected() : boolean {
         return this._connected;
     }
-    
+
     set connected( value: boolean )
     {
           this._connected = value;
@@ -80,7 +80,7 @@ export class ConnectionStatus
 
     /**
      * vérification de l'utilisateur logué
-     * @param name 
+     * @param name
      */
     public operatorNameEqual( name: string ) : boolean
     {
@@ -109,9 +109,9 @@ export class ConnectionStatus
             console.log('We are currently experiencing difficulties with the connection.');
         });
 
-        hub.stateChanged( ( change: SignalR.StateChanged ) => { 
+        hub.stateChanged( ( change: SignalR.StateChanged ) => {
             console.log("L'état de la connexion a changé de l'état " + change.oldState + " à l'état " + change.newState + " (Connecting = 0, Connected, Reconnecting, Disconnected)");
-            
+
             if ( change.newState == 1 )
             {
                 this.connected = true;
@@ -134,6 +134,8 @@ export class ConnectionStatus
         this.proxy.client.sendUserName = ( userName : string ) =>
         {
             this._username = userName;
+
+            console.log( "Connection en temps qu'utilisateur " + this._username );
         }
     }
 
@@ -143,10 +145,10 @@ export class ConnectionStatus
 
         let startPromise = new Promise( (resolve, reject) => {
 
-            // attention le démarrage du serveur doit se faire APRES l'enregistrement des callbacks ! 
+            // attention le démarrage du serveur doit se faire APRES l'enregistrement des callbacks !
             hub.start()
                 .done( () => {
-                    console.log("Connecté à " + hub.url + ", transport = " + hub.transport.name 
+                    console.log("Connecté à " + hub.url + ", transport = " + hub.transport.name
                     + ", connection id = " + hub.id );  resolve();
                 })
                 .fail( ( e ) => {
