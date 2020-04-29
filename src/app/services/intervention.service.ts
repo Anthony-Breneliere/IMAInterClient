@@ -129,6 +129,7 @@ export class InterventionService  {
      */
     private subscribeNotifications() : void
     {
+      if ( this.pushNotificationService )
         this.pushNotificationService.subscribeUser();
 
     }
