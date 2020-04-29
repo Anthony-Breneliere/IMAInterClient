@@ -24,6 +24,8 @@ export class RapportVerifications
 
     VerificationsDuSite:  string;
     DetailEffractions: string;
+    EffractionCommentaire: string;
+    VerificationCommentaire: string;
 
     // get QuellesLumieresAllumeesN() : RapportLumieresAllumees { return this.QuellesLumieresAllumees ? this.QuellesLumieresAllumees : this.QuellesLumieresAllumees = new RapportLumieresAllumees() }
     // get QuellesIssuesOuvertesN() : RapportIssuesConcernees { return this.QuellesIssuesOuvertes ? this.QuellesIssuesOuvertes : this.QuellesIssuesOuvertes = new RapportIssuesConcernees() }
