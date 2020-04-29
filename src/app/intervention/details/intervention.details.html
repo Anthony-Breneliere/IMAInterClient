@@ -36,7 +36,7 @@
 
       <section title="Consignes" [readOnly]="readOnlySection" (resize)="updateLayout()">
           <tr field label="Instructions de demande par mail ">
-              <reactive-textarea name="instructionsDemandeParMail" id="instructionsDemandeParMail" [(ngModel)]="site.InstructionsDemandeParMail" (ngModelChange)="changeIntervention({ InstructionsDemandeParMail:$event})"></reactive-textarea>
+              <reactive-textarea name="Consignes" id="instructionsDemandeParMail" [(ngModel)]="rapport.Consignes" (ngModelChange)="changeRapport({Consignes:$event})"></reactive-textarea>
           </tr>
       </section>
 
@@ -48,9 +48,14 @@
           <tr field *ngFor="let tel of intervenant?.Telephones " label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
           <tr *ngIf="!isEditableIntervenantEmail; else editableEmail" field label="Email ">{{concatenatedEmails}}</tr>
           <ng-template #editableEmail>
-              <tr field label="Email ">
-                  <reactive-input name="emailIntervenant" *ngFor="let email of intervenant?.Emails; let i = index" [(ngModel)]="intervenant.Emails[i]" (ngModelChange)="changeEmailIntervenantGenerique()"></reactive-input>
+              <tr field *ngIf="rapport.IntervenantEmail == null" label="Email ">
+                  <!-- todo gma here -->
+                  <reactive-input  name="emailIntervenant" *ngFor="let email of intervenant?.Emails; let i = index" [(ngModel)]="intervenant.Emails[i]" (ngModelChange)="changeEmailIntervenantGenerique()"></reactive-input>
               </tr>
+              <tr field *ngIf="rapport.IntervenantEmail != null" label="Email ">
+                <!-- todo gma here -->
+                <reactive-input  name="emailIntervenant" [(ngModel)]="rapport.IntervenantEmail" (ngModelChange)="changeRapport({IntervenantEmail:$event})"></reactive-input>
+            </tr>
           </ng-template>
           <tr field label="Matricule">{{intervenant?.Matricule}}</tr>
 
@@ -205,6 +210,10 @@
             </select>
         </tr>
 
+        <tr field label="Commentaires">
+            <reactive-input name="VerificationCommentaire" [(ngModel)]="verifications.VerificationCommentaire" (ngModelChange)="changeRapport({Verifications:{VerificationCommentaire:$event}})"></reactive-input>
+        </tr>
+
     </section>
 
 
@@ -270,7 +279,6 @@
 
         </tr>
 
-
         <tr field label="Effraction(s)">
             <select name="effraction" [(ngModel)]="verifications.Effraction" (ngModelChange)="changeRapport({Verifications:{Effraction:$event}})" required>
                 <option [ngValue]="null"></option>
@@ -293,6 +301,10 @@
 
         <tr field label="Autre effraction" *ngIf="verifications.Effraction && AutreEffractionChecked">
             <reactive-input name="effractionQuelleAutre" [(ngModel)]="quellesEffractions.Autre" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Autre:$event}}})" required></reactive-input>
+        </tr>
+
+        <tr field label="Commentaires">
+            <reactive-input name="EffractionCommentaire" [(ngModel)]="verifications.EffractionCommentaire" (ngModelChange)="changeRapport({Verifications:{EffractionCommentaire:$event}})"></reactive-input>
         </tr>
 
     </section>
