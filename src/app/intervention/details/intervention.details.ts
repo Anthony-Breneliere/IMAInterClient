@@ -63,6 +63,8 @@ export class InterventionDetails
     // l'intervention affichée est passée en paramètre du composant
     private _intervention: Intervention;
 
+    private _oldValidationStatus: RapportValidationStatusEnum;
+
     @Input() public set intervention( value : Intervention )  {
         this._intervention = value;
 
@@ -75,40 +77,56 @@ export class InterventionDetails
               filter( i => this.intervention && this.intervention.Id == i.Id  ) )
             .subscribe( i => this.detectChanges() );
 
-        // je reinitialise le layout pour la nouvelle instruction
-        this.grid = null;
+        // j'indique que l'utilisateur n'a pas encore touché au rapport
+        this._oldValidationStatus = RapportValidationStatusEnum.Unknown;
+
+        this.updateLayout();
     }
 
     @ViewChild('interventionForm')
     set interventionForm( form : NgForm )
     {
-      form?.statusChanges.subscribe( status => this.setInterventionStatus( status ) );
+      form?.statusChanges.subscribe( status => this.setValidationStatus( status ) );
     }
+
+
+    @ViewChild('verifAutreCheckbox') verifAutreCheckbox;
+    @ViewChild('autrePieceAllumeeCheckbox') autrePieceAllumeeCheckbox;
+    @ViewChild('autreIssueOuverteCheckbox') autreIssueOuverteCheckbox;
+    @ViewChild('autreEffractionCheckbox') autreEffractionCheckbox;
+    @ViewChild('autreTypePresenceCheckbox') autreTypePresenceCheckbox;
+
+    @ViewChild('masonryLayout') masonryLayout;
+
 
 
     private grid : any;
 
-    ngAfterContentChecked ()
+    ngAfterViewChecked ()
     {
-        var masonryGridElement = document.querySelector(".masonry_grid");
-
-        if ( masonryGridElement && ! this.grid )
+        if ( this.masonryLayout )
         {
-            // voir https://masonry.desandro.com/options.html pour les possiblités
-            this.grid = new Masonry( '.masonry_grid', {
-                itemSelector: 'section',
-                columnWidth: 10,
-                containerStyle: { position: 'relative' },
-                horizontalOrder: true /* Lays out items to (mostly) maintain horizontal left-to-right order. */
-              });
+            if ( ! this.grid )
+            {
+              // voir https://masonry.desandro.com/options.html pour les possiblités
+              this.grid = new Masonry( '.masonry_grid', {
+                  itemSelector: 'section',
+                  columnWidth: 10,
+                  containerStyle: { position: 'relative' },
+                  horizontalOrder: true /* Lays out items to (mostly) maintain horizontal left-to-right order. */
+                });
+            }
+
         }
     }
 
-    setInterventionStatus( status )
+
+
+    setValidationStatus( status )
     {
       if ( this.intervention?.Rapport )
       {
-        let oldStatus = this.intervention.Rapport.ValidationStatus;
+        this._oldValidationStatus = this.intervention.Rapport.ValidationStatus;
 
         switch( status )
         {
@@ -121,27 +139,14 @@ export class InterventionDetails
           default:
             this.intervention.Rapport.ValidationStatus = RapportValidationStatusEnum.Unknown; break;
         }
-
-        // envoi du changement
-        if ( oldStatus != this.intervention.Rapport.ValidationStatus
-          && this.intervention.Etat != Etat.Annulee
-          && this.intervention.Etat != Etat.Close  )
-        {
-          console.log( "Intervention " + this.intervention?.Id  + " passée à l'état " + status);
-          this.changeRapport( { ValidationStatus: this.intervention.Rapport.ValidationStatus } );
-        }
       }
-
-
-
-
     }
 
     updateLayout()
     {
       setTimeout( () => {
         this.grid = null;
-        this.detectChanges();
+
       }, 50);
     }
 
@@ -450,11 +455,13 @@ export class InterventionDetails
 
         var p = new Promise<void>( (resolve) => {
 
-            Lodash.merge( this.rapport, data);
+            if ( this._oldValidationStatus != this.rapport.ValidationStatus )
+              Lodash.merge( data, { ValidationStatus : this.rapport.ValidationStatus } );
 
             // envoi du changement dans le rapport
             this._interService.sendInterChange( { Id:this.intervention.Id, Rapport:data } );
         } );
+
 
         // parfois les styles de validation des groupes de checkoxes ne se mettent pas à jour quand
         // on modifie la valeur d'une checkbox

@@ -32,7 +32,7 @@ export enum GroupTypeEnum
     styleUrls:  ['./intervention.group.scss']
 })
 
-export class InterventionGroup implements AfterContentChecked
+export class InterventionGroup
 {
 
     @Input() public GroupName: string;
@@ -141,16 +141,6 @@ export class InterventionGroup implements AfterContentChecked
         this.interventionMessageSubscription.unsubscribe();
     }
 
-
-    ngAfterContentChecked()
-    {
-      if ( this.GroupType == GroupTypeEnum.autresInterventions && this.Expanded )
-      {
-        this._cdref.detectChanges();
-
-        this.updateGroupInterventions();
-      }
-    }
 
     public interventionChangeHighlight( interId : number )
     {

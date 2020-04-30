@@ -39,7 +39,6 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
     private paramsSubscription : Subscription;
     private queryParamsSubscription : Subscription;
 
-    public updatingIntervention : boolean = false;
 
     @ViewChild("myGroup" ) myGroup : InterventionGroup;
     @ViewChild("othersGroup" ) othersGroup : InterventionGroup;
@@ -182,12 +181,8 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
 
     set selectedIntervention( value: Intervention)
     {
-        this.updatingIntervention = true;
-        this.cdref.detectChanges();
-
         this._selectedIntervention = value;
 
-        this.updatingIntervention = false;
         this.cdref.detectChanges();
     }
 
@@ -230,10 +225,6 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
           this.selectedIntervention = null;
         }
 
-        // récupération de l'intervention auprès des services de sa majesté IMAInter
-        // chargement de l'intervention complètege effectué dans le ngOnInit, on désactive celle-ci:
-        // this.interventionService.getFullIntervention( interSelected.Id, interSelected.Site ? interSelected.Site.Id : null);
-        this.cdref.detectChanges();
     }
 
 

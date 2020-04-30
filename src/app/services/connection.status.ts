@@ -18,6 +18,7 @@ export class ConnectionStatus
     public get errorMessages() : [number, string][] { return this._errorMessages; }
     public addErrorMessage( mess : string ) { console.log( this._errorMessages ); this._errorMessages.push( [++this._messNumber, mess] ) }
     public removeErrorMessage( id : number ) { this._errorMessages = this._errorMessages.filter( m => m[0] != id) }
+    private clearErrorMessages() { this._errorMessages = []; this._messNumber = 0; }
     public get proxyClient() { return this.proxy.client };
     public get proxyServer() { return this.proxy.server };
     public get m1Connected() : boolean { return this._m1Connected;  }
@@ -115,6 +116,8 @@ export class ConnectionStatus
             if ( change.newState == 1 )
             {
                 this.connected = true;
+
+                this.clearErrorMessages();
 
                 // s'il existe une promesse de reconnection, alors cette promesse est tenue:
                 if ( this.reconnectionResolve )

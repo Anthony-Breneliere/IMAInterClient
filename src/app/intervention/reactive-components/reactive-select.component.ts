@@ -3,27 +3,21 @@ import { SelectControlValueAccessor, ControlValueAccessor,  NG_VALUE_ACCESSOR  }
 import { trigger, style, animate, transition, keyframes } from '@angular/animations';
 import { ReactiveBaseComponent } from './reactive-base'
 
-    // [selectedIndex]="properties.selectedIndex"
-    // [value]="properties.value"
-
 @Component(
 {
   selector: 'reactive-select',
   template: `
   <select
-    [class.transition_1s]="!isThirdParty" [class.borderhalo]="isThirdParty"
-    [selectedIndex]="properties.selectedIndex"
-    [value]="properties.value"
-    [(ngModel)]="value"
-    (ngModelChange)="newValue($event)">
-    (change)="onChange($event.target.value)"
+    [class.transition_1s]="!isThirdParty"
+    [class.borderhalo]="isThirdParty"
+    [(ngModel)]="value" >
+
     <ng-content></ng-content>
 
   </select>`,
   styleUrls: [ './reactive-base.css' ],
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ReactiveSelectComponent), multi: true },
-    { provide: SelectControlValueAccessor, useExisting: forwardRef(() => ReactiveSelectComponent), multi: true },
+    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ReactiveSelectComponent), multi: true }
 
    ]
 })
@@ -41,24 +35,27 @@ export class ReactiveSelectComponent extends SelectControlValueAccessor
   // stores the action in the attribute (onModelChange) in the html template:
   propagateChange:any = ( change ) => {};
 
-  readonly properties;
+  // readonly properties;
   constructor( private _cdRef: ChangeDetectorRef, _renderer: Renderer2, _elementRef: ElementRef )
   {
-    super(
-      <any>{
-        setProperty(_, property, value) {
-          this.properties = this.properties || {};
-          this.properties[property] = value;
-        }
-      },
-      null
-    );
-    this.properties = this.properties || {};
+    super( _renderer, _elementRef );
+    // super(
+    //   <any>{
+    //     setProperty(_, property, value) {
+    //       this.properties = this.properties || {};
+    //       this.properties[property] = value;
+    //     }
+    //   },
+    //   null
+    // );
+    // this.properties = this.properties || {};
   }
 
   // change from the model
   writeValue(value: any): void
   {
+    super.writeValue( value );
+
     this._value = value;
     this.updatingState = 'otherWriting';
 

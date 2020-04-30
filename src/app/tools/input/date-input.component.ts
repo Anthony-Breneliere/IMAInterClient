@@ -115,8 +115,6 @@ export class DateInputComponent implements ControlValueAccessor {
       else
         this.dateValue = this._value = null;
 
-      // model value has change so changes must be detected (case ChangeDetectorStrategy is OnPush)
-      this._ref.detectChanges();
   }
 
   /*
