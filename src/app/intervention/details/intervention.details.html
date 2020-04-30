@@ -72,14 +72,14 @@
           <tr field label="Arrivée" *ngIf="updateIsDateArriveeUpdatable">
               <reactive-date-input name="dateArrivee" class="extensible"
                 [ngModel]="intervention.DateArrivee" (ngModelChange)="changeIntervention({DateArrivee: $event})"
-                [minDateRequired]="intervention.Lancement">
+                [minDateRequired]="intervention.Lancement" required>
               </reactive-date-input>
           </tr>
 
           <tr field label="Départ" *ngIf="updateIsDateDepartUpdatable">
               <reactive-date-input name="dateDepart" class="extensible" [ngModel]="intervention.DateDepart"
                 (ngModelChange)="changeIntervention({DateDepart: $event})"
-                [minDateRequired]="intervention.DateArrivee">
+                [minDateRequired]="intervention.DateArrivee" required>
               </reactive-date-input>
           </tr>
 
@@ -158,7 +158,7 @@
           </tr>
 
           <tr field label="Circuit vérification">
-              <select name="verifCircuitVerif" [(ngModel)]="arriveeSurLieux.CircuitVerification" (ngModelChange)="changeRapport({ArriveeSurLieux:{CircuitVerification:$event}})" >
+              <select name="verifCircuitVerif" [(ngModel)]="arriveeSurLieux.CircuitVerification" (ngModelChange)="changeRapport({ArriveeSurLieux:{CircuitVerification:$event}})" required>
                   <option [ngValue]="null"></option>
                   <option [ngValue]="CircuitVerification.InterieurSite">Intérieur du site</option>
                   <option [ngValue]="CircuitVerification.InterieurEnceinte">Intérieur de l'enceinte</option>

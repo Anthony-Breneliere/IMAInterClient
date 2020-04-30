@@ -77,7 +77,7 @@ export class InterventionButton implements OnInit
 
     close() : void
     {
-        if ( this.intervention?.Rapport?.ValidationStatus != RapportValidationStatusEnum.Valid )
+        if ( this.intervention?.Rapport?.ValidationStatus == RapportValidationStatusEnum.Valid )
           this._interService.close( this.intervention );
     }
 
