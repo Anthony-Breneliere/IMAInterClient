@@ -24,22 +24,22 @@ export class Chat {
     private newInterDataSource = new Subject< Intervention >();
 
     newInterSub : Subscription;
-    
+
     // l'intervention affichée est passée en paramètre du composant
     private _intervention: Intervention;
-    
+
     @Input() public set intervention( value : Intervention )  {
         this._intervention = value;
-        
+
         // à chaque changement d'intervention affichée le composant s'abonne aux changements de l'intervention correspondante
         if ( this.newInterSub )
             this.newInterSub.unsubscribe();
 
         // on filtre les message sur l'instance de l'intervention qui est actuellement affichée
-        this.newInterSub = 
+        this.newInterSub =
             this.interService.newMessages$
             .pipe( filter( m => m[0] == this._intervention  ) )
-            .subscribe( i => { this.detectChanges(); } );
+            .subscribe( i => { this.ref.detectChanges(); } );
     }
 
     ngOnDestroy()
@@ -47,7 +47,7 @@ export class Chat {
         if ( this.newInterSub )
             this.newInterSub.unsubscribe();
     }
-    
+
     public get intervention()  {  return this._intervention; }
 
     constructor( private interService: InterventionService, private ref: ChangeDetectorRef )
@@ -70,17 +70,11 @@ export class Chat {
         }
     }
 
-    detectChanges()
-    {
-        this.ref.detectChanges();
-
-        console.log("nb de messages" + this.intervention.Chat.length);
-    }
 
     get canChat() : boolean
     {
         let inter = this._intervention;
-        let canChat : boolean = 
+        let canChat : boolean =
             inter &&  inter.Etat != Etat.Annulee
             && inter.Etat != Etat.Close;
         return canChat;

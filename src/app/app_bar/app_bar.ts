@@ -26,7 +26,7 @@ export class AppBar {
         this._connected = connectionStatus.connected;
 
         // inscription aux changements de statuts de connexion
-        connectionStatus.connectedStatus$.subscribe( (conn) => { 
+        connectionStatus.connectedStatus$.subscribe( (conn) => {
             this._connected = conn;
             cd.detectChanges(); } )
     }
@@ -44,7 +44,7 @@ export class AppBar {
         this.pushNotifService.init();
       }
 
-   
+
     // m1State() : string {
     //     return this.connectionStatus.m1Connected ? 'connected' : 'disconnected';
 
@@ -69,6 +69,6 @@ export class AppBar {
 
     closeError( id : number ) : void {
         this.connectionStatus.removeErrorMessage( id );
-        this.cd.detectChanges();
+        this.cd.markForCheck();
     }
 }
