@@ -55,7 +55,7 @@ export class Section
     clickBar()
     {
         this.expand = ! this.expand;
-        this._cdref.markForCheck();
+        this._cdref.detectChanges();
     }
 
     public expand = true;
