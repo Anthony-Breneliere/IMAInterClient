@@ -11,8 +11,8 @@ declare var $: any;
     <date-input
       [changeFromModel]="isThirdParty"
       [(ngModel)]="value"
-      [minDateRequired]="minDateRequired"
-      [maxDateRequired]="maxDateRequired"
+      [minDateSelected]="minDateSelected"
+      [maxDateSelected]="maxDateSelected"
       [format]='format'
       [startView]='startView'
       [minView]='minView' >
@@ -23,8 +23,8 @@ declare var $: any;
 })
 export class ReactiveDateInputComponent extends ReactiveBaseComponent {
 
-  @Input() minDateRequired : Date;
-  @Input() maxDateRequired : Date;
+  @Input() minDateSelected : Date;
+  @Input() maxDateSelected : Date;
   @Input() startView : string ='hour';
   @Input() minView : string ='minute';
   @Input() format : string ='DD/MM/YYYY HH:mm:ss';
@@ -34,5 +34,7 @@ export class ReactiveDateInputComponent extends ReactiveBaseComponent {
   {
     super( ref );
   }
+
+
 
 }

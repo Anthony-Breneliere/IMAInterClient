@@ -29,7 +29,6 @@ export const DATAINPUT_CONTROL_VALUE_ACCESSOR: any = {
   template: `
 <div class="eventReceiver dropdown">
   <input
-
     data-toggle="dropdown"
     aria-label="Date"
     aria-haspopup="true"
@@ -39,11 +38,11 @@ export const DATAINPUT_CONTROL_VALUE_ACCESSOR: any = {
     class="dateInput cellinput date-dropdown"
     [class.transition_1s]="!changeFromModel"
     [class.borderhalo]="changeFromModel"
+    [ngModelOptions]="{ updateOn : 'blur'}"
     [(ngModel)]="formattedValue" />
   <div class="dropdown-menu" (click)="keepDropDownOpen($event)">
     <div style="width:{{width}};">
       <dl-date-time-picker
-        #dlDateTimePicker
         [startView]="startView"
         [minView]="minView"
         [minuteStep]="minuteStep"
@@ -67,8 +66,8 @@ export class DateInputComponent implements ControlValueAccessor {
   @Input() changeFromModel : boolean;
   @Input() disabled : boolean;
   @Input() width : string = "360px";
-  @Input() minDateRequired: Date;
-  @Input() maxDateRequired : Date;
+  @Input() minDateSelected: Date;
+  @Input() maxDateSelected : Date;
   @Input() startView : string ="day";
   @Input() minView : string ="day";
   @Input() minuteStep : string = "1";
@@ -79,7 +78,7 @@ export class DateInputComponent implements ControlValueAccessor {
    */
   get startDate() : Date
   {
-    return this.minDateRequired || this.maxDateRequired;
+    return this.minDateSelected || this.maxDateSelected;
   }
 
   constructor(
@@ -112,11 +111,11 @@ export class DateInputComponent implements ControlValueAccessor {
   datePickerFilter = (dateButton: DateButton, viewName: string) =>
   {
     let enabled : boolean = true;
-    if(this.minDateRequired) {
-      enabled = dateButton.value >= moment(this.minDateRequired).startOf(viewName as unitOfTime.StartOf).valueOf();
+    if(this.minDateSelected) {
+      enabled = dateButton.value >= moment(this.minDateSelected).startOf(viewName as unitOfTime.StartOf).valueOf();
     }
-    if(this.maxDateRequired) {
-      enabled = enabled && dateButton.value <= moment(this.maxDateRequired).endOf(viewName as unitOfTime.StartOf).valueOf();
+    if(this.maxDateSelected) {
+      enabled = enabled && dateButton.value <= moment(this.maxDateSelected).endOf(viewName as unitOfTime.StartOf).valueOf();
     }
     return enabled;
   }

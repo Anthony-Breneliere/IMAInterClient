@@ -6,15 +6,15 @@ import { dateRequired } from "./date.validator";
  * Sur un <input> contenant une date, on peut préciser une date minimale requise
  */
 @Directive({
-  selector: '[minDateRequired]',
-  providers: [{provide: NG_VALIDATORS, useExisting: MinimumDateRequiredDirective, multi: true}]
+  selector: '[maxDateRequired]',
+  providers: [{provide: NG_VALIDATORS, useExisting: MaximumDateRequiredDirective, multi: true}]
 })
-export class MinimumDateRequiredDirective implements Validator
+export class MaximumDateRequiredDirective implements Validator
 {
-  @Input('minDateRequired') minDateRequired: string;
+  @Input('maxDateRequired') maxDateRequired: string;
 
   validate(control: AbstractControl): {[key: string]: any} | null
   {
-    return this.minDateRequired ? dateRequired( this.minDateRequired, 'minDate' ) ( control ) : null;
+    return this.maxDateRequired ? dateRequired( this.maxDateRequired, 'maxDate' ) ( control ) : null;
   }
 }

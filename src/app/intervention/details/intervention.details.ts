@@ -40,7 +40,9 @@ import { ConnectionStatus } from "../../services/connection.status";
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Telephone } from '../../model/telephone';
-import { NgForm } from '@angular/forms';
+import { NgForm, NgControl } from '@angular/forms';
+import { ReactiveCheckboxComponent } from '../reactive-components/reactive-checkbox.component';
+import { ReactiveDateInputComponent } from '../reactive-components/reactive-date.input.component';
 
 
 declare var require: any;
@@ -94,11 +96,13 @@ export class InterventionDetails
     }
 
 
-    @ViewChild('verifAutreCheckbox') verifAutreCheckbox;
-    @ViewChild('autrePieceAllumeeCheckbox') autrePieceAllumeeCheckbox;
-    @ViewChild('autreIssueOuverteCheckbox') autreIssueOuverteCheckbox;
-    @ViewChild('autreEffractionCheckbox') autreEffractionCheckbox;
-    @ViewChild('autreTypePresenceCheckbox') autreTypePresenceCheckbox;
+    @ViewChild('verifAutreCheckbox') verifAutreCheckbox : ReactiveCheckboxComponent;
+    @ViewChild('autrePieceAllumeeCheckbox') autrePieceAllumeeCheckbox : ReactiveCheckboxComponent;
+    @ViewChild('autreIssueOuverteCheckbox') autreIssueOuverteCheckbox : ReactiveCheckboxComponent;
+    @ViewChild('autreEffractionCheckbox') autreEffractionCheckbox : ReactiveCheckboxComponent;
+    @ViewChild('autreTypePresenceCheckbox') autreTypePresenceCheckbox : ReactiveCheckboxComponent;
+    @ViewChild('dateLancement') dateLancement : ReactiveDateInputComponent;
+    @ViewChild('dateArrivee') dateArrivee : ReactiveDateInputComponent;
 
     @ViewChild('masonryLayout') masonryLayout;
 
@@ -509,6 +513,9 @@ export class InterventionDetails
             // envoi du changement dans l'intervention
             this._interService.sendInterChange( data );
 
+            // c'est pour la validation des champs qui dépendent du champs modifié
+            // exemple: champs dateArrivee dépend de dateLancement modifié
+            this.detectChanges();
         } );
     }
 

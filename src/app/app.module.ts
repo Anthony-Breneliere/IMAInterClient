@@ -55,6 +55,7 @@ import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { MinimumCheckedRequiredDirective } from './tools/validators/multiple_checkbox.validator.directive';
 import { MinimumDateRequiredDirective } from './tools/validators/min_date.validator.directive';
+import { MaximumDateRequiredDirective } from './tools/validators/max_date.validator.directive';
 
 registerLocaleData(localeFr);
 
@@ -102,7 +103,8 @@ registerLocaleData(localeFr);
         ReactiveDateInputComponent,
         TestComponent,
         MinimumCheckedRequiredDirective,
-        MinimumDateRequiredDirective
+        MinimumDateRequiredDirective,
+        MaximumDateRequiredDirective
         ],
 
     /*
