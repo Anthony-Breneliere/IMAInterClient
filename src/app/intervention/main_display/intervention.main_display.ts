@@ -17,6 +17,7 @@ import {Subscription} from 'rxjs';
 import 'rxjs-compat/add/operator/switchMap';
 import { SearchQuery } from 'app/services/searchQuery';
 
+
 @Component({
     moduleId: module.id,
     selector: 'intervention-main-display',
@@ -73,35 +74,71 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
 
     ngOnInit() {
 
-      // gestion des url par id d'intervention
-      if ( this.route.routeConfig.path.startsWith( 'intervention' ) )
+      this.route.url.subscribe( url =>
       {
-        // le changement de l'id dans la route doit charger l'intervention et déployer
-        // le groupe correspondant à l'intervention dans la barre de navigation.
-
-        this.paramsSubscription = this.route.params.subscribe( params =>
+        switch( url[0].path )
         {
-          let id : number = params['id'];
+          // en cas de search dans l'url alors on déploie tous les groupes
 
-          this.urlInterventionId = id;
-          if ( this.urlInterventionId > 0 )
-          {
-            // une fois la connection établie et l'intervention id complète reçu du serveur, alors
-            // on sélectionne et affiche l'intervention
-            this._interService.connectAndLoadIntervention( this.urlInterventionId ).then( (inter : Intervention) =>
+          case "search":
+
+            setTimeout( () => {
+              if ( this.myGroup )
+                this.myGroup.Expanded = true;
+              if ( this.othersGroup )
+                this.othersGroup.Expanded = true;
+              if ( this.searchGroup )
+                this.searchGroup.Expanded = true;
+            }, 20 );
+
+            break;
+
+          // en cas d'intervention dans l'url alors on charge l'intervention et on déploie le groupe qui la contient
+
+          case "intervention":
+
+            let id : string = url[1].path;
+
+            if ( id )
             {
-              this.selectedIntervention = inter;
+              this.urlInterventionId = parseInt( url[1].path );
 
-              // ouverture du groupe de l'intervention
-              this.deployGroup( inter );
-            } )
+              // une fois la connection établie et l'intervention id complète reçu du serveur, alors
+              // on sélectionne et affiche l'intervention
+              this._interService.connectAndLoadIntervention( this.urlInterventionId ).then( (inter : Intervention) =>
+              {
+                this.selectedIntervention = inter;
 
-            .catch( (reason : any) => { console.error( "Erreur de chargement de l'intervention" + id + ": " + reason ); })
-          }
-        } );
+                // ouverture du groupe de l'intervention
+                this.deployGroup( inter );
+              } )
+
+              .catch( (reason : any) => { console.error( "Erreur de chargement de l'intervention" + id + ": " + reason ); })
+            }
+        }
+
+      });
+
+      // le changement de l'id dans la route doit charger l'intervention et déployer
+      // le groupe correspondant à l'intervention dans la barre de navigation.
+
+      this.paramsSubscription = this.route.params.subscribe( params =>
+      {
+
+      } );
+
+      // e cas de recherche on déploie tous les groupe pour afficher à la fois les interventions closes/ en cours
+      if ( this.route.url[0] == "search" )
+      {
+        setTimeout( () => {
+          if ( this.myGroup )
+            this.myGroup.Expanded = true;
+          if ( this.othersGroup )
+            this.othersGroup.Expanded = true;
+          if ( this.searchGroup )
+            this.searchGroup.Expanded = true;
+        }, 20 );
       }
-
-
 
       this.queryParamsSubscription = this.route.queryParams.subscribe( queryParams =>
       {
@@ -155,22 +192,6 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
             this.deployGroup( this.selectedIntervention );
     }
 
-    ngAfterViewInit()
-    {
-      // e cas de recherche on déploie tous les groupe pour afficher à la fois les interventions closes/ en cours
-      if ( this.route.routeConfig.path.startsWith( 'search' ) )
-      {
-        setTimeout( () => {
-          if ( this.myGroup )
-            this.myGroup.Expanded = true;
-          if ( this.othersGroup )
-            this.othersGroup.Expanded = true;
-          if ( this.searchGroup )
-            this.searchGroup.Expanded = true;
-        }, 20 );
-      }
-
-    }
 
     private _selectedIntervention : Intervention;
     get selectedIntervention() : Intervention

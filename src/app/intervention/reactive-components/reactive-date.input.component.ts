@@ -8,7 +8,15 @@ declare var $: any;
 {
   selector: 'reactive-date-input',
   template: `
-    <date-input [changeFromModel]="isThirdParty" [(ngModel)]="value" [minDateRequired]="minDateRequired" ></date-input>
+    <date-input
+      [changeFromModel]="isThirdParty"
+      [(ngModel)]="value"
+      [minDateRequired]="minDateRequired"
+      [maxDateRequired]="maxDateRequired"
+      [format]='format'
+      [startView]='startView'
+      [minView]='minView' >
+    </date-input>
 `,
   styleUrls: [ './reactive-base.css' ],
   providers: [ { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ReactiveDateInputComponent), multi: true } ]
@@ -16,6 +24,10 @@ declare var $: any;
 export class ReactiveDateInputComponent extends ReactiveBaseComponent {
 
   @Input() minDateRequired : Date;
+  @Input() maxDateRequired : Date;
+  @Input() startView : string ='hour';
+  @Input() minView : string ='minute';
+  @Input() format : string ='DD/MM/YYYY HH:mm:ss';
 
   constructor(
     protected ref: ChangeDetectorRef )

@@ -13,7 +13,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule }   from '@angular/forms';
 import { RouterModule }   from '@angular/router';
-import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
+import { DlDateTimeDateModule, DlDateTimePickerModule, DlDateTimeInputModule } from 'angular-bootstrap-datetimepicker';
 
 /* Liste des services */
 import { InterventionService } from './services/intervention.service';
@@ -28,7 +28,8 @@ import { Checkbox } from './tools/checkbox/checkbox';
 import { Section } from './intervention/section/section';
 import { Field } from './intervention/section/field';
 import { InterventionGroup } from './intervention/groupe/intervention.group';
-import { GroupFilter } from './intervention/groupe/groupFilter';
+import { GroupFilter } from './intervention/filter/groupFilter';
+import { SearchIntervention } from './intervention/search/search';
 import { InterventionDetails } from './intervention/details/intervention.details';
 import { InterventionButton } from './intervention/button/intervention.button';
 import { InterventionButtonContent } from './intervention/button/intervention.button.content';
@@ -68,6 +69,7 @@ registerLocaleData(localeFr);
         HttpClientModule,
         RouterModule.forRoot (appRoutes),
         DlDateTimeDateModule,  // <--- Determines the data type of the model
+        DlDateTimeInputModule,
         DlDateTimePickerModule,
       ],
     /*
@@ -85,6 +87,7 @@ registerLocaleData(localeFr);
         DateInputComponent,
         InterventionGroup,
         GroupFilter,
+        SearchIntervention,
         InterventionDetails,
         InterventionButton, InterventionButtonContent,
         DraggableDirective,

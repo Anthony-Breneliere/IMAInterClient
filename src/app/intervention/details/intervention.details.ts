@@ -65,6 +65,9 @@ export class InterventionDetails
 
     private _oldValidationStatus: RapportValidationStatusEnum;
 
+    // C'est juste pour avoir l'enum Etat accessible dans le template
+    private Etat = Etat;
+
     @Input() public set intervention( value : Intervention )  {
         this._intervention = value;
 
@@ -80,7 +83,8 @@ export class InterventionDetails
         // j'indique que l'utilisateur n'a pas encore touché au rapport
         this._oldValidationStatus = RapportValidationStatusEnum.Unknown;
 
-        this.updateLayout();
+        // le nombre de section peut changer la grille masonry doit être recréée
+        this.reinitGrid();
     }
 
     @ViewChild('interventionForm')
@@ -99,61 +103,80 @@ export class InterventionDetails
     @ViewChild('masonryLayout') masonryLayout;
 
 
+    get dateNow() : Date { return new Date() };
 
-    private grid : any;
-
-    ngAfterViewChecked ()
+    get maxDateDepartRequired()
     {
-        if ( this.masonryLayout )
-        {
-            if ( ! this.grid )
-            {
-              // voir https://masonry.desandro.com/options.html pour les possiblités
-              this.grid = new Masonry( '.masonry_grid', {
-                  itemSelector: 'section',
-                  columnWidth: 10,
-                  containerStyle: { position: 'relative' },
-                  horizontalOrder: true /* Lays out items to (mostly) maintain horizontal left-to-right order. */
-                });
-            }
+      let dateNow = new Date();
 
-        }
+      // la date de départ max c'est soit la date d'arrivée, soit maintenant si
+      return ( this.intervention.DateArrivee ?? dateNow < dateNow ? this.intervention.DateArrivee : dateNow );
     }
 
+    private grid : any;
 
 
     setValidationStatus( status )
     {
-      if ( this.intervention?.Rapport )
+      if ( this.rapport )
       {
-        this._oldValidationStatus = this.intervention.Rapport.ValidationStatus;
+        this._oldValidationStatus = this.rapport.ValidationStatus;
 
         switch( status )
         {
           case 'VALID':
-            this.intervention.Rapport.ValidationStatus = RapportValidationStatusEnum.Valid; break;
+            this.rapport.ValidationStatus = RapportValidationStatusEnum.Valid; break;
 
           case 'INVALID':
-            this.intervention.Rapport.ValidationStatus = RapportValidationStatusEnum.Invalid; break;
+            this.rapport.ValidationStatus = RapportValidationStatusEnum.Invalid; break;
 
           default:
-            this.intervention.Rapport.ValidationStatus = RapportValidationStatusEnum.Unknown; break;
+            this.rapport.ValidationStatus = RapportValidationStatusEnum.Unknown; break;
         }
       }
     }
 
-    updateLayout()
+    /**
+     * Reinit de la grille masonry( nécessaire quand les éléments changes)
+     */
+    reinitGrid()
     {
       setTimeout( () => {
-        this.grid = null;
+
+        if ( this.masonryLayout )
+        {
+          // voir https://masonry.desandro.com/options.html pour les possiblités
+          this.grid = new Masonry( '.masonry_grid', {
+              itemSelector: 'section',
+              columnWidth: 10,
+              containerStyle: { position: 'relative' },
+              horizontalOrder: true /* Lays out items to (mostly) maintain horizontal left-to-right order. */
+            });
+
+          // le detect change est nécessaire en cas de resize d'un composant
+          this.detectChanges();
+        }
 
       }, 50);
     }
 
-    ngOnDestroy()
+    /**
+     * Mise à jour du layout masonry
+     */
+    updateLayout()
     {
-        if ( this.interventionChangeSubscription )
-            this.interventionChangeSubscription.unsubscribe();
+      setTimeout( () => {
+
+        if ( this.grid )
+        {
+          this.grid.layout();
+
+          // le detect change est nécessaire en cas de resize d'un composant
+          this.detectChanges();
+        }
+
+
+      }, 50);
     }
 
     public get readOnlySection()
@@ -167,16 +190,16 @@ export class InterventionDetails
 
     public get telephonesSite() : Telephone[] { return Array.isArray( this.site.Telephones ) ? this.site.Telephones : [] }
     public get intervention() : Intervention { return this._intervention; }
-    private get rapport() : Rapport { return this.intervention.Rapport; }
-    private get intervenant() : Intervenant { return this.intervention.Intervenant; }
-    private get site() : Site { return this.intervention.Site; }
+    private get rapport() : Rapport { return this.intervention?.Rapport; }
+    private get intervenant() : Intervenant { return this.intervention?.Intervenant; }
+    private get site() : Site { return this.intervention?.Site; }
     private get trajet() : RapportTrajet { return this.rapport.Trajet; }
     private get presence() : RapportPresence { return this.rapport.Presence; }
     private get miseEnSecurite() : RapportMiseEnSecurite { return this.rapport.MiseEnSecurite; }
     private get verifications() : RapportVerifications {  return this.rapport.Verifications; }
     private get arriveeSurLieux() : RapportArriveeSurLieux { return this.rapport.ArriveeSurLieux; }
     private get nonAccesAuSite() : RapportNonAccesAuSite { return this.arriveeSurLieux.NonAccesAuSite; }
-    private get infosFacturation() : InfosFacturation { return this.intervention.InfosFacturation; }
+    private get infosFacturation() : InfosFacturation { return this.intervention?.InfosFacturation; }
 
     private get quellesLumieresAllumees() : RapportLumieresAllumees
     {
@@ -283,9 +306,6 @@ export class InterventionDetails
     public detectChanges() : void
     {
         this._changeDetector.detectChanges();
-
-        if ( this._intervention )
-            console.log("Détection des changements pour l'affichage de l'intervention " + this._intervention.Id );
     }
 
     public get NonVerifAutreChecked() : boolean
@@ -583,23 +603,6 @@ export class InterventionDetails
         }
     }
 */
-    public get updateIsDateDepartUpdatable() : boolean
-    {
-        var updatable = false;
-        if ( this.intervention )
-        {
-            if ( this.intervention.Intervenant
-                &&  this.intervention.Etat == Etat.EnCours )
-                updatable = true;
-
-        }
-        return updatable;
-    }
-
-    public get updateIsDateArriveeUpdatable() : boolean
-    {
-        return this.updateIsDateDepartUpdatable;
-    }
 
     rapportWasDisplayed : boolean = false;
     public get rapportDisplayed() : boolean
@@ -609,7 +612,7 @@ export class InterventionDetails
       if ( rapportIsDisplayed != this.rapportWasDisplayed )
       {
         // je réinitialise la grille car le nombre d'éléments est impacté par cette variable
-        this.updateLayout();
+        this.reinitGrid();
 
         this.rapportWasDisplayed = rapportIsDisplayed;
       }
@@ -618,4 +621,9 @@ export class InterventionDetails
     }
 
 
+    ngOnDestroy()
+    {
+        if ( this.interventionChangeSubscription )
+            this.interventionChangeSubscription.unsubscribe();
+    }
 }
