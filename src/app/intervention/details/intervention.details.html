@@ -189,7 +189,7 @@
           </tr>
 
           <tr field label="Raison non accès" *ngIf="verifAutreCheckbox?.value">
-            <reactive-input name="verifRaisonNonAcces" [(ngModel)]="nonAccesAuSite.AutreTexte" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AutreTexte:$event}}})" required></reactive-input>
+            <reactive-textarea name="verifRaisonNonAcces" [(ngModel)]="nonAccesAuSite.AutreTexte" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AutreTexte:$event}}})" required></reactive-textarea>
           </tr>
 
           <tr field label="Utilisation des moyens d'accès">
@@ -209,7 +209,7 @@
         </tr>
 
         <tr field label="Raison non vérification des issues" *ngIf="arriveeSurLieux.VerifIntegraleIssues === false">
-            <reactive-input name="verifRaisonNonVerification" id="RaisonNonVerificationIssues" [(ngModel)]="arriveeSurLieux.RaisonNonVerificationIssues" (ngModelChange)="changeRapport({ArriveeSurLieux:{RaisonNonVerificationIssues:$event}})"></reactive-input>
+            <reactive-textarea name="verifRaisonNonVerification" id="RaisonNonVerificationIssues" [(ngModel)]="arriveeSurLieux.RaisonNonVerificationIssues" (ngModelChange)="changeRapport({ArriveeSurLieux:{RaisonNonVerificationIssues:$event}})"></reactive-textarea>
         </tr>
 
         <tr field label="Situation anormale">
@@ -221,7 +221,7 @@
         </tr>
 
         <tr field label="Commentaires">
-            <reactive-input name="VerificationCommentaire" [(ngModel)]="verifications.VerificationCommentaire" (ngModelChange)="changeRapport({Verifications:{VerificationCommentaire:$event}})"></reactive-input>
+            <reactive-textarea name="VerificationCommentaire" [(ngModel)]="verifications.VerificationCommentaire" (ngModelChange)="changeRapport({Verifications:{VerificationCommentaire:$event}})"></reactive-textarea>
         </tr>
 
     </section>
@@ -310,11 +310,11 @@
         </tr>
 
         <tr field label="Autre effraction" *ngIf="autreEffractionCheckbox?.value" >
-            <reactive-input name="effractionQuelleAutre" [(ngModel)]="quellesEffractions.Autre" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Autre:$event}}})" required></reactive-input>
+            <reactive-textarea name="effractionQuelleAutre" [(ngModel)]="quellesEffractions.Autre" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Autre:$event}}})" required></reactive-textarea>
         </tr>
 
         <tr field label="Commentaires">
-            <reactive-input name="EffractionCommentaire" [(ngModel)]="verifications.EffractionCommentaire" (ngModelChange)="changeRapport({Verifications:{EffractionCommentaire:$event}})"></reactive-input>
+            <reactive-textarea name="EffractionCommentaire" [(ngModel)]="verifications.EffractionCommentaire" (ngModelChange)="changeRapport({Verifications:{EffractionCommentaire:$event}})"></reactive-textarea>
         </tr>
 
     </section>
@@ -334,7 +334,7 @@
         </tr>
 
         <tr field label="Autre présence" *ngIf="autreTypePresenceCheckbox?.value">
-            <reactive-input name="presenceQuelleAutre" [(ngModel)]="presence.AutrePresence" (ngModelChange)="changeRapport({Presence:{AutrePresence:$event}})" required></reactive-input>
+            <reactive-textarea name="presenceQuelleAutre" [(ngModel)]="presence.AutrePresence" (ngModelChange)="changeRapport({Presence:{AutrePresence:$event}})" required></reactive-textarea>
         </tr>
 
         <tr field label="Précision animaux" *ngIf="presence.PresenceAnimale">
@@ -387,7 +387,7 @@
     </section>
 
 
-    <section *ngIf="infosFacturation" title="Facturation" data-gs-width="auto" [readOnly]="readOnlySection" (resize)="updateLayout()">
+    <section *ngIf="rapportDisplayed && infosFacturation" title="Facturation" data-gs-width="auto" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
         <tr field label="Envoi du CR">
             <select name="facturationEnvoiCR" [(ngModel)]="intervention.InfosFacturation.AppelPourCR" (ngModelChange)="changeInfoFactu({AppelPourCR:$event})" required>
