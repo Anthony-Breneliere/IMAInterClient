@@ -2,11 +2,10 @@
  * Created by abreneli on 04/07/2016.
  */
 
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
 import { ConnectionStatus } from '../services/connection.status';
-import { ChangeDetectorRef } from '@angular/core';
-import { InterventionService } from '../services/intervention.service';
-import { PushNotificationService } from 'app/services/push-notification.service';
+import { environment } from '../../environments/environment';
+
 @Component({
     moduleId: module.id,
     selector: 'app-bar',
@@ -20,15 +19,16 @@ export class AppBar {
 
     private _connected : boolean;
 
-    constructor( public connectionStatus: ConnectionStatus, public interService: InterventionService,public pushNotifService: PushNotificationService, private cd: ChangeDetectorRef  )
+    constructor( public _connStatus: ConnectionStatus, private _cd: ChangeDetectorRef )
     {
         // inialisation de l'affichage du statut de connexion
-        this._connected = connectionStatus.connected;
+        this._connected = _connStatus.connected;
+
 
         // inscription aux changements de statuts de connexion
-        connectionStatus.connectedStatus$.subscribe( (conn) => {
+        _connStatus.connectedStatus$.subscribe( (conn) => {
             this._connected = conn;
-            cd.detectChanges(); } )
+            _cd.detectChanges(); } )
     }
 
     public onClickListButton() : void {
@@ -36,14 +36,18 @@ export class AppBar {
     }
 
     get ErrorMessages() : [number, string][] {
-        return this.connectionStatus.errorMessages;
+        return this._connStatus.errorMessages;
     }
 
-    ngOnInit(){
-        // appeler ici pour initialiser le service worker si le navigateur le permet
-        this.pushNotifService.init();
-      }
+    get serviceVersion() : string
+    {
+      return this._connStatus.serviceVersion;
+    }
 
+    get clientVersion() : string
+    {
+      return environment.version;
+    }
 
     // m1State() : string {
     //     return this.connectionStatus.m1Connected ? 'connected' : 'disconnected';
@@ -68,7 +72,7 @@ export class AppBar {
     }
 
     closeError( id : number ) : void {
-        this.connectionStatus.removeErrorMessage( id );
-        this.cd.detectChanges();
+        this._connStatus.removeErrorMessage( id );
+        this._cd.detectChanges();
     }
 }

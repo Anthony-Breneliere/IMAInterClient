@@ -10,7 +10,11 @@
     <!--Titre de l'application-->
     <div id="title">IMA Intervention</div>
 
-    <!--Etat de connexion-->
+    <table id="version" class="hoverable transition_1s">
+      <tr>Client:<td></td><td>{{clientVersion}}</td></tr>
+      <tr>Service:<td></td><td>{{serviceVersion}}</td></tr>
+    </table>
+git p    <!--Etat de connexion-->
     <div id="server_{{connectedState}}">{{connectedLabel}}</div>
 
     <!--Séparateur-->
