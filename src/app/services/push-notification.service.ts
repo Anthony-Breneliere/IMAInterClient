@@ -37,11 +37,6 @@ export class PushNotificationService {
             console.log('Service Worker is registered', swReg);
 
             this.swRegistration = swReg;
-
-            navigator.serviceWorker.addEventListener('message', (event) => {
-              this.notifications.push(event.data);
-            });
-
           })
           .catch(error => {
             console.error('Service Worker register error', error);
