@@ -2,13 +2,12 @@
     "version": "0.2.0",
 
 
-
     "configurations": [
         {
-            "name": "Chrome ImaInter",
+            "name": "intervention/0",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost:4512/IMAInter",
+            "url": "http://localhost:4512/IMAInter/#/intervention/1242100",
             "sourceMaps": true,
             "sourceMapPathOverrides": {
                 "webpack:/*": "${webRoot}/*"
@@ -18,21 +17,19 @@
                 "zone.js"
             ],
         },
-
         {
-            "name": "Chrome TestPage",
-            "type": "chrome",
-            "request": "launch",
-            "url": "http://localhost:4512/test",
-            "sourceMaps": true,
-            "sourceMapPathOverrides": {
-                "webpack:/*": "${webRoot}/*"
-            },
-            "webRoot": "${workspaceFolder}",
-            "skipFiles": [
-                "zone.js"
-            ],
-        },
-
+          "name": "search?contrat=20160781002",
+          "type": "chrome",
+          "request": "launch",
+          "url": "http://localhost:4512/IMAInter/#/search?contrat=20160781002",
+          "sourceMaps": true,
+          "sourceMapPathOverrides": {
+              "webpack:/*": "${webRoot}/*"
+          },
+          "webRoot": "${workspaceFolder}",
+          "skipFiles": [
+              "zone.js"
+          ],
+        }
     ]
 }

@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectorRef, ElementRef, forwardRef, LOCALE_ID, Inject, Renderer2 } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef, ElementRef, forwardRef, LOCALE_ID, Inject, Renderer2, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, DefaultValueAccessor  } from '@angular/forms';
-import { DateButton } from 'angular-bootstrap-datetimepicker';
+import { DateButton, DlDateTimePickerComponent } from 'angular-bootstrap-datetimepicker';
 import * as _moment from 'moment';
 import {unitOfTime} from 'moment';
 
@@ -29,22 +29,24 @@ export const DATAINPUT_CONTROL_VALUE_ACCESSOR: any = {
   template: `
 <div class="eventReceiver dropdown">
   <input
-    class="dateInput cellinput date-dropdown"
     data-toggle="dropdown"
     aria-label="Date"
     aria-haspopup="true"
     aria-expanded="false"
     required
     [disabled]="disabled"
+    class="dateInput cellinput date-dropdown"
     [class.transition_1s]="!changeFromModel"
     [class.borderhalo]="changeFromModel"
-    dlDateTimeInput [ngModel]="formattedValue" />
+    [ngModelOptions]="{ updateOn : 'blur'}"
+    [(ngModel)]="formattedValue" />
   <div class="dropdown-menu" (click)="keepDropDownOpen($event)">
     <div style="width:{{width}};">
       <dl-date-time-picker
-        startView="hour"
-        minView="minute"
-        minuteStep="1"
+        [startView]="startView"
+        [minView]="minView"
+        [minuteStep]="minuteStep"
+        [startDate]="minDateSelected || maxDateSelected"
         [(ngModel)]="dateValue"
         (change)="dateSelected($event)"
         [selectFilter]="datePickerFilter">
@@ -60,12 +62,24 @@ export class DateInputComponent implements ControlValueAccessor {
 
   protected _value : string = '';
 
-  format: string = 'DD/MM/YYYY HH:mm:ss';
-
+  @Input() format: string = 'DD/MM/YYYY';
   @Input() changeFromModel : boolean;
   @Input() disabled : boolean;
   @Input() width : string = "360px";
-  @Input() minDateRequired : Date;
+  @Input() minDateSelected: Date;
+  @Input() maxDateSelected : Date;
+  @Input() startView : string ="day";
+  @Input() minView : string ="day";
+  @Input() minuteStep : string = "1";
+
+  /**
+   * Work around for bug https://github.com/dalelotts/angular-bootstrap-datetimepicker/issues/461
+   * Si pas de changement sur le dl-date-time-picker, alors le selectFilter n'est jamais appelé
+   */
+  get startDate() : Date
+  {
+    return this.minDateSelected || this.maxDateSelected;
+  }
 
   constructor(
     private _elementRef: ElementRef,
@@ -94,11 +108,20 @@ export class DateInputComponent implements ControlValueAccessor {
     return true;
   }
 
-  datePickerFilter = (dateButton: DateButton, viewName: string) => {
-    if(this.minDateRequired != null) {
-      return dateButton.value >= moment(this.minDateRequired).startOf(viewName as unitOfTime.StartOf).valueOf();
+  datePickerFilter = (dateButton: DateButton, viewName: string) =>
+  {
+    let enabled : boolean = true;
+    if(this.minDateSelected) {
+      enabled = dateButton.value >= moment(this.minDateSelected).startOf(viewName as unitOfTime.StartOf).valueOf();
     }
-    return  true;
+    if(this.maxDateSelected) {
+      enabled = enabled && dateButton.value <= moment(this.maxDateSelected).endOf(viewName as unitOfTime.StartOf).valueOf();
+    }
+    return enabled;
+  }
+
+  inputFilter = (value: (number | null | undefined)) => {
+    return this.datePickerFilter({value} as DateButton, 'minute');
   }
 
    /**
@@ -142,6 +165,10 @@ export class DateInputComponent implements ControlValueAccessor {
     return formatted;
   }
 
+  set formattedValue( formattedDate : string )
+  {
+    this.value = formattedDate ? moment( formattedDate, this.format )?.toISOString(true) ?? '' : '';
+  }
 
 
   /**
@@ -167,7 +194,6 @@ export class DateInputComponent implements ControlValueAccessor {
    *  the `DlDateTimePickerChange` event.
    */
   dateSelected(event) {
-    console.log('_isDropdownVisible', this._isPickerOpen);
     if (this._isPickerOpen && event.value) {
       $('.dateInput', this._elementRef.nativeElement).dropdown('toggle');
     }

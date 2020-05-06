@@ -13,7 +13,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule }   from '@angular/forms';
 import { RouterModule }   from '@angular/router';
-import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
+import { DlDateTimeDateModule, DlDateTimePickerModule, DlDateTimeInputModule } from 'angular-bootstrap-datetimepicker';
 
 /* Liste des services */
 import { InterventionService } from './services/intervention.service';
@@ -28,7 +28,8 @@ import { Checkbox } from './tools/checkbox/checkbox';
 import { Section } from './intervention/section/section';
 import { Field } from './intervention/section/field';
 import { InterventionGroup } from './intervention/groupe/intervention.group';
-import { GroupFilter } from './intervention/groupe/groupFilter';
+import { GroupFilter } from './intervention/filter/groupFilter';
+import { SearchIntervention } from './intervention/search/search';
 import { InterventionDetails } from './intervention/details/intervention.details';
 import { InterventionButton } from './intervention/button/intervention.button';
 import { InterventionButtonContent } from './intervention/button/intervention.button.content';
@@ -54,6 +55,7 @@ import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { MinimumCheckedRequiredDirective } from './tools/validators/multiple_checkbox.validator.directive';
 import { MinimumDateRequiredDirective } from './tools/validators/min_date.validator.directive';
+import { MaximumDateRequiredDirective } from './tools/validators/max_date.validator.directive';
 
 registerLocaleData(localeFr);
 
@@ -68,6 +70,7 @@ registerLocaleData(localeFr);
         HttpClientModule,
         RouterModule.forRoot (appRoutes),
         DlDateTimeDateModule,  // <--- Determines the data type of the model
+        DlDateTimeInputModule,
         DlDateTimePickerModule,
       ],
     /*
@@ -85,6 +88,7 @@ registerLocaleData(localeFr);
         DateInputComponent,
         InterventionGroup,
         GroupFilter,
+        SearchIntervention,
         InterventionDetails,
         InterventionButton, InterventionButtonContent,
         DraggableDirective,
@@ -99,7 +103,8 @@ registerLocaleData(localeFr);
         ReactiveDateInputComponent,
         TestComponent,
         MinimumCheckedRequiredDirective,
-        MinimumDateRequiredDirective
+        MinimumDateRequiredDirective,
+        MaximumDateRequiredDirective
         ],
 
     /*

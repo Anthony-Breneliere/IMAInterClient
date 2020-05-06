@@ -6,18 +6,7 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'group-filter',
-  template: `
-  <label>Filtre</label>
-  <select id="filterType" [(ngModel)]="TypeChoice" >
-      <option [ngValue]="null"></option>
-      <option *ngFor="let operator of AllTypeChoices">{{operator}}</option>
-  </select>
-  =
-  <select id="filterValue" [(ngModel)]="ChosenValue" >
-      <option [ngValue]="null"></option>
-      <option *ngFor="let client of AllChoices">{{client}}</option>
-  </select>
-  `,
+  templateUrl: './groupFilter.html',
   styleUrls:  ['./groupFilter.scss']
 })
 export class GroupFilter implements OnChanges, OnInit

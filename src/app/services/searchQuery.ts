@@ -7,8 +7,7 @@ export class SearchQuery
 
   public TypeIntervention : string;
 
-  public StartDate : string;
+  public StartDate : Date;
 
-  public EndDate : string;
-
+  public EndDate : Date;
 }

@@ -2,20 +2,18 @@
  * Created by abreneli on 04/07/2016.
  */
 
-import { Component,  Input, Output, EventEmitter, ChangeDetectionStrategy,
-  ViewChild, ChangeDetectorRef, AfterViewInit, AfterContentChecked } from '@angular/core';
+import { Component,  Input, Output, EventEmitter,
+  ViewChild, ChangeDetectorRef } from '@angular/core';
 import { InterventionButton } from '../button/intervention.button';
 import { Intervention } from '../../model/intervention';
 import { InterventionService } from '../../services/intervention.service';
 import { SortInterventionByDateTime } from './sortInterPipe';
-import { GroupFilter } from './groupFilter';
+import { GroupFilter } from '../filter/groupFilter';
 import { Subscription } from 'rxjs';
-import { filter, delay } from 'rxjs/operators';
-import { Message } from '../../model/message';
+import {  delay } from 'rxjs/operators';
 import { ConnectionStatus } from '../../services/connection.status';
 import { Etat } from "../../model/enums";
 import { SearchQuery } from 'app/services/searchQuery';
-import { ActivatedRoute, Params, Router } from '@angular/router';
 
 
 export enum GroupTypeEnum
@@ -44,9 +42,6 @@ export class InterventionGroup
     @ViewChild('filterOthers', {static: false}) filterOthers;
     @ViewChild('filterMine', {static: false}) filterMine;
 
-    private paramsSubscription : Subscription;
-    private queryParamsSubscription : Subscription;
-
     public Search : SearchQuery = new SearchQuery();
 
     private isMyInters : boolean = false;
@@ -72,8 +67,7 @@ export class InterventionGroup
     constructor(
       private _interService : InterventionService,
       private _connectionStatus : ConnectionStatus,
-      protected _cdref: ChangeDetectorRef,
-      private route: ActivatedRoute )
+      protected _cdref: ChangeDetectorRef )
     {
     }
 
@@ -104,29 +98,6 @@ export class InterventionGroup
 
       // initialise la liste des interventions
       this.updateGroupInterventions();
-
-      // gestion des url de recherche
-      if ( this.route.routeConfig.path.startsWith( 'search' ) )
-      {
-        this.paramsSubscription = this.route.queryParams.subscribe( params =>
-        {
-          let contrat : string = params['contrat'];
-
-          if( this.GroupType === GroupTypeEnum.interventionsCloses)
-          {
-            this.Search =
-            {
-              FreeQuery: contrat,
-              EndDate: params['dateFin'],
-              StartDate: params['dateDebut'],
-              TypeIntervention:  params['typeIntervention']
-            }
-
-            this.searchInterventions();
-          }
-
-        } );
-      }
 
     }
 
@@ -223,7 +194,7 @@ export class InterventionGroup
     /**
      * Les interventions closes issues de la recheche
      */
-    public get CloseInterventions(): Intervention[]
+    get CloseInterventions(): Intervention[]
     {
         let closed = this._interService.getLoadedInterventions().filter(
             (i: Intervention) => { return i.Etat == Etat.Close || i.Etat == Etat.Annulee } );
@@ -239,7 +210,7 @@ export class InterventionGroup
         return false;
     }
 
-    public onClickHeader() : void
+    onClickHeader() : void
     {
         this.Expanded = ! this.Expanded;
     }
@@ -251,41 +222,31 @@ export class InterventionGroup
 
     }
 
-    searchInterventions(  )
-    {
-      let query = this.Search;
-
-      // on recherche les interventions à partir de 4 caractères saisis
-      if ( query )
-      {
-        var acceptableQuery = (query.FreeQuery && query.FreeQuery.length) > 3
-          || query.StartDate != null
-          || query.TypeIntervention;
-
-        if( acceptableQuery )
-        {
-          // on vide les interventions du groupe
-          this._groupInterventions = [];
-          this._interService.searchInterventions( this.Search ).catch( reason => {
-            console.log( "La recherche d'intervention a échoué " + reason + ":" );
-            console.log( this.Search );
-          });
-
-        }
-      }
-
-    }
-
     addNewIntervention()
     {
         this._interService.addNewIntervention();
     }
 
 
-    public get readOnly()
+    get readOnly()
     {
         return ! this._connectionStatus.connected
 
+    }
+
+    onSearchEvent($event)
+    {
+      if ( $event='start')
+      {
+        // on vide les interventions du groupe
+        this._groupInterventions = [];
+
+        // todo: afficher une animation d'attente ?
+      }
+      else if ( $event='stop')
+      {
+        // todo: cacher l'animation d'attente ?
+      }
     }
 
 }

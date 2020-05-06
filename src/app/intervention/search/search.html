@@ -1,0 +1,24 @@
+<label>Numéro, Contrat, Intervenant, Client, Ville ou CP</label>
+<input #searchInput [(ngModel)]="Search.FreeQuery" (ngModelChange)="searchInterventions()" />
+
+<label>Date de début</label>
+<date-input #dateDebut [(ngModel)]="Search.StartDate" [maxDateRequired]="maxDateRequired" (ngModelChange)="searchInterventions()" width="265px" ></date-input>
+
+<label>Date de fin</label>
+<date-input #dateFin [(ngModel)]="Search.EndDate" [minDateRequired]="Search.StartDate" [maxDateRequired]="dateNow" (ngModelChange)="searchInterventions()" width="265px" ></date-input>
+
+<label>Type d'intervention</label>
+<select id="selectIntervenant" [(ngModel)]="Search.TypeIntervention" (ngModelChange)="searchInterventions()" >
+
+  <option [ngValue]="null"></option>
+  <option>Intervention</option>
+  <option>Gardiennage</option>
+  <option>Ronde</option>
+  <option>Gardiennage à la demande</option>
+  <option>Ronde à la demande</option>
+  <option>Maintenance</option>
+  <option>SAV</option>
+  <option>Test réseau</option>
+
+</select>
+

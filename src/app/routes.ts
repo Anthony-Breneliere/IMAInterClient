@@ -2,23 +2,16 @@
  * Created by abreneli on 04/07/2016.
  */
 import { ModuleWithProviders }  from '@angular/core';
-import { Routes, RouterModule }  from '@angular/router';
-import { InterventionAppComponent } from './app.component';
-import { TestComponent } from './test/test.component';
+import { Routes, RouterModule, UrlSegment }  from '@angular/router';
 import { InterventionMainDisplay } from './intervention/main_display/intervention.main_display';
 
 export const appRoutes: Routes = [
     {
-        path: 'intervention/:id',
+        // il est important de faire apparaître InterventionMainDisplay une seule fois
+        // dans la configuration pour ne pas avoir à détruire InterventionMainDisplay
+        // en casde changement de route.
+        path: '**',
         component: InterventionMainDisplay
-    },
-    {
-      path: 'search',
-      component: InterventionMainDisplay
-    },
-    {
-        path: 'test',
-        component: TestComponent
     },
     {
         path: '',
@@ -26,5 +19,17 @@ export const appRoutes: Routes = [
         redirectTo : 'intervention/0'
     }
 ];
+
+export function matcherFunction(url: UrlSegment[])
+{
+    const path = url[0].path;
+
+    if( path.startsWith('intervention')
+      || path.startsWith('search') )
+    {
+      return {consumed: url};
+    }
+  return null;
+}
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);

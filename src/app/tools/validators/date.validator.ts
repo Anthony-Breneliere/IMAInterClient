@@ -7,7 +7,7 @@ if ('default' in _moment) {
   moment = _moment['default'];
 }
 
-export function minimumDateRequired( minDateRequired = "" ): ValidatorFn
+export function dateRequired( minDateRequired = "", requirementType: ('minDate' | 'maxDate') ): ValidatorFn
 {
   return function validate (formControl: AbstractControl) : {[key: string]: any} | null
   {
@@ -23,8 +23,11 @@ export function minimumDateRequired( minDateRequired = "" ): ValidatorFn
       return { minDateInvalid: formControl.value };
 
     // date valide et supérieure à minDate, on valide
-    if (inputDate < minDate )
+    if (requirementType == 'minDate' && inputDate < minDate )
       return { minDateNotSatisfied: true };
+
+    if (requirementType == 'maxDate' && inputDate > minDate )
+      return { maxDateNotSatisfied: true };
 
     // sinon on valide
     return null;
