@@ -32,14 +32,14 @@ export class PushNotificationService {
       {
         console.log("navigateur compatible service worker et push");
 
-        navigator.serviceWorker.register('assets/sw.js')
-          .then(swReg => {
+        navigator.serviceWorker.register('assets/sw.js').then( swReg => {
+
             console.log('Service Worker is registered', swReg);
+
             this.swRegistration = swReg;
-            //this.checkSubscription();
           })
           .catch(error => {
-            console.error('Service Worker Error', error);
+            console.error('Service Worker register error', error);
           });
 
         this.pushNotificationStatus.isSupported = true;
@@ -49,16 +49,7 @@ export class PushNotificationService {
         console.warn("navigateur pas compatible service worker et push");
         this.pushNotificationStatus.isSupported = false;
       }
-
-      navigator.serviceWorker.addEventListener('message', (event) =>
-      {
-        this.notifications.push(event.data);
-      });
-
     }
-
-
-
   }
 
   /**

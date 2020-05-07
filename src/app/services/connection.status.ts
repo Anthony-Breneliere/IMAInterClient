@@ -14,6 +14,7 @@ export class ConnectionStatus
     private _username : string;
     private reconnectionResolve : () => void;
     private _messNumber : number = 0;
+    private _serviceVersion : string = "Inconnue";
 
     public get errorMessages() : [number, string][] { return this._errorMessages; }
     public addErrorMessage( mess : string ) { console.log( this._errorMessages ); this._errorMessages.push( [++this._messNumber, mess] ) }
@@ -26,6 +27,7 @@ export class ConnectionStatus
     public get plottiConnected() : boolean { return this._plottiConnected;  }
     public set plottiConnected( value: boolean ) { this._plottiConnected = value;  }
     public get login() { return this._username; }
+    public get serviceVersion() { return this._serviceVersion; }
 
     promiseHubScriptLoaded : Promise< any >;
     connectedStatus$ = this._connectedStatusSource.asObservable();
@@ -122,6 +124,14 @@ export class ConnectionStatus
                 // s'il existe une promesse de reconnection, alors cette promesse est tenue:
                 if ( this.reconnectionResolve )
                     this.reconnectionResolve();
+
+                this._serviceVersion = this.proxyServer.getServiceVersion().done( version => {
+                  this._serviceVersion = version;
+                  console.log("Version du service: " + version);
+                } ).fail( e => {
+                  this.addErrorMessage( `Impossible de récupérer la version du service` );
+                });
+
             }
             else
                 this.connected = false;
@@ -152,8 +162,9 @@ export class ConnectionStatus
             hub.start()
                 .done( () => {
                     console.log("Connecté à " + hub.url + ", transport = " + hub.transport.name
-                    + ", connection id = " + hub.id );  resolve();
-                })
+                    + ", connection id = " + hub.id );
+                      resolve();
+              })
                 .fail( ( e ) => {
                     this.addErrorMessage( `Connexion au serveur ${hub.url} impossible + ${e}` ); reject( e );
                 } );

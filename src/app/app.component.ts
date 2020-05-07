@@ -1,8 +1,8 @@
 /**
  * Created by abreneli on 30/06/2016.
  */
-import {Component} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import { PushNotificationService } from './services/push-notification.service';
 
 @Component({
     moduleId: module.id,
@@ -10,7 +10,13 @@ import {ActivatedRoute} from '@angular/router';
     templateUrl: './app.component.html'
 })
 
-export class InterventionAppComponent {
+export class InterventionAppComponent implements OnInit {
 
-    constructor( private  route: ActivatedRoute ) {}
+    constructor( private  _pushNotif : PushNotificationService ) {}
+
+    ngOnInit()
+    {
+      this._pushNotif.init();
+    }
+
 }
