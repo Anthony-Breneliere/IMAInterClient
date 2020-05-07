@@ -74,8 +74,12 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
 
     ngOnInit() {
 
+      console.log("Initilisation du composant InterventionMainDisplay");
+
       this.route.url.subscribe( url =>
       {
+        console.log("InterventionMainDisplay: détection changement Url");
+
         switch( url[0].path )
         {
           // en cas de search dans l'url alors on déploie tous les groupes

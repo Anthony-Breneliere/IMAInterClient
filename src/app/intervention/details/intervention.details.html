@@ -48,11 +48,11 @@
           <tr field *ngFor="let tel of intervenant?.Telephones " label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
           <tr *ngIf="!isEditableIntervenantEmail; else editableEmail" field label="Email ">{{concatenatedEmails}}</tr>
           <ng-template #editableEmail>
-              <tr field *ngIf="rapport.IntervenantEmail == null" label="Email ">
+              <tr field *ngIf="! rapport.IntervenantEmail" label="Email ">
                   <!-- todo gma here -->
                   <reactive-input  name="emailIntervenant" *ngFor="let email of intervenant?.Emails; let i = index" [(ngModel)]="intervenant.Emails[i]" (ngModelChange)="changeEmailIntervenantGenerique()"></reactive-input>
               </tr>
-              <tr field *ngIf="rapport.IntervenantEmail != null" label="Email ">
+              <tr field *ngIf="rapport.IntervenantEmail" label="Email ">
                 <!-- todo gma here -->
                 <reactive-input  name="emailIntervenant" [(ngModel)]="rapport.IntervenantEmail" (ngModelChange)="changeRapport({IntervenantEmail:$event})"></reactive-input>
             </tr>

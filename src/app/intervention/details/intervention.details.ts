@@ -106,7 +106,6 @@ export class InterventionDetails
 
     @ViewChild('masonryLayout') masonryLayout;
 
-
     get dateNow() : Date { return new Date() };
 
     get maxDateDepartRequired()
@@ -499,7 +498,7 @@ export class InterventionDetails
 
     public get isEditableIntervenantEmail() : boolean
     {
-        return this.intervention.Intervenant.Nom.toLowerCase().includes('générique');
+        return Array.isArray( this.intervenant?.Emails ) && this.intervention.Intervenant.Nom.toLowerCase().includes('générique');
     }
 
     public changeIntervention( data : any )

@@ -4,10 +4,10 @@
 
     "configurations": [
         {
-            "name": "intervention/0",
+            "name": "root",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost:4512/IMAInter/#/intervention/1242100",
+            "url": "http://localhost:4512/IMAInter/",
             "sourceMaps": true,
             "sourceMapPathOverrides": {
                 "webpack:/*": "${webRoot}/*"
