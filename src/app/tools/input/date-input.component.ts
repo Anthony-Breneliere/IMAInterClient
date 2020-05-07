@@ -131,7 +131,7 @@ export class DateInputComponent implements ControlValueAccessor {
   {
       if ( valueFromModel )
       {
-        let momentValue = moment( valueFromModel );
+        let momentValue = moment( valueFromModel ).startOf('second');
         this._datePickerDate = momentValue.toDate();
         this._value = valueFromModel;
       }
