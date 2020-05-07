@@ -74,79 +74,90 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
 
     ngOnInit() {
 
+      console.log("Initilisation du composant InterventionMainDisplay");
+
       this.route.url.subscribe( url =>
       {
-        switch( url[0].path )
+        try
         {
-          // en cas de search dans l'url alors on déploie tous les groupes
+          console.log("InterventionMainDisplay: détection changement Url");
 
-          case "search":
+          if ( ! url || url.length <= 0)
+            return;
 
-            setTimeout( () => {
-              if ( this.myGroup )
-                this.myGroup.Expanded = true;
-              if ( this.othersGroup )
-                this.othersGroup.Expanded = true;
-              if ( this.searchGroup )
-                this.searchGroup.Expanded = true;
-            }, 20 );
+          switch( url[0].path )
+          {
+            // en cas de search dans l'url alors on déploie tous les groupes
 
-            break;
+            case "search":
 
-          // en cas d'intervention dans l'url alors on charge l'intervention et on déploie le groupe qui la contient
+              setTimeout( () => {
+                if ( this.myGroup )
+                  this.myGroup.Expanded = true;
+                if ( this.othersGroup )
+                  this.othersGroup.Expanded = true;
+                if ( this.searchGroup )
+                  this.searchGroup.Expanded = true;
+              }, 20 );
 
-          case "intervention":
+              break;
 
-            let id : string = url[1].path;
+            // en cas d'intervention dans l'url alors on charge l'intervention et on déploie le groupe qui la contient
 
-            if ( id )
-            {
-              this.urlInterventionId = parseInt( url[1].path );
+            case "intervention":
 
-              // une fois la connection établie et l'intervention id complète reçu du serveur, alors
-              // on sélectionne et affiche l'intervention
-              this._interService.connectAndLoadIntervention( this.urlInterventionId ).then( (inter : Intervention) =>
+              if ( url.length <= 1)
+                return;
+
+              let id : string = url[1].path;
+
+              if ( id )
               {
-                this.selectedIntervention = inter;
+                this.urlInterventionId = parseInt( url[1].path );
 
-                // ouverture du groupe de l'intervention
-                this.deployGroup( inter );
-              } )
+                // une fois la connection établie et l'intervention id complète reçu du serveur, alors
+                // on sélectionne et affiche l'intervention
+                this._interService.connectAndLoadIntervention( this.urlInterventionId ).then( (inter : Intervention) =>
+                {
+                  this.selectedIntervention = inter;
 
-              .catch( (reason : any) => { console.error( "Erreur de chargement de l'intervention" + id + ": " + reason ); })
-            }
+                  // ouverture du groupe de l'intervention
+                  this.deployGroup( inter );
+                } )
+
+                .catch( (reason : any) => { console.error( "Erreur de chargement de l'intervention" + id + ": " + reason ); })
+              }
+
+          }
         }
+        catch ( reason )
+        {
+          // Toujours catcher les erreurs événements sinon la souscription est automatiquement rompue en cas
+          // d'erreur
+          console.error ( "Erreur lors de la détection d'un changement d'url" );
+          console.error ( reason );
+        }
+
 
       });
 
-      // le changement de l'id dans la route doit charger l'intervention et déployer
-      // le groupe correspondant à l'intervention dans la barre de navigation.
-
-      this.paramsSubscription = this.route.params.subscribe( params =>
-      {
-
-      } );
-
-      // e cas de recherche on déploie tous les groupe pour afficher à la fois les interventions closes/ en cours
-      if ( this.route.url[0] == "search" )
-      {
-        setTimeout( () => {
-          if ( this.myGroup )
-            this.myGroup.Expanded = true;
-          if ( this.othersGroup )
-            this.othersGroup.Expanded = true;
-          if ( this.searchGroup )
-            this.searchGroup.Expanded = true;
-        }, 20 );
-      }
 
       this.queryParamsSubscription = this.route.queryParams.subscribe( queryParams =>
       {
-        this.afficheNavigation = queryParams['nav'] != 0;
-        this.afficheBarre = queryParams['bar'] != 0;
+        try {
 
-        if ( this.afficheNavigation  )
-        this.deployGroup( this.selectedIntervention );
+          this.afficheNavigation = queryParams['nav'] != 0;
+          this.afficheBarre = queryParams['bar'] != 0;
+
+          if ( this.afficheNavigation  )
+            this.deployGroup( this.selectedIntervention );
+
+        }
+        catch( reason ) {
+          console.error( "Erreur de changement de paramètres dans l'url" );
+          console.error( reason );
+        }
+
 
       } );
 

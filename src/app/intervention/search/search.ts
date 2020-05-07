@@ -30,26 +30,38 @@ export class SearchIntervention
   {
     this.route.url.subscribe( url => {
 
-      if ( url[0].path == 'search')
-      {
-        this.paramsSubscription = this.route.queryParams.subscribe( params =>
-          {
-            let contrat : string = params['contrat'] ?? '';
-            let debut : string = params['dateDebut'] ?? '';
-            let fin : string = params['dateFin'] ?? '';
-            let type : string = params['typeIntervention'] ?? '';
+      try {
 
-            this.Search =
+        if ( ! url || url.length == 0 )
+          return;
+
+        if ( url[0].path == 'search')
+        {
+          this.paramsSubscription = this.route.queryParams.subscribe( params =>
             {
-              FreeQuery: contrat,
-              StartDate: new Date( debut ),
-              EndDate: new Date( fin ),
-              TypeIntervention:  type
-            }
+              let contrat : string = params['contrat'] ?? '';
+              let debut : string = params['dateDebut'] ?? '';
+              let fin : string = params['dateFin'] ?? '';
+              let type : string = params['typeIntervention'] ?? '';
 
-            this.searchInterventions();
-          } );
+              this.Search =
+              {
+                FreeQuery: contrat,
+                StartDate: new Date( debut ),
+                EndDate: new Date( fin ),
+                TypeIntervention:  type
+              }
+
+              this.searchInterventions();
+            } );
+        }
       }
+      catch( reason )
+      {
+        console.error("Le composant recherche n'a pu initaliser l'url de la barre d'adresse");
+        console.error( reason );
+      }
+
 
     });
 

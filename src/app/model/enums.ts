@@ -82,7 +82,8 @@ export enum OrigineConstatee
 {
     ErreurDeManipulation,
     AbsenceIdentification,
-    RienASignaler
+    RienASignaler,
+    Effraction
 }
 
 export enum VerificationSysteme
