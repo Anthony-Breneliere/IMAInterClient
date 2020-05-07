@@ -134,8 +134,8 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
         {
           // Toujours catcher les erreurs événements sinon la souscription est automatiquement rompue en cas
           // d'erreur
-          console.error ( "Erreur lors de la détection d'un changement d'url" )
-          console.error ( reason )
+          console.error ( "Erreur lors de la détection d'un changement d'url" );
+          console.error ( reason );
         }
 
 
@@ -150,12 +150,12 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
           this.afficheBarre = queryParams['bar'] != 0;
 
           if ( this.afficheNavigation  )
-          this.deployGroup( this.selectedIntervention );
+            this.deployGroup( this.selectedIntervention );
 
         }
         catch( reason ) {
-          console.error("Errur de changement de paramètres dans l'url")
-          console.error(reason)
+          console.error( "Erreur de changement de paramètres dans l'url" );
+          console.error( reason );
         }
 
 
