@@ -106,15 +106,19 @@ export class InterventionDetails
 
     @ViewChild('masonryLayout') masonryLayout;
 
-    get dateNow() : Date { return new Date() };
+    _dateNowPlus30 : Date;
 
-    get maxDateDepartRequired()
-    {
+    get dateNowPlus30() : string {
       let dateNow = new Date();
+      dateNow.setMinutes(dateNow.getMinutes() + 30);
+      dateNow.setSeconds( 0 );
+      dateNow.setMilliseconds( 0 );
 
-      // la date de départ max c'est soit la date d'arrivée, soit maintenant si
-      return ( this.intervention.DateArrivee ?? dateNow < dateNow ? this.intervention.DateArrivee : dateNow );
-    }
+      if ( this._dateNowPlus30?.getTime() != dateNow?.getTime())
+        this._dateNowPlus30 = dateNow;
+
+      return this._dateNowPlus30.toISOString();
+    };
 
     private grid : any;
 

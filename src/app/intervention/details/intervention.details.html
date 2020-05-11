@@ -71,24 +71,24 @@
           <tr field *ngIf="intervention?.Etat == Etat.EnCours" label="Lancement" >
             <reactive-date-input #dateLancement name="dateLancement" class="extensible"
               [(ngModel)]="intervention.Lancement" (ngModelChange)="changeIntervention({Lancement: $event})"
-              [minDateSelected]="intervention.Creation" [maxDateSelected]="dateNow"
-              [minDateRequired]="intervention.Creation" [maxDateRequired]="dateNow" required>
+              [minDateSelected]="intervention.Creation"
+              [minDateRequired]="intervention.Creation"  required>
             </reactive-date-input>
         </tr>
 
           <tr field *ngIf="intervention?.Etat == Etat.EnCours" label="Arrivée" >
               <reactive-date-input #dateArrivee name="dateArrivee" class="extensible"
                 [(ngModel)]="intervention.DateArrivee" (ngModelChange)="changeIntervention({DateArrivee: $event})"
-                [minDateSelected]="intervention.Lancement" [maxDateSelected]="dateNow"
-                [minDateRequired]="intervention.Lancement" [maxDateRequired]="dateNow"  required>
+                [minDateSelected]="intervention.Lancement"
+                [minDateRequired]="intervention.Lancement"   required>
               </reactive-date-input>
           </tr>
 
           <tr field *ngIf="intervention?.Etat == Etat.EnCours" label="Départ" >
               <reactive-date-input name="dateDepart" class="extensible"
                 [(ngModel)]="intervention.DateDepart" (ngModelChange)="changeIntervention({DateDepart: $event})"
-                [minDateSelected]="intervention.DateArrivee" [maxDateSelected]="dateNow"
-                [minDateRequired]="intervention.DateArrivee" [maxDateRequired]="dateNow"
+                [minDateSelected]="intervention.DateArrivee"
+                [minDateRequired]="intervention.DateArrivee"
                 required>
               </reactive-date-input>
           </tr>
