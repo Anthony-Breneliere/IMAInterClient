@@ -149,8 +149,15 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
           this.afficheNavigation = queryParams['nav'] != 0;
           this.afficheBarre = queryParams['bar'] != 0;
 
+
           if ( this.afficheNavigation  )
-            this.deployGroup( this.selectedIntervention );
+          {
+            // ouverture du groupe ayant une intervention sélectionnée
+            setTimeout( () => {
+              this.deployGroup( this.selectedIntervention );
+            }, 50);
+
+          }
 
         }
         catch( reason ) {
