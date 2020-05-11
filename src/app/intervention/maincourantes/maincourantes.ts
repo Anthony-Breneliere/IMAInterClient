@@ -94,7 +94,13 @@ export class Maincourantes {
         {
             this.interService.addNewMaincourante( this._intervention.Id, this.selectedMaincourType, this.maincourComment );
             this.maincourComment = "";
-        }
+        }        
+    }
+
+    public scrollDown(): void
+    {
+        var container = document.getElementById("listMainCour");           
+        container.scrollTop = container.scrollHeight;  
     }
 
     /**
@@ -113,6 +119,7 @@ export class Maincourantes {
     detectChanges()
     {
         this.ref.detectChanges();
+        this.scrollDown();
     }
 
     get canChat() : boolean
