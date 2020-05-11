@@ -22,6 +22,7 @@ import { filter } from 'rxjs/operators';
 export class Maincourantes {
 
     @ViewChild('messageInput') messageInput:ElementRef;
+    @ViewChild('listMainCourante') listMainCourante:ElementRef;
 
     // saisie d'une matin courante:
     public selectedMaincourType : ITypeMainCourante;
@@ -98,9 +99,8 @@ export class Maincourantes {
     }
 
     public scrollDown(): void
-    {
-        var container = document.getElementById("listMainCour");           
-        container.scrollTop = container.scrollHeight;  
+    {      
+        this.listMainCourante.nativeElement.scrollTop = this.listMainCourante.nativeElement.scrollHeight; 
     }
 
     /**
@@ -117,7 +117,7 @@ export class Maincourantes {
     }
 
     detectChanges()
-    {
+    {        
         this.ref.detectChanges();
         this.scrollDown();
     }
