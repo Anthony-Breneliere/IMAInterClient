@@ -392,8 +392,8 @@
         <tr field label="Envoi du CR">
             <select name="facturationEnvoiCR" [(ngModel)]="intervention.InfosFacturation.AppelPourCR" (ngModelChange)="changeInfoFactu({AppelPourCR:$event})" required>
                 <option [ngValue]="null"></option>
-                <option [ngValue]="AppelPourCR.AppelParAPS">Appel par le APS</option>
-                <option [ngValue]="AppelPourCR.AppelParSCT">Appel par le SCT</option>
+                <option [ngValue]="AppelPourCR.AppelParAPS">Appel de l’APS</option>
+                <option [ngValue]="AppelPourCR.AppelParSCT">Appel de la Station</option>
             </select>
         </tr>
 
