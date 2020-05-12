@@ -17,7 +17,6 @@ export class PushNotificationService {
   private swRegistration: ServiceWorkerRegistration = null;
 
   constructor(private _connectionStatus: ConnectionStatus) {
-    console.log("Constructor NotificationService");
   }
 
   /** Cette fonction vérifie la compatibilité du navigateur de l'utilisateur aux service worker et  notifications push
@@ -99,7 +98,7 @@ export class PushNotificationService {
         console.log('la souscription existante a été récupéré');
       }
 
-      console.log(subscription);
+      console.info("Subscription: ", subscription);
     });
   }
 

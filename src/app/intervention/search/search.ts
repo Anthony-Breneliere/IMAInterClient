@@ -58,8 +58,7 @@ export class SearchIntervention
       }
       catch( reason )
       {
-        console.error("Le composant recherche n'a pu initaliser l'url de la barre d'adresse");
-        console.error( reason );
+        console.error("Le composant recherche n'a pu initaliser l'url de la barre d'adresse", reason );
       }
 
 
@@ -96,8 +95,7 @@ export class SearchIntervention
           this.searchStatus.emit( 'stop' );
         })
         .catch( reason => {
-          console.log( "La recherche d'interventions a échoué " + reason + ":" );
-          console.log( this.Search );
+          console.log( "La recherche d'interventions a échoué ", reason, this.Search );
           this.searchStatus.emit( 'stop' );
         });
       }

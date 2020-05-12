@@ -160,8 +160,6 @@ export class InterventionDetails
               horizontalOrder: true /* Lays out items to (mostly) maintain horizontal left-to-right order. */
             });
 
-          // le detect change est nécessaire en cas de resize d'un composant
-          this.detectChanges();
         }
 
       }, 50);
@@ -174,16 +172,9 @@ export class InterventionDetails
     {
       setTimeout( () => {
 
-        if ( this.grid )
-        {
-          this.grid.layout();
+        this.grid?.layout();
 
-          // le detect change est nécessaire en cas de resize d'un composant
-          this.detectChanges();
-        }
-
-
-      }, 50);
+      }, 100 );
     }
 
     public get readOnlySection()
@@ -312,7 +303,7 @@ export class InterventionDetails
      */
     public detectChanges() : void
     {
-        this._changeDetector.detectChanges();
+      this._changeDetector.detectChanges();
     }
 
     public get NonVerifAutreChecked() : boolean
@@ -468,7 +459,6 @@ export class InterventionDetails
 
     changeVerifIntegraleIssues(event: any) : void
     {
-        console.log(event);
     }
 
     public get displayRaisonNonVerificationIssues() : boolean {
@@ -477,9 +467,6 @@ export class InterventionDetails
 
     public changeRapport( data : any )
     {
-
-        console.log( data );
-
         var p = new Promise<void>( (resolve) => {
 
             if ( this._oldValidationStatus != this.rapport.ValidationStatus )
@@ -492,7 +479,7 @@ export class InterventionDetails
 
         // parfois les styles de validation des groupes de checkoxes ne se mettent pas à jour quand
         // on modifie la valeur d'une checkbox
-        this._changeDetector.detectChanges();
+        this.detectChanges();
     }
 
     public get isEditableTypeFiche() : boolean
@@ -554,8 +541,7 @@ export class InterventionDetails
 
     public validateForm( event: any)
     {
-      console.warn("Validate Form");
-      console.warn( event );
+      console.warn("Validate Form", event);
     }
 
     public verifCircuitKO() : boolean

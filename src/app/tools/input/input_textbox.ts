@@ -69,7 +69,6 @@ export class InputTextbox implements ControlValueAccessor
     registerOnChange(fn: any): void
     {
         this.onChangeCallback = fn;
-        console.log()
     }
 
     registerOnTouched(fn: any): void

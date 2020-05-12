@@ -3,17 +3,16 @@
  */
 
 import { Component,  Input, Output, EventEmitter,
-  ViewChild, ChangeDetectorRef } from '@angular/core';
+  ViewChild, ChangeDetectorRef, NgZone } from '@angular/core';
 import { InterventionButton } from '../button/intervention.button';
 import { Intervention } from '../../model/intervention';
 import { InterventionService } from '../../services/intervention.service';
-import { SortInterventionByDateTime } from './sortInterPipe';
-import { GroupFilter } from '../filter/groupFilter';
 import { Subscription } from 'rxjs';
 import {  delay } from 'rxjs/operators';
 import { ConnectionStatus } from '../../services/connection.status';
 import { Etat } from "../../model/enums";
 import { SearchQuery } from 'app/services/searchQuery';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 export enum GroupTypeEnum
@@ -67,7 +66,9 @@ export class InterventionGroup
     constructor(
       private _interService : InterventionService,
       private _connectionStatus : ConnectionStatus,
-      protected _cdref: ChangeDetectorRef )
+      private _cdref: ChangeDetectorRef,
+      private _router: Router,
+      private _ngZone: NgZone )
     {
     }
 
@@ -116,9 +117,6 @@ export class InterventionGroup
     public interventionChangeHighlight( interId : number )
     {
         this._currentlyUpdatedInters.push( interId );
-      //  this._ref.detectChanges();
-
-    //    console.log("Detection changement inter " + inter.Id + " liste totale: " + this._currentlyUpdatedInters );
 
         window.setTimeout( () => {
             let index = this._currentlyUpdatedInters.indexOf( interId );
@@ -217,8 +215,21 @@ export class InterventionGroup
 
     onSelected(newSelectedButton: InterventionButton)
     {
+
         // on relaie le bouton sélectionné au composant parent:
         this.onSelectedButton.emit( newSelectedButton );
+
+        // la création d'une zone permet de garder le le contexte de détection de changements
+        // de toutes les callback appelées au déclencheemnt de navigateByUrl
+        // Cela désactive le warning "Navigation triggered outside Angular zone", et évite
+        // les dysfonctionnement du datepicker
+
+        // plus d'info sur https://angular.io/guide/zone
+
+        this._ngZone.run( () =>  {
+          this._router.navigateByUrl("/intervention/" + newSelectedButton.intervention.Id);
+        } );
+
 
     }
 

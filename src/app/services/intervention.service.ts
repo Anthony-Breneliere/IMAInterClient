@@ -43,7 +43,7 @@ export class InterventionService  {
 
     private _listeTypeMaincour : ITypeMainCourante[] = [];
 
-    // on garde en mémoire la liste des types de mains courantes:
+    // on garde en mémoire la liste des types de maincourantes:
     public get listeTypeMaincour() : ITypeMainCourante[]
     {
         return this._listeTypeMaincour;
@@ -59,9 +59,8 @@ export class InterventionService  {
      * Constructeur, il charge le fichier de config qui contient l'adresse de connexion
      * au serveur.
      */
-    constructor(private _connectionStatus: ConnectionStatus, private pushNotificationService: PushNotificationService ) {
-        console.log("Conctructor InterventionService");
-
+    constructor(private _connectionStatus: ConnectionStatus, private pushNotificationService: PushNotificationService )
+    {
         // le chargement du script doit être effectué avant de pouvoir initialiser les callbacks de notre service InterventionService
         _connectionStatus.promiseHubScriptLoaded.then( () =>
         {
@@ -115,7 +114,7 @@ export class InterventionService  {
         // chargement automatique des interventions en cours à la connection:
         this.loadCurrentInterventionList();
 
-        // chargement de la liste des types de mains courantes:
+        // chargement de la liste des types de maincourantes:
         this.loadTypeMaincour();
 
         // chargement de la liste des libelles divers du M1, car ils sont utilisés par certaiens maincourante generies:
@@ -209,7 +208,14 @@ export class InterventionService  {
             if ( interState && interState.Loaded )
             {
                 // intervention déjà chargée, on retourne la même intervention
-                return new Promise<Intervention>( ( resolve ) => { return this.loadedInterventionsDico[ numFI ]; } );
+                return new Promise<Intervention>( ( resolve ) => {
+
+                  let inter =  this.loadedInterventionsDico.getValue( numFI );
+                  if ( ! inter )
+                    throw new Error(`L'intervention ${numFI} n'est pas le dico!`);
+
+                  return inter;
+                } );
             }
             else
             {
@@ -241,6 +247,8 @@ export class InterventionService  {
     {
         let getInterPromise = new Promise<Intervention>( (resolve, reject ) =>
         {
+            console.info( "Chargement de l'intervention ", numFI);
+
             this._connectionStatus.proxyServer.getIntervention( numFI, siteId )
                 .done( (interventionWithDetails : Intervention) =>
                 {
@@ -266,8 +274,7 @@ export class InterventionService  {
     private onReceiveInterventionData( interData: Intervention, dataType : InterventionDataType) : Intervention
     {
         // on logue les données reçues: l'intervention
-        console.log( "Receiving intervention data (type " + dataType + "):" );
-        console.log( interData);
+        console.log( "Receiving data (" + InterventionDataType[dataType] + "):", interData );
 
         let updatedInter : Intervention = null;
         let interState : InterventionState;
@@ -359,13 +366,13 @@ export class InterventionService  {
 
                 let listeTypeMaincour : string[] = [];
 
-                // on remplace la liste existante éventuelle des types de mains courantes
+                // on remplace la liste existante éventuelle des types de maincourantes
                 this.listeTypeMaincour = typesMainCour;
 
-                console.log( this.listeTypeMaincour.length + " types de mains courantes récupérés." );
+                console.log( this.listeTypeMaincour.length + " types de maincourantes récupérés." );
              } )
             .fail( ( e : any ) => {
-                this._connectionStatus.addErrorMessage( `Erreur lors de la récupération des types de mains courantes d\'interventions. ${e}` );
+                this._connectionStatus.addErrorMessage( `Erreur lors de la récupération des types de maincourantes d\'interventions. ${e}` );
             } );
     }
 
@@ -394,8 +401,8 @@ export class InterventionService  {
      */
     public addNewMaincourante( numFi: number, typeMaincour: ITypeMainCourante, comment: string ) : void
     {
-        console.log("Envoi d'une main courante au serveur: ");
-        console.log({"login":this._connectionStatus.login, "numFi": numFi, "typeMaincour": typeMaincour, "comment":comment});
+        console.log("Envoi d'une main courante: ",
+          {"login":this._connectionStatus.login, "numFi": numFi, "typeMaincour": typeMaincour, "comment":comment});
 
         this._connectionStatus.proxyServer.addNewMaincourante( numFi, typeMaincour.Libelle, comment);
     }
@@ -408,11 +415,7 @@ export class InterventionService  {
      */
     public sendInterChange( jsonInterChange : any ) : void
     {
-        console.log(`Envoi d'un changement d'intervention:`);
-        console.log(jsonInterChange);
-
-        // this.protectedDataFromWrites = jsonInterChange;
-        // setTimeout( () => { this.protectedDataFromWrites = null; }, 1000 );
+        console.log("Envoi d'un changement d'intervention:", jsonInterChange);
 
         this._connectionStatus.proxyServer.sendInterChange( jsonInterChange );
     }
@@ -423,7 +426,7 @@ export class InterventionService  {
      */
     public searchInterventions( query : SearchQuery ) : Promise<any>
     {
-      console.log(`Recherche des anciennes interventions avec la requête suivante: '${query}'`);
+      console.info('Recherche des anciennes interventions avec la requête suivante: ', query);
 
       this.clearSearchResults();
 
