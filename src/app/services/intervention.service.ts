@@ -466,6 +466,14 @@ export class InterventionService  {
     public cancel( intervention : Intervention ) : void
     {
         console.log(`Demande d'annulation de la fiche ${intervention.Id}.`);
+        var interState = this.getInterventionState(intervention.Id);
+        if(!interState.Loaded){
+            this.getFullIntervention(intervention.Id).then
+            (intervention => {
+                this._connectionStatus.proxyServer.cancel( intervention.Id );
+            });
+        }
+
         this._connectionStatus.proxyServer.cancel( intervention.Id );
     }
 
