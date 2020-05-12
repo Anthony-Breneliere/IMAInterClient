@@ -134,7 +134,7 @@ export class InterventionButton implements OnInit
                         this.intervention.Etat && 
                         this.intervention.Etat != Etat.Close && 
                         this.intervention.Etat != Etat.Annulee && 
-                        this._interService.getInterventionState(this.intervention.Id).Loaded;
+                        this._interService.getInterventionState(this.intervention.Id)?.Loaded;
         return canCancel;
     }
 
