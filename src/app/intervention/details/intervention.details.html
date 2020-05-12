@@ -177,10 +177,10 @@
 
           <tr field label="Non acces au site" *ngIf="arriveeSurLieux.CircuitVerification==CircuitVerification.VerificationKO">
             <div ngModelGroup="nonAccesAuSite" minimumCheckedRequired="1" >
-              <reactive-checkbox name="verifBloquePortail" label="Bloqué portail" [(ngModel)]="nonAccesAuSite.BloquePortail" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{PortailInfranchissable:$event}}})"></reactive-checkbox>
+              <reactive-checkbox name="verifBloquePortail" label="Bloqué portail" [(ngModel)]="nonAccesAuSite.BloquePortail" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{BloquePortail:$event}}})"></reactive-checkbox>
               <reactive-checkbox name="verifMoyensDacces" label="Absence de Moyens d'Accès" [(ngModel)]="nonAccesAuSite.AbsenceMoyensAcces" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AbsenceMoyensAcces:$event}}})"></reactive-checkbox>
-              <reactive-checkbox name="verifErreurDigicode" label="Absence/Erreur de Digicode" [(ngModel)]="nonAccesAuSite.AbsenceErreurDigicode" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AbsenceDigicode:$event}}})"></reactive-checkbox>
-              <reactive-checkbox name="verifPortePaliere" label="Non Accès Porte Palière" [(ngModel)]="nonAccesAuSite.NonAccesPortePaliere" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{NonAccesPortePalliere:$event}}})"></reactive-checkbox>
+              <reactive-checkbox name="verifErreurDigicode" label="Absence/Erreur de Digicode" [(ngModel)]="nonAccesAuSite.AbsenceErreurDigicode" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AbsenceErreurDigicode:$event}}})"></reactive-checkbox>
+              <reactive-checkbox name="verifPortePaliere" label="Non Accès Porte Palière" [(ngModel)]="nonAccesAuSite.NonAccesPortePaliere" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{NonAccesPortePaliere:$event}}})"></reactive-checkbox>
               <reactive-checkbox name="verifPresenceAnimale" label="Présence Animale" [(ngModel)]="nonAccesAuSite.PresenceAnimale" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{PresenceAnimale:$event}}})"></reactive-checkbox>
               <reactive-checkbox name="verifAutre" label="Autre" [(ngModel)]="NonVerifAutreChecked" #verifAutreCheckbox></reactive-checkbox>
             </div>
