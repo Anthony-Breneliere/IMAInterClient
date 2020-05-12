@@ -17,7 +17,7 @@ export class ConnectionStatus
     private _serviceVersion : string = "Inconnue";
 
     public get errorMessages() : [number, string][] { return this._errorMessages; }
-    public addErrorMessage( mess : string ) { console.log( this._errorMessages ); this._errorMessages.push( [++this._messNumber, mess] ) }
+    public addErrorMessage( mess : string ) { console.error( this._errorMessages ); this._errorMessages.push( [++this._messNumber, mess] ) }
     public removeErrorMessage( id : number ) { this._errorMessages = this._errorMessages.filter( m => m[0] != id) }
     private clearErrorMessages() { this._errorMessages = []; this._messNumber = 0; }
     public get proxyClient() { return this.proxy.client };
@@ -34,7 +34,6 @@ export class ConnectionStatus
 
     constructor(private httpClient: HttpClient)
     {
-        console.log("Constrcutor ConnectionStatus")
         this.loadHubsScript();
     }
 
@@ -87,7 +86,6 @@ export class ConnectionStatus
      */
     public operatorNameEqual( name: string ) : boolean
     {
-        // console.log("name: " + name + " login:" + this.login);
         return this._username && name && name.toLowerCase() == this._username.toLowerCase();
     }
 

@@ -50,7 +50,7 @@
           <ng-template #editableEmail>
               <tr field label="Email ">
                   <!-- todo gma here -->
-                  <reactive-input  name="emailIntervenant" [(ngModel)]="intervenant.Emails[0]" (ngModelChange)="changeEmailIntervenantGenerique()"></reactive-input>
+                  <reactive-input  name="emailIntervenant" [(ngModel)]="intervenant.Emails[0]" (ngModelChange)="changeIntervention({ Intervenant: {Emails: [$event]}})"></reactive-input>
               </tr>
           </ng-template>
           <tr field label="Matricule">{{intervenant?.Matricule}}</tr>
@@ -60,17 +60,17 @@
       <section title="Historique" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
           <tr field label="Creation ">{{intervention.Creation | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
-          <tr field *ngIf="intervention?.Etat != Etat.EnCours" label="Lancement ">{{intervention.Lancement | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
-          <tr field *ngIf="intervention?.Etat != Etat.EnCours" label="Arrivée">{{intervention.DateArrivee | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
-          <tr field *ngIf="intervention?.Etat != Etat.EnCours" label="Départ">{{intervention.DateDepart | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
+          <tr field *ngIf="intervention?.Etat == Etat.Annulee || intervention?.Etat == Etat.Close" label="Lancement ">{{intervention.Lancement | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
 
-          <tr field *ngIf="intervention?.Etat == Etat.EnCours" label="Lancement" >
+          <tr field *ngIf="intervention?.Etat == Etat.Creee || intervention?.Etat == Etat.Transmises || intervention?.Etat == Etat.EnCours" label="Lancement" >
             <reactive-date-input #dateLancement name="dateLancement" class="extensible"
               [(ngModel)]="intervention.Lancement" (ngModelChange)="changeIntervention({Lancement: $event})"
               [minDateSelected]="intervention.Creation"
               [minDateRequired]="intervention.Creation"  required>
             </reactive-date-input>
-        </tr>
+          </tr>
+
+          <tr field *ngIf="intervention?.Etat != Etat.EnCours" label="Arrivée">{{intervention.DateArrivee | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
 
           <tr field *ngIf="intervention?.Etat == Etat.EnCours" label="Arrivée" >
               <reactive-date-input #dateArrivee name="dateArrivee" class="extensible"
@@ -79,6 +79,8 @@
                 [minDateRequired]="intervention.Lancement"   required>
               </reactive-date-input>
           </tr>
+
+          <tr field *ngIf="intervention?.Etat != Etat.EnCours" label="Départ">{{intervention.DateDepart | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
 
           <tr field *ngIf="intervention?.Etat == Etat.EnCours" label="Départ" >
               <reactive-date-input name="dateDepart" class="extensible"

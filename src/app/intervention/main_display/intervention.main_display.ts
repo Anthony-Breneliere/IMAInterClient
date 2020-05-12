@@ -3,7 +3,7 @@
  * Created by abreneli on 04/07/2016.
  */
 
-import {Component, ViewChild, OnInit, AfterContentInit, Input, ChangeDetectorRef } from '@angular/core';
+import {Component, ViewChild, OnInit, AfterContentInit, Input, ChangeDetectorRef, NgZone } from '@angular/core';
 import {InterventionGroup, GroupTypeEnum} from '../groupe/intervention.group';
 import {Intervention} from "../../model/intervention";
 import {Etat} from "../../model/enums";
@@ -16,6 +16,7 @@ import {Subscription} from 'rxjs';
 
 import 'rxjs-compat/add/operator/switchMap';
 import { SearchQuery } from 'app/services/searchQuery';
+
 
 
 @Component({
@@ -32,14 +33,11 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
     // ce composant là il SAIT quel bouton est toujours sélectionné (il ne peut y en avoir qu'un)
     private selectedButton : InterventionButton;
 
-    private urlInterventionId : number;
-
     public afficheNavigation : boolean;
     public afficheBarre : boolean = true;
 
     private paramsSubscription : Subscription;
     private queryParamsSubscription : Subscription;
-
 
     @ViewChild("myGroup" ) myGroup : InterventionGroup;
     @ViewChild("othersGroup" ) othersGroup : InterventionGroup;
@@ -50,7 +48,7 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
         private _interService: InterventionService,
         private route: ActivatedRoute,
         private router: Router,
-        private cdref : ChangeDetectorRef
+        private ngZone: NgZone
     )
     {}
 
@@ -68,8 +66,6 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
     ngOnDestroy() {
         this.paramsSubscription?.unsubscribe();
         this.queryParamsSubscription?.unsubscribe();
-
-        console.log("Vue InterventionMainDisplay détruite.");
     }
 
     ngOnInit() {
@@ -80,8 +76,6 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
       {
         try
         {
-          console.log("InterventionMainDisplay: détection changement Url");
-
           if ( ! url || url.length <= 0)
             return;
 
@@ -113,19 +107,30 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
 
               if ( id )
               {
-                this.urlInterventionId = parseInt( url[1].path );
+                let urlInterventionId = parseInt( url[1].path );
 
-                // une fois la connection établie et l'intervention id complète reçu du serveur, alors
-                // on sélectionne et affiche l'intervention
-                this._interService.connectAndLoadIntervention( this.urlInterventionId ).then( (inter : Intervention) =>
-                {
-                  this.selectedIntervention = inter;
+                // la zone permet d'avoir l'exécution des callback géré par Angular
+                // en l'occureence quand l'utilisateur change l'id de l'intervention
+                // dans l'URL
+                // plus d'info sur les zones https://angular.io/guide/zone
+                this.ngZone.run( () => {
 
-                  // ouverture du groupe de l'intervention
-                  this.deployGroup( inter );
-                } )
+                  // une fois la connection établie et l'intervention id complète reçu du serveur, alors
+                  // on sélectionne et affiche l'intervention
+                  this._interService.connectAndLoadIntervention( urlInterventionId ).then( (inter : Intervention) =>
+                  {
+                    if ( this.selectedIntervention !== inter)
+                    {
+                      this.selectedIntervention = inter;
+                      this.deployGroup( this.selectedIntervention );
+                    }
 
-                .catch( (reason : any) => { console.error( "Erreur de chargement de l'intervention" + id + ": " + reason ); })
+                  } )
+                  .catch( (reason : any) => {
+                    console.error( "Erreur de chargement de l'intervention: ", reason );
+                  });
+
+                });
               }
 
           }
@@ -134,8 +139,7 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
         {
           // Toujours catcher les erreurs événements sinon la souscription est automatiquement rompue en cas
           // d'erreur
-          console.error ( "Erreur lors de la détection d'un changement d'url" );
-          console.error ( reason );
+          console.error ( "Erreur lors de la détection d'un changement d'url", reason );
         }
 
 
@@ -161,8 +165,7 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
 
         }
         catch( reason ) {
-          console.error( "Erreur de changement de paramètres dans l'url" );
-          console.error( reason );
+          console.error( "Erreur de changement de paramètres dans l'url", reason );
         }
 
 
@@ -203,9 +206,6 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
     ngAfterContentInit()
     {
         // code exécuté après l'initialisation des vues @ViewChild
-
-        console.log( "InterventionMainDisplay.ngAfterContentInit");
-
         if ( this.afficheNavigation  )
             this.deployGroup( this.selectedIntervention );
     }
@@ -221,8 +221,6 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
     set selectedIntervention( value: Intervention)
     {
         this._selectedIntervention = value;
-
-        this.cdref.detectChanges();
     }
 
     /**
@@ -230,23 +228,23 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
      */
     private deployGroup( inter: Intervention )
     {
-        let groupToExpand : InterventionGroup = null;
+      let groupToExpand : InterventionGroup = null;
 
-        if ( inter && this.myGroup && this.othersGroup && inter.Etat != Etat.Close && inter.Etat != Etat.Annulee )
-        {
-            if ( this.connectionStatus.operatorNameEqual( inter.Operateur ) )
-                groupToExpand = this.myGroup;
-            else
-                groupToExpand = this.othersGroup;
-        }
-        else if ( this.searchGroup )
-        {
-            groupToExpand = this.searchGroup;
-        }
+      if ( inter && this.myGroup && this.othersGroup && inter.Etat != Etat.Close && inter.Etat != Etat.Annulee )
+      {
+          if ( this.connectionStatus.operatorNameEqual( inter.Operateur ) )
+              groupToExpand = this.myGroup;
+          else
+              groupToExpand = this.othersGroup;
+      }
+      else if ( this.searchGroup )
+      {
+          groupToExpand = this.searchGroup;
+      }
 
-        // deploiement du groupe
-        if ( groupToExpand )
-            groupToExpand.Expanded = true;
+      // deploiement du groupe
+      if ( groupToExpand )
+          groupToExpand.Expanded = true;
     }
 
     onSelectedButton(newSelectedButton: InterventionButton)

@@ -10,9 +10,7 @@
             <intervention-group #searchGroup [SelectedIntervention]="selectedIntervention" (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.interventionsCloses" GroupName="Interventions closes" [Expanded]="false"></intervention-group>
         </div>
 
-        <router-outlet></router-outlet>
-
-        <div id="interventionAndChat" >
+        <div id="interventionAndChat" *ngIf="selectedIntervention" >
             <intervention-details [intervention]="selectedIntervention"></intervention-details>
             <maincourantes [intervention]="selectedIntervention"></maincourantes>
             <chat *ngIf="chatDisplayed" [intervention]="selectedIntervention"></chat>
