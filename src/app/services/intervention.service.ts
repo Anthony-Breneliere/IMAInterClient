@@ -348,7 +348,7 @@ export class InterventionService  {
     /**
      * Permet de récupérer l'état d'une intervention chargée. Il s'agit d'une donnée interne au client.
      */
-    private getInterventionState( id: number )   : InterventionState
+    public getInterventionState( id: number )   : InterventionState
     {
         return this.interventionsStateDico.getValue( id );
     }
@@ -466,6 +466,7 @@ export class InterventionService  {
     public cancel( intervention : Intervention ) : void
     {
         console.log(`Demande d'annulation de la fiche ${intervention.Id}.`);
+
         this._connectionStatus.proxyServer.cancel( intervention.Id );
     }
 
