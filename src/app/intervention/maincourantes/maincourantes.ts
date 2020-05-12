@@ -27,6 +27,7 @@ export class Maincourantes {
     // saisie d'une matin courante:
     public selectedMaincourType : ITypeMainCourante;
     public maincourComment : string = "";
+    private nbMainCourante : number = 0;
 
     // liste des changements
     private newInterDataSource = new Subject< Intervention >();
@@ -86,6 +87,12 @@ export class Maincourantes {
 
     public addNewMaincourante() : void
     {
+        if(this._intervention.MainCourantes)
+        {
+            this.nbMainCourante = this._intervention.MainCourantes.length;
+        }    
+
+
         if ( ! this.selectedMaincourType)
         {
             // toto animation pour higlighter la sélection du type de main courante
@@ -117,9 +124,14 @@ export class Maincourantes {
     }
 
     detectChanges()
-    {        
+    {
         this.ref.detectChanges();
-        this.scrollDown();
+                
+        if(this.nbMainCourante != this._intervention.MainCourantes.length)
+        {
+            this.nbMainCourante = this._intervention.MainCourantes.length;
+            this.scrollDown();
+        }
     }
 
     get canChat() : boolean
