@@ -17,7 +17,6 @@ export class Rapport
     AutreLieuDepot : string;
     Observations: string;
     Consignes: string;
-    IntervenantEmail: string;
 
     MotifIntervention : MotifIntervention;
     NumeroBon : string;

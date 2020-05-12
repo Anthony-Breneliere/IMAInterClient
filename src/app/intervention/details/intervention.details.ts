@@ -522,15 +522,6 @@ export class InterventionDetails
         } );
     }
 
-    /** Envoi d'un changmenent d'email au service
-     *
-     */
-    public changeEmailIntervenantGenerique()
-    {
-      let emails = this.intervenant.Emails;
-      this.changeIntervention( { Intervenant: { Emails: emails } } );
-      this.rapport.IntervenantEmail = this.intervenant.Emails;
-    }
 
     /** Envoi d'un changmenent d'email au service
      *
