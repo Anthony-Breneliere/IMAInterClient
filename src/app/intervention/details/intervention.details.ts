@@ -34,13 +34,14 @@ import {
 } from '@angular/core';
 
 import { Intervention } from '../../model/intervention';
-import { OrigineFiche, TypeFiche, Trajet, MotifIntervention, TypePresence, DepotBonIntervention, Etat, TypeSite, CircuitVerification, AppelPourCR, OrigineConstatee, VerificationSysteme, AutoMC, RapportValidationStatusEnum } from '../../model/enums';
+import { TypeFiche, Trajet, MotifIntervention, TypePresence, DepotBonIntervention, Etat, TypeSite, CircuitVerification, AppelPourCR,
+   OrigineConstatee, VerificationSysteme, RapportValidationStatusEnum } from '../../model/enums';
 import { InterventionService } from "../../services/intervention.service";
 import { ConnectionStatus } from "../../services/connection.status";
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Telephone } from '../../model/telephone';
-import { NgForm, NgControl } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { ReactiveCheckboxComponent } from '../reactive-components/reactive-checkbox.component';
 import { ReactiveDateInputComponent } from '../reactive-components/reactive-date.input.component';
 
@@ -80,7 +81,10 @@ export class InterventionDetails
         this.interventionChangeSubscription =
             this._interService.newInterData$.pipe(
               filter( i => this.intervention && this.intervention.Id == i.Id  ) )
-            .subscribe( i => this.detectChanges() );
+                .subscribe( i => {
+                  // détection de changement pour afficher les nouvelles valeurs arrivées
+                  this.updateFormWithReceivedData();
+            } );
 
         // j'indique que l'utilisateur n'a pas encore touché au rapport
         this._oldValidationStatus = RapportValidationStatusEnum.Unknown;
@@ -89,11 +93,18 @@ export class InterventionDetails
         this.reinitGrid();
     }
 
+
+    private _interventionForm : NgForm;
+
     @ViewChild('interventionForm')
-    set interventionForm( form : NgForm )
-    {
-      form?.statusChanges.subscribe( status => this.setValidationStatus( status ) );
+    public get interventionForm() : NgForm {
+      return this._interventionForm;
     }
+    public set interventionForm(value : NgForm) {
+      this._interventionForm = value;
+      this._interventionForm?.statusChanges.subscribe( status => this.setValidationStatus( status ) );
+    }
+
 
 
     @ViewChild('verifAutreCheckbox') verifAutreCheckbox : ReactiveCheckboxComponent;
@@ -141,6 +152,23 @@ export class InterventionDetails
             this.rapport.ValidationStatus = RapportValidationStatusEnum.Unknown; break;
         }
       }
+    }
+
+
+    /**
+     * Mise à jour du formulaire avec les données reçus
+     * Les données de validation sont également mise à jour
+     */
+    private updateFormWithReceivedData() {
+
+      // le premier detectchange ser à mettre à jour les valeur dans les controles
+      this.detectChanges();
+
+      this.interventionForm.form.updateValueAndValidity();
+
+      // une fois que les données sont dans les controles,
+      // nouvelle détection de changement pour afficher les validités de controles à jour
+      setTimeout(() => this.detectChanges(), 50);
     }
 
     /**
