@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, OnChanges, NgZone } from '@angular/core';
 
 import { Intervention } from '../../model/intervention';
 import { ActivatedRoute } from '@angular/router';
@@ -47,27 +47,29 @@ export class GroupFilter implements OnChanges, OnInit
   private paramsSubscription : Subscription;
   private queryParamsSubscription : Subscription;
 
-  constructor( private route: ActivatedRoute )
+  constructor( private route: ActivatedRoute, private cdref: ChangeDetectorRef, private ngZone : NgZone)
   {
 
   }
 
   ngOnInit()
   {
-    this.paramsSubscription = this.route.queryParams.subscribe( params =>
-    {
-      let contrat : string = params['contrat'];
-
-      if ( contrat && contrat.length > 3 )
+    this.ngZone.run( () => {
+      this.paramsSubscription = this.route.queryParams.subscribe( params =>
       {
-        this.TypeChoice = "Contrat";
-        this.ChosenValue = contrat;
-      }
+        let contrat : string = params['contrat'];
+
+        if ( contrat && contrat.length > 3 )
+        {
+          this.TypeChoice = "Contrat";
+          this.ChosenValue = contrat;
+          this.InitFilterChoices();
+        }
+      } );
     } );
   }
 
   private _interventionCount : number = 0;
-
 
   ngOnChanges()
   {
@@ -99,6 +101,11 @@ export class GroupFilter implements OnChanges, OnInit
     this._loadedChoices["Client"] = this.getDistinctChoices( this.UnfilteredInterventions, (i : Intervention) => i.NomComplet );
     this._loadedChoices["Intervenant"] = this.getDistinctChoices( this.UnfilteredInterventions, (i : Intervention) => i.Intervenant.Nom );
     this._loadedChoices["Contrat"] = this.getDistinctChoices( this.UnfilteredInterventions, (i : Intervention) => i.Site.Contrat );
+
+    // on reset le type et la valeur sinon les champs ne sont pas initialisés au démarrage de l'appli
+    let chosenValue = this._chosenValue;
+    this.TypeChoice = this._typeChoice;
+    this.ChosenValue = chosenValue;
 
     console.log( "Loaded choices initialized with " + this.UnfilteredInterventions.length + " interventions.");
   }

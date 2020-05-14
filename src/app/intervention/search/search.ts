@@ -47,8 +47,8 @@ export class SearchIntervention
               this.Search =
               {
                 FreeQuery: contrat,
-                StartDate: new Date( debut ),
-                EndDate: new Date( fin ),
+                StartDate: debut ? new Date( debut ) : null,
+                EndDate: debut ? new Date( fin ) : null,
                 TypeIntervention:  type
               }
 
