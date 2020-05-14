@@ -62,7 +62,7 @@
           <tr field label="Creation ">{{intervention.Creation | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
           <tr field *ngIf="intervention?.Etat == Etat.Annulee || intervention?.Etat == Etat.Close" label="Lancement ">{{intervention.Lancement | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
 
-          <tr field *ngIf="intervention?.Etat == Etat.Creee || intervention?.Etat == Etat.Transmise || intervention?.Etat == Etat.EnCours" label="Lancement" >
+          <tr field *ngIf="intervention?.Etat == Etat.Creee || intervention?.Etat == Etat.Transmise || intervention?.Etat == Etat.EnCours && NgZone.isInAngularZone()" label="Lancement" >
             <reactive-date-input #dateLancement name="dateLancement" class="extensible"
               [(ngModel)]="intervention.Lancement" (ngModelChange)="changeIntervention({Lancement: $event})"
               [minDateSelected]="intervention.Creation"
@@ -72,7 +72,7 @@
 
           <tr field *ngIf="intervention?.Etat != Etat.EnCours" label="Arrivée">{{intervention.DateArrivee | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
 
-          <tr field *ngIf="intervention?.Etat == Etat.EnCours" label="Arrivée" >
+          <tr field *ngIf="intervention?.Etat == Etat.EnCours && NgZone.isInAngularZone()" label="Arrivée" >
               <reactive-date-input #dateArrivee name="dateArrivee" class="extensible"
                 [(ngModel)]="intervention.DateArrivee" (ngModelChange)="changeIntervention({DateArrivee: $event})"
                 [minDateSelected]="intervention.Lancement"
@@ -82,7 +82,7 @@
 
           <tr field *ngIf="intervention?.Etat != Etat.EnCours" label="Départ">{{intervention.DateDepart | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
 
-          <tr field *ngIf="intervention?.Etat == Etat.EnCours" label="Départ" >
+          <tr field *ngIf="intervention?.Etat == Etat.EnCours && NgZone.isInAngularZone()" label="Départ" >
               <reactive-date-input name="dateDepart" class="extensible"
                 [(ngModel)]="intervention.DateDepart" (ngModelChange)="changeIntervention({DateDepart: $event})"
                 [minDateSelected]="intervention.DateArrivee"

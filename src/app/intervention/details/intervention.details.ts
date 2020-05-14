@@ -29,7 +29,8 @@ import {
     Input,
     Output,
     EventEmitter,
-    ViewChild
+    ViewChild,
+    NgZone
 
 } from '@angular/core';
 
@@ -91,6 +92,7 @@ export class InterventionDetails
 
         // le nombre de section peut changer la grille masonry doit être recréée
         this.reinitGrid();
+
     }
 
 
@@ -318,11 +320,15 @@ export class InterventionDetails
 
     private radioValue : MotifIntervention;
 
+    public NgZone = NgZone;
 
-    constructor( private _connectionStatus: ConnectionStatus, private _interService: InterventionService, private _changeDetector: ChangeDetectorRef )
+
+    constructor( private _connectionStatus: ConnectionStatus, private _interService: InterventionService,
+       private _changeDetector: ChangeDetectorRef, private _ngZone: NgZone )
     {
         // on transforme l'enum MotifIntervention en une structure clé/valeur qu'on peut binder
         this.motifChoices = Object.values(MotifIntervention).filter( (e : any) => typeof( e ) == "number" );
+
     }
 
     /**
@@ -331,7 +337,7 @@ export class InterventionDetails
      */
     public detectChanges() : void
     {
-      this._changeDetector.detectChanges();
+      this._ngZone.run( () => this._changeDetector.detectChanges() );
     }
 
     public get NonVerifAutreChecked() : boolean
