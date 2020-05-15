@@ -98,12 +98,10 @@ export class InterventionButton implements OnInit
 
     get canTransfer() : boolean
     {
-        let canTransfer : boolean = false;
-        let intervenant = this.intervention.Intervenant;
-
-        if ( this.connected && this.intervention.Etat == Etat.Creee &&
-            intervenant && intervenant.Emails && intervenant.Emails.length > 0 )
-            canTransfer = true;
+        let canTransfer : boolean =
+          this.connected &&
+          this.intervention.Etat == Etat.Creee &&
+          this._interService.validateEmails( this.intervention?.Intervenant?.Emails );
 
         return canTransfer;
     }
@@ -130,10 +128,10 @@ export class InterventionButton implements OnInit
 
     get canCancel() : boolean
     {
-        let canCancel = this.connected && 
-                        this.intervention.Etat && 
-                        this.intervention.Etat != Etat.Close && 
-                        this.intervention.Etat != Etat.Annulee && 
+        let canCancel = this.connected &&
+                        this.intervention.Etat &&
+                        this.intervention.Etat != Etat.Close &&
+                        this.intervention.Etat != Etat.Annulee &&
                         this._interService.getInterventionState(this.intervention.Id)?.Loaded;
         return canCancel;
     }

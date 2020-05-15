@@ -533,6 +533,25 @@ export class InterventionService  {
 
         return newIntervention;
     }
+
+    /**
+     * @param emails Valide la syntaxe d'une liste d'emails
+     */
+    public validateEmails( emails : string[] ) : boolean
+    {
+      if (!Array.isArray(emails))
+        return false;
+
+      let notEmptyEmails = emails.filter( email => email);
+
+      return ( notEmptyEmails.length > 0 ) && notEmptyEmails.every( email => ! email || this.validateEmail(email) );
+    }
+
+    private validateEmail(email) : boolean
+    {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(String(email).toLowerCase());
+    }
  }
 
 

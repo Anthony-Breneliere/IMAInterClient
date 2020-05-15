@@ -568,17 +568,9 @@ export class InterventionDetails
 
     public get validEmails()
     {
-      if (!Array.isArray(this.intervenant?.Emails))
-        return false;
-      let notEmptyEmails = this.intervenant.Emails.filter( email => email);
-      return ( notEmptyEmails.length > 0 ) && notEmptyEmails.every( email => ! email || this.validateEmail(email) );
+      return this._interService.validateEmails( this.intervenant?.Emails );
     }
 
-    private validateEmail(email) : boolean
-    {
-      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(String(email).toLowerCase());
-    }
 
     public changeInfoFactu( data : any )
     {
