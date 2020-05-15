@@ -546,8 +546,13 @@ export class InterventionDetails
     public get concatenatedEmails() : string
     {
       let concatenated : string = "";
-      Object.keys(this.intervenant.Emails).map( k => concatenated += (this.intervenant.Emails[k] ?? "") + "\n");
-      concatenated = concatenated.trim();
+      let emails = this.intervenant?.Emails;
+      if ( emails )
+      {
+        Object.keys(emails).map( k => concatenated += (emails[k] ?? "") + "\n");
+        concatenated = concatenated.trim();
+      }
+
       return ( this._concatenated = concatenated );
     }
 

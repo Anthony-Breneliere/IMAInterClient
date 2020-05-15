@@ -542,9 +542,7 @@ export class InterventionService  {
       if (!Array.isArray(emails))
         return false;
 
-      let notEmptyEmails = emails.filter( email => email);
-
-      return ( notEmptyEmails.length > 0 ) && notEmptyEmails.every( email => ! email || this.validateEmail(email) );
+      return emails.filter( email => email).every( email => ! email || this.validateEmail(email) );
     }
 
     private validateEmail(email) : boolean
