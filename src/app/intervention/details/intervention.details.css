@@ -36,7 +36,7 @@ section tr:first-child {
     margin: 0;
 }
 
-select, reactive-input {
+select, reactive-input, reactive-select {
   width: 100%;
   height: 2.5em;
 }
@@ -49,10 +49,6 @@ select, reactive-input {
 
 #saisieMainCour span:not(:last-child) {
     margin: 0em 0.5em 0em 0em
-}
-
-.extensible {
-    resize: both
 }
 
 td.table {

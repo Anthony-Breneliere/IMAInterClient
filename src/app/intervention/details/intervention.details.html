@@ -17,14 +17,14 @@
           <tr *ngIf="!isEditableTypeFiche; else editableTypeFiche" field label="Type ">{{intervention?.TypeFicheLabel}}</tr>
           <ng-template #editableTypeFiche>
               <tr field label="Type ">
-                  <select name="typeIntervention" id="InterventionType" [(ngModel)]="intervention.TypeFiche" (ngModelChange)="changeIntervention( { TypeFiche: $event } )">
-                      <option [ngValue]="TypeFiche.Intervention">Intervention</option>
-                      <option [ngValue]="TypeFiche.Gardiennage">Gardiennage</option>
-                      <option [ngValue]="TypeFiche.Ronde">Ronde</option>
-                      <option [ngValue]="TypeFiche.TestReseau">Test réseau</option>
-                      <option [ngValue]="TypeFiche.GardiennageALaDemande">Gardiennage à la demande</option>
-                      <option [ngValue]="TypeFiche.RondeALaDemande">Ronde à la demande</option>
-                  </select>
+                  <reactive-select name="typeIntervention" id="InterventionType" [(ngModel)]="intervention.TypeFiche" (ngModelChange)="changeIntervention( { TypeFiche: $event } )">
+                      <option [value]="TypeFiche.Intervention">Intervention</option>
+                      <option [value]="TypeFiche.Gardiennage">Gardiennage</option>
+                      <option [value]="TypeFiche.Ronde">Ronde</option>
+                      <option [value]="TypeFiche.TestReseau">Test réseau</option>
+                      <option [value]="TypeFiche.GardiennageALaDemande">Gardiennage à la demande</option>
+                      <option [value]="TypeFiche.RondeALaDemande">Ronde à la demande</option>
+                  </reactive-select>
               </tr>
           </ng-template>
           <tr field label="Evenement Alarme ">{{intervention.Alarme?.Evenement}}</tr>
@@ -63,7 +63,7 @@
           <tr field *ngIf="intervention?.Etat == Etat.Annulee || intervention?.Etat == Etat.Close" label="Lancement ">{{intervention.Lancement | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
 
           <tr field *ngIf="intervention?.Etat == Etat.Creee || intervention?.Etat == Etat.Transmise || intervention?.Etat == Etat.EnCours && NgZone.isInAngularZone()" label="Lancement" >
-            <reactive-date-input #dateLancement name="dateLancement" class="extensible"
+            <reactive-date-input #dateLancement name="dateLancement"
               [(ngModel)]="intervention.Lancement" (ngModelChange)="changeIntervention({Lancement: $event})"
               [minDateSelected]="intervention.Creation"
               [minDateRequired]="intervention.Creation"  required>
@@ -73,7 +73,7 @@
           <tr field *ngIf="intervention?.Etat != Etat.EnCours" label="Arrivée">{{intervention.DateArrivee | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
 
           <tr field *ngIf="intervention?.Etat == Etat.EnCours && NgZone.isInAngularZone()" label="Arrivée" >
-              <reactive-date-input #dateArrivee name="dateArrivee" class="extensible"
+              <reactive-date-input #dateArrivee name="dateArrivee"
                 [(ngModel)]="intervention.DateArrivee" (ngModelChange)="changeIntervention({DateArrivee: $event})"
                 [minDateSelected]="intervention.Lancement"
                 [minDateRequired]="intervention.Lancement"   required>
@@ -83,7 +83,7 @@
           <tr field *ngIf="intervention?.Etat != Etat.EnCours" label="Départ">{{intervention.DateDepart | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
 
           <tr field *ngIf="intervention?.Etat == Etat.EnCours && NgZone.isInAngularZone()" label="Départ" >
-              <reactive-date-input name="dateDepart" class="extensible"
+              <reactive-date-input name="dateDepart"
                 [(ngModel)]="intervention.DateDepart" (ngModelChange)="changeIntervention({DateDepart: $event})"
                 [minDateSelected]="intervention.DateArrivee"
                 [minDateRequired]="intervention.DateArrivee"
@@ -98,10 +98,10 @@
       <section *ngIf="rapportDisplayed" title="Complements" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
           <tr field label="Motif d'intervention">
-              <select name="motifIntervention" #typeSite class="cellinput" [(ngModel)]="rapport.MotifIntervention" (ngModelChange)="changeRapport({MotifIntervention:$event})" required >
+              <reactive-select name="motifIntervention" #typeSite class="cellinput" [(ngModel)]="rapport.MotifIntervention" (ngModelChange)="changeRapport({MotifIntervention:$event})" required >
                   <option [ngValue]="null"></option>
-                  <option [ngValue]="i" *ngFor="let type of MotifInterventionValues; let i = index">{{MotifIntervention[i]}}</option>
-              </select>
+                  <option [value]="i" *ngFor="let type of MotifInterventionValues; let i = index">{{MotifIntervention[i]}}</option>
+              </reactive-select>
           </tr>
 
           <tr field label="Numero de bon">
@@ -109,13 +109,13 @@
           </tr>
 
           <tr field label="Lieu dépôt">
-              <select name="lieuDepot" [(ngModel)]="rapport.LieuDepotBon" (ngModelChange)="changeRapport({LieuDepotBon:$event})" required >
-                  <option [ngValue]="null"></option>
-                  <option [ngValue]="DepotBonIntervention.BoiteAuxLettres">Boîte aux lettres</option>
-                  <option [ngValue]="DepotBonIntervention.PC">PC</option>
-                  <option [ngValue]="DepotBonIntervention.Garage">Garage</option>
-                  <option [ngValue]="DepotBonIntervention.Autre">Autre</option>
-              </select>
+            <reactive-select name="lieuDepot" [(ngModel)]="rapport.LieuDepotBon" (ngModelChange)="changeRapport({LieuDepotBon:$event})" required >
+                <option [ngValue]="null" ></option>
+                <option [value]="DepotBonIntervention.BoiteAuxLettres">Boîte aux lettres</option>
+                <option [value]="DepotBonIntervention.PC">PC</option>
+                <option [value]="DepotBonIntervention.Garage">Garage</option>
+                <option [value]="DepotBonIntervention.Autre">Autre</option>
+            </reactive-select>
           </tr>
 
           <tr field *ngIf="rapport.LieuDepotBon==DepotBonIntervention.Autre" label="Autre lieu">
@@ -123,7 +123,7 @@
           </tr>
 
           <tr field label="Observations">
-              <reactive-textarea name="observations" class="extensible" #observations [(ngModel)]="rapport.Observations" (ngModelChange)="changeRapport({Observations:$event})"></reactive-textarea>
+              <reactive-textarea name="observations"  #observations [(ngModel)]="rapport.Observations" (ngModelChange)="changeRapport({Observations:$event})"></reactive-textarea>
           </tr>
 
       </section>
@@ -141,7 +141,7 @@
               <reactive-input name="trajetDetailMeteo" [(ngModel)]="trajet.DetailMeteo" (ngModelChange)="changeRapport({Trajet:{DetailMeteo:$event}})"></reactive-input>
           </tr>
           <tr field label="Justification delai">
-              <reactive-textarea name="trajetMotifDelai"  class="extensible" [(ngModel)]="trajet.MotifDelai" (ngModelChange)="changeRapport({Trajet:{MotifDelai:$event}})"></reactive-textarea>
+              <reactive-textarea name="trajetMotifDelai"  [(ngModel)]="trajet.MotifDelai" (ngModelChange)="changeRapport({Trajet:{MotifDelai:$event}})"></reactive-textarea>
           </tr>
       </section>
 
@@ -157,22 +157,22 @@
           </tr>
 
           <tr field label="Type de site">
-              <select #typeSite name="verifTypeSite" class="cellinput" [(ngModel)]="arriveeSurLieux.TypeDeSite" (ngModelChange)="changeRapport({ArriveeSurLieux:{TypeDeSite:$event}})">
+              <reactive-select #typeSite name="verifTypeSite" class="cellinput" [(ngModel)]="arriveeSurLieux.TypeDeSite" (ngModelChange)="changeRapport({ArriveeSurLieux:{TypeDeSite:$event}})">
                   <option [ngValue]="null"></option>
-                  <option [ngValue]="TypeSite.Pavillon">Pavillon</option>
-                  <option [ngValue]="TypeSite.CollectifImmeuble">Collectif ou immeuble</option>
-                  <option [ngValue]="TypeSite.CommercePro">Commerce ou local professionnel</option>
-              </select>
+                  <option [value]="TypeSite.Pavillon">Pavillon</option>
+                  <option [value]="TypeSite.CollectifImmeuble">Collectif ou immeuble</option>
+                  <option [value]="TypeSite.CommercePro">Commerce ou local professionnel</option>
+              </reactive-select>
           </tr>
 
           <tr field label="Circuit vérification">
-              <select name="verifCircuitVerif" [(ngModel)]="arriveeSurLieux.CircuitVerification" (ngModelChange)="changeRapport({ArriveeSurLieux:{CircuitVerification:$event}})" required>
+              <reactive-select name="verifCircuitVerif" [(ngModel)]="arriveeSurLieux.CircuitVerification" (ngModelChange)="changeRapport({ArriveeSurLieux:{CircuitVerification:$event}})" required>
                   <option [ngValue]="null"></option>
-                  <option [ngValue]="CircuitVerification.InterieurSite">Intérieur du site</option>
-                  <option [ngValue]="CircuitVerification.InterieurEnceinte">Intérieur de l'enceinte</option>
-                  <option [ngValue]="CircuitVerification.ExterieurSite">Extérieur du site</option>
-                  <option [ngValue]="CircuitVerification.VerificationKO">Vérification KO</option>
-              </select>
+                  <option [value]="CircuitVerification.InterieurSite">Intérieur du site</option>
+                  <option [value]="CircuitVerification.InterieurEnceinte">Intérieur de l'enceinte</option>
+                  <option [value]="CircuitVerification.ExterieurSite">Extérieur du site</option>
+                  <option [value]="CircuitVerification.VerificationKO">Vérification KO</option>
+              </reactive-select>
           </tr>
 
           <tr field label="Non acces au site" *ngIf="arriveeSurLieux.CircuitVerification==CircuitVerification.VerificationKO">
@@ -191,19 +191,19 @@
           </tr>
 
           <tr field label="Utilisation des moyens d'accès">
-              <select  name="verifUtilisationMoyens" [(ngModel)]="arriveeSurLieux.UtilisationMoyensAcces" (ngModelChange)="changeRapport({ArriveeSurLieux:{UtilisationMoyensAcces:$event}})">
+              <reactive-select  name="verifUtilisationMoyens" [(ngModel)]="arriveeSurLieux.UtilisationMoyensAcces" (ngModelChange)="changeRapport({ArriveeSurLieux:{UtilisationMoyensAcces:$event}})">
                   <option [ngValue]="null"></option>
-                  <option [ngValue]="true">Oui</option>
-                  <option [ngValue]="false">Non</option>
-              </select>
+                  <option [value]="true">Oui</option>
+                  <option [value]="false">Non</option>
+              </reactive-select>
           </tr>
 
           <tr field label="Vérification intégrale des issues">
-            <select name="verifIntegraleDesIssues" [(ngModel)]="arriveeSurLieux.VerifIntegraleIssues" (ngModelChange)="changeRapport({ArriveeSurLieux:{VerifIntegraleIssues:$event}})">
+            <reactive-select name="verifIntegraleDesIssues" [(ngModel)]="arriveeSurLieux.VerifIntegraleIssues" (ngModelChange)="changeRapport({ArriveeSurLieux:{VerifIntegraleIssues:$event}})">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="true">Oui</option>
-                <option [ngValue]="false">Non</option>
-            </select>
+                <option [value]="true">Oui</option>
+                <option [value]="false">Non</option>
+            </reactive-select>
         </tr>
 
         <tr field label="Raison non vérification des issues" *ngIf="arriveeSurLieux.VerifIntegraleIssues === false">
@@ -211,11 +211,11 @@
         </tr>
 
         <tr field label="Situation anormale">
-            <select name="verifSituationAnormale" [(ngModel)]="arriveeSurLieux.SituationAnormale" (ngModelChange)="changeRapport({ArriveeSurLieux:{SituationAnormale:$event}})">
+            <reactive-select name="verifSituationAnormale" [(ngModel)]="arriveeSurLieux.SituationAnormale" (ngModelChange)="changeRapport({ArriveeSurLieux:{SituationAnormale:$event}})">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="true">Oui</option>
-                <option [ngValue]="false">Non</option>
-            </select>
+                <option [value]="true">Oui</option>
+                <option [value]="false">Non</option>
+            </reactive-select>
         </tr>
 
         <tr field label="Commentaires">
@@ -228,11 +228,11 @@
     <section *ngIf="rapportDisplayed" title="Constatations matérielles" data-gs-width="auto" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
         <tr field label="Lumière(s) Allumée(s)">
-            <select name="lumieresAllumees" id="LumieresAllumees" [(ngModel)]="verifications.LumieresAllumees" (ngModelChange)="changeRapport({Verifications:{LumieresAllumees:$event}})">
+            <reactive-select name="lumieresAllumees" id="LumieresAllumees" [(ngModel)]="verifications.LumieresAllumees" (ngModelChange)="changeRapport({Verifications:{LumieresAllumees:$event}})">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="true">Oui</option>
-                <option [ngValue]="false">Non</option>
-            </select>
+                <option [value]="true">Oui</option>
+                <option [value]="false">Non</option>
+            </reactive-select>
         </tr>
 
         <tr field label="Pièces Allumées" *ngIf="verifications.LumieresAllumees">
@@ -256,11 +256,11 @@
         </tr>
 
         <tr field label="Issue(s) ouverte(s)">
-            <select name="issuesOuvertes" [(ngModel)]="verifications.IssuesOuvertes" (ngModelChange)="changeRapport({Verifications:{IssuesOuvertes:$event}})">
+            <reactive-select name="issuesOuvertes" [(ngModel)]="verifications.IssuesOuvertes" (ngModelChange)="changeRapport({Verifications:{IssuesOuvertes:$event}})">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="true">Oui</option>
-                <option [ngValue]="false">Non</option>
-            </select>
+                <option [value]="true">Oui</option>
+                <option [value]="false">Non</option>
+            </reactive-select>
         </tr>
 
         <tr field label="Detail Issues" *ngIf="verifications.IssuesOuvertes">
@@ -278,21 +278,21 @@
         </tr>
 
         <tr field label="Verifications systèmes">
-          <select name="verificationsSysteme" [(ngModel)]="verifications.Systeme" (ngModelChange)="changeRapport({Verifications:{Systeme:$event}})">
+          <reactive-select name="verificationsSysteme" [(ngModel)]="verifications.Systeme" (ngModelChange)="changeRapport({Verifications:{Systeme:$event}})">
             <option [ngValue]="null"></option>
-            <option [ngValue]="VerificationSysteme.Sirene">Sirène</option>
-            <option [ngValue]="VerificationSysteme.SystemeEnService">Système en service</option>
-            <option [ngValue]="VerificationSysteme.RemiseEnService">Remise en service</option>
-          </select>
+            <option [value]="VerificationSysteme.Sirene">Sirène</option>
+            <option [value]="VerificationSysteme.SystemeEnService">Système en service</option>
+            <option [value]="VerificationSysteme.RemiseEnService">Remise en service</option>
+          </reactive-select>
 
         </tr>
 
         <tr field label="Effraction(s)">
-            <select name="effraction" [(ngModel)]="verifications.Effraction" (ngModelChange)="changeRapport({Verifications:{Effraction:$event}})" required>
+            <reactive-select name="effraction" [(ngModel)]="verifications.Effraction" (ngModelChange)="changeRapport({Verifications:{Effraction:$event}})" required>
                 <option [ngValue]="null"></option>
-                <option [ngValue]="true">Oui</option>
-                <option [ngValue]="false">Non</option>
-            </select>
+                <option [value]="true">Oui</option>
+                <option [value]="false">Non</option>
+            </reactive-select>
         </tr>
 
         <tr field label="Detail effraction" *ngIf="verifications.Effraction">
@@ -340,11 +340,11 @@
         </tr>
 
         <tr field label="Présence véhicule">
-            <select name="presenceVehicule" [(ngModel)]="presence.PresenceVehicule" (ngModelChange)="changeRapport({Presence:{PresenceVehicule:$event}})">
+            <reactive-select name="presenceVehicule" [(ngModel)]="presence.PresenceVehicule" (ngModelChange)="changeRapport({Presence:{PresenceVehicule:$event}})">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="true">Oui</option>
-                <option [ngValue]="false">Non</option>
-            </select>
+                <option [value]="true">Oui</option>
+                <option [value]="false">Non</option>
+            </reactive-select>
         </tr>
 
         <tr field label="Type de véhicule" *ngIf="presence.PresenceVehicule">
@@ -365,11 +365,11 @@
     <section *ngIf="rapportDisplayed && miseEnSecurite" title="Mise en sécurité" data-gs-width="auto" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
         <tr field label="Site refermable">
-            <select name="siteRefermable" [(ngModel)]="miseEnSecurite.SiteRefermable" (ngModelChange)="changeRapport({MiseEnSecurite:{SiteRefermable:$event}})">
+            <reactive-select name="siteRefermable" [(ngModel)]="miseEnSecurite.SiteRefermable" (ngModelChange)="changeRapport({MiseEnSecurite:{SiteRefermable:$event}})">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="true">Oui</option>
-                <option [ngValue]="false">Non</option>
-            </select>
+                <option [value]="true">Oui</option>
+                <option [value]="false">Non</option>
+            </reactive-select>
         </tr>
 
         <tr field label="Mise en place">
@@ -388,21 +388,21 @@
     <section *ngIf="rapportDisplayed && infosFacturation" title="Facturation" data-gs-width="auto" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
         <tr field label="Envoi du CR">
-            <select name="facturationEnvoiCR" [(ngModel)]="intervention.InfosFacturation.AppelPourCR" (ngModelChange)="changeInfoFactu({AppelPourCR:$event})" required>
+            <reactive-select name="facturationEnvoiCR" [(ngModel)]="intervention.InfosFacturation.AppelPourCR" (ngModelChange)="changeInfoFactu({AppelPourCR:$event})" required>
                 <option [ngValue]="null"></option>
-                <option [ngValue]="AppelPourCR.AppelParAPS">Appel de l’APS</option>
-                <option [ngValue]="AppelPourCR.AppelParSCT">Appel de la Station</option>
-            </select>
+                <option [value]="AppelPourCR.AppelParAPS">Appel de l’APS</option>
+                <option [value]="AppelPourCR.AppelParSCT">Appel de la Station</option>
+            </reactive-select>
         </tr>
 
         <tr field label="Origine constatee">
-            <select name="facturationOrigineConstatee" [(ngModel)]="intervention.InfosFacturation.OrigineConstatee" (ngModelChange)="changeInfoFactu({OrigineConstatee:$event})" required>
+            <reactive-select name="facturationOrigineConstatee" [(ngModel)]="intervention.InfosFacturation.OrigineConstatee" (ngModelChange)="changeInfoFactu({OrigineConstatee:$event})" required>
                 <option [ngValue]="null"></option>
-                <option [ngValue]="OrigineConstatee.ErreurDeManipulation">Erreur de manipulation</option>
-                <option [ngValue]="OrigineConstatee.AbsenceIdentification">Absence d'identification</option>
-                <option [ngValue]="OrigineConstatee.RienASignaler">Rien à signaler</option>
-                <option [ngValue]="OrigineConstatee.Effraction">Effraction</option>
-            </select>
+                <option [value]="OrigineConstatee.ErreurDeManipulation">Erreur de manipulation</option>
+                <option [value]="OrigineConstatee.AbsenceIdentification">Absence d'identification</option>
+                <option [value]="OrigineConstatee.RienASignaler">Rien à signaler</option>
+                <option [value]="OrigineConstatee.Effraction">Effraction</option>
+            </reactive-select>
         </tr>
 
         <tr field label="Intervenant">
