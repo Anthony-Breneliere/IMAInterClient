@@ -521,11 +521,6 @@ export class InterventionDetails
         return this.intervention.Etat == Etat.Creee;
     }
 
-    public get isEditableIntervenantEmail() : boolean
-    {
-        return Array.isArray( this.intervenant?.Emails ) && this.intervention.Intervenant.Nom.toLowerCase().includes('générique');
-    }
-
     public changeIntervention( data : any )
     {
         console.log( "Changement de l'intervention " + data );
@@ -547,16 +542,38 @@ export class InterventionDetails
     /** Envoi d'un changmenent d'email au service
      *
      */
+    public _concatenated : string = "";
     public get concatenatedEmails() : string
     {
-      let concatenated = "";
-      let emails : any = this.intervenant?.Emails;
+      let concatenated : string = "";
+      let emails = this.intervenant?.Emails;
       if ( emails )
       {
-        Object.keys(emails).map( k => concatenated += ( emails[k] + " ") );
+        Object.keys(emails).map( k => concatenated += (emails[k] ?? "") + "\n");
+        concatenated = concatenated.trim();
       }
 
-      return concatenated;
+      return ( this._concatenated = concatenated );
+    }
+
+    public set concatenatedEmails( value : string )
+    {
+      let emails = value.split( /[ ,;\n]+/ ).map( email => email.trim() );
+
+      // on vide les champs
+      for (let i = 0; i < this.intervenant.Emails.length; i++)
+        this.intervenant.Emails[i] = "";
+
+      // on merge les champs au cas où ya moins de mail
+      Lodash.merge( this.intervenant.Emails, emails );
+
+      if ( this._concatenated != this.concatenatedEmails )
+        this.changeIntervention({ Intervenant: {Emails: this.intervenant.Emails}});
+    }
+
+    public get validEmails()
+    {
+      return this._interService.validateEmails( this.intervenant?.Emails );
     }
 
 

@@ -58,19 +58,13 @@ td.table {
     border-left: 2px solid var( --main-bg-color );
 }
 
-.ng-valid[required], .ng-valid.required  {
-  border-left: 4px solid var( --valid-color ); /* green */
-}
-
-.ng-valid[minimumCheckedRequired], .ng-valid.minimumCheckedRequired  {
-  border-left: 4px solid var( --valid-color ); /* green */
-}
-
+.ng-valid[required], .ng-valid.required, [ng-reflect-required="true"],
+.ng-valid[minimumCheckedRequired], .ng-valid.minimumCheckedRequired,
 .ng-valid[ng-reflect-min-date-required], .ng-valid.ng-reflect-min-date-required  {
   border-left: 4px solid var( --valid-color ); /* green */
 }
 
-.ng-invalid:not(form)  {
+.ng-invalid:not(form), [ng-reflect-required="false"] {
   border-left: 4px solid var( --invalid-color ); /* red */
 }
 
