@@ -46,14 +46,10 @@
           <tr field label="N° Siren ">{{intervenant?.Societe}}</tr>
           <tr field class=".crlf-return" label= "Adresse ">{{Capitalize(intervenant?.Adresse)}}</tr>
           <tr field *ngFor="let tel of intervenant?.Telephones " label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
-          <tr *ngIf="!isEditableIntervenantEmail; else editableEmail" field label="Email ">{{concatenatedEmails}}</tr>
-          <ng-template #editableEmail>
-              <tr field label="Email ">
-                  <!-- todo gma here -->
-                  <reactive-input  name="emailIntervenant" [(ngModel)]="intervenant.Emails[0]" (ngModelChange)="changeIntervention({ Intervenant: {Emails: [$event]}})"></reactive-input>
-              </tr>
-          </ng-template>
           <tr field label="Matricule">{{intervenant?.Matricule}}</tr>
+          <tr field label="Email(s) ">
+              <reactive-textarea  name="emailIntervenant" [(ngModel)]="concatenatedEmails" [required]="validEmails" [disabled]="intervention?.Etat != Etat.Creee" ></reactive-textarea>
+          </tr>
 
       </section>
 

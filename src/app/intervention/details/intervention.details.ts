@@ -521,11 +521,6 @@ export class InterventionDetails
         return this.intervention.Etat == Etat.Creee;
     }
 
-    public get isEditableIntervenantEmail() : boolean
-    {
-        return Array.isArray( this.intervenant?.Emails ) && this.intervention.Intervenant.Nom.toLowerCase().includes('générique');
-    }
-
     public changeIntervention( data : any )
     {
         console.log( "Changement de l'intervention " + data );
@@ -547,18 +542,43 @@ export class InterventionDetails
     /** Envoi d'un changmenent d'email au service
      *
      */
+    public _concatenated : string = "";
     public get concatenatedEmails() : string
     {
-      let concatenated = "";
-      let emails : any = this.intervenant?.Emails;
-      if ( emails )
-      {
-        Object.keys(emails).map( k => concatenated += ( emails[k] + " ") );
-      }
-
-      return concatenated;
+      let concatenated : string = "";
+      Object.keys(this.intervenant.Emails).map( k => concatenated += (this.intervenant.Emails[k] ?? "") + "\n");
+      concatenated = concatenated.trim();
+      return ( this._concatenated = concatenated );
     }
 
+    public set concatenatedEmails( value : string )
+    {
+      let emails = value.split( /[ ,;\n]+/ ).map( email => email.trim() );
+
+      // on vide les champs
+      for (let i = 0; i < this.intervenant.Emails.length; i++)
+        this.intervenant.Emails[i] = "";
+
+      // on merge les champs au cas où ya moins de mail
+      Lodash.merge( this.intervenant.Emails, emails );
+
+      if ( this._concatenated != this.concatenatedEmails )
+        this.changeIntervention({ Intervenant: {Emails: this.intervenant.Emails}});
+    }
+
+    public get validEmails()
+    {
+      if (!Array.isArray(this.intervenant?.Emails))
+        return false;
+      let notEmptyEmails = this.intervenant.Emails.filter( email => email);
+      return ( notEmptyEmails.length > 0 ) && notEmptyEmails.every( email => ! email || this.validateEmail(email) );
+    }
+
+    private validateEmail(email) : boolean
+    {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(String(email).toLowerCase());
+    }
 
     public changeInfoFactu( data : any )
     {
