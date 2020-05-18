@@ -110,8 +110,7 @@ export class InterventionButton implements OnInit
     {
         let canClose =
           this.connected
-          && this.intervention.Etat
-          && this.intervention.Etat === Etat.EnCours
+          && this.intervention?.Etat === Etat.EnCours
           && this.intervention?.Rapport?.ValidationStatus === RapportValidationStatusEnum.Valid;
 
         return canClose;
@@ -129,16 +128,21 @@ export class InterventionButton implements OnInit
     get canCancel() : boolean
     {
         let canCancel = this.connected &&
+<<<<<<< HEAD
                         this.intervention.Etat &&
                         this.intervention.Etat != Etat.Close &&
                         this.intervention.Etat != Etat.Annulee &&
+=======
+                        this.intervention?.Etat != Etat.Close &&
+                        this.intervention?.Etat != Etat.Annulee &&
+>>>>>>> Fix modification Lancement
                         this._interService.getInterventionState(this.intervention.Id)?.Loaded;
         return canCancel;
     }
 
     get inProgressPossible() : boolean
     {
-        let inProgressPossible = this.connected && this.intervention.Etat && this.intervention.Etat == Etat.Transmise;
+        let inProgressPossible = this.connected && this.intervention?.Etat == Etat.Transmise;
         return inProgressPossible;
     }
 

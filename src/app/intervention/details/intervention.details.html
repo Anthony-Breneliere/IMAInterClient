@@ -56,10 +56,15 @@
       <section title="Historique" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
           <tr field label="Creation ">{{intervention.Creation | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
-          <tr field *ngIf="intervention?.Etat == Etat.Annulee || intervention?.Etat == Etat.Close" label="Lancement ">{{intervention.Lancement | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
+          <tr field *ngIf="intervention?.Etat == Etat.Creee || intervention?.Etat == Etat.Annulee || intervention?.Etat == Etat.Close" label="Lancement ">{{intervention.Lancement | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
 
+<<<<<<< HEAD
           <tr field *ngIf="intervention?.Etat == Etat.Creee || intervention?.Etat == Etat.Transmise || intervention?.Etat == Etat.EnCours && NgZone.isInAngularZone()" label="Lancement" >
             <reactive-date-input #dateLancement name="dateLancement"
+=======
+          <tr field *ngIf="intervention?.Etat == Etat.Transmise || intervention?.Etat == Etat.EnCours && NgZone.isInAngularZone()" label="Lancement" >
+            <reactive-date-input #dateLancement name="dateLancement" class="extensible"
+>>>>>>> Fix modification Lancement
               [(ngModel)]="intervention.Lancement" (ngModelChange)="changeIntervention({Lancement: $event})"
               [minDateSelected]="intervention.Creation"
               [minDateRequired]="intervention.Creation"  required>
