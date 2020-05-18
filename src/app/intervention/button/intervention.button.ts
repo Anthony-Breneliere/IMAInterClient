@@ -128,14 +128,8 @@ export class InterventionButton implements OnInit
     get canCancel() : boolean
     {
         let canCancel = this.connected &&
-<<<<<<< HEAD
-                        this.intervention.Etat &&
-                        this.intervention.Etat != Etat.Close &&
-                        this.intervention.Etat != Etat.Annulee &&
-=======
                         this.intervention?.Etat != Etat.Close &&
                         this.intervention?.Etat != Etat.Annulee &&
->>>>>>> Fix modification Lancement
                         this._interService.getInterventionState(this.intervention.Id)?.Loaded;
         return canCancel;
     }
