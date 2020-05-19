@@ -54,31 +54,32 @@ export class ReactiveSelectComponent extends SelectControlValueAccessor
   // change from the model
   writeValue(value: any): void
   {
-    super.writeValue( value );
+    if ( this._value != value )
+    {
+      this._value = value;
+      this.updatingState = 'otherWriting';
 
-    this._value = value;
-    this.updatingState = 'otherWriting';
+      window.setTimeout( () => {
+        this.updatingState = null;
+        this._cdRef.detectChanges();
+      }, 100 );
 
-    window.setTimeout( () => {
-      this.updatingState = null;
+      // model value has change so changes must be detected (case ChangeDetectorStrategy is OnPush)
       this._cdRef.detectChanges();
-    }, 100 );
-
-    // model value has change so changes must be detected (case ChangeDetectorStrategy is OnPush)
-    this._cdRef.detectChanges();
-
-  }
-
-  public newValue(event: any )
-  {
+    }
 
   }
 
   // change from the UI
   set value(event: any)
   {
-    this._value = event;
-    this.propagateChange(event);
+    let change : boolean = (this._value != event);
+    if ( change )
+    {
+      this._value = event;
+      this.propagateChange(event);
+    }
+
     this.updatingState = null;
   }
 
