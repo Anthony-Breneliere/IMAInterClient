@@ -17,14 +17,14 @@
           <tr *ngIf="!isEditableTypeFiche; else editableTypeFiche" field label="Type ">{{intervention?.TypeFicheLabel}}</tr>
           <ng-template #editableTypeFiche>
               <tr field label="Type ">
-                  <reactive-select name="typeIntervention" id="InterventionType" [(ngModel)]="intervention.TypeFiche" (ngModelChange)="changeIntervention( { TypeFiche: $event } )">
-                      <option [value]="TypeFiche.Intervention">Intervention</option>
-                      <option [value]="TypeFiche.Gardiennage">Gardiennage</option>
-                      <option [value]="TypeFiche.Ronde">Ronde</option>
-                      <option [value]="TypeFiche.TestReseau">Test réseau</option>
-                      <option [value]="TypeFiche.GardiennageALaDemande">Gardiennage à la demande</option>
-                      <option [value]="TypeFiche.RondeALaDemande">Ronde à la demande</option>
-                  </reactive-select>
+                  <select name="typeIntervention" id="InterventionType" [(ngModel)]="intervention.TypeFiche" (ngModelChange)="changeIntervention( { TypeFiche: $event } )">
+                      <option [ngValue]="TypeFiche.Intervention">Intervention</option>
+                      <option [ngValue]="TypeFiche.Gardiennage">Gardiennage</option>
+                      <option [ngValue]="TypeFiche.Ronde">Ronde</option>
+                      <option [ngValue]="TypeFiche.TestReseau">Test réseau</option>
+                      <option [ngValue]="TypeFiche.GardiennageALaDemande">Gardiennage à la demande</option>
+                      <option [ngValue]="TypeFiche.RondeALaDemande">Ronde à la demande</option>
+                  </select>
               </tr>
           </ng-template>
           <tr field label="Evenement Alarme ">{{intervention.Alarme?.Evenement}}</tr>
