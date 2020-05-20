@@ -571,12 +571,6 @@ export class InterventionDetails
         this.changeIntervention({ Intervenant: {Emails: this.intervenant.Emails}});
     }
 
-    public get validEmails()
-    {
-      return this._interService.validateEmails( this.intervenant?.Emails );
-    }
-
-
     public changeInfoFactu( data : any )
     {
         console.log( data );

@@ -1,10 +1,10 @@
-'use strict'; 
+'use strict';
 
-var url = 'http://localhost:4200/IMAInter/#/intervention/';
+var url = 'http://localhost:4512/IMAInter/#/intervention/';
 
 // Function permettant de savoir si un client est sur l'imaInter ou pas
 // TODO GMA fonction a supprimer ?
-function isClientFocused() { 
+function isClientFocused() {
     return clients.matchAll({
         type: 'window',
         includeUncontrolled: true
@@ -28,7 +28,7 @@ function isClientFocused() {
 self.addEventListener('push', function (event) {
     var data = event.data.json();
     console.log(`[Service Worker] Push Received: "${data}"`);
-    
+
     const title = data.Title;
     const options = {
         body: data.Message,
@@ -38,8 +38,8 @@ self.addEventListener('push', function (event) {
     };
 
     // Client isn't focused, we need to show a notification.
-    return self.registration.showNotification(title, options);    
-}); 
+    return self.registration.showNotification(title, options);
+});
 
 // Gestion du click sur la notification
 self.addEventListener('notificationclick', function (event) {

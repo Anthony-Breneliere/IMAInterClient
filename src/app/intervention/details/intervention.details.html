@@ -48,7 +48,7 @@
           <tr field *ngFor="let tel of intervenant?.Telephones " label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
           <tr field label="Matricule">{{intervenant?.Matricule}}</tr>
           <tr field label="Email(s) ">
-              <reactive-textarea  name="emailIntervenant" [(ngModel)]="concatenatedEmails" [required]="validEmails" [disabled]="intervention?.Etat != Etat.Creee" ></reactive-textarea>
+              <reactive-textarea  name="emailIntervenant" [(ngModel)]="concatenatedEmails" required pattern="^([\w+-.]+@[\w.-]+\.[A-Za-z]{2,}([\n ,;]+|$))+" [disabled]="intervention?.Etat != Etat.Creee" ></reactive-textarea>
           </tr>
 
       </section>
