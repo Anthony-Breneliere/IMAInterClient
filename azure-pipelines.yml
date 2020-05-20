@@ -48,13 +48,13 @@ steps:
     
   steps:
 - task: rvo.SendEmailTask.send-email-build-task.SendEmail@1
-  displayName: 'Send an email with subject Erreur dans l’exécution du pipeline $(Build.DefinitionName) en $(System.StageDisplayName)'
+  displayName: 'Send an email with subject Erreur dans l’exécution du pipeline de build $(Build.DefinitionName)'
   inputs:
     To: 'g.mace@imaprotect.fr,b.kerviche@imaprotect.fr,a.breneliere@imaprotect.fr'
     From: 'noreply@imaprotect.fr'
-    Subject: 'Erreur dans l’exécution du pipeline $(Build.DefinitionName)'
+    Subject: 'Erreur dans l’exécution du pipeline de build $(Build.DefinitionName)'
     Body: |
-     Une erreur a eu lieu durant l’exécution du pipeline $(Build.DefinitionName) : $(Build.BuildUri)
+     Une erreur a eu lieu durant l’exécution du pipeline de build $(Build.DefinitionName) : $(Build.BuildUri)
      
     SmtpServer: 'mail-app.imatech.intra'
     SmtpPort: 25
