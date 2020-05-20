@@ -45,8 +45,6 @@ steps:
     PathtoPublish: $(build.artifactstagingdirectory)
     ArtifactName: '$(build.definitionname)'
 
-    
-  steps:
 - task: rvo.SendEmailTask.send-email-build-task.SendEmail@1
   displayName: 'Send an email with subject Erreur dans l’exécution du pipeline de build $(Build.DefinitionName)'
   inputs:
