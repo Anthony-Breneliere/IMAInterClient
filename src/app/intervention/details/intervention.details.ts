@@ -658,4 +658,13 @@ export class InterventionDetails
         if ( this.interventionChangeSubscription )
             this.interventionChangeSubscription.unsubscribe();
     }
+
+    public parseBoolean(value : any) : boolean
+    {
+        if(value === null)
+        {
+            return null;
+        }
+        return JSON.parse(value);
+    }
 }
