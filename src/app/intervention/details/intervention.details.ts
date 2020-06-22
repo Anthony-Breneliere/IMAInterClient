@@ -487,7 +487,7 @@ export class InterventionDetails
         }
         else
         {
-            this._interService.addNewMaincourante( this.intervention.Id, this.selectedMaincourType, this.maincourComment );
+            this._interService.addNewMaincourante( this.intervention.IdM1, this.selectedMaincourType, this.maincourComment );
         }
     }
 

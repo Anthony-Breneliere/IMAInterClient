@@ -280,10 +280,10 @@ export class InterventionService  {
         let interState : InterventionState;
 
         // cas de données d'intervention déjà chargée en mémoire
-        if ( this.loadedInterventionsDico.containsKey( interData.Id ) )
+        if ( this.loadedInterventionsDico.containsKey( interData.IdM1 ) )
         {
             // on met à jour l'intervention que nous avons actuellement en mémoire (elle n'est pas remplacée)
-            updatedInter = this.loadedInterventionsDico.getValue( interData.Id );
+            updatedInter = this.loadedInterventionsDico.getValue( interData.IdM1 );
 
             // on protège le champs que l'utilisateur est en train de modifier
             // if ( this.protectedDataFromWrites && interData.Id == this.protectedDataFromWrites.Id )
@@ -301,12 +301,12 @@ export class InterventionService  {
             updatedInter.NotificationChange = true;
 
             // état de l'intervention
-            interState = this.interventionsStateDico.getValue( interData.Id );
+            interState = this.interventionsStateDico.getValue( interData.IdM1 );
             interState.Loaded = interState.Loaded || dataType == InterventionDataType.Full;
         }
         else
         {
-            interState = this.interventionsStateDico.setValue( interData.Id, { Loaded: dataType == InterventionDataType.Full, Selected: false } );
+            interState = this.interventionsStateDico.setValue( interData.IdM1, { Loaded: dataType == InterventionDataType.Full, Selected: false } );
 
             // création d'une nouvelle intervention, on merge dedans les data qu'on a reçues
             let newIntervention = new Intervention();
@@ -317,7 +317,7 @@ export class InterventionService  {
 
             Lodash.merge( newIntervention, interData);
 
-            this.loadedInterventionsDico.setValue( interData.Id, newIntervention );
+            this.loadedInterventionsDico.setValue( interData.IdM1, newIntervention );
             updatedInter = newIntervention;
         }
 
@@ -447,7 +447,7 @@ export class InterventionService  {
         let searchResult : Intervention[] = this.loadedInterventionsDico.values().filter( i => i.Etat == Etat.Close || i.Etat == Etat.Annulee );
         for( let i of searchResult )
         {
-            this.loadedInterventionsDico.remove( i.Id );
+            this.loadedInterventionsDico.remove( i.IdM1 );
         }
     }
 
@@ -524,7 +524,7 @@ export class InterventionService  {
     {
         let newIntervention = new Intervention();
         newIntervention.Operateur = "abreneli";
-        newIntervention.Id = 1;
+        newIntervention.IdM1 = 1;
         newIntervention.Creation = (new Date()).toISOString();
 
         this.loadedInterventionsDico.setValue( 1, newIntervention );
