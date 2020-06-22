@@ -37,9 +37,9 @@
 
         <intervention-button #buttons
             (onSelected)="onSelected($event)"
-            [updating]="isCurrentlyUpdated( intervention.Id )"
+            [updating]="isCurrentlyUpdated( intervention.IdM1 )"
             [intervention]="intervention"
-            [selected]="intervention.Id == this.SelectedIntervention?.Id"
+            [selected]="intervention.IdM1 == this.SelectedIntervention?.IdM1"
             isMyInter="isMyInters"
             queryParamsHandling="" >
 

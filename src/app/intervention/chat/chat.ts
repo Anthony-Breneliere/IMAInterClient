@@ -57,7 +57,7 @@ export class Chat {
 
     writeMessage( $event : any, message : string )
     {
-        this.interService.chat( this.intervention.Id, message );
+        this.interService.chat( this.intervention.IdM1, message );
         this.messageInput.nativeElement.value = "";
     }
 
@@ -65,7 +65,7 @@ export class Chat {
     {
         if ( $event.keyCode == 13 )
         {
-            this.interService.chat( this.intervention.Id, this.messageInput.nativeElement.value );
+            this.interService.chat( this.intervention.IdM1, this.messageInput.nativeElement.value );
             this.messageInput.nativeElement.value = "";
         }
     }

@@ -348,9 +348,9 @@ export class InterventionService  {
     /**
      * Permet de récupérer l'état d'une intervention chargée. Il s'agit d'une donnée interne au client.
      */
-    public getInterventionState( id: number )   : InterventionState
+    public getInterventionState( idM1: number )   : InterventionState
     {
-        return this.interventionsStateDico.getValue( id );
+        return this.interventionsStateDico.getValue( idM1 );
     }
 
 
@@ -453,27 +453,27 @@ export class InterventionService  {
 
     public transfer( intervention : Intervention ) : void
     {
-        console.log(`Demande de transmission par mail de la fiche ${intervention.Id}.`);
-        this._connectionStatus.proxyServer.transfer( intervention.Id );
+        console.log(`Demande de transmission par mail de la fiche ${intervention.IdM1}.`);
+        this._connectionStatus.proxyServer.transfer( intervention.IdM1 );
     }
 
     public close( intervention : Intervention ) : void
     {
-        console.log(`Demande de clôture de la fiche ${intervention.Id}.`);
-        this._connectionStatus.proxyServer.close( intervention.Id );
+        console.log(`Demande de clôture de la fiche ${intervention.IdM1}.`);
+        this._connectionStatus.proxyServer.close( intervention.IdM1 );
     }
 
     public cancel( intervention : Intervention ) : void
     {
-        console.log(`Demande d'annulation de la fiche ${intervention.Id}.`);
+        console.log(`Demande d'annulation de la fiche ${intervention.IdM1}.`);
 
-        this._connectionStatus.proxyServer.cancel( intervention.Id );
+        this._connectionStatus.proxyServer.cancel( intervention.IdM1 );
     }
 
     public inProgress( intervention : Intervention ) : void
     {
-        console.log(`Demande de passage de la fiche en cours ${intervention.Id}.`);
-        this._connectionStatus.proxyServer.inProgress( intervention.Id );
+        console.log(`Demande de passage de la fiche en cours ${intervention.IdM1}.`);
+        this._connectionStatus.proxyServer.inProgress( intervention.IdM1 );
     }
 
     public chat( numFi : number, message : string ) : void

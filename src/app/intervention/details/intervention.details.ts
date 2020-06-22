@@ -81,7 +81,7 @@ export class InterventionDetails
 
         this.interventionChangeSubscription =
             this._interService.newInterData$.pipe(
-              filter( i => this.intervention && this.intervention.Id == i.Id  ) )
+              filter( i => this.intervention && this.intervention.IdM1 == i.IdM1  ) )
                 .subscribe( i => {
                   // détection de changement pour afficher les nouvelles valeurs arrivées
                   this.updateFormWithReceivedData();
@@ -432,8 +432,8 @@ export class InterventionDetails
     getTypeMaincourValue( key: number ) : string
     {
         // retourne le libellé du type de main courante ou "inconnu" si le type n'existe pas:
-        let foundMainCour =  this._interService.listeTypeMaincour.find( e => e.Id == key )
-            || this._interService.listeM1LibelleDivers.find( e => e.Id == key );
+        let foundMainCour =  this._interService.listeTypeMaincour.find( e => e.IdM1 == key )
+            || this._interService.listeM1LibelleDivers.find( e => e.IdM1 == key );
 
         return foundMainCour ? foundMainCour.Libelle : "Type inconnu";
     }
@@ -507,7 +507,7 @@ export class InterventionDetails
               Lodash.merge( data, { ValidationStatus : this.rapport.ValidationStatus } );
 
             // envoi du changement dans le rapport
-            this._interService.sendInterChange( { Id:this.intervention.Id, Rapport:data } );
+            this._interService.sendInterChange( { IdM1:this.intervention.IdM1, Rapport:data } );
         } );
 
 
@@ -527,7 +527,7 @@ export class InterventionDetails
 
         var p = new Promise<void>( (resolve) => {
 
-            data.Id = this.intervention.Id;
+            data.IdM1 = this.intervention.IdM1;
 
             // envoi du changement dans l'intervention
             this._interService.sendInterChange( data );
@@ -580,7 +580,7 @@ export class InterventionDetails
             Lodash.merge( this.intervention, data);
 
             // envoi du changement dans le rapport
-            this._interService.sendInterChange( { Id:this.intervention.Id, InfosFacturation:data } );
+            this._interService.sendInterChange( { IdM1:this.intervention.IdM1, InfosFacturation:data } );
         } );
     }
 
@@ -606,7 +606,7 @@ export class InterventionDetails
                 this.intervention.DateArrivee = arrivee;
 
                 // envoi du changement de date d'arrivée
-                this._interService.sendInterChange( { Id:this.intervention.Id, DateArrivee: arrivee } );
+                this._interService.sendInterChange( { Id:M1this.intervention.IdM1, DateArrivee: arrivee } );
             }
             catch( error )
             {
@@ -626,7 +626,7 @@ export class InterventionDetails
                 this.intervention.DateDepart = depart;
 
                 // envoi du changement de date de départ
-                this._interService.sendInterChange( { Id:this.intervention.Id, DateDepart: depart } );
+                this._interService.sendInterChange( { IdM1:this.intervention.IdM1, DateDepart: depart } );
             }
             catch( error )
             {
@@ -661,7 +661,7 @@ export class InterventionDetails
 
     public parseBoolean(value : any) : boolean
     {
-        if(value === null)
+        if(value === undefined || value === null)
         {
             return null;
         }

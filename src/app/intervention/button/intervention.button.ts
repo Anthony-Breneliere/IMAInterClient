@@ -130,7 +130,7 @@ export class InterventionButton implements OnInit
         let canCancel = this.connected &&
                         this.intervention?.Etat != Etat.Close &&
                         this.intervention?.Etat != Etat.Annulee &&
-                        this._interService.getInterventionState(this.intervention.Id)?.Loaded;
+                        this._interService.getInterventionState(this.intervention.IdM1)?.Loaded;
         return canCancel;
     }
 
@@ -152,12 +152,12 @@ export class InterventionButton implements OnInit
 
     // public authorizeDeparture() : void
     // {
-    //     return this._interService.authorizeDeparture( this.intervention.Id );
+    //     return this._interService.authorizeDeparture( this.intervention.IdM1 );
     // }
 
     // public immobilizeIntervenant(): void
     // {
-    //     return this._interService.immobilizeIntervenant( this.intervention.Id );
+    //     return this._interService.immobilizeIntervenant( this.intervention.IdM1 );
     // }
 
 

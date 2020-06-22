@@ -89,12 +89,12 @@ export class InterventionGroup
           } );
 
           this._interService.newInterData$.subscribe( inter =>  {
-                this.interventionChangeHighlight( inter.Id );
+                this.interventionChangeHighlight( inter.IdM1 );
           } );
 
       this.interventionMessageSubscription = this._interService.newMessages$
           .subscribe( notif  => {
-              this.interventionChangeHighlight( notif["0"].Id );
+              this.interventionChangeHighlight( notif["0"].IdM1 );
           } );
 
       // initialise la liste des interventions
@@ -227,7 +227,7 @@ export class InterventionGroup
         // plus d'info sur https://angular.io/guide/zone
 
         this._ngZone.run( () =>  {
-          this._router.navigateByUrl("/intervention/" + newSelectedButton.intervention.Id);
+          this._router.navigateByUrl("/intervention/" + newSelectedButton.intervention.IdM1);
         } );
 
 

@@ -47,7 +47,7 @@ export class Maincourantes {
         // on filtre les message sur l'instance de l'intervention qui est actuellement affichée
         this.newInterSub =
             this.interService.newInterData$
-            .pipe( filter( i => this.intervention && this.intervention.Id == i.Id ) )
+            .pipe( filter( i => this.intervention && this.intervention.IdM1 == i.IdM1 ) )
             .subscribe( i => { this.detectChanges(); } );
 
     }
@@ -117,8 +117,8 @@ export class Maincourantes {
     getTypeMaincourValue( key: number ) : string
     {
         // retourne le libellé du type de main courante ou "inconnu" si le type n'existe pas:
-        let foundMainCour =  this.interService.listeTypeMaincour.find( e => e.Id == key )
-            || this.interService.listeM1LibelleDivers.find( e => e.Id == key );
+        let foundMainCour =  this.interService.listeTypeMaincour.find( e => e.IdM1 == key )
+            || this.interService.listeM1LibelleDivers.find( e => e.IdM1 == key );
 
         return foundMainCour ? foundMainCour.Libelle : "Type inconnu";
     }
