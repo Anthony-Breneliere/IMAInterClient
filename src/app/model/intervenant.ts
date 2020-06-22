@@ -2,6 +2,7 @@ import { Telephone } from "./telephone"
 
 export class Intervenant
 {
+    Id: string; // Guid
     Societe: string;
     Adresse: string;
     Emails: any;

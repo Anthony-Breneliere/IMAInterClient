@@ -9,6 +9,7 @@ import { VerificationSysteme } from './enums';
 
 export class RapportVerifications
 {
+    Id: string; // Guid
     LumieresAllumees: boolean;
     IssuesOuvertes: boolean;
     Effraction: boolean;

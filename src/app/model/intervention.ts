@@ -16,7 +16,8 @@ import { InfosFacturation } from './infos_facturation';
 
 export class Intervention
 {
-    Id : number;
+    Id: string; // Guid
+    IdM1 : number;
     Etat : Etat;
     Operateur : string;
     Origine : OrigineFiche;

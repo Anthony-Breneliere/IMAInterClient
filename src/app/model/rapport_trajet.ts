@@ -3,6 +3,7 @@ import { RapportMeteo } from './rapport_meteo';
 
 export class RapportTrajet
 {
+    Id: string; // Guid
     Meteo: RapportMeteo;
     MotifDelai: string;
     DetailMeteo: string;
