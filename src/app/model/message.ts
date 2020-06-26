@@ -6,7 +6,8 @@ export class Message
 {
     Id: string; // Guid
     IdM1: number;
-    IdChannel: number;
+    IdChannel: string;
+    IdChannelM1: number;
     Date: string;
     Buddy: string;
     Texte: string;

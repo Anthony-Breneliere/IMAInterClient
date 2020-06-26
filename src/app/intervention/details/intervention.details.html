@@ -5,6 +5,7 @@
     <form #interventionForm="ngForm" >
 
       <section title="Fiche" [readOnly]="readOnlySection" (resize)="updateLayout()">
+            <tr field label="Id ">{{intervention.Id}}</tr>
           <tr field label="Numéro ">{{intervention.IdM1}}</tr>
           <tr field label="Contrat ">{{site?.Contrat}}</tr>
           <tr field label="Nom du client ">{{intervention.NomComplet}}</tr>

@@ -28,12 +28,12 @@ export class InterventionButtonContent
 
     // public authorizeDeparture() : void
     // {
-    //     return this._interService.authorizeDeparture( this.intervention.IdM1 );
+    //     return this._interService.authorizeDeparture( this.intervention.Id );
     // }
 
     // public immobilizeIntervenant(): void
     // {
-    //     return this._interService.immobilizeIntervenant( this.intervention.IdM1 );
+    //     return this._interService.immobilizeIntervenant( this.intervention.Id );
     // }
 
 

@@ -49,7 +49,7 @@ export class InterventionGroup
 
     private _groupInterventions : Intervention[] = [];
 
-    private _currentlyUpdatedInters : number[] = [];
+    private _currentlyUpdatedInters : string[] = [];
 
     public CurrentInterOperators : string[] = []
     public CurrentInterClients : string[] = []
@@ -89,12 +89,12 @@ export class InterventionGroup
           } );
 
           this._interService.newInterData$.subscribe( inter =>  {
-                this.interventionChangeHighlight( inter.IdM1 );
+                this.interventionChangeHighlight( inter.Id );
           } );
 
       this.interventionMessageSubscription = this._interService.newMessages$
           .subscribe( notif  => {
-              this.interventionChangeHighlight( notif["0"].IdM1 );
+              this.interventionChangeHighlight( notif["0"].Id );
           } );
 
       // initialise la liste des interventions
@@ -114,7 +114,7 @@ export class InterventionGroup
     }
 
 
-    public interventionChangeHighlight( interId : number )
+    public interventionChangeHighlight( interId : string )
     {
         this._currentlyUpdatedInters.push( interId );
 
@@ -200,7 +200,7 @@ export class InterventionGroup
     }
 
 
-    isCurrentlyUpdated( interId : number ) : boolean
+    isCurrentlyUpdated( interId : string ) : boolean
     {
         if ( this._currentlyUpdatedInters )
             return this._currentlyUpdatedInters.indexOf( interId ) != -1;
@@ -227,7 +227,7 @@ export class InterventionGroup
         // plus d'info sur https://angular.io/guide/zone
 
         this._ngZone.run( () =>  {
-          this._router.navigateByUrl("/intervention/" + newSelectedButton.intervention.IdM1);
+          this._router.navigateByUrl("/intervention/" + newSelectedButton.intervention.Id);
         } );
 
 

@@ -29,8 +29,8 @@ export enum InterventionDataType {
 export class InterventionService  {
 
 
-    private loadedInterventionsDico : Collections.Dictionary<number, Intervention> = new Collections.Dictionary<number, Intervention>();
-    private interventionsStateDico : Collections.Dictionary<number, InterventionState> = new Collections.Dictionary<number, InterventionState>();
+    private loadedInterventionsDico : Collections.Dictionary<string, Intervention> = new Collections.Dictionary<string, Intervention>();
+    private interventionsStateDico : Collections.Dictionary<string, InterventionState> = new Collections.Dictionary<string, InterventionState>();
     private interventionsAppUrl = 'app/interventions';  // URL to web api
 
     // liste des changements
@@ -200,7 +200,7 @@ export class InterventionService  {
     /**
      * Permet de récupérer tout le détail d'une intervention
      */
-    private getFullIntervention( numFI : number, siteId : number = null ) : Promise<Intervention>
+    private getFullIntervention( numFI : string, siteId : string = null ) : Promise<Intervention>
     {
         if ( this._connectionStatus.connected )
         {
@@ -230,7 +230,7 @@ export class InterventionService  {
      * Charge une intervention
      * numFI : numéro de fiche
      */
-    public connectAndLoadIntervention( numFI : number ) : Promise<Intervention>
+    public connectAndLoadIntervention( numFI : string ) : Promise<Intervention>
     {
         let loadInterventionPromise = this._connectionStatus.waitForReconnection().then( () =>
         {
@@ -243,7 +243,7 @@ export class InterventionService  {
     /**
      * @param numFI getInterventionFromServer
      */
-    private getInterventionFromServer( numFI : number, siteId : number ) : Promise<Intervention>
+    private getInterventionFromServer( numFI : string, siteId : string ) : Promise<Intervention>
     {
         let getInterPromise = new Promise<Intervention>( (resolve, reject ) =>
         {
@@ -280,10 +280,10 @@ export class InterventionService  {
         let interState : InterventionState;
 
         // cas de données d'intervention déjà chargée en mémoire
-        if ( this.loadedInterventionsDico.containsKey( interData.IdM1 ) )
+        if ( this.loadedInterventionsDico.containsKey( interData.Id ) )
         {
             // on met à jour l'intervention que nous avons actuellement en mémoire (elle n'est pas remplacée)
-            updatedInter = this.loadedInterventionsDico.getValue( interData.IdM1 );
+            updatedInter = this.loadedInterventionsDico.getValue( interData.Id );
 
             // on protège le champs que l'utilisateur est en train de modifier
             // if ( this.protectedDataFromWrites && interData.Id == this.protectedDataFromWrites.Id )
@@ -301,12 +301,12 @@ export class InterventionService  {
             updatedInter.NotificationChange = true;
 
             // état de l'intervention
-            interState = this.interventionsStateDico.getValue( interData.IdM1 );
+            interState = this.interventionsStateDico.getValue( interData.Id );
             interState.Loaded = interState.Loaded || dataType == InterventionDataType.Full;
         }
         else
         {
-            interState = this.interventionsStateDico.setValue( interData.IdM1, { Loaded: dataType == InterventionDataType.Full, Selected: false } );
+            interState = this.interventionsStateDico.setValue( interData.Id, { Loaded: dataType == InterventionDataType.Full, Selected: false } );
 
             // création d'une nouvelle intervention, on merge dedans les data qu'on a reçues
             let newIntervention = new Intervention();
@@ -317,7 +317,7 @@ export class InterventionService  {
 
             Lodash.merge( newIntervention, interData);
 
-            this.loadedInterventionsDico.setValue( interData.IdM1, newIntervention );
+            this.loadedInterventionsDico.setValue( interData.Id, newIntervention );
             updatedInter = newIntervention;
         }
 
@@ -348,9 +348,9 @@ export class InterventionService  {
     /**
      * Permet de récupérer l'état d'une intervention chargée. Il s'agit d'une donnée interne au client.
      */
-    public getInterventionState( idM1: number )   : InterventionState
+    public getInterventionState( id: string )   : InterventionState
     {
-        return this.interventionsStateDico.getValue( idM1 );
+        return this.interventionsStateDico.getValue( id );
     }
 
 
@@ -399,7 +399,7 @@ export class InterventionService  {
      * @param typeMaincour : type de main courante
      * @param comment : commentaire
      */
-    public addNewMaincourante( numFi: number, typeMaincour: ITypeMainCourante, comment: string ) : void
+    public addNewMaincourante( numFi: string, typeMaincour: ITypeMainCourante, comment: string ) : void
     {
         console.log("Envoi d'une main courante: ",
           {"login":this._connectionStatus.login, "numFi": numFi, "typeMaincour": typeMaincour, "comment":comment});
@@ -447,36 +447,36 @@ export class InterventionService  {
         let searchResult : Intervention[] = this.loadedInterventionsDico.values().filter( i => i.Etat == Etat.Close || i.Etat == Etat.Annulee );
         for( let i of searchResult )
         {
-            this.loadedInterventionsDico.remove( i.IdM1 );
+            this.loadedInterventionsDico.remove( i.Id );
         }
     }
 
     public transfer( intervention : Intervention ) : void
     {
-        console.log(`Demande de transmission par mail de la fiche ${intervention.IdM1}.`);
-        this._connectionStatus.proxyServer.transfer( intervention.IdM1 );
+        console.log(`Demande de transmission par mail de la fiche ${intervention.Id}.`);
+        this._connectionStatus.proxyServer.transfer( intervention.Id );
     }
 
     public close( intervention : Intervention ) : void
     {
-        console.log(`Demande de clôture de la fiche ${intervention.IdM1}.`);
-        this._connectionStatus.proxyServer.close( intervention.IdM1 );
+        console.log(`Demande de clôture de la fiche ${intervention.Id}.`);
+        this._connectionStatus.proxyServer.close( intervention.Id );
     }
 
     public cancel( intervention : Intervention ) : void
     {
-        console.log(`Demande d'annulation de la fiche ${intervention.IdM1}.`);
+        console.log(`Demande d'annulation de la fiche ${intervention.Id}.`);
 
-        this._connectionStatus.proxyServer.cancel( intervention.IdM1 );
+        this._connectionStatus.proxyServer.cancel( intervention.Id );
     }
 
     public inProgress( intervention : Intervention ) : void
     {
-        console.log(`Demande de passage de la fiche en cours ${intervention.IdM1}.`);
-        this._connectionStatus.proxyServer.inProgress( intervention.IdM1 );
+        console.log(`Demande de passage de la fiche en cours ${intervention.Id}.`);
+        this._connectionStatus.proxyServer.inProgress( intervention.Id );
     }
 
-    public chat( numFi : number, message : string ) : void
+    public chat( numFi : string, message : string ) : void
     {
         console.log(`Envoi messages sur FI ${numFi}, texte: ${message}`);
         this._connectionStatus.proxyServer.chat( numFi, message );
@@ -525,9 +525,10 @@ export class InterventionService  {
         let newIntervention = new Intervention();
         newIntervention.Operateur = "abreneli";
         newIntervention.IdM1 = 1;
+        newIntervention.Id = "00000000-0000-0000-0000-000000000000";
         newIntervention.Creation = (new Date()).toISOString();
 
-        this.loadedInterventionsDico.setValue( 1, newIntervention );
+        this.loadedInterventionsDico.setValue( "00000000-0000-0000-0000-000000000000", newIntervention );
 
         this._newInterDataSource.next( newIntervention );
 
