@@ -471,7 +471,7 @@ export class InterventionDetails
             result +="Mél ";
 
         if ( text.match(/[0-9]+/) != null )
-            result +="Tel ";
+            result +="Tél ";
 
         result += this.Capitalize( label.replace( /_/g, " " ).replace( /telephone/g, "") );
 

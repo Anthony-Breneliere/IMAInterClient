@@ -12,7 +12,7 @@
           <tr field label="Coordonnées géographiques">{{site?.Latitude}}, {{site?.Longitude}}</tr>
           <tr *ngFor="let tel of telephonesSite" field label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
           <tr field label="Etat ">{{intervention.EtatLabel}}</tr>
-          <tr field label="Operateur ">{{intervention.Operateur}}</tr>
+          <tr field label="Opérateur ">{{intervention.Operateur}}</tr>
           <tr field label="Origine ">{{intervention.OrigineLabel}}</tr>
           <tr *ngIf="!isEditableTypeFiche; else editableTypeFiche" field label="Type ">{{intervention?.TypeFicheLabel}}</tr>
           <ng-template #editableTypeFiche>
@@ -27,7 +27,7 @@
                 </reactive-select>
               </tr>
           </ng-template>
-          <tr field label="Evenement Alarme ">{{intervention.Alarme?.Evenement}}</tr>
+          <tr field label="Evénement Alarme ">{{intervention.Alarme?.Evenement}}</tr>
           <tr field label="Type Alarme ">{{intervention.Alarme?.Type}}</tr>
           <tr field label="Code Canal ">{{intervention.Alarme?.CodeCanal}}</tr>
           <tr field label="Heure Alarme ">{{intervention.Alarme?.Heure | date:'HH:mm:ss'}}</tr>
@@ -55,7 +55,7 @@
 
       <section title="Historique" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
-          <tr field label="Creation ">{{intervention.Creation | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
+          <tr field label="Création ">{{intervention.Creation | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
           <tr field *ngIf="intervention?.Etat == Etat.Creee || intervention?.Etat == Etat.Annulee || intervention?.Etat == Etat.Close" label="Lancement ">{{intervention.Lancement | date:'dd/MM/yyyy HH:mm:ss '}}</tr>
 
           <tr field *ngIf="intervention?.Etat == Etat.Transmise || intervention?.Etat == Etat.EnCours && NgZone.isInAngularZone()" label="Lancement" >
@@ -100,7 +100,7 @@
               </reactive-select>
           </tr>
 
-          <tr field label="Numero de bon">
+          <tr field label="Numéro de bon">
               <reactive-input name="numeroDeBon" [(ngModel)]="rapport.NumeroBon" (ngModelChange)="changeRapport({NumeroBon:$event})" ></reactive-input>
           </tr>
 
@@ -126,17 +126,17 @@
 
 
       <section *ngIf="rapportDisplayed && trajet" title="Transport" [readOnly]="readOnlySection" (resize)="updateLayout()">
-          <tr field label="Meteo">
+          <tr field label="Méteo">
               <reactive-checkbox name="meteoVentFort" label="Vent Fort" [(ngModel)]="trajet.Meteo.VentFort" (ngModelChange)="changeRapport({Trajet:{Meteo:{VentFort:$event}}})"></reactive-checkbox>
               <reactive-checkbox name="meteoPluie" label="Pluie" [(ngModel)]="trajet.Meteo.Pluie" (ngModelChange)="changeRapport({Trajet:{Meteo:{Pluie:$event}}})"></reactive-checkbox>
               <reactive-checkbox name="meteoOrage" label="Orage" [(ngModel)]="trajet.Meteo.Orage" (ngModelChange)="changeRapport({Trajet:{Meteo:{Orage:$event}}})"></reactive-checkbox>
               <reactive-checkbox name="meteoBrouillard" label="Brouillard" [(ngModel)]="trajet.Meteo.Brouillard" (ngModelChange)="changeRapport({Trajet:{Meteo:{Brouillard:$event}}})"></reactive-checkbox>
               <reactive-checkbox name="meteoNeige" label="Neige" [(ngModel)]="trajet.Meteo.Neige" (ngModelChange)="changeRapport({Trajet:{Meteo:{Neige:$event}}})"></reactive-checkbox>
           </tr>
-          <tr field label="Detail météo">
+          <tr field label="Détail météo">
               <reactive-input name="trajetDetailMeteo" [(ngModel)]="trajet.DetailMeteo" (ngModelChange)="changeRapport({Trajet:{DetailMeteo:$event}})"></reactive-input>
           </tr>
-          <tr field label="Justification delai">
+          <tr field label="Justification délai">
               <reactive-textarea name="trajetMotifDelai"  [(ngModel)]="trajet.MotifDelai" (ngModelChange)="changeRapport({Trajet:{MotifDelai:$event}})"></reactive-textarea>
           </tr>
       </section>
@@ -144,7 +144,7 @@
 
       <section *ngIf="rapportDisplayed && arriveeSurLieux" title="Vérifications" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
-          <tr field label="Numero de rue">
+          <tr field label="Numéro de rue">
               <reactive-input name="verifBumeroRue" [(ngModel)]="arriveeSurLieux.NumeroDeRue" (ngModelChange)="changeRapport({ArriveeSurLieux:{NumeroDeRue:$event}})"></reactive-input>
           </tr>
 
@@ -171,7 +171,7 @@
               </reactive-select>
           </tr>
 
-          <tr field label="Non acces au site" *ngIf="arriveeSurLieux.CircuitVerification==CircuitVerification.VerificationKO">
+          <tr field label="Non accès au site" *ngIf="arriveeSurLieux.CircuitVerification==CircuitVerification.VerificationKO">
             <div ngModelGroup="nonAccesAuSite" minimumCheckedRequired="1" >
               <reactive-checkbox name="verifBloquePortail" label="Bloqué portail" [(ngModel)]="nonAccesAuSite.BloquePortail" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{BloquePortail:$event}}})"></reactive-checkbox>
               <reactive-checkbox name="verifMoyensDacces" label="Absence de Moyens d'Accès" [(ngModel)]="nonAccesAuSite.AbsenceMoyensAcces" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AbsenceMoyensAcces:$event}}})"></reactive-checkbox>
@@ -259,7 +259,7 @@
             </reactive-select>
         </tr>
 
-        <tr field label="Detail Issues" *ngIf="parseBoolean(verifications.IssuesOuvertes)">
+        <tr field label="Détail Issues" *ngIf="parseBoolean(verifications.IssuesOuvertes)">
             <reactive-checkbox name="issuesOuvertesPorte" label="Porte" [(ngModel)]="quellesIssuesOuvertes.Porte" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{Porte:$event}}})"></reactive-checkbox>
             <reactive-checkbox name="issuesOuvertesFenetre" label="Fenêtre" [(ngModel)]="quellesIssuesOuvertes.Fenetre" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{Fenetre:$event}}})"></reactive-checkbox>
             <reactive-checkbox name="issuesOuvertesBaieVitree" label="Baie vitrée" [(ngModel)]="quellesIssuesOuvertes.BaieVitree" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{BaieVitree:$event}}})"></reactive-checkbox>
@@ -273,7 +273,7 @@
             <reactive-input name="issuesOuvertesQuelleAutre" [(ngModel)]="quellesIssuesOuvertes.Autre" (ngModelChange)="changeRapport({Verifications:{QuellesIssuesOuvertes:{Autre:$event}}})" required></reactive-input>
         </tr>
 
-        <tr field label="Verifications systèmes">
+        <tr field label="Vérifications systèmes">
           <reactive-select name="verificationsSysteme" [(ngModel)]="verifications.Systeme" (ngModelChange)="changeRapport({Verifications:{Systeme:$event}})">
             <option [ngValue]="null"></option>
             <option [value]="VerificationSysteme.Sirene">Sirène</option>
@@ -291,7 +291,7 @@
             </reactive-select>
         </tr>
 
-        <tr field label="Detail effraction" *ngIf="parseBoolean(verifications.Effraction)">
+        <tr field label="Détail effraction" *ngIf="parseBoolean(verifications.Effraction)">
             <div ngModelGroup="detailEffraction" minimumCheckedRequired="1">
               <reactive-checkbox name="effractionPorte" label="Porte" [(ngModel)]="quellesEffractions.Porte" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Porte:$event}}})"></reactive-checkbox>
               <reactive-checkbox name="effractionFenetre" label="Fenêtre" [(ngModel)]="quellesEffractions.Fenetre" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Fenetre:$event}}})"></reactive-checkbox>
@@ -391,7 +391,7 @@
             </reactive-select>
         </tr>
 
-        <tr field label="Origine constatee">
+        <tr field label="Origine constatée">
             <reactive-select name="facturationOrigineConstatee" [(ngModel)]="intervention.InfosFacturation.OrigineConstatee" (ngModelChange)="changeInfoFactu({OrigineConstatee:$event})" required>
                 <option [ngValue]="null"></option>
                 <option [value]="OrigineConstatee.ErreurDeManipulation">Erreur de manipulation</option>
@@ -402,7 +402,7 @@
         </tr>
 
         <tr field label="Intervenant">
-            <reactive-checkbox name="facturationBloqueAuPortail" label="Bloque au portail" [(ngModel)]="intervention.InfosFacturation.BloqueAuPortail" (ngModelChange)="changeInfoFactu({BloqueAuPortail:$event})"></reactive-checkbox>
+            <reactive-checkbox name="facturationBloqueAuPortail" label="Bloqué au portail" [(ngModel)]="intervention.InfosFacturation.BloqueAuPortail" (ngModelChange)="changeInfoFactu({BloqueAuPortail:$event})"></reactive-checkbox>
         </tr>
 
     </section>
