@@ -5,7 +5,7 @@
 export class Alarme
 {
     public Id: string; // Guid
-    public Heure: string;
+    public ReceptionTime: string;
     public Evenement : string;
     public CodeCanal : string;
     public Type : string;
