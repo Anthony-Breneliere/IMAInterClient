@@ -3,7 +3,6 @@ import { RapportNonAccesAuSite } from './rapport_non_acces_au_site'
 
 export class RapportArriveeSurLieux
 {
-    Id: string; // Guid
     NumeroDeRue: string;
     NomSurLaPorteBAL: string;
     TypeDeSite: TypeSite;

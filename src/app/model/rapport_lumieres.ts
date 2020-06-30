@@ -1,6 +1,5 @@
 export class RapportLumieresAllumees
 {
-    Id: string; // Guid
     Buanderie: boolean;
     Bureau: boolean;
     Cellier: boolean;
