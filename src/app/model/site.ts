@@ -6,7 +6,6 @@ import {Telephone} from "./telephone";
 export class Site
 {
     Id: string; // Guid
-    IdM1: number;
     Contrat : string;
     Nom : string;
     Prenom : string;
