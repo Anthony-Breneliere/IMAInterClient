@@ -5,6 +5,7 @@
 
 export class FicheQualite
 {
+    public Id: string; // Guid
     public DelaiPrisEnCompte : boolean;
     public RespectDelai : boolean;
     public AppelSiITVBloque : boolean;

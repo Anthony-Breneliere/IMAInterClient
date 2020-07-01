@@ -5,6 +5,6 @@
  */
 export interface ITypeMainCourante
 {
-    Id : number;
+    Id: string; // Guid
     Libelle : string;
 }

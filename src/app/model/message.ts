@@ -4,8 +4,10 @@
  */
 export class Message
 {
-    Id: number;
-    IdChannel: number;
+    Id: string; // Guid
+    IdM1: number;
+    IdChannel: string;
+    IdChannelM1: number;
     Date: string;
     Buddy: string;
     Texte: string;

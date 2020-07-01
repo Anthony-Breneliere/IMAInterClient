@@ -12,6 +12,7 @@ import {RapportArriveeSurLieux} from './rapport_arrivee_sur_lieux';
 
 export class Rapport
 {
+    Id: string; // Guid
     DepotBonIntervention : boolean;
     LieuDepotBon : DepotBonIntervention;
     AutreLieuDepot : string;

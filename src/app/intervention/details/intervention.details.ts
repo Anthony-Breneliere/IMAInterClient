@@ -429,7 +429,7 @@ export class InterventionDetails
      *
      * @param key Retourne le libelle d'une main courante, connaissant son id
      */
-    getTypeMaincourValue( key: number ) : string
+    getTypeMaincourValue( key: string ) : string
     {
         // retourne le libellé du type de main courante ou "inconnu" si le type n'existe pas:
         let foundMainCour =  this._interService.listeTypeMaincour.find( e => e.Id == key )
@@ -606,7 +606,7 @@ export class InterventionDetails
                 this.intervention.DateArrivee = arrivee;
 
                 // envoi du changement de date d'arrivée
-                this._interService.sendInterChange( { Id:this.intervention.Id, DateArrivee: arrivee } );
+                this._interService.sendInterChange( { Id:M1this.intervention.Id, DateArrivee: arrivee } );
             }
             catch( error )
             {
@@ -661,7 +661,7 @@ export class InterventionDetails
 
     public parseBoolean(value : any) : boolean
     {
-        if(value === null)
+        if(value === undefined || value === null)
         {
             return null;
         }

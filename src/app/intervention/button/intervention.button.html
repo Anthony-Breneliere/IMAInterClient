@@ -13,7 +13,7 @@
 <context-menu #buttonMenu>
 
     <ng-template contextMenuItem let-item passive="true">
-        Actions sur {{intervention?.Id}}
+        Actions sur {{intervention?.IdM1}}
     </ng-template>
 
     <ng-template [visible]="canTransfer" contextMenuItem let-item (execute)="transfer()">

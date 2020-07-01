@@ -4,7 +4,7 @@
  */
 export class MainCourante
 {
-    Id: number;
+    Id: string; // Guid
     Type: string;
     Date: string;
     Operateur: string;

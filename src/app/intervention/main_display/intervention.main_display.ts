@@ -107,7 +107,7 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
 
               if ( id )
               {
-                let urlInterventionId = parseInt( url[1].path );
+                let urlInterventionId = url[1].path;
 
                 // la zone permet d'avoir l'exécution des callback géré par Angular
                 // en l'occureence quand l'utilisateur change l'id de l'intervention

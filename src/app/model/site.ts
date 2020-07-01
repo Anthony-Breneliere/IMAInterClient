@@ -5,7 +5,7 @@ import {Telephone} from "./telephone";
  */
 export class Site
 {
-    Id: number;
+    Id: string; // Guid
     Contrat : string;
     Nom : string;
     Prenom : string;

@@ -114,7 +114,7 @@ export class Maincourantes {
      *
      * @param key Retourne le libelle d'une main courante, connaissant son id
      */
-    getTypeMaincourValue( key: number ) : string
+    getTypeMaincourValue( key: string ) : string
     {
         // retourne le libellé du type de main courante ou "inconnu" si le type n'existe pas:
         let foundMainCour =  this.interService.listeTypeMaincour.find( e => e.Id == key )

@@ -16,7 +16,7 @@ export class InterventionFactory  {
     public CreateBasicIntervention( operatorName: string ) : any
     {
         let newIntervention  = {
-            Id: 0,
+            IdM1: 0,
             Etat: Etat.Creee,
             Origine: OrigineFiche.TraitementAlarme,
             TypeFiche: TypeFiche.Intervention,

@@ -4,7 +4,7 @@ import {TypePresence} from "./enums";
  */
 
 export class RapportPresence
-{
+{    
     // public TypePresence : TypePresence;
     // public PresenceClientNom : string;
     // public PresenceClientArrivee : string;

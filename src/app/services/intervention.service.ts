@@ -29,8 +29,8 @@ export enum InterventionDataType {
 export class InterventionService  {
 
 
-    private loadedInterventionsDico : Collections.Dictionary<number, Intervention> = new Collections.Dictionary<number, Intervention>();
-    private interventionsStateDico : Collections.Dictionary<number, InterventionState> = new Collections.Dictionary<number, InterventionState>();
+    private loadedInterventionsDico : Collections.Dictionary<string, Intervention> = new Collections.Dictionary<string, Intervention>();
+    private interventionsStateDico : Collections.Dictionary<string, InterventionState> = new Collections.Dictionary<string, InterventionState>();
     private interventionsAppUrl = 'app/interventions';  // URL to web api
 
     // liste des changements
@@ -200,7 +200,7 @@ export class InterventionService  {
     /**
      * Permet de récupérer tout le détail d'une intervention
      */
-    private getFullIntervention( numFI : number, siteId : number = null ) : Promise<Intervention>
+    private getFullIntervention( numFI : string, siteId : string = null ) : Promise<Intervention>
     {
         if ( this._connectionStatus.connected )
         {
@@ -230,7 +230,7 @@ export class InterventionService  {
      * Charge une intervention
      * numFI : numéro de fiche
      */
-    public connectAndLoadIntervention( numFI : number ) : Promise<Intervention>
+    public connectAndLoadIntervention( numFI : string ) : Promise<Intervention>
     {
         let loadInterventionPromise = this._connectionStatus.waitForReconnection().then( () =>
         {
@@ -243,7 +243,7 @@ export class InterventionService  {
     /**
      * @param numFI getInterventionFromServer
      */
-    private getInterventionFromServer( numFI : number, siteId : number ) : Promise<Intervention>
+    private getInterventionFromServer( numFI : string, siteId : string ) : Promise<Intervention>
     {
         let getInterPromise = new Promise<Intervention>( (resolve, reject ) =>
         {
@@ -348,7 +348,7 @@ export class InterventionService  {
     /**
      * Permet de récupérer l'état d'une intervention chargée. Il s'agit d'une donnée interne au client.
      */
-    public getInterventionState( id: number )   : InterventionState
+    public getInterventionState( id: string )   : InterventionState
     {
         return this.interventionsStateDico.getValue( id );
     }
@@ -399,7 +399,7 @@ export class InterventionService  {
      * @param typeMaincour : type de main courante
      * @param comment : commentaire
      */
-    public addNewMaincourante( numFi: number, typeMaincour: ITypeMainCourante, comment: string ) : void
+    public addNewMaincourante( numFi: string, typeMaincour: ITypeMainCourante, comment: string ) : void
     {
         console.log("Envoi d'une main courante: ",
           {"login":this._connectionStatus.login, "numFi": numFi, "typeMaincour": typeMaincour, "comment":comment});
@@ -476,7 +476,7 @@ export class InterventionService  {
         this._connectionStatus.proxyServer.inProgress( intervention.Id );
     }
 
-    public chat( numFi : number, message : string ) : void
+    public chat( numFi : string, message : string ) : void
     {
         console.log(`Envoi messages sur FI ${numFi}, texte: ${message}`);
         this._connectionStatus.proxyServer.chat( numFi, message );
@@ -524,10 +524,11 @@ export class InterventionService  {
     {
         let newIntervention = new Intervention();
         newIntervention.Operateur = "abreneli";
-        newIntervention.Id = 1;
+        newIntervention.IdM1 = 1;
+        newIntervention.Id = "00000000-0000-0000-0000-000000000000";
         newIntervention.Creation = (new Date()).toISOString();
 
-        this.loadedInterventionsDico.setValue( 1, newIntervention );
+        this.loadedInterventionsDico.setValue( "00000000-0000-0000-0000-000000000000", newIntervention );
 
         this._newInterDataSource.next( newIntervention );
 
