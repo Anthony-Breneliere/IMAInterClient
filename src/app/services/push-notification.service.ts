@@ -106,11 +106,12 @@ export class PushNotificationService {
      */
   private addOrUpdateUserSubscription(username: string, subscription: PushSubscription) {
     var newSub = subscription.toJSON();
-    this._connectionStatus.proxyServer.addOrUpdateUserSubscription(username, {
-      auth: newSub.keys.auth,
-      p256DH: newSub.keys.p256dh,
-      endPoint: newSub.endpoint
-    });
+
+    this._connectionStatus.HubConnection.send('AddOrUpdateUserSubscription',username, {
+        auth: newSub.keys.auth,
+        p256DH: newSub.keys.p256dh,
+        endPoint: newSub.endpoint
+      });
   }
 
   /** Cette fonction encode un string en base 64 en tableau d'Uint8
