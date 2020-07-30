@@ -71,7 +71,9 @@ export class InterventionService  {
             _connectionStatus.start().then( () => {
                 this.onServiceInterConnected();
             });
-        } );
+        } ).catch(( e : any ) => {
+            this._connectionStatus.addErrorMessage( `Erreur lors de l'execution de la promesse promiseHubScriptLoaded : ${e}` );
+        });        
      }
 
 
@@ -86,39 +88,41 @@ export class InterventionService  {
      */
     private initCallbacks() : void
     {
-        let proxyClient = this._connectionStatus.proxyClient;
 
-        // Méthode appelée quand une intervention en cours a été mise à jour ou ajoutée
-        proxyClient.newInterventionData = ( interventionData : Intervention ) =>
-        {
+        let hubConnection = this._connectionStatus.HubConnection;
+
+        hubConnection.on('newInterventionData',(interventionData : Intervention) =>{
+            console.log('INFO GMA callback newInterventionData');
             this.onReceiveInterventionData( interventionData, InterventionDataType.Change );
-        }
+        });
 
-        proxyClient.newSearchResults = ( searchResults : Intervention[] ) =>
-        {
+        hubConnection.on('newSearchResults',(searchResults : Intervention[]) =>{
+            console.log('INFO GMA callback newSearchResults');
             console.log( "Receiving search results:" );
-
             this.onReceiveInterventionList( searchResults );
-        }
+        });
 
-        proxyClient.newChatMessage = ( message : Message ) =>
-        {
+        hubConnection.on('newChatMessage',(message : Message) =>{
+            console.log('INFO GMA callback newChatMessage');
             this.onReceiveMessage( message );
-        }
+        });
     }
 
 
     // fonction appelée au moment de la connection au serveur
     private onServiceInterConnected() : void
     {
+        console.log(`INFO GMA ${this._connectionStatus.HubConnection.state}`);
+
         // chargement automatique des interventions en cours à la connection:
         this.loadCurrentInterventionList();
-
+        
+        //TODO GMA a mettre en place
         // chargement de la liste des types de maincourantes:
-        this.loadTypeMaincour();
+        //this.loadTypeMaincour();
 
-        // chargement de la liste des libelles divers du M1, car ils sont utilisés par certaiens maincourante generies:
-        this.loadM1LibelleDivers();
+        // // chargement de la liste des libelles divers du M1, car ils sont utilisés par certaiens maincourante generies:
+        //this.loadM1LibelleDivers();
 
         this.subscribeNotifications();
     }
@@ -128,6 +132,8 @@ export class InterventionService  {
      */
     private subscribeNotifications() : void
     {
+        console.log(`INFO GMA subscribeNotifications`);
+
       if ( this.pushNotificationService )
         this.pushNotificationService.subscribeUser();
 
@@ -139,12 +145,19 @@ export class InterventionService  {
      */
     private loadCurrentInterventionList() : void
     {
-        this._connectionStatus.proxyServer.queryCurrentFI()
-            .done( (newInterventions : Intervention[]) => this.onReceiveInterventionList( newInterventions ) )
-            .fail( ( e : any ) => {
-            this._connectionStatus.addErrorMessage( `Erreur lors de la récupération des interventions courrantes: ${e}` );
-        } );
+        console.log(`INFO GMA  loadCurrentInterventionList`);
 
+        this._connectionStatus.HubConnection.invoke('QueryCurrentFI')        
+        .then((newInterventions : Intervention[]) => 
+        
+            {
+                console.log(`INFO GMA  gestion des interventions récupéré`);
+                this.onReceiveInterventionList( newInterventions );
+            })
+            .catch(( e : any ) => {
+                    console.error(`INFO GMA error ${e}`);
+                    this._connectionStatus.addErrorMessage( `Erreur lors de la récupération des interventions courantes: ${e}` );
+                } );
     }
 
     /**
@@ -160,6 +173,7 @@ export class InterventionService  {
         // ajout des interventions au dico:
         for( let inter of newInterventions )
         {
+            //TODO GMA passer en full ?
             this.onReceiveInterventionData( inter, InterventionDataType.Partial );
         }
     }
@@ -247,15 +261,16 @@ export class InterventionService  {
     {
         let getInterPromise = new Promise<Intervention>( (resolve, reject ) =>
         {
-            console.info( "Chargement de l'intervention ", numFI);
-
-            this._connectionStatus.proxyServer.getIntervention( numFI, siteId )
-                .done( (interventionWithDetails : Intervention) =>
+             console.info( "Chargement de l'intervention ", numFI);
+             
+             this._connectionStatus.HubConnection.invoke('GetIntervention',numFI, siteId)
+                .then((interventionWithDetails : Intervention) =>
                 {
                     let interventionMerged = this.onReceiveInterventionData( interventionWithDetails, InterventionDataType.Full );
                     resolve(interventionMerged);
-                } )
-                .fail( ( e : any ) => {
+                })
+                .catch( ( e : any ) => 
+                {
                     this._connectionStatus.addErrorMessage( `Erreur lors de la récupération de l'intervention ${numFI}. ${e}` );
                     reject(e);
                 })
@@ -321,8 +336,6 @@ export class InterventionService  {
             updatedInter = newIntervention;
         }
 
-
-
         // on notifie les intéressés que de nouvelles data sont reçues sur une intervention:
         this._newInterDataSource.next( interData );
 
@@ -359,21 +372,22 @@ export class InterventionService  {
      */
     private loadTypeMaincour()
     {
-        this._connectionStatus.proxyServer.loadTypeMaincour()
-            .done( (typesMainCour : ITypeMainCourante[]) => {
+        console.log(`INFO GMA  LoadTypeMaincour`);
 
-                console.log(`Réception des types de mains courantes d'intervention: ${typesMainCour.length} libellés reçus.`);
+        this._connectionStatus.HubConnection.invoke('LoadTypeMaincour')
+        .then( (typesMainCour : ITypeMainCourante[]) => {
+            console.log(`Réception des types de mains courantes d'intervention: ${typesMainCour.length} libellés reçus.`);
 
-                let listeTypeMaincour : string[] = [];
+            let listeTypeMaincour : string[] = [];
 
-                // on remplace la liste existante éventuelle des types de maincourantes
-                this.listeTypeMaincour = typesMainCour;
+            // on remplace la liste existante éventuelle des types de maincourantes
+            this.listeTypeMaincour = typesMainCour;
 
-                console.log( this.listeTypeMaincour.length + " types de maincourantes récupérés." );
-             } )
-            .fail( ( e : any ) => {
-                this._connectionStatus.addErrorMessage( `Erreur lors de la récupération des types de maincourantes d\'interventions. ${e}` );
-            } );
+            console.log( this.listeTypeMaincour.length + " types de maincourantes récupérés." );
+            } )
+        .catch( ( e : any ) => {
+            this._connectionStatus.addErrorMessage( `Erreur lors de la récupération des types de maincourantes d\'interventions. ${e}` );
+        } );
     }
 
     /**
@@ -381,14 +395,16 @@ export class InterventionService  {
      */
     private loadM1LibelleDivers()
     {
-        this._connectionStatus.proxyServer.loadM1LibelleDivers()
-            .done( (m1LibelleDivers : ITypeMainCourante[]) => {
+        console.log(`INFO GMA  loadM1LibelleDivers`);
+
+        this._connectionStatus.HubConnection.invoke('LoadM1LibelleDivers')
+            .then( (m1LibelleDivers : ITypeMainCourante[]) => {
 
                 console.log(`Réception des libellés divers M1: ${m1LibelleDivers.length} libellés reçus.`);
 
                 this.listeM1LibelleDivers = m1LibelleDivers;
              } )
-            .fail( ( e : any ) => {
+            .catch( ( e : any ) => {
                 this._connectionStatus.addErrorMessage( `Erreur lors de la récupération des libellés divers du M1. ${e}` );
             } );
     }
@@ -403,8 +419,8 @@ export class InterventionService  {
     {
         console.log("Envoi d'une main courante: ",
           {"login":this._connectionStatus.login, "numFi": numFi, "typeMaincour": typeMaincour, "comment":comment});
-
-        this._connectionStatus.proxyServer.addNewMaincourante( numFi, typeMaincour.Libelle, comment);
+        
+        this._connectionStatus.HubConnection.send('AddNewMaincourante',typeMaincour.Libelle, comment);
     }
 
     // private protectedDataFromWrites : Any;
@@ -417,7 +433,7 @@ export class InterventionService  {
     {
         console.log("Envoi d'un changement d'intervention:", jsonInterChange);
 
-        this._connectionStatus.proxyServer.sendInterChange( jsonInterChange );
+        this._connectionStatus.HubConnection.send('SendInterChange',jsonInterChange);
     }
 
     /**
@@ -430,11 +446,14 @@ export class InterventionService  {
 
       this.clearSearchResults();
 
-      // on s'assure qu'on est connecté, car la recherche peut se faire au démarrage sur la query
-      let connectAndSearchPromise = this._connectionStatus.waitForReconnection().then( () =>
-      {
-        return this._connectionStatus.proxyServer.searchInterventions( query );
-      } );
+      //TODO GMA Traitement reprendre ici !!
+      var connectAndSearchPromise = new Promise(() => this._connectionStatus.HubConnection.invoke('SearchInterventions', query ));
+
+    //   // on s'assure qu'on est connecté, car la recherche peut se faire au démarrage sur la query
+    //   let connectAndSearchPromise = this._connectionStatus.waitForReconnection().then( () =>
+    //   {
+    //     return this._connectionStatus.proxyServer.searchInterventions( query );
+    //   } );
 
       return connectAndSearchPromise;
     }
@@ -454,32 +473,36 @@ export class InterventionService  {
     public transfer( intervention : Intervention ) : void
     {
         console.log(`Demande de transmission par mail de la fiche ${intervention.Id}.`);
-        this._connectionStatus.proxyServer.transfer( intervention.Id );
+
+        this._connectionStatus.HubConnection.send('Transfer',intervention.Id);
     }
 
     public close( intervention : Intervention ) : void
     {
-        console.log(`Demande de clôture de la fiche ${intervention.Id}.`);
-        this._connectionStatus.proxyServer.close( intervention.Id );
+        console.log(`Demande de clôture de la fiche ${intervention.Id}.`);        
+
+        this._connectionStatus.HubConnection.send('Close',intervention.Id);
     }
 
     public cancel( intervention : Intervention ) : void
     {
         console.log(`Demande d'annulation de la fiche ${intervention.Id}.`);
 
-        this._connectionStatus.proxyServer.cancel( intervention.Id );
+        this._connectionStatus.HubConnection.send('Cancel',intervention.Id);
     }
 
     public inProgress( intervention : Intervention ) : void
     {
         console.log(`Demande de passage de la fiche en cours ${intervention.Id}.`);
-        this._connectionStatus.proxyServer.inProgress( intervention.Id );
+
+        this._connectionStatus.HubConnection.send('InProgress',intervention.Id);
     }
 
     public chat( numFi : string, message : string ) : void
     {
         console.log(`Envoi messages sur FI ${numFi}, texte: ${message}`);
-        this._connectionStatus.proxyServer.chat( numFi, message );
+        
+        this._connectionStatus.HubConnection.send('Chat',numFi, message);
     }
 
     // Ces fonctions ne sont plus disponible tant qu'il n'y pas d'application mobile

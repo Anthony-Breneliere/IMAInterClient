@@ -83,9 +83,12 @@ export class InterventionGroup
               // à chaque fois qu'on reçoit des datas sur les interventions avec les infos d'opérateur,
               // on met à jour la liste des interventions du groupe,
               // car une nouvelle intervention a pu arriver, ou bien un intervention a pu se fermer, changer d'opérateur, etc..
+              
               if ( inter.Operateur != null )
-              this.updateGroupInterventions();
-
+              {
+                console.log(`INFO GMA ${inter.Operateur}`);
+                this.updateGroupInterventions();
+              }
           } );
 
           this._interService.newInterData$.subscribe( inter =>  {
@@ -116,6 +119,8 @@ export class InterventionGroup
 
     public interventionChangeHighlight( interId : string )
     {
+      console.log('INFO GMA interventionChangeHighlight');
+
         this._currentlyUpdatedInters.push( interId );
 
         window.setTimeout( () => {
@@ -130,6 +135,9 @@ export class InterventionGroup
     /* on met à jour les interventions du groupe */
     public updateGroupInterventions() : void
     {
+
+      console.log('INFO GMA updateGroupInterventions');
+
         switch( this.GroupType )
         {
             case GroupTypeEnum.interventionsCloses:
