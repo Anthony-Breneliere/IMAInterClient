@@ -92,15 +92,18 @@ export class InterventionService  {
         let hubConnection = this._connectionStatus.HubConnection;
 
         hubConnection.on('newInterventionData',(interventionData : Intervention) =>{
+            console.log('INFO GMA callback newInterventionData');
             this.onReceiveInterventionData( interventionData, InterventionDataType.Change );
         });
 
         hubConnection.on('newSearchResults',(searchResults : Intervention[]) =>{
+            console.log('INFO GMA callback newSearchResults');
             console.log( "Receiving search results:" );
             this.onReceiveInterventionList( searchResults );
         });
 
         hubConnection.on('newChatMessage',(message : Message) =>{
+            console.log('INFO GMA callback newChatMessage');
             this.onReceiveMessage( message );
         });
     }
@@ -109,17 +112,17 @@ export class InterventionService  {
     // fonction appelée au moment de la connection au serveur
     private onServiceInterConnected() : void
     {
-
         console.log(`INFO GMA ${this._connectionStatus.HubConnection.state}`);
 
         // chargement automatique des interventions en cours à la connection:
         this.loadCurrentInterventionList();
-
+        
+        //TODO GMA a mettre en place
         // chargement de la liste des types de maincourantes:
-        this.loadTypeMaincour();
+        //this.loadTypeMaincour();
 
-        // chargement de la liste des libelles divers du M1, car ils sont utilisés par certaiens maincourante generies:
-        this.loadM1LibelleDivers();
+        // // chargement de la liste des libelles divers du M1, car ils sont utilisés par certaiens maincourante generies:
+        //this.loadM1LibelleDivers();
 
         this.subscribeNotifications();
     }
@@ -144,10 +147,16 @@ export class InterventionService  {
     {
         console.log(`INFO GMA  loadCurrentInterventionList`);
 
-        this._connectionStatus.HubConnection.invoke('QueryCurrentFI')
-            .then((newInterventions : Intervention[]) => this.onReceiveInterventionList( newInterventions ))
+        this._connectionStatus.HubConnection.invoke('QueryCurrentFI')        
+        .then((newInterventions : Intervention[]) => 
+        
+            {
+                console.log(`INFO GMA  gestion des interventions récupéré`);
+                this.onReceiveInterventionList( newInterventions );
+            })
             .catch(( e : any ) => {
-                    this._connectionStatus.addErrorMessage( `Erreur lors de la récupération des interventions courrantes: ${e}` );
+                    console.error(`INFO GMA error ${e}`);
+                    this._connectionStatus.addErrorMessage( `Erreur lors de la récupération des interventions courantes: ${e}` );
                 } );
     }
 
@@ -164,6 +173,7 @@ export class InterventionService  {
         // ajout des interventions au dico:
         for( let inter of newInterventions )
         {
+            //TODO GMA passer en full ?
             this.onReceiveInterventionData( inter, InterventionDataType.Partial );
         }
     }
@@ -325,8 +335,6 @@ export class InterventionService  {
             this.loadedInterventionsDico.setValue( interData.Id, newIntervention );
             updatedInter = newIntervention;
         }
-
-
 
         // on notifie les intéressés que de nouvelles data sont reçues sur une intervention:
         this._newInterDataSource.next( interData );

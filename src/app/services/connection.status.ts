@@ -109,6 +109,45 @@ export class ConnectionStatus
      */
     private initHubCallbacks() : void
     {
+        // TODO GMA reprendre ici
+        // this._connection.onreconnecting((error?: Error) =>
+        // {
+        //     if(error)
+        //     {
+        //         console.log(`erreur rencontré durant la reconnection ${Error}`);
+        //     }
+        //     else{
+        //         console.log("L'état de la connexion a changé à l'état Connecting");
+        //     }
+        // });
+
+        // this._connection.onclose((error?: Error) =>
+        // {
+        //     this.connected = false;
+
+        //     if(error)
+        //     {
+        //         console.log(`erreur rencontré durant la deconnection ${Error}`);
+        //     }
+        //     else{
+        //         console.log("L'état de la connexion a changé à l'état Disconnected");
+        //     }
+        // });
+
+        // this._connection.onreconnected((connectionId?: string) =>
+        // {
+        //     this.connected = true;
+
+        //     if(connectionId)
+        //     {
+        //         console.log(`L'état de la connexion a changé à l'état Connected ${connectionId}`);
+        //     }
+        //     else{
+        //         console.log("L'état de la connexion a changé à l'état Connected");
+        //     }
+        // });
+
+        //TODO GMA NOW
     //     let signalRUrl : string = environment['server'] + "/imaintersignalr";
     //     let connection = jQuery.connection;
     //     let hub = connection.hub;
