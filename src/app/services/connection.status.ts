@@ -109,43 +109,46 @@ export class ConnectionStatus
      */
     private initHubCallbacks() : void
     {
-        // TODO GMA reprendre ici
-        // this._connection.onreconnecting((error?: Error) =>
-        // {
-        //     if(error)
-        //     {
-        //         console.log(`erreur rencontré durant la reconnection ${Error}`);
-        //     }
-        //     else{
-        //         console.log("L'état de la connexion a changé à l'état Connecting");
-        //     }
-        // });
+        this._connection.onclose((error?: Error) =>
+        {
+            this.connected = false;
 
-        // this._connection.onclose((error?: Error) =>
-        // {
-        //     this.connected = false;
+            if(error)
+            {
+                this.addErrorMessage( "Connection onclose error: " + error.message );
+                console.log(`erreur rencontré durant la deconnection ${Error}`);
+            }
+            else{
+                console.log("L'état de la connexion a changé à l'état Disconnected");
+            }
+        });
 
-        //     if(error)
-        //     {
-        //         console.log(`erreur rencontré durant la deconnection ${Error}`);
-        //     }
-        //     else{
-        //         console.log("L'état de la connexion a changé à l'état Disconnected");
-        //     }
-        // });
+        this._connection.onreconnecting((error?: Error) =>
+        {
+            this.connected = false;
 
-        // this._connection.onreconnected((connectionId?: string) =>
-        // {
-        //     this.connected = true;
+            if(error)
+            {
+                this.addErrorMessage( "Connection onreconnecting error: " + error.message );
+                console.log(`erreur rencontré durant la reconnection ${Error}`);
+            }
+            else{
+                console.log("L'état de la connexion a changé à l'état Connecting");
+            }
+        });
 
-        //     if(connectionId)
-        //     {
-        //         console.log(`L'état de la connexion a changé à l'état Connected ${connectionId}`);
-        //     }
-        //     else{
-        //         console.log("L'état de la connexion a changé à l'état Connected");
-        //     }
-        // });
+        this._connection.onreconnected((connectionId?: string) =>
+        {
+            this.connected = true;
+
+            if(connectionId)
+            {
+                console.log(`L'état de la connexion a changé à l'état Connected ${connectionId}`);
+            }
+            else{
+                console.log("L'état de la connexion a changé à l'état Connected");
+            }
+        });
 
         //TODO GMA NOW
     //     let signalRUrl : string = environment['server'] + "/imaintersignalr";
@@ -205,12 +208,18 @@ export class ConnectionStatus
 
     public start() : Promise<any>
     {
-
-
         let startPromise = new Promise( (resolve,reject) => {
 
              // attention le démarrage du serveur doit se faire APRES l'enregistrement des callbacks !
-            this._connection.start().then(() => resolve()).catch(err => {
+            this._connection.start().then(() => {
+                if (this._connection.state === signalR.HubConnectionState.Connected)
+                {
+                    this.connected = true;
+                }
+                resolve();
+            })
+            .catch(err => {
+                this.connected = false;
                 this.addErrorMessage( `Connexion au serveur ${environment['server']}/imaintersignalr impossible + ${err}` ); 
                 reject( err );
             })
