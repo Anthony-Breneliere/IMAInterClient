@@ -76,7 +76,7 @@ export class ConnectionStatus
                 this._connection = new signalR.HubConnectionBuilder()
                 .withUrl(environment['server'] + "/imaintersignalr", signalR.HttpTransportType.LongPolling)
                 //TODO GMA supprimer configureLogging avant la Mise en recette
-                .configureLogging(signalR.LogLevel.Trace)
+                .configureLogging(signalR.LogLevel.Information)
                 .withAutomaticReconnect()
                 .build();
 
