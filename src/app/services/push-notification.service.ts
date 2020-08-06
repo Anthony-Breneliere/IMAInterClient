@@ -76,12 +76,7 @@ export class PushNotificationService {
           applicationServerKey: applicationServerKey
         })
         .then(subscription => {
-          console.log(`utilisateur "${this._connectionStatus.login}"`)
-
-          // On envoie les informations de la souscription utilisateur à ImaInterService
-          this.addOrUpdateUserSubscription(this._connectionStatus.login, subscription);
-          this.pushNotificationStatus.isSubscribed = true;
-          console.log('une nouvelle souscription a été créé');
+          this.SendSubscriptionToService(subscription);
         })
         .catch(err => {
           console.error('Erreur à la création de la souscription: ', err);
@@ -94,12 +89,28 @@ export class PushNotificationService {
       // Si la souscription utilisateur existe deja,
       // On envoie toute de meme les informations au cas ou celle ci n'aurait pas été envoyé au serveur
       else {
-        this.addOrUpdateUserSubscription(this._connectionStatus.login, subscription);
-        console.log('la souscription existante a été récupéré');
+        this.SendSubscriptionToService(subscription);
       }
 
       console.info("Subscription: ", subscription);
     });
+  }
+
+  private SendSubscriptionToService(subscription)
+  {
+    (async() => {
+      console.log("Attente de l'arrivée du username");
+
+      while(this._connectionStatus.login == null)
+          await new Promise(resolve => setTimeout(resolve, 200));
+      
+      console.log("Username défini to: " + this._connectionStatus.login);
+      
+      // On envoie les informations de la souscription utilisateur à ImaInterService
+      this.addOrUpdateUserSubscription(this._connectionStatus.login, subscription);
+      this.pushNotificationStatus.isSubscribed = true;
+      console.log('Souscription récupérée ou créée');
+    })();
   }
 
   /** Cette fonction appelle le hub pour ajouter ou mettre à jour une souscription utilisateur
