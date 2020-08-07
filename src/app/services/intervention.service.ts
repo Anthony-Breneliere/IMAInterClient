@@ -173,8 +173,7 @@ export class InterventionService  {
         // ajout des interventions au dico:
         for( let inter of newInterventions )
         {
-            //TODO GMA passer en full ?
-            this.onReceiveInterventionData( inter, InterventionDataType.Partial );
+            this.onReceiveInterventionData( inter, InterventionDataType.Full );
         }
     }
 
