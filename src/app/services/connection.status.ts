@@ -202,7 +202,7 @@ export class ConnectionStatus
         {
             this._username = userName;
 
-            console.log( "Connection en tant qu'utilisateur '" + this._username + "'");
+            console.log( "Connexion en tant qu'utilisateur '" + this._username + "'");
         });
     }
 
