@@ -317,7 +317,7 @@ export class InterventionDetails
     private motifChoices: any[] = [];
 
     // saisie d'une matin courante:
-    public selectedMaincourType : ITypeMainCourante;
+    public selectedMaincourType : string;
     public maincourComment : string = "";
 
     private radioValue : MotifIntervention;
