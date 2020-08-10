@@ -116,14 +116,8 @@ export class InterventionService  {
 
         // chargement automatique des interventions en cours à la connection:
         this.loadCurrentInterventionList();
-        
-        //TODO GMA a mettre en place
-        // chargement de la liste des types de maincourantes:
-        //this.loadTypeMaincour();
 
-        // // chargement de la liste des libelles divers du M1, car ils sont utilisés par certaiens maincourante generies:
-        //this.loadM1LibelleDivers();
-
+        // Abonnenement aux notifications
         this.subscribeNotifications();
     }
 
@@ -365,61 +359,18 @@ export class InterventionService  {
         return this.interventionsStateDico.getValue( id );
     }
 
-
-    /**
-     * Récupère la liste des types de maincourantes d'interventions
-     */
-    private loadTypeMaincour()
-    {
-        console.log(`INFO GMA  LoadTypeMaincour`);
-
-        this._connectionStatus.HubConnection.invoke('LoadTypeMaincour')
-        .then( (typesMainCour : ITypeMainCourante[]) => {
-            console.log(`Réception des types de mains courantes d'intervention: ${typesMainCour.length} libellés reçus.`);
-
-            let listeTypeMaincour : string[] = [];
-
-            // on remplace la liste existante éventuelle des types de maincourantes
-            this.listeTypeMaincour = typesMainCour;
-
-            console.log( this.listeTypeMaincour.length + " types de maincourantes récupérés." );
-            } )
-        .catch( ( e : any ) => {
-            this._connectionStatus.addErrorMessage( `Erreur lors de la récupération des types de maincourantes d\'interventions. ${e}` );
-        } );
-    }
-
-    /**
-     * Récupère la liste des types de maincourantes d'interventions
-     */
-    private loadM1LibelleDivers()
-    {
-        console.log(`INFO GMA  loadM1LibelleDivers`);
-
-        this._connectionStatus.HubConnection.invoke('LoadM1LibelleDivers')
-            .then( (m1LibelleDivers : ITypeMainCourante[]) => {
-
-                console.log(`Réception des libellés divers M1: ${m1LibelleDivers.length} libellés reçus.`);
-
-                this.listeM1LibelleDivers = m1LibelleDivers;
-             } )
-            .catch( ( e : any ) => {
-                this._connectionStatus.addErrorMessage( `Erreur lors de la récupération des libellés divers du M1. ${e}` );
-            } );
-    }
-
     /**
      * Ajout d'une nouvelle main courante
      * @param numFi : numéro de la fiche
      * @param typeMaincour : type de main courante
      * @param comment : commentaire
      */
-    public addNewMaincourante( numFi: string, typeMaincour: ITypeMainCourante, comment: string ) : void
+    public addNewMaincourante( numFi: string, typeMaincour: string, comment: string ) : void
     {
         console.log("Envoi d'une main courante: ",
           {"login":this._connectionStatus.login, "numFi": numFi, "typeMaincour": typeMaincour, "comment":comment});
         
-        this._connectionStatus.HubConnection.send('AddNewMaincourante',typeMaincour.Libelle, comment);
+        this._connectionStatus.HubConnection.send('AddNewMaincourante', numFi, typeMaincour, comment);
     }
 
     // private protectedDataFromWrites : Any;

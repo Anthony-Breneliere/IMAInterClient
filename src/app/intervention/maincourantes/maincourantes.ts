@@ -1,7 +1,7 @@
 
 import {Component, ViewChild, OnInit, AfterViewInit, Input, ElementRef, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
 import {Intervention} from "../../model/intervention";
-import {Etat} from "../../model/enums";
+import {Etat, MainCouranteTypes} from "../../model/enums";
 import {InterventionButton} from "../button/intervention.button";
 import {InterventionService} from "../../services/intervention.service";
 import { Subject, Subscription } from "rxjs";
@@ -24,8 +24,11 @@ export class Maincourantes {
     @ViewChild('messageInput') messageInput:ElementRef;
     @ViewChild('listMainCourante') listMainCourante:ElementRef;
 
+    keys = Object.keys;
+    mainCouranteTypes = MainCouranteTypes;
+
     // saisie d'une matin courante:
-    public selectedMaincourType : ITypeMainCourante;
+    public selectedMaincourType : string;
     public maincourComment : string = "";
     private nbMainCourante : number = 0;
 
@@ -92,7 +95,6 @@ export class Maincourantes {
             this.nbMainCourante = this._intervention.MainCourantes.length;
         }    
 
-
         if ( ! this.selectedMaincourType)
         {
             // toto animation pour higlighter la sélection du type de main courante
@@ -102,7 +104,7 @@ export class Maincourantes {
         {
             this.interService.addNewMaincourante( this._intervention.Id, this.selectedMaincourType, this.maincourComment );
             this.maincourComment = "";
-        }        
+        }
     }
 
     public scrollDown(): void

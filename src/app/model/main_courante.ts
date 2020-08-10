@@ -9,5 +9,4 @@ export class MainCourante
     Date: string;
     Operateur: string;
     Commentaire: string;
-
 }
