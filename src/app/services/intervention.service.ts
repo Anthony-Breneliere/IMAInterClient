@@ -215,13 +215,14 @@ export class InterventionService  {
             if ( interState && interState.Loaded )
             {
                 // intervention déjà chargée, on retourne la même intervention
-                return new Promise<Intervention>( ( resolve ) => {
+                return new Promise<Intervention>((resolve) =>
+                {
+                    let inter = this.loadedInterventionsDico.getValue(numFI);
+                    if (!inter)
+                        throw new Error(`L'intervention ${numFI} n'est pas le dico!`);
 
-                  let inter =  this.loadedInterventionsDico.getValue( numFI );
-                  if ( ! inter )
-                    throw new Error(`L'intervention ${numFI} n'est pas le dico!`);
-
-                  return inter;
+                    resolve(inter);
+                    return;
                 } );
             }
             else
@@ -239,12 +240,16 @@ export class InterventionService  {
      */
     public connectAndLoadIntervention( numFI : string ) : Promise<Intervention>
     {
-        let loadInterventionPromise = this._connectionStatus.waitForReconnection().then( () =>
+        let parentPromise = new Promise<Intervention>((resolve) =>
         {
-            return this.getFullIntervention( numFI, null );
+            this._connectionStatus.waitForReconnection().then(() =>
+            {
+                resolve(this.getFullIntervention(numFI, null));
+                return;
+            });
         });
 
-        return loadInterventionPromise;
+        return parentPromise;
     }
 
     /**
