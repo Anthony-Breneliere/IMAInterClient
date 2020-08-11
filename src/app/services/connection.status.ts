@@ -74,7 +74,7 @@ export class ConnectionStatus
                 console.debug('execution de la promesse de connexion au hub');
                 this.isHubScriptLoaded = true;
                 this._connection = new signalR.HubConnectionBuilder()
-                .withUrl(environment['server'] + "/imaintersignalr", signalR.HttpTransportType.LongPolling)
+                .withUrl(environment['server'] + "/imaintersignalr")
                 //TODO GMA supprimer configureLogging avant la Mise en recette
                 .configureLogging(signalR.LogLevel.Information)
                 .withAutomaticReconnect()
