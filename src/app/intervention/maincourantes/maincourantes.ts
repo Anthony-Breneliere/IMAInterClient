@@ -23,9 +23,8 @@ export class Maincourantes {
 
     @ViewChild('messageInput') messageInput:ElementRef;
     @ViewChild('listMainCourante') listMainCourante:ElementRef;
-
-    keys = Object.keys;
-    mainCouranteTypes = MainCouranteTypes;
+    
+    public MainCouranteTypes = MainCouranteTypes;
 
     // saisie d'une matin courante:
     public selectedMaincourType : string;

@@ -15,7 +15,7 @@
 
         <select [(ngModel)]="selectedMaincourType" name="typeMainCourante">
             <option [ngValue]="null"></option>
-            <option *ngFor="let key of keys(mainCouranteTypes)" [ngValue]="key">{{mainCouranteTypes[key]}} </option>
+            <option *ngFor="let type of MainCouranteTypes | keyvalue" [ngValue]="type.key">{{type.value}}</option>
         </select>
 
         <input class="extensible" id="CommentMaincour" placeholder="Commentaire" [(ngModel)]="maincourComment"/>
