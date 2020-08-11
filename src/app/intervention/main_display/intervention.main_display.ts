@@ -105,7 +105,7 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
 
               let id : string = url[1].path;
 
-              if ( id )
+              if (id)
               {
                 let urlInterventionId = url[1].path;
 
@@ -113,20 +113,18 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
                 // en l'occureence quand l'utilisateur change l'id de l'intervention
                 // dans l'URL
                 // plus d'info sur les zones https://angular.io/guide/zone
-                this.ngZone.run( () => {
-
+                this.ngZone.run(() => {
                   // une fois la connection établie et l'intervention id complète reçu du serveur, alors
                   // on sélectionne et affiche l'intervention
-                  this._interService.connectAndLoadIntervention( urlInterventionId ).then( (inter : Intervention) =>
+                  this._interService.connectAndLoadIntervention(urlInterventionId).then((inter : Intervention) =>
                   {
-                    if ( this.selectedIntervention !== inter)
+                    if (this.selectedIntervention !== inter)
                     {
                       this.selectedIntervention = inter;
-                      this.deployGroup( this.selectedIntervention );
+                      this.deployGroup(this.selectedIntervention);
                     }
-
-                  } )
-                  .catch( (reason : any) => {
+                  })
+                  .catch((reason : any) => {
                     console.error( "Erreur de chargement de l'intervention: ", reason );
                   });
 
@@ -135,14 +133,12 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
 
           }
         }
-        catch ( reason )
+        catch(reason)
         {
           // Toujours catcher les erreurs événements sinon la souscription est automatiquement rompue en cas
           // d'erreur
-          console.error ( "Erreur lors de la détection d'un changement d'url", reason );
+          console.error("Erreur lors de la détection d'un changement d'url", reason);
         }
-
-
       });
 
 

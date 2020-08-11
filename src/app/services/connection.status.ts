@@ -233,13 +233,15 @@ export class ConnectionStatus
      */
     public waitForReconnection() : Promise<any>
     {
-        let reconnectionPromise = new Promise( (resolve, reject) =>
+        let reconnectionPromise = new Promise( (resolve) =>
         {
-            if ( ! this.connected )
-                this.reconnectionResolve = resolve;
-            else
+            (async() => {
+                while(!this.connected)
+                    await new Promise(resolve => setTimeout(resolve, 200));
+                
                 resolve();
-        } );
+            })();
+        });
 
         // on retourne la promesse afin de pouvoir enchaine les promesses
         return reconnectionPromise;
