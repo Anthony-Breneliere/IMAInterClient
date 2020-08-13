@@ -163,8 +163,6 @@ export class InterventionDetails
      */
     private updateFormWithReceivedData() {
 
-        console.log('INFO GMA updateFormWithReceivedData')
-
       // le premier detectchange ser à mettre à jour les valeur dans les controles
       this.detectChanges();
 

@@ -73,7 +73,7 @@ export class InterventionService  {
             });
         } ).catch(( e : any ) => {
             this._connectionStatus.addErrorMessage( `Erreur lors de l'execution de la promesse promiseHubScriptLoaded : ${e}` );
-        });        
+        });
      }
 
 
