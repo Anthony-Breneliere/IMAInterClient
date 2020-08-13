@@ -21,9 +21,7 @@ export class RapportVerifications
     QuellesLumieresAllumees : RapportLumieresAllumees;
     QuellesIssuesOuvertes: RapportIssuesConcernees;
     QuellesEffractions: RapportIssuesConcernees;
-
-    VerificationsDuSite:  string;
-    DetailEffractions: string;
+    
     EffractionCommentaire: string;
     VerificationCommentaire: string;
 
