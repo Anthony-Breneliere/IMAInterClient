@@ -224,7 +224,7 @@
     <section *ngIf="rapportDisplayed" title="Constatations matérielles" data-gs-width="auto" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
         <tr field label="Lumière(s) Allumée(s)">
-            <reactive-select name="lumieresAllumees" id="LumieresAllumees" [(ngModel)]="verifications.LumieresAllumees" (ngModelChange)="changeRapport({Verifications:{LumieresAllumees:parseBoolean($event)}})">
+            <reactive-select name="lumieresAllumees" id="LumieresAllumees" [(ngModel)]="verifications.LumieresAllumees" (ngModelChange)="changeRapport({Verifications:{LumieresAllumees:parseBoolean($event)}}); resetRapportValues('quellesLumieresAllumees', quellesLumieresAllumees, parseBoolean($event));">
                 <option [ngValue]="null"></option>
                 <option [value]="true">Oui</option>
                 <option [value]="false">Non</option>
@@ -234,6 +234,7 @@
         <tr field label="Pièces Allumées" *ngIf="parseBoolean(verifications.LumieresAllumees)">
             <reactive-checkbox name="pieceAllumeeBuanderie" label="Buanderie" [(ngModel)]="quellesLumieresAllumees.Buanderie" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Buanderie:$event}}})"></reactive-checkbox>
             <reactive-checkbox name="pieceAllumeeBureau" label="Bureau" [(ngModel)]="quellesLumieresAllumees.Bureau" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Bureau:$event}}})"></reactive-checkbox>
+            <reactive-checkbox name="pieceAllumeeCellier" label="Cellier" [(ngModel)]="quellesLumieresAllumees.Cellier" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Cellier:$event}}})"></reactive-checkbox>
             <reactive-checkbox name="pieceAllumeeChambre" label="Chambre" [(ngModel)]="quellesLumieresAllumees.Chambre" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Chambre:$event}}})"></reactive-checkbox>
             <reactive-checkbox name="pieceAllumeeCouloir" label="Couloir" [(ngModel)]="quellesLumieresAllumees.Couloir" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Couloir:$event}}})"></reactive-checkbox>
             <reactive-checkbox name="pieceAllumeeCuisine" label="Cuisine" [(ngModel)]="quellesLumieresAllumees.Cuisine" (ngModelChange)="changeRapport({Verifications:{QuellesLumieresAllumees:{Cuisine:$event}}})"></reactive-checkbox>
@@ -252,7 +253,7 @@
         </tr>
 
         <tr field label="Issue(s) ouverte(s)">
-            <reactive-select name="issuesOuvertes" [(ngModel)]="verifications.IssuesOuvertes" (ngModelChange)="changeRapport({Verifications:{IssuesOuvertes:parseBoolean($event)}})">
+            <reactive-select name="issuesOuvertes" [(ngModel)]="verifications.IssuesOuvertes" (ngModelChange)="changeRapport({Verifications:{IssuesOuvertes:parseBoolean($event)}}); resetRapportValues('quellesIssuesOuvertes', quellesIssuesOuvertes, parseBoolean($event));">
                 <option [ngValue]="null"></option>
                 <option [value]="true">Oui</option>
                 <option [value]="false">Non</option>
@@ -284,7 +285,7 @@
         </tr>
 
         <tr field label="Effraction(s)">
-            <reactive-select name="effraction" [(ngModel)]="verifications.Effraction" (ngModelChange)="changeRapport({Verifications:{Effraction:parseBoolean($event)}})" required>
+            <reactive-select name="effraction" [(ngModel)]="verifications.Effraction" (ngModelChange)="changeRapport({Verifications:{Effraction:parseBoolean($event)}}); resetRapportValues('quellesEffractions', quellesEffractions, parseBoolean($event));" required>
                 <option [ngValue]="null"></option>
                 <option [value]="true">Oui</option>
                 <option [value]="false">Non</option>
