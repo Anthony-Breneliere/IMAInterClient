@@ -8,7 +8,8 @@ import { resolve } from 'path';
 import { reject } from 'lodash';
 
 @Injectable()
-export class ConnectionStatus {
+export class ConnectionStatus 
+{
     private _errorMessages: [number, string][] = [];
     private _connected: boolean = false;
     private _connectedStatusSource = new Subject<boolean>();
@@ -23,11 +24,12 @@ export class ConnectionStatus {
     public get HubConnection() { return this._connection };
 
     public get errorMessages(): [number, string][] { return this._errorMessages; }
-    public addErrorMessage(mess: string) {
-        // TODO voir pourquoi ce console.error genere des erreurs
+    public addErrorMessage(mess: string) 
+    {
         console.error(this._errorMessages);
         this._errorMessages.push([++this._messNumber, mess])
     }
+
     public removeErrorMessage(id: number) { this._errorMessages = this._errorMessages.filter(m => m[0] != id) }
     private clearErrorMessages() { this._errorMessages = []; this._messNumber = 0; }
     public get m1Connected(): boolean { return this._m1Connected; }
@@ -40,16 +42,19 @@ export class ConnectionStatus {
     public promiseHubScriptLoaded: Promise<any>;
     connectedStatus$ = this._connectedStatusSource.asObservable();
 
-    constructor(private httpClient: HttpClient) {
+    constructor(private httpClient: HttpClient) 
+    {
         this.loadHubsScript();
     }
 
     // accesseurs publics:
-    get connected(): boolean {
+    get connected(): boolean 
+    {
         return this._connected;
     }
 
-    set connected(value: boolean) {
+    set connected(value: boolean) 
+    {
         this._connected = value;
         this._connectedStatusSource.next(value);
     }
@@ -59,7 +64,8 @@ export class ConnectionStatus {
     /**
      * Cette méthode construit la connexion à l'IMAInterHub et initialise les callback associé
      */
-    private loadHubsScript(): void {
+    private loadHubsScript(): void 
+    {
         console.log('Création de la promesse promiseHubScriptLoaded');
 
         this.promiseHubScriptLoaded = new Promise((resolve, reject) => {
@@ -88,7 +94,8 @@ export class ConnectionStatus {
      * vérification de l'utilisateur logué
      * @param name
      */
-    public operatorNameEqual(name: string): boolean {
+    public operatorNameEqual(name: string): boolean 
+    {
         return this._username && name && name.toLowerCase() == this._username.toLowerCase();
     }
 
@@ -96,50 +103,62 @@ export class ConnectionStatus {
      * affectation des callbacks aux fonctions du hubproxy. Ce sont les callbacks qui sont
      * appelées lorsque le serveur broadcast des informations.
      */
-    private initHubCallbacks(): void {
-        this._connection.onclose(async (error?: Error) => {
+    private initHubCallbacks(): void 
+    {
+        this._connection.onclose(async (error?: Error) => 
+        {
             this.connected = false;
 
-            if (error) {
+            if (error) 
+            {
                 this.addErrorMessage("Connection onclose error: " + error.message);
                 console.log(`erreur rencontré durant la deconnection ${Error}`);
             }
-            else {
+            else 
+            {
                 console.log("L'état de la connexion a changé à l'état Disconnected");
             }
 
             this.start();
         });
 
-        this._connection.onreconnecting((error?: Error) => {
+        this._connection.onreconnecting((error?: Error) => 
+        {
             this.connected = false;
 
-            if (error) {
+            if (error) 
+            {
                 this.addErrorMessage("Connection onreconnecting error: " + error.message);
                 console.log(`erreur rencontré durant la reconnection ${Error}`);
             }
-            else {
+            else 
+            {
                 console.log("L'état de la connexion a changé à l'état Connecting");
             }
         });
 
-        this._connection.onreconnected((connectionId?: string) => {
+        this._connection.onreconnected((connectionId?: string) => 
+        {
             this.connected = true;
 
-            if (connectionId) {
+            if (connectionId) 
+            {
                 console.log(`L'état de la connexion a changé à l'état Connected ${connectionId}`);
             }
-            else {
+            else 
+            {
                 console.log("L'état de la connexion a changé à l'état Connected");
             }
         });
 
 
-        this._connection.on('ErrorMessage', (message: string) => {
+        this._connection.on('ErrorMessage', (message: string) => 
+        {
             this.addErrorMessage(message);
         });
 
-        this._connection.on('SendUserName', (userName: string) => {
+        this._connection.on('SendUserName', (userName: string) => 
+        {
             this._username = userName;
 
             console.log("Connexion en tant qu'utilisateur '" + this._username + "'");
@@ -147,11 +166,13 @@ export class ConnectionStatus {
     }
 
     public start(): Promise<any> {
-        let startPromise = new Promise((resolve, reject) => {
+        let startPromise = new Promise((resolve, reject) => 
+        {
 
             // attention le démarrage du serveur doit se faire APRES l'enregistrement des callbacks !
             this.startHubConnection().then(() => {
-                if (this._connection.state === signalR.HubConnectionState.Connected) {
+                if (this._connection.state === signalR.HubConnectionState.Connected) 
+                {
                     this.connected = true;
 
                     this._connection.invoke('GetServiceVersion')
@@ -182,14 +203,20 @@ export class ConnectionStatus {
     /**
      * Promesse gerant la reconnexion automatique au hub
      */
-    private async startHubConnection(): Promise<any> {
+    private async startHubConnection(): Promise<any> 
+    {
 
-        let starthubPromise = new Promise((resolve) => {
-            (async () => {
-                while (this._connection.state !== signalR.HubConnectionState.Connected) {
-                    try {
+        let starthubPromise = new Promise((resolve) => 
+        {
+            (async () => 
+            {
+                while (this._connection.state !== signalR.HubConnectionState.Connected) 
+                {
+                    try 
+                    {
                         await this._connection.start();
-                    } catch (err) {
+                    } catch (err) 
+                    {
                         console.log(`Impossible de démarrer la connexion  ${err}`);
                         setTimeout(null, 5000);
                     }
@@ -205,8 +232,10 @@ export class ConnectionStatus {
     /**
      * Retourne une promesse de reconnexion
      */
-    public waitForReconnection(): Promise<any> {
-        let reconnectionPromise = new Promise((resolve) => {
+    public waitForReconnection(): Promise<any> 
+    {
+        let reconnectionPromise = new Promise((resolve) => 
+        {
             (async () => {
                 while (!this.connected)
                     await new Promise(resolve => setTimeout(resolve, 200));
@@ -223,7 +252,8 @@ export class ConnectionStatus {
      * Retourne vrai si l'utilisateur logué est un admin
      * ( remarque: las liste des admins est pour l'instant stockée dans le client)
      */
-    public isAdmin(): boolean {
+    public isAdmin(): boolean 
+    {
         let admins = environment['admins'];
         if (admins.find(e => e == this.login))
             return true;
