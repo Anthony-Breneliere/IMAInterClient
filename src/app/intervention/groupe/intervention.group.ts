@@ -86,7 +86,6 @@ export class InterventionGroup
               
               if ( inter.Operateur != null )
               {
-                console.log(`INFO GMA ${inter.Operateur}`);
                 this.updateGroupInterventions();
               }
           } );
@@ -135,9 +134,6 @@ export class InterventionGroup
     /* on met à jour les interventions du groupe */
     public updateGroupInterventions() : void
     {
-
-      console.log('INFO GMA updateGroupInterventions');
-
         switch( this.GroupType )
         {
             case GroupTypeEnum.interventionsCloses:
