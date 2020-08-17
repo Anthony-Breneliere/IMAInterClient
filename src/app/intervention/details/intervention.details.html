@@ -165,7 +165,6 @@
               <reactive-select name="verifCircuitVerif" [(ngModel)]="arriveeSurLieux.CircuitVerification" (ngModelChange)="changeRapport({ArriveeSurLieux:{CircuitVerification:$event}}); resetRapportValues('nonAccesAuSite', nonAccesAuSite, $event);" required>
                   <option [ngValue]="null"></option>
                   <option [value]="CircuitVerification.InterieurSite">Intérieur du site</option>
-                  <option [value]="CircuitVerification.InterieurEnceinte">Intérieur de l'enceinte</option>
                   <option [value]="CircuitVerification.ExterieurSite">Extérieur du site</option>
                   <option [value]="CircuitVerification.VerificationKO">Vérification KO</option>
               </reactive-select>
