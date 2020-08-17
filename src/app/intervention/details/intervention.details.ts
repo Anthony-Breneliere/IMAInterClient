@@ -595,46 +595,6 @@ export class InterventionDetails
       //   && this.arriveeSurLieux.
       return false;
     }
-/*
-    public updateArrivee( dateString: string )
-    {
-        if ( dateString )
-        {
-            try
-            {
-                let arrivee: Date = new Date( dateString );
-                this.intervention.DateArrivee = arrivee;
-
-                // envoi du changement de date d'arrivée
-                this._interService.sendInterChange( { Id:M1this.intervention.Id, DateArrivee: arrivee } );
-            }
-            catch( error )
-            {
-                console.warn( error );
-            }
-        }
-
-    }
-
-    public updateDepart( dateString: string )
-    {
-        if ( dateString )
-        {
-            try
-            {
-                let depart: Date = new Date( dateString );
-                this.intervention.DateDepart = depart;
-
-                // envoi du changement de date de départ
-                this._interService.sendInterChange( { Id:this.intervention.Id, DateDepart: depart } );
-            }
-            catch( error )
-            {
-                console.warn( error );
-            }
-        }
-    }
-*/
 
     rapportWasDisplayed : boolean = false;
     public get rapportDisplayed() : boolean
@@ -661,10 +621,36 @@ export class InterventionDetails
 
     public parseBoolean(value : any) : boolean
     {
-        if(value === undefined || value === null)
+        if(value === undefined || value === null || value === "")
         {
             return null;
         }
         return JSON.parse(value);
+    }
+
+    public resetRapportValues(objectType : string, objectToReset : any, data : any)
+    {
+        // Si l'objet parent est null ou faux
+        if(!data) {
+            // On met tous les enfants à null
+            Object.keys(objectToReset).forEach(key => {
+                objectToReset[key] = null;
+            });
+
+            // On envoie la modification groupée au service
+            switch(objectType){
+                case "quellesLumieresAllumees":
+                    this.changeRapport({Verifications:{QuellesLumieresAllumees:objectToReset}});
+                    break;
+
+                case "quellesIssuesOuvertes":
+                    this.changeRapport({Verifications:{QuellesIssuesOuvertes:objectToReset}});
+                    break;
+
+                case "quellesEffractions":
+                    this.changeRapport({Verifications:{QuellesEffractions:objectToReset}});
+                    break;
+            }
+        }
     }
 }
