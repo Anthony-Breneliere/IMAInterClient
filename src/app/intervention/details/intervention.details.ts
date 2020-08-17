@@ -631,7 +631,7 @@ export class InterventionDetails
     public resetRapportValues(objectType : string, objectToReset : any, data : any)
     {
         // Si l'objet parent est null ou faux
-        if(data === null || !data) {
+        if(!data) {
             // On met tous les enfants à null
             Object.keys(objectToReset).forEach(key => {
                 objectToReset[key] = null;
