@@ -384,7 +384,7 @@ export class InterventionDetails
     {
         this.changeRapport({Verifications:{QuellesEffractions:{Autre:value? '' : null}}});
 
-        this.quellesEffractions.Autre = value ? "" : null;
+        this.resetRapportValues("autrePresence", this.quellesEffractions.Autre, value);
     }
 
     public get AutrePresenceChecked() : boolean
@@ -630,27 +630,115 @@ export class InterventionDetails
 
     public resetRapportValues(objectType : string, objectToReset : any, data : any)
     {
-        // Si l'objet parent est null ou faux
-        if(!data) {
-            // On met tous les enfants à null
-            Object.keys(objectToReset).forEach(key => {
-                objectToReset[key] = null;
-            });
+        // On défini la méthode de reset via la partie du rapport à traiter
+        switch(objectType){
+            case "nonAccesAuSite":
+                // Si l'objet parent n'est pas CircuitVerification.VerificationKO
+                if(data !== CircuitVerification.VerificationKO) {
+                    // On met tous les enfants à null
+                    Object.keys(objectToReset).forEach(key => {
+                        objectToReset[key] = null;
+                    });
 
-            // On envoie la modification groupée au service
-            switch(objectType){
-                case "quellesLumieresAllumees":
-                    this.changeRapport({Verifications:{QuellesLumieresAllumees:objectToReset}});
-                    break;
+                    // On envoie la modification au service
+                    this.changeRapport({ArriveeSurLieux:{NonAccesAuSite:objectToReset}});
+                }
+                break;
 
-                case "quellesIssuesOuvertes":
-                    this.changeRapport({Verifications:{QuellesIssuesOuvertes:objectToReset}});
-                    break;
+            case "raisonNonVerificationIssues":
+                // Si l'objet parent est null ou vrai
+                if(data === null || data) {
+                    // On met l'enfant à null
+                    this.arriveeSurLieux.RaisonNonVerificationIssues = null;
 
-                case "quellesEffractions":
-                    this.changeRapport({Verifications:{QuellesEffractions:objectToReset}});
-                    break;
-            }
+                    // On envoie la modification au service
+                    this.changeRapport({ArriveeSurLieux:{RaisonNonVerificationIssues:null}});
+                }
+                break;
+
+            case "autreLieuDepot":
+                // Si l'objet parent n'est pas DepotBonIntervention.Autre
+                if(data !== DepotBonIntervention.Autre) {
+                    // On met l'enfant à null
+                    this.rapport.AutreLieuDepot = null;
+
+                    // On envoie la modification au service
+                    this.changeRapport({AutreLieuDepot:null});
+                }
+                break;
+
+            case "miseEnPlaceDemandeePar":
+                // Si GardiennageOuRondeChecked est à faux
+                if(!this.GardiennageOuRondeChecked) {
+                    // On met l'enfant à null
+                    this.miseEnSecurite.MiseEnPlaceDemandeePar = null;
+
+                    // On envoie la modification au service
+                    this.changeRapport({MiseEnSecurite:{MiseEnPlaceDemandeePar:null}});
+                }
+                break;
+
+            case "precisionAnimaux":
+                // Si l'objet parent est null ou faux
+                if(!data) {
+                    // On met l'enfant à null
+                    this.presence.PrecisionAnimaux = null;
+
+                    // On envoie la modification au service
+                    this.changeRapport({Presence:{PrecisionAnimaux:null}});
+                }
+                break;
+
+            case "presenceVehicule":
+                // Si l'objet parent est null ou faux
+                if(!data) {
+                    // On met tous les enfants à null
+                    this.presence.TypeVehicule = null;
+                    this.presence.CouleurVehicule = null;
+                    this.presence.PlaqueVehicule = null;
+
+                    // On envoie la modification groupée au service
+                    this.changeRapport({Presence:{TypeVehicule:null, CouleurVehicule:null, PlaqueVehicule:null}});
+                }
+                break;
+
+            case "autrePresence":
+                // Si l'objet parent est null ou faux
+                if(!data) {
+                    // On met l'enfant à null
+                    objectToReset = null;
+
+                    // On envoie la modification au service
+                    this.changeRapport({Presence:{AutrePresence:objectToReset}});
+                }
+                break;
+
+            case "quellesLumieresAllumees":
+            case "quellesIssuesOuvertes":
+            case "quellesEffractions":
+                // Si l'objet parent est null ou faux
+                if(!data) {
+                    // On met tous les enfants à null
+                    Object.keys(objectToReset).forEach(key => {
+                        objectToReset[key] = null;
+                    });
+
+                    // On envoie la modification groupée au service
+                    switch(objectType){
+                        case "quellesLumieresAllumees":
+                            this.changeRapport({Verifications:{QuellesLumieresAllumees:objectToReset}});
+                            break;
+
+                        case "quellesIssuesOuvertes":
+                            this.changeRapport({Verifications:{QuellesIssuesOuvertes:objectToReset}});
+                            break;
+
+                        case "quellesEffractions":
+                            this.changeRapport({Verifications:{QuellesEffractions:objectToReset}});
+                            break;
+                    }
+                }
+                break;
         }
     }
 }

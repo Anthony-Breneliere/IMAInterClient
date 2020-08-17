@@ -105,7 +105,7 @@
           </tr>
 
           <tr field label="Lieu dépôt">
-            <reactive-select name="lieuDepot" [(ngModel)]="rapport.LieuDepotBon" (ngModelChange)="changeRapport({LieuDepotBon:$event})" required >
+            <reactive-select name="lieuDepot" [(ngModel)]="rapport.LieuDepotBon" (ngModelChange)="changeRapport({LieuDepotBon:$event}); resetRapportValues('autreLieuDepot', rapport.autreLieuDepot, $event);" required >
                 <option [ngValue]="null" ></option>
                 <option [value]="DepotBonIntervention.BoiteAuxLettres">Boîte aux lettres</option>
                 <option [value]="DepotBonIntervention.PC">PC</option>
@@ -162,7 +162,7 @@
           </tr>
 
           <tr field label="Circuit vérification">
-              <reactive-select name="verifCircuitVerif" [(ngModel)]="arriveeSurLieux.CircuitVerification" (ngModelChange)="changeRapport({ArriveeSurLieux:{CircuitVerification:$event}})" required>
+              <reactive-select name="verifCircuitVerif" [(ngModel)]="arriveeSurLieux.CircuitVerification" (ngModelChange)="changeRapport({ArriveeSurLieux:{CircuitVerification:$event}}); resetRapportValues('nonAccesAuSite', nonAccesAuSite, $event);" required>
                   <option [ngValue]="null"></option>
                   <option [value]="CircuitVerification.InterieurSite">Intérieur du site</option>
                   <option [value]="CircuitVerification.InterieurEnceinte">Intérieur de l'enceinte</option>
@@ -195,14 +195,14 @@
           </tr>
 
           <tr field label="Vérification intégrale des issues">
-            <reactive-select name="verifIntegraleDesIssues" [(ngModel)]="arriveeSurLieux.VerifIntegraleIssues" (ngModelChange)="changeRapport({ArriveeSurLieux:{VerifIntegraleIssues:parseBoolean($event)}})">
+            <reactive-select name="verifIntegraleDesIssues" [(ngModel)]="arriveeSurLieux.VerifIntegraleIssues" (ngModelChange)="changeRapport({ArriveeSurLieux:{VerifIntegraleIssues:parseBoolean($event)}}); resetRapportValues('raisonNonVerificationIssues', arriveeSurLieux.RaisonNonVerificationIssues, parseBoolean($event));">
                 <option [ngValue]="null"></option>
                 <option [value]="true">Oui</option>
                 <option [value]="false">Non</option>
             </reactive-select>
         </tr>
 
-        <tr field label="Raison non vérification des issues" *ngIf="arriveeSurLieux.VerifIntegraleIssues == 'false'">
+        <tr field label="Raison non vérification des issues" *ngIf="parseBoolean(arriveeSurLieux.VerifIntegraleIssues) === false">
             <reactive-textarea name="verifRaisonNonVerification" id="RaisonNonVerificationIssues" [(ngModel)]="arriveeSurLieux.RaisonNonVerificationIssues" (ngModelChange)="changeRapport({ArriveeSurLieux:{RaisonNonVerificationIssues:$event}})"></reactive-textarea>
         </tr>
 
@@ -324,7 +324,7 @@
             <reactive-checkbox name="typePresenceContacts" label="Contacts" [(ngModel)]="presence.Contacts" (ngModelChange)="changeRapport({Presence:{Contacts:$event}})"></reactive-checkbox>
             <reactive-checkbox name="typePresenceGendarmerie" label="Force de l'ordre" [(ngModel)]="presence.Gendarmerie" (ngModelChange)="changeRapport({Presence:{Gendarmerie:$event}})"></reactive-checkbox>
             <reactive-checkbox name="typePresencePompiers" label="Pompiers" [(ngModel)]="presence.Pompiers" (ngModelChange)="changeRapport({Presence:{Pompiers:$event}})"></reactive-checkbox>
-            <reactive-checkbox name="typePresenceAnimale" label="Animal" [(ngModel)]="presence.PresenceAnimale" (ngModelChange)="changeRapport({Presence:{PresenceAnimale:$event}})"></reactive-checkbox>
+            <reactive-checkbox name="typePresenceAnimale" label="Animal" [(ngModel)]="presence.PresenceAnimale" (ngModelChange)="changeRapport({Presence:{PresenceAnimale:$event}}); resetRapportValues('precisionAnimaux', presence.PrecisionAnimaux, $event);"></reactive-checkbox>
             <reactive-checkbox name="typePresenceAutre" label="Autre présence" [(ngModel)]="AutrePresenceChecked" #autreTypePresenceCheckbox></reactive-checkbox>
         </tr>
 
@@ -337,7 +337,7 @@
         </tr>
 
         <tr field label="Présence véhicule">
-            <reactive-select name="presenceVehicule" [(ngModel)]="presence.PresenceVehicule" (ngModelChange)="changeRapport({Presence:{PresenceVehicule:parseBoolean($event)}})">
+            <reactive-select name="presenceVehicule" [(ngModel)]="presence.PresenceVehicule" (ngModelChange)="changeRapport({Presence:{PresenceVehicule:parseBoolean($event)}}); resetRapportValues('presenceVehicule', null, parseBoolean($event));">
                 <option [ngValue]="null"></option>
                 <option [value]="true">Oui</option>
                 <option [value]="false">Non</option>
@@ -370,8 +370,8 @@
         </tr>
 
         <tr field label="Mise en place">
-            <reactive-checkbox name="miseEnPlaceGardiennage" label="Gardiennage" [(ngModel)]="miseEnSecurite.Gardiennage" (ngModelChange)="changeRapport({MiseEnSecurite:{Gardiennage:$event}})"></reactive-checkbox>
-            <reactive-checkbox name="miseEnPlaceRonde" label="Ronde" [(ngModel)]="miseEnSecurite.Ronde" (ngModelChange)="changeRapport({MiseEnSecurite:{Ronde:$event}})"></reactive-checkbox>
+            <reactive-checkbox name="miseEnPlaceGardiennage" label="Gardiennage" [(ngModel)]="miseEnSecurite.Gardiennage" (ngModelChange)="changeRapport({MiseEnSecurite:{Gardiennage:$event}}); resetRapportValues('miseEnPlaceDemandeePar', miseEnSecurite.MiseEnPlaceDemandeePar, $event);"></reactive-checkbox>
+            <reactive-checkbox name="miseEnPlaceRonde" label="Ronde" [(ngModel)]="miseEnSecurite.Ronde" (ngModelChange)="changeRapport({MiseEnSecurite:{Ronde:$event}}); resetRapportValues('miseEnPlaceDemandeePar', miseEnSecurite.MiseEnPlaceDemandeePar, $event);"></reactive-checkbox>
             <!--reactive-checkbox label="Mise en place demandée par" [(ngModel)]="MiseEnPlaceDemandeeParChecked"></reactive-checkbox-->
         </tr>
 
