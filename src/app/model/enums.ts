@@ -67,7 +67,6 @@ export enum TypeSite
 export enum CircuitVerification
 {
     InterieurSite,
-    InterieurEnceinte,
     ExterieurSite,
     VerificationKO
 }
