@@ -1,7 +1,7 @@
 import { FicheQualite } from './fiche_qualite';
 import {inherits} from "util";
 import {Rapport} from "./rapport";
-import {OrigineFiche, Etat, TypeFiche} from "./enums";
+import {OrigineFiche, Etat, TypeFiche, OrigineAnnulation} from "./enums";
 import {Alarme} from "./alarme";
 import {MainCourante} from "./main_courante";
 import {Intervenant} from "./intervenant";
@@ -22,6 +22,7 @@ export class Intervention
     Operateur : string;
     Origine : OrigineFiche;
     TypeFiche : TypeFiche;
+    OrigineAnnulation: OrigineAnnulation;
 
     Creation : string;
     Lancement : string;
@@ -92,6 +93,13 @@ export class Intervention
     {
         if ( this.Origine != null )
             return OrigineFiche[this.Origine];
+        else return null;
+    }
+
+    get OrigineAnnulationLabel(): string
+    {
+        if ( this.OrigineAnnulation != null )
+            return OrigineAnnulation[this.OrigineAnnulation];
         else return null;
     }
 

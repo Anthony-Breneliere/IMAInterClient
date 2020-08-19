@@ -12,6 +12,7 @@
           <tr field label="Coordonnées géographiques">{{site?.Latitude}}, {{site?.Longitude}}</tr>
           <tr *ngFor="let tel of telephonesSite" field label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>
           <tr field label="Etat ">{{intervention.EtatLabel}}</tr>
+          <tr *ngIf="intervention?.Etat == Etat.Annulee" field label="Origine annulation ">{{intervention.OrigineAnnulationLabel}}</tr>
           <tr field label="Opérateur ">{{intervention.Operateur}}</tr>
           <tr field label="Origine ">{{intervention.OrigineLabel}}</tr>
           <tr *ngIf="!isEditableTypeFiche; else editableTypeFiche" field label="Type ">{{intervention?.TypeFicheLabel}}</tr>
