@@ -43,10 +43,11 @@
 
       <section title="Intervenant" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
-        <tr field *ngIf="!readOnlyNomIntervenant"  label="Nom ">
+        <!-- TODO GMA, en attente de cyril pour savoir si l'intervenant generique est ok sur l'ensemble des envionnements -->
+        <tr field *ngIf="intervention.Intervenant?.Societe  == '012345678'"  label="Nom ">
           <reactive-input name="Nom" [disabled]="readOnlyNomIntervenant" [(ngModel)]="intervenant.Nom" (ngModelChange)="changeIntervention({Intervenant:{Nom:$event}})"></reactive-input>
         </tr>
-        <tr field *ngIf="readOnlyNomIntervenant" label="Nom ">{{Capitalize(intervenant?.Nom)}}</tr>
+        <tr field *ngIf="intervention.Intervenant?.Societe  != '012345678'" label="Nom ">{{Capitalize(intervenant?.Nom)}}</tr>
           <tr field label="N° Siren ">{{intervenant?.Societe}}</tr>
           <tr field class=".crlf-return" label= "Adresse ">{{Capitalize(intervenant?.Adresse)}}</tr>
           <tr field *ngFor="let tel of intervenant?.Telephones " label="{{TelMail(tel.Type, tel.Numero)}} ">{{tel.Numero}}</tr>

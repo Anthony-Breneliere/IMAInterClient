@@ -216,12 +216,6 @@ export class InterventionDetails
         return readOnlySection;
     }
 
-    public get readOnlyNomIntervenant() : boolean
-    {
-        // TODO GMA, en attente de cyril pour savoir si l'intervenant generique est ok sur l'ensemble des envionnements
-        let readOnlyNomIntervenant : boolean = this._intervention.Intervenant?.Societe  != '012345678';
-        return readOnlyNomIntervenant;
-    }
     public get telephonesSite() : Telephone[] { return Array.isArray( this.site.Telephones ) ? this.site.Telephones : [] }
     public get intervention() : Intervention { return this._intervention; }
     private get rapport() : Rapport { return this.intervention?.Rapport; }
