@@ -174,3 +174,11 @@ export enum MainCouranteTypes
     TransfertInterventionEntrePDA = "Transfert d'intervention entre PDA",
     MiseEnStatiqueIntervenant = "Mise en statique intervenant"
 }
+
+export enum OrigineAnnulation
+{
+    ClientAccepteParIntervenant,
+    ClientNonAccepteParIntervenant,
+    Intervenant,
+    Station
+}

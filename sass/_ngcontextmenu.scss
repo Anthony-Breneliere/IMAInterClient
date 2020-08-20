@@ -12,20 +12,25 @@
 .ngx-contextmenu li {
   display: block;
   text-align: left;
+  cursor: default;
 }
 
 .ngx-contextmenu li:not(:first-child) {
   border: 1px solid var( --component-border-color );
 }
 
+.ngx-contextmenu li:first-child {
+  background-color: var( --main-color );
+}
+
 .ngx-contextmenu a {
   color: var( --defaut-font-color );
   display: block;
-  padding: 0.5em 1em;
+  padding: 0.3em 0.3em;
   text-decoration: none;
 }
 
-.ngx-contextmenu a:hover:not(:first-child) {
+.ngx-contextmenu a:hover {
   color: var( --modal-color );
   transition: color 1s;
 }
@@ -34,4 +39,8 @@
   transition: border 1s, color 1s, box-shadow 1s, text-shadow 1s;
   border: 1px solid var( --component-border-color );
   background-color: var( --hover-background-color );
+}
+
+.ngx-contextmenu a.hasSubMenu:before {
+  content: "\203A"
 }

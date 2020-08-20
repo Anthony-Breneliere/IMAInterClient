@@ -28,9 +28,36 @@
         Clôturer
     </ng-template>
 
-    <ng-template [visible]="canCancel" contextMenuItem let-item (execute)="cancel()">
-        Annuler
-    </ng-template>
+    <ng-template [visible]="canCancel" contextMenuItem [subMenu]="subMenuCancel">
+		Annuler
+	</ng-template>
+
+    <context-menu #subMenuCancel>
+        <ng-template contextMenuItem let-item passive="true">
+            Origine annulation
+        </ng-template>
+        <ng-template contextMenuItem let-item [subMenu]="subMenuCancelClient">
+            Client
+        </ng-template>
+        <ng-template contextMenuItem let-item (execute)="cancel(OrigineAnnulation.Intervenant)">
+            Intervenant
+        </ng-template>
+        <ng-template contextMenuItem let-item (execute)="cancel(OrigineAnnulation.Station)">
+            Station
+        </ng-template>
+    </context-menu>
+    
+    <context-menu #subMenuCancelClient>
+        <ng-template contextMenuItem let-item passive="true">
+            Accord intervenant
+        </ng-template>
+		<ng-template contextMenuItem let-item (execute)="cancel(OrigineAnnulation.ClientAccepteParIntervenant)">
+            Oui
+        </ng-template>
+        <ng-template contextMenuItem let-item (execute)="cancel(OrigineAnnulation.ClientNonAccepteParIntervenant)">
+            Non
+        </ng-template>
+	</context-menu>
 
 </context-menu>
 

@@ -8,7 +8,7 @@ import { Intervention } from '../../model/intervention';
 import { InterventionService } from '../../services/intervention.service';
 import { ConnectionStatus } from '../../services/connection.status';
 import { ContextMenuService } from 'ngx-contextmenu';
-import { Etat, RapportValidationStatusEnum } from '../../model/enums';
+import { Etat, RapportValidationStatusEnum, OrigineAnnulation } from '../../model/enums';
 
 @Component({
     moduleId: module.id,
@@ -55,6 +55,8 @@ export class InterventionButton implements OnInit
          */
     }
 
+    public OrigineAnnulation = OrigineAnnulation;
+
     public get notificationChange() : boolean {
         return this.intervention.NotificationChange && this.isMyInter && ! this.selected
     };
@@ -67,7 +69,6 @@ export class InterventionButton implements OnInit
     {
         // dans le cas où le bouton est sélectionné on prévient le composant parent pour la désélection
         this.onSelected.emit( this );
-
     }
 
     transfer() : void
@@ -81,9 +82,13 @@ export class InterventionButton implements OnInit
           this._interService.close( this.intervention );
     }
 
-    cancel() : void
+    cancel(origine : OrigineAnnulation) : void
     {
-        this._interService.cancel( this.intervention );
+        this.intervention.OrigineAnnulation = origine;
+
+        // envoi du changement dans le rapport
+        this._interService.sendInterChange( { Id:this.intervention.Id, OrigineAnnulation:origine } );
+        this._interService.cancel(this.intervention);
     }
 
     inProgress() : void
