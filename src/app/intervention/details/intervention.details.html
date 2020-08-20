@@ -412,6 +412,24 @@
 
     </section>
 
+    <section *ngIf="rapportDisplayed && (intervention.TypeFiche == TypeFiche.Gardiennage || intervention.TypeFiche == TypeFiche.GardiennageALaDemande || intervention.TypeFiche == TypeFiche.Ronde || intervention.TypeFiche == TypeFiche.RondeALaDemande)" title="Gardiennage / Ronde" data-gs-width="auto" [readOnly]="readOnlySection" (resize)="updateLayout()">
+
+        <tr field label="Départ site suite à">
+            <reactive-checkbox name="gardiennageRondeDepartSiteSiteSecurise" label="Site sécurisé" [(ngModel)]="gardiennageRonde.DepartSiteSiteSecurise" (ngModelChange)="changeRapport({GardiennageRonde:{DepartSiteSiteSecurise:parseBoolean($event)}})"></reactive-checkbox>
+            <reactive-checkbox name="gardiennageRondeDepartSitePresenceClient" label="Présence client" [(ngModel)]="gardiennageRonde.DepartSitePresenceClient" (ngModelChange)="changeRapport({GardiennageRonde:{DepartSitePresenceClient:parseBoolean($event)}})"></reactive-checkbox>
+            <reactive-checkbox name="gardiennageRondeDepartSiteAutreCheckbox" label="Autre" [(ngModel)]="AutreRaisonGardiennageRondeChecked" #gardiennageRondeAutreCheckbox></reactive-checkbox>
+        </tr>
+
+        <tr field label="Autre raison" *ngIf="gardiennageRondeAutreCheckbox?.value">
+            <reactive-input name="gardiennageRondeDepartSiteAutreRaison" [(ngModel)]="gardiennageRonde.DepartSiteAutreRaison" (ngModelChange)="changeRapport({GardiennageRonde:{DepartSiteAutreRaison:$event}})"></reactive-input>
+        </tr>
+
+        <tr field label="Commentaire(s)">
+            <reactive-textarea name="gardiennageRondeCommentaires" [(ngModel)]="gardiennageRonde.Commentaires" (ngModelChange)="changeRapport({GardiennageRonde:{Commentaires:$event}})"></reactive-textarea>
+        </tr>
+
+    </section>
+
   </form>
 
 </div>

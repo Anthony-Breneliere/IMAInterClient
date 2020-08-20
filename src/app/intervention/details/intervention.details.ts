@@ -10,10 +10,11 @@ import { RapportTrajet } from '../../model/rapport_trajet';
 import { RapportIssuesConcernees } from '../../model/rapport_issues_concernees';
 import { RapportLumieresAllumees } from '../../model/rapport_lumieres';
 import { RapportVerifications } from '../../model/rapport_verifications';
-import { RapportPresence} from "../../model/rapport_presence";
+import { RapportPresence } from "../../model/rapport_presence";
 import { Alarme} from "../../model/alarme";
-import { RapportMiseEnSecurite} from '../../model/rapport_mise_en_securite';
-import { RapportArriveeSurLieux} from '../../model/rapport_arrivee_sur_lieux';
+import { RapportMiseEnSecurite } from '../../model/rapport_mise_en_securite';
+import { RapportArriveeSurLieux } from '../../model/rapport_arrivee_sur_lieux';
+import { RapportGardiennageRonde } from '../../model/rapport_gardiennage_ronde';
 import * as Lodash from 'lodash';
 
 
@@ -258,6 +259,14 @@ export class InterventionDetails
         return this.rapport.Verifications.QuellesEffractions;
     }
 
+    private get gardiennageRonde() : RapportGardiennageRonde
+    {
+        // il se peut que le serveur mette cette valeur à null
+        if (!this.rapport.GardiennageRonde)
+            this.rapport.GardiennageRonde = new RapportGardiennageRonde();
+
+        return this.rapport.GardiennageRonde;
+    }
 
     private get listMainCour() : MainCourante[] { return Array.isArray( this.intervention.MainCourantes ) ?  this.intervention.MainCourantes : [] };
     // this.intervention && this.intervention.MainCourantes ? this.intervention.MainCourantes :
@@ -423,6 +432,17 @@ export class InterventionDetails
     public get GardiennageOuRondeChecked() : boolean
     {
         return this.miseEnSecurite && (this.miseEnSecurite.Gardiennage || this.miseEnSecurite.Ronde);
+    }
+
+    public get AutreRaisonGardiennageRondeChecked() : boolean
+    {
+        return this.gardiennageRonde.DepartSiteAutreRaison != null;
+    }
+
+    public set AutreRaisonGardiennageRondeChecked( value : boolean )
+    {
+        this.changeRapport({GardiennageRonde:{DepartSiteAutreRaison: value? '' : null}})
+        this.gardiennageRonde.DepartSiteAutreRaison = value ? '' : null;
     }
 
     /**

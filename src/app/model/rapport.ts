@@ -5,6 +5,7 @@ import {Alarme} from "./alarme";
 import {MotifIntervention,  RapportValidationStatusEnum, DepotBonIntervention} from "./enums";
 import {RapportMiseEnSecurite} from './rapport_mise_en_securite';
 import {RapportArriveeSurLieux} from './rapport_arrivee_sur_lieux';
+import { RapportGardiennageRonde } from './rapport_gardiennage_ronde';
 
 /**
  * Created by abreneli on 09/08/2016.
@@ -27,6 +28,7 @@ export class Rapport
     MiseEnSecurite: RapportMiseEnSecurite;
     Presence : RapportPresence;
     Trajet : RapportTrajet;
+    GardiennageRonde : RapportGardiennageRonde;
 
     ValidationStatus: RapportValidationStatusEnum;
 
@@ -43,6 +45,7 @@ export class Rapport
         this.MiseEnSecurite = new RapportMiseEnSecurite();
         this.Presence = new RapportPresence();
         this.Trajet = new RapportTrajet();
+        this.GardiennageRonde = new RapportGardiennageRonde();
         this.ValidationStatus = RapportValidationStatusEnum.Unknown;
     }
 }
