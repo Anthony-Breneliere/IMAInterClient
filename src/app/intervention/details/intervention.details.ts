@@ -436,13 +436,13 @@ export class InterventionDetails
 
     public get AutreRaisonGardiennageRondeChecked() : boolean
     {
-        return this.gardiennageRonde.DepartSiteAutreRaison != null;
+        return this.gardiennageRonde.RaisonDepart.AutreRaison != null;
     }
 
     public set AutreRaisonGardiennageRondeChecked( value : boolean )
     {
-        this.changeRapport({GardiennageRonde:{DepartSiteAutreRaison: value? '' : null}})
-        this.gardiennageRonde.DepartSiteAutreRaison = value ? '' : null;
+        this.changeRapport({GardiennageRonde:{RaisonDepart:{AutreRaison: value? '' : null}}})
+        this.gardiennageRonde.RaisonDepart.AutreRaison = value ? '' : null;
     }
 
     /**
