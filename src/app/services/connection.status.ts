@@ -238,7 +238,7 @@ export class ConnectionStatus
         {
             (async () => {
                 while (!this.connected)
-                    await new Promise(resolve => setTimeout(resolve, 200));
+                    await new Promise(resolve => setTimeout(resolve, 5000));
 
                 resolve();
             })();
