@@ -13,7 +13,7 @@ trigger:
 
   branches:
     include:
-    - master
+    - passageEnCore
     
 steps:
 
