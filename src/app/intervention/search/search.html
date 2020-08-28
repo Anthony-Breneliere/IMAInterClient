@@ -11,14 +11,12 @@
 <select id="selectIntervenant" [(ngModel)]="Search.TypeIntervention" (ngModelChange)="searchInterventions()" >
 
   <option [ngValue]="null"></option>
-  <option>Intervention</option>
-  <option>Gardiennage</option>
-  <option>Ronde</option>
-  <option>Gardiennage à la demande</option>
-  <option>Ronde à la demande</option>
-  <option>Maintenance</option>
-  <option>SAV</option>
-  <option>Test réseau</option>
+  <option value="Intervention">Intervention</option>
+  <option value="Gardiennage">Gardiennage</option>
+  <option value="Ronde">Ronde</option>
+  <option value="GardiennageALaDemande">Gardiennage à la demande</option>
+  <option value="RondeALaDemande" >Ronde à la demande</option>
+  <option value="TestReseau" >Test réseau</option>
 
 </select>
 
