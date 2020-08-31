@@ -216,10 +216,9 @@ export class ConnectionStatus
                     try 
                     {
                         await this._connection.start();
-                    } catch (err)
+                    } catch
                     {
                         console.log('Impossible de démarrer la connexion');
-                        console.log(err);
                         setTimeout(null, 1000);
                     }
                 }
