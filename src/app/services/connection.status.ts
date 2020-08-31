@@ -6,6 +6,7 @@ import * as signalR from "@microsoft/signalr";
 import { HubConnection, HubConnectionState } from '@microsoft/signalr';
 import { resolve } from 'path';
 import { reject } from 'lodash';
+import { sign } from 'crypto';
 
 @Injectable()
 export class ConnectionStatus 
@@ -74,6 +75,7 @@ export class ConnectionStatus
                 this.isHubScriptLoaded = true;
                 this._connection = new signalR.HubConnectionBuilder()
                     .withUrl(environment['server'] + "/imaintersignalr")
+                    .configureLogging(signalR.LogLevel.None)
                     .build();
 
                 this.initHubCallbacks();
@@ -205,29 +207,25 @@ export class ConnectionStatus
      */
     private async startHubConnection(): Promise<any> 
     {
-
         let starthubPromise = new Promise((resolve) => 
         {
             (async () => 
             {
-                var i = 0;
                 while (this._connection.state !== signalR.HubConnectionState.Connected) 
                 {
-                    console.log("starthubPromise() - Tentative de connexion " + i++);
                     try 
                     {
                         await this._connection.start();
-                    } catch (err) 
+                    } catch (err)
                     {
-                        console.log(`Impossible de démarrer la connexion  ${err}`);
+                        console.log('Impossible de démarrer la connexion');
+                        console.log(err);
                         setTimeout(null, 1000);
                     }
                 }
-
                 resolve();
             })();
         });
-
         return starthubPromise;
     }
 
@@ -239,12 +237,9 @@ export class ConnectionStatus
         let reconnectionPromise = new Promise((resolve) => 
         {
             (async () => {
-                var i = 0;
                 while (!this.connected)
-                {
-                    console.log("waitForReconnection() - Tentative de reconnexion " + i++);
                     await new Promise(resolve => setTimeout(resolve, 1000));
-                }
+                
                 resolve();
             })();
         });
