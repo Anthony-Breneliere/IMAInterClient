@@ -210,15 +210,17 @@ export class ConnectionStatus
         {
             (async () => 
             {
+                var i = 0;
                 while (this._connection.state !== signalR.HubConnectionState.Connected) 
                 {
+                    console.log("starthubPromise() - Tentative de connexion " + i++);
                     try 
                     {
                         await this._connection.start();
                     } catch (err) 
                     {
                         console.log(`Impossible de démarrer la connexion  ${err}`);
-                        setTimeout(null, 5000);
+                        setTimeout(null, 1000);
                     }
                 }
 
@@ -237,9 +239,12 @@ export class ConnectionStatus
         let reconnectionPromise = new Promise((resolve) => 
         {
             (async () => {
+                var i = 0;
                 while (!this.connected)
-                    await new Promise(resolve => setTimeout(resolve, 5000));
-
+                {
+                    console.log("waitForReconnection() - Tentative de reconnexion " + i++);
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
                 resolve();
             })();
         });
