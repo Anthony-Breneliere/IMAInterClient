@@ -414,7 +414,7 @@
 
     <section *ngIf="rapportDisplayed && (intervention.TypeFiche == TypeFiche.Gardiennage || intervention.TypeFiche == TypeFiche.GardiennageALaDemande || intervention.TypeFiche == TypeFiche.Ronde || intervention.TypeFiche == TypeFiche.RondeALaDemande)" title="Gardiennage / Ronde" data-gs-width="auto" [readOnly]="readOnlySection" (resize)="updateLayout()">
 
-        <tr field label="Départ site suite à">
+        <tr field label="Raison départ">
             <reactive-checkbox name="gardiennageRondeDepartSiteSiteSecurise" label="Site sécurisé" [(ngModel)]="gardiennageRonde.RaisonDepart.SiteSecurise" (ngModelChange)="changeRapport({GardiennageRonde:{RaisonDepart:{SiteSecurise:parseBoolean($event)}}})"></reactive-checkbox>
             <reactive-checkbox name="gardiennageRondeDepartSitePresenceClient" label="Présence client" [(ngModel)]="gardiennageRonde.RaisonDepart.PresenceClient" (ngModelChange)="changeRapport({GardiennageRonde:{RaisonDepart:{PresenceClient:parseBoolean($event)}}})"></reactive-checkbox>
             <reactive-checkbox name="gardiennageRondeDepartSiteAutreCheckbox" label="Autre" [(ngModel)]="AutreRaisonGardiennageRondeChecked" #gardiennageRondeAutreCheckbox></reactive-checkbox>
