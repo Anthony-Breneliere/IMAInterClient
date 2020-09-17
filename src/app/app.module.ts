@@ -41,6 +41,7 @@ import { SortInterventionByDateTime } from './intervention/groupe/sortInterPipe'
 import { Chat } from './intervention/chat/chat';
 import { Maincourantes } from './intervention/maincourantes/maincourantes';
 import { DateInputComponent } from './tools/input/date-input.component';
+import { NgModelChangeDebouncedDirective } from './ngModelChangeDebouncedDirective';
 
 // import { ReactiveBaseComponent } from './intervention/reactive-components/reactive-base';
 import { ReactiveInputComponent } from './intervention/reactive-components/reactive-input.component';
@@ -104,7 +105,8 @@ registerLocaleData(localeFr);
         TestComponent,
         MinimumCheckedRequiredDirective,
         MinimumDateRequiredDirective,
-        MaximumDateRequiredDirective
+        MaximumDateRequiredDirective,
+        NgModelChangeDebouncedDirective
         ],
 
     /*
