@@ -8,7 +8,9 @@ import {Subscription} from 'rxjs/internal/Subscription';
 /**
  * Cette directive permet d'attendre 500 millisecondes avant de valider les modifications apportées
  * Cela permet notamment de temporiser dans le cas du lancement d'une action après une modification utilisateur 
- * et ainsi éviter de lancer plusieurs actions à tord (ex: déclenchement d'une recherche alors que l'utilisateur est encore en train d'écrire)
+ * et ainsi éviter de lancer plusieurs actions à tort (ex: déclenchement d'une recherche alors que l'utilisateur est encore en train d'écrire)
+ * 
+ * Elle peut s'appliquer à tous les éléments utilisant le ngModel, par exemple les éléments input,select,etc.
  * 
  * Cette directive s'utilise de la meme manière que le ngModelChange : 
  * On peut donc remplacer ça : 
