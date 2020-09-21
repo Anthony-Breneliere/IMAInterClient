@@ -395,19 +395,20 @@ export class InterventionService  {
      * Recheche des anciennes interventions avec la requête suivante
      * @param queryString string
      */
-    public searchInterventions( query : SearchQuery ) : Promise<any>
+    public searchInterventions( query : SearchQuery, pageIndex: number ) : Promise<any>
     {
       console.info('Recherche des anciennes interventions avec la requête suivante: ', query);
 
-      this.clearSearchResults();
-
-      //TODO GMA Traitement reprendre ici !!
-      //var connectAndSearchPromise = new Promise(() => this._connectionStatus.HubConnection.invoke('SearchInterventions', query ));
+      if(pageIndex == 1)
+      {
+        this.clearSearchResults();
+      }
+      
       
       // on s'assure qu'on est connecté, car la recherche peut se faire au démarrage sur la query
       let connectAndSearchPromise = this._connectionStatus.waitForReconnection().then( () =>
       {
-        return this._connectionStatus.HubConnection.invoke('SearchInterventions', query );
+        return this._connectionStatus.HubConnection.invoke('SearchInterventions', query, pageIndex );
       });
 
       return connectAndSearchPromise;

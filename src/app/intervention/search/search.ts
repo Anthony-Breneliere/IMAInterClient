@@ -16,14 +16,25 @@ export class SearchIntervention
 {
   @Output() searchStatus = new EventEmitter<string>();
 
+  @Input() public pageIndex: number;
+
   Search: SearchQuery = new SearchQuery();
 
   private paramsSubscription : Subscription;
+  private currentQuery : any = null;
 
   constructor(
     private _interService : InterventionService,
     private route: ActivatedRoute )
   {
+  }
+
+  ngOnChanges(changes) {
+    if(this.pageIndex > 1)
+    {
+      this.searchInterventions();
+    }
+    // TODO GMA
   }
 
   ngOnInit()
@@ -75,6 +86,9 @@ export class SearchIntervention
     return (this.Search.EndDate ?? dateNow < dateNow ? this.Search.EndDate : dateNow );
   }
 
+  // TODO GMA réagir a un evenement envoyer par le scroll
+
+  // TODO GMA add pageIndex
   searchInterventions()
   {
     let query = this.Search;
@@ -88,9 +102,19 @@ export class SearchIntervention
 
       if( acceptableQuery )
       {
-        this.searchStatus.emit( 'start' );
+        if(this.currentQuery === null)
+        {
+          this.currentQuery = acceptableQuery;
+        }
+         
+        if(this.pageIndex == 1 || this.currentQuery != acceptableQuery)
+        {
+          this.pageIndex = 1;
+          this.currentQuery = acceptableQuery;
+          this.searchStatus.emit( 'start' );
+        }  
 
-        this._interService.searchInterventions( this.Search )
+        this._interService.searchInterventions( this.Search, this.pageIndex )
         .then( () => {
           this.searchStatus.emit( 'stop' );
         })

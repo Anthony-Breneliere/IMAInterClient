@@ -7,7 +7,7 @@
             "name": "root",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost:4200/IMAInter/",
+            "url": "http://localhost:4512/IMAInter/",
             "sourceMaps": true,
             "sourceMapPathOverrides": {
                 "webpack:/*": "${webRoot}/*"
@@ -21,7 +21,7 @@
           "name": "search?contrat=20160781002",
           "type": "chrome",
           "request": "launch",
-          "url": "http://localhost:4200/IMAInter/#/search?contrat=20160781002",
+          "url": "http://localhost:4512/IMAInter/#/search?contrat=20160781002",
           "sourceMaps": true,
           "sourceMapPathOverrides": {
               "webpack:/*": "${webRoot}/*"

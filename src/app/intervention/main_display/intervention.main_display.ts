@@ -36,6 +36,9 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
     public afficheNavigation : boolean;
     public afficheBarre : boolean = true;
 
+    // TODO GMA a modifier
+    public pageIndex : number = 1; 
+
     private paramsSubscription : Subscription;
     private queryParamsSubscription : Subscription;
 
@@ -258,6 +261,18 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
           this.selectedIntervention = null;
         }
 
+    }
+
+    // TODO GMA a renommer onScrollNavigation
+    onScrollDown() {
+      console.log('scrolled down!!');
+      this.pageIndex++;
+      //this._interService.searchInterventions(null,1); //TODO GMA NOW
+      // TODO GMA call searchIntervention with page Index ?
+    }
+   
+    onScrollUp() {
+      console.log('scrolled up!!');
     }
 
 

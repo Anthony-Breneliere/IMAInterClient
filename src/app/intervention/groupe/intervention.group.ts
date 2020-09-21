@@ -33,6 +33,7 @@ export class InterventionGroup
 {
 
     @Input() public GroupName: string;
+    @Input() public pageIndex: number;
     @Input() public GroupType: GroupTypeEnum;
     @Input() public SelectedIntervention: Intervention;
     @Input() public Expanded: boolean;
@@ -251,17 +252,20 @@ export class InterventionGroup
 
     onSearchEvent($event)
     {
-      if ( $event='start')
+
+      // TODO GMA, manage event if pageIndex différent
+
+      if ( $event='start' && this.pageIndex == 1)
       {
         // on vide les interventions du groupe
         this._groupInterventions = [];
 
         // todo: afficher une animation d'attente ?
       }
+
       else if ( $event='stop')
       {
         // todo: cacher l'animation d'attente ?
       }
     }
-
 }
