@@ -118,8 +118,6 @@ export class InterventionGroup
 
     public interventionChangeHighlight( interId : string )
     {
-      console.log('INFO GMA interventionChangeHighlight');
-
         this._currentlyUpdatedInters.push( interId );
 
         window.setTimeout( () => {

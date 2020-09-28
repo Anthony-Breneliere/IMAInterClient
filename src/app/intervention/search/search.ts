@@ -51,8 +51,6 @@ export class SearchIntervention
                 EndDate: debut ? new Date( fin ) : null,
                 TypeIntervention:  type
               }
-
-              // TODO GMA vérifier si la recherche est lancé a tort au début
               this.searchInterventions();
             } );
         }

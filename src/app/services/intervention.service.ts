@@ -95,18 +95,15 @@ export class InterventionService  {
         let hubConnection = this._connectionStatus.HubConnection;
 
         hubConnection.on('newInterventionData',(interventionData : Intervention) =>{
-            console.log('INFO GMA callback newInterventionData');
             this.onReceiveInterventionData( interventionData, InterventionDataType.Change );
         });
 
         hubConnection.on('newSearchResults',(searchResults : Intervention[]) =>{
-            console.log('INFO GMA callback newSearchResults');
             console.log( "Receiving search results:" );
             this.onReceiveInterventionList( searchResults );
         });
 
         hubConnection.on('newChatMessage',(message : Message) =>{
-            console.log('INFO GMA callback newChatMessage');
             this.onReceiveMessage( message );
         });
     }
@@ -115,8 +112,6 @@ export class InterventionService  {
     // fonction appelée au moment de la connection au serveur
     private onServiceInterConnected() : void
     {
-        console.log(`INFO GMA ${this._connectionStatus.HubConnection.state}`);
-
         // chargement automatique des interventions en cours à la connection:
         this.loadCurrentInterventionList();
 
@@ -129,8 +124,6 @@ export class InterventionService  {
      */
     private subscribeNotifications() : void
     {
-        console.log(`INFO GMA subscribeNotifications`);
-
       if ( this.pushNotificationService )
         this.pushNotificationService.subscribeUser();
 
@@ -142,17 +135,13 @@ export class InterventionService  {
      */
     private loadCurrentInterventionList() : void
     {
-        console.log(`INFO GMA  loadCurrentInterventionList`);
-
         this._connectionStatus.HubConnection.invoke('QueryCurrentFI')
         .then((newInterventions : Intervention[]) => 
         
             {
-                console.log(`INFO GMA  gestion des interventions récupéré`);
                 this.onReceiveInterventionList( newInterventions );
             })
             .catch(( e : any ) => {
-                    console.error(`INFO GMA error ${e}`);
                     this._connectionStatus.addErrorMessage( `Erreur lors de la récupération des interventions courantes: ${e}` );
                 } );
     }
