@@ -15,7 +15,6 @@ import { Chat } from '../chat/chat';
 import {Subscription} from 'rxjs';
 
 import 'rxjs-compat/add/operator/switchMap';
-import { SearchQuery } from 'app/services/searchQuery';
 
 
 
@@ -35,9 +34,6 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
 
     public afficheNavigation : boolean;
     public afficheBarre : boolean = true;
-
-    // TODO GMA a modifier
-    public pageIndex : number = 1; 
 
     private paramsSubscription : Subscription;
     private queryParamsSubscription : Subscription;
@@ -266,14 +262,7 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
     // TODO GMA a renommer onScrollNavigation
     onScrollDown() {
       console.log('scrolled down!!');
-      this.pageIndex++;
-      //this._interService.searchInterventions(null,1); //TODO GMA NOW
-      // TODO GMA call searchIntervention with page Index ?
+      this._interService.loadMoreResults();
+      // TODO GMA call search and increase page      
     }
-   
-    onScrollUp() {
-      console.log('scrolled up!!');
-    }
-
-
 }

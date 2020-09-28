@@ -43,6 +43,9 @@ export class InterventionService  {
 
     private _listeTypeMaincour : ITypeMainCourante[] = [];
 
+    private _pageIndex : number;
+    private _query : SearchQuery;
+
     // on garde en mémoire la liste des types de maincourantes:
     public get listeTypeMaincour() : ITypeMainCourante[]
     {
@@ -395,20 +398,36 @@ export class InterventionService  {
      * Recheche des anciennes interventions avec la requête suivante
      * @param queryString string
      */
-    public searchInterventions( query : SearchQuery, pageIndex: number ) : Promise<any>
+    public searchInterventions( query : SearchQuery ) : Promise<any>
     {
       console.info('Recherche des anciennes interventions avec la requête suivante: ', query);
+      this._query = query;
+      this._pageIndex = 1;
 
-      if(pageIndex == 1)
-      {
-        this.clearSearchResults();
-      }
-      
+      this.clearSearchResults();
       
       // on s'assure qu'on est connecté, car la recherche peut se faire au démarrage sur la query
       let connectAndSearchPromise = this._connectionStatus.waitForReconnection().then( () =>
       {
-        return this._connectionStatus.HubConnection.invoke('SearchInterventions', query, pageIndex );
+        return this._connectionStatus.HubConnection.invoke('SearchInterventions', this._query, this._pageIndex );
+      });
+
+      return connectAndSearchPromise;
+    }
+
+    /**
+     * Charge plus de résulats correspondant a la derniere recherche
+     * @param queryString string
+     */
+    public loadMoreResults() : Promise<any>
+    {
+      console.info('chargement de plus de résultat: ', this._query);
+      this._pageIndex++;
+      
+      // on s'assure qu'on est connecté, car la recherche peut se faire au démarrage sur la query
+      let connectAndSearchPromise = this._connectionStatus.waitForReconnection().then( () =>
+      {
+        return this._connectionStatus.HubConnection.invoke('SearchInterventions', this._query, this._pageIndex );
       });
 
       return connectAndSearchPromise;

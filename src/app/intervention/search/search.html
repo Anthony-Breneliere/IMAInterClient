@@ -10,8 +10,6 @@
 
 <label>Type d'intervention</label>
 <select id="selectIntervenant" [(ngModel)]="Search.TypeIntervention" (ngModelChange)="searchInterventions()" > 
-  <!-- TODO GMA search intervention avec pageindex 1 -->
-
   <option [ngValue]="null"></option>
   <option value="Intervention">Intervention</option>
   <option value="Gardiennage">Gardiennage</option>

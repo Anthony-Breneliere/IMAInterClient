@@ -16,7 +16,7 @@
 
 
 <div *ngIf="GroupType == GroupTypeEnum.interventionsCloses && Expanded === true" class="filter transition_1s" >
-  <search-intervention [pageIndex]="pageIndex" (searchStatus)="onSearchEvent($event)"></search-intervention>
+  <search-intervention (searchStatus)="onSearchEvent($event)"></search-intervention> 
 </div>
 
 <div *ngIf="Expanded === true">

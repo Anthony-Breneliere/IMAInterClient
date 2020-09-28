@@ -33,7 +33,6 @@ export class InterventionGroup
 {
 
     @Input() public GroupName: string;
-    @Input() public pageIndex: number;
     @Input() public GroupType: GroupTypeEnum;
     @Input() public SelectedIntervention: Intervention;
     @Input() public Expanded: boolean;
@@ -255,7 +254,7 @@ export class InterventionGroup
 
       // TODO GMA, manage event if pageIndex différent
 
-      if ( $event='start' && this.pageIndex == 1)
+      if ( $event='start')
       {
         // on vide les interventions du groupe
         this._groupInterventions = [];
