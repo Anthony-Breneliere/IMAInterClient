@@ -251,9 +251,6 @@ export class InterventionGroup
 
     onSearchEvent($event)
     {
-
-      // TODO GMA, manage event if pageIndex différent
-
       if ( $event='start')
       {
         // on vide les interventions du groupe

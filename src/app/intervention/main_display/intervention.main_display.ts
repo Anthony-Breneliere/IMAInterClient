@@ -259,10 +259,7 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
 
     }
 
-    // TODO GMA a renommer onScrollNavigation
-    onScrollDown() {
-      console.log('scrolled down!!');
-      this._interService.loadMoreResults();
-      // TODO GMA call search and increase page      
+    onScrollNavigation() {
+      this._interService.loadMoreResults();     
     }
 }

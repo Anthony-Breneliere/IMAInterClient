@@ -416,7 +416,7 @@ export class InterventionService  {
     }
 
     /**
-     * Charge plus de résulats correspondant a la derniere recherche
+     * Charge plus de résulats correspondant à la dernière recherche
      * @param queryString string
      */
     public loadMoreResults() : Promise<any>
