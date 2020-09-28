@@ -4,6 +4,7 @@
 import { ModuleWithProviders }  from '@angular/core';
 import { Routes, RouterModule, UrlSegment }  from '@angular/router';
 import { InterventionMainDisplay } from './intervention/main_display/intervention.main_display';
+import { AppModule } from './app.module';
 
 export const appRoutes: Routes = [
     {
@@ -32,4 +33,4 @@ export function matcherFunction(url: UrlSegment[])
   return null;
 }
 
-export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+export const routing: ModuleWithProviders<AppModule> = RouterModule.forRoot(appRoutes);
