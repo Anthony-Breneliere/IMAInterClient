@@ -7,7 +7,6 @@
         <div *ngIf="afficheNavigation" #interventionNavigation id="interventionNavigation" infiniteScroll
         [infiniteScrollDistance]="2"
         [infiniteScrollThrottle]="50"
-        style="height: 100%;"
         [scrollWindow]="false"
         (scrolled)="onScrollNavigation()">
             <intervention-group #myGroup [SelectedIntervention]="selectedIntervention" (onSelectedButton)="onSelectedButton($event)" [GroupType]="GroupTypeEnum.mesInterventions" GroupName="Mes Interventions" [Expanded]="false"></intervention-group>
