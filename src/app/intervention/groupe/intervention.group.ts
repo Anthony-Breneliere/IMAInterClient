@@ -118,8 +118,6 @@ export class InterventionGroup
 
     public interventionChangeHighlight( interId : string )
     {
-      console.log('INFO GMA interventionChangeHighlight');
-
         this._currentlyUpdatedInters.push( interId );
 
         window.setTimeout( () => {
@@ -258,10 +256,10 @@ export class InterventionGroup
 
         // todo: afficher une animation d'attente ?
       }
+
       else if ( $event='stop')
       {
         // todo: cacher l'animation d'attente ?
       }
     }
-
 }

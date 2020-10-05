@@ -43,6 +43,9 @@ export class InterventionService  {
 
     private _listeTypeMaincour : ITypeMainCourante[] = [];
 
+    private _pageIndex : number;
+    private _query : SearchQuery;
+
     // on garde en mémoire la liste des types de maincourantes:
     public get listeTypeMaincour() : ITypeMainCourante[]
     {
@@ -92,18 +95,15 @@ export class InterventionService  {
         let hubConnection = this._connectionStatus.HubConnection;
 
         hubConnection.on('newInterventionData',(interventionData : Intervention) =>{
-            console.log('INFO GMA callback newInterventionData');
             this.onReceiveInterventionData( interventionData, InterventionDataType.Change );
         });
 
         hubConnection.on('newSearchResults',(searchResults : Intervention[]) =>{
-            console.log('INFO GMA callback newSearchResults');
             console.log( "Receiving search results:" );
             this.onReceiveInterventionList( searchResults );
         });
 
         hubConnection.on('newChatMessage',(message : Message) =>{
-            console.log('INFO GMA callback newChatMessage');
             this.onReceiveMessage( message );
         });
     }
@@ -112,8 +112,6 @@ export class InterventionService  {
     // fonction appelée au moment de la connection au serveur
     private onServiceInterConnected() : void
     {
-        console.log(`INFO GMA ${this._connectionStatus.HubConnection.state}`);
-
         // chargement automatique des interventions en cours à la connection:
         this.loadCurrentInterventionList();
 
@@ -126,8 +124,6 @@ export class InterventionService  {
      */
     private subscribeNotifications() : void
     {
-        console.log(`INFO GMA subscribeNotifications`);
-
       if ( this.pushNotificationService )
         this.pushNotificationService.subscribeUser();
 
@@ -139,17 +135,13 @@ export class InterventionService  {
      */
     private loadCurrentInterventionList() : void
     {
-        console.log(`INFO GMA  loadCurrentInterventionList`);
-
         this._connectionStatus.HubConnection.invoke('QueryCurrentFI')
         .then((newInterventions : Intervention[]) => 
         
             {
-                console.log(`INFO GMA  gestion des interventions récupéré`);
                 this.onReceiveInterventionList( newInterventions );
             })
             .catch(( e : any ) => {
-                    console.error(`INFO GMA error ${e}`);
                     this._connectionStatus.addErrorMessage( `Erreur lors de la récupération des interventions courantes: ${e}` );
                 } );
     }
@@ -398,16 +390,33 @@ export class InterventionService  {
     public searchInterventions( query : SearchQuery ) : Promise<any>
     {
       console.info('Recherche des anciennes interventions avec la requête suivante: ', query);
+      this._query = query;
+      this._pageIndex = 1;
 
       this.clearSearchResults();
-
-      //TODO GMA Traitement reprendre ici !!
-      //var connectAndSearchPromise = new Promise(() => this._connectionStatus.HubConnection.invoke('SearchInterventions', query ));
       
       // on s'assure qu'on est connecté, car la recherche peut se faire au démarrage sur la query
       let connectAndSearchPromise = this._connectionStatus.waitForReconnection().then( () =>
       {
-        return this._connectionStatus.HubConnection.invoke('SearchInterventions', query );
+        return this._connectionStatus.HubConnection.invoke('SearchInterventions', this._query, this._pageIndex );
+      });
+
+      return connectAndSearchPromise;
+    }
+
+    /**
+     * Charge plus de résulats correspondant à la dernière recherche
+     * @param queryString string
+     */
+    public loadMoreResults() : Promise<any>
+    {
+      console.info('chargement de plus de résultat: ', this._query);
+      this._pageIndex++;
+      
+      // on s'assure qu'on est connecté, car la recherche peut se faire au démarrage sur la query
+      let connectAndSearchPromise = this._connectionStatus.waitForReconnection().then( () =>
+      {
+        return this._connectionStatus.HubConnection.invoke('SearchInterventions', this._query, this._pageIndex );
       });
 
       return connectAndSearchPromise;

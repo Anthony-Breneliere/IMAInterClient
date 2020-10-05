@@ -9,8 +9,7 @@
 <date-input #dateFin [(ngModel)]="Search.EndDate" [minDateRequired]="Search.StartDate" [maxDateRequired]="dateNow" (ngModelChangeDebounced)="searchInterventions()" width="265px" ></date-input>
 
 <label>Type d'intervention</label>
-<select id="selectIntervenant" [(ngModel)]="Search.TypeIntervention" (ngModelChange)="searchInterventions()" >
-
+<select id="selectIntervenant" [(ngModel)]="Search.TypeIntervention" (ngModelChange)="searchInterventions()" > 
   <option [ngValue]="null"></option>
   <option value="Intervention">Intervention</option>
   <option value="Gardiennage">Gardiennage</option>

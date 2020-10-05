@@ -50,6 +50,8 @@ import { ReactiveSelectComponent } from './intervention/reactive-components/reac
 import { ReactiveTextareaComponent } from './intervention/reactive-components/reactive-textarea.component';
 import { ReactiveDateInputComponent } from './intervention/reactive-components/reactive-date.input.component';
 
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+
 import { TestComponent } from './test/test.component';
 
 import { registerLocaleData } from '@angular/common';
@@ -73,6 +75,7 @@ registerLocaleData(localeFr);
         DlDateTimeDateModule,  // <--- Determines the data type of the model
         DlDateTimeInputModule,
         DlDateTimePickerModule,
+        InfiniteScrollModule
       ],
     /*
        Déclaration des composants et des directives utilisées par le module. En les ajoutant ici

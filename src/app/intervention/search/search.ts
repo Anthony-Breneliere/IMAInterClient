@@ -51,7 +51,6 @@ export class SearchIntervention
                 EndDate: debut ? new Date( fin ) : null,
                 TypeIntervention:  type
               }
-
               this.searchInterventions();
             } );
         }

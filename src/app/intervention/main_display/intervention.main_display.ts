@@ -15,7 +15,6 @@ import { Chat } from '../chat/chat';
 import {Subscription} from 'rxjs';
 
 import 'rxjs-compat/add/operator/switchMap';
-import { SearchQuery } from 'app/services/searchQuery';
 
 
 
@@ -260,5 +259,7 @@ export class InterventionMainDisplay implements OnInit, AfterContentInit {
 
     }
 
-
+    onScrollNavigation() {
+      this._interService.loadMoreResults();     
+    }
 }
