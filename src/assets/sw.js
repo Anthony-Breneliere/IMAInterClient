@@ -33,7 +33,7 @@ self.addEventListener('push', function (event) {
     const options = {
         body: data.Message,
         icon: 'imainter.ico',
-        badge: 'imainter.bmp',
+        badge: 'imainter.png',
         data: url + data.InterventionId
     };
 
