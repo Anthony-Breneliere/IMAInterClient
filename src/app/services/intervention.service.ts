@@ -395,13 +395,16 @@ export class InterventionService  {
 
       this.clearSearchResults();
       
-      // on s'assure qu'on est connecté, car la recherche peut se faire au démarrage sur la query
-      let connectAndSearchPromise = this._connectionStatus.waitForReconnection().then( () =>
-      {
-        return this._connectionStatus.HubConnection.invoke('SearchInterventions', this._query, this._pageIndex );
-      });
+        if(this._query)
+        {
+            // on s'assure qu'on est connecté, car la recherche peut se faire au démarrage sur la query
+            let connectAndSearchPromise = this._connectionStatus.waitForReconnection().then( () =>
+            {
+                return this._connectionStatus.HubConnection.invoke('SearchInterventions', this._query, this._pageIndex );
+            });
 
-      return connectAndSearchPromise;
+            return connectAndSearchPromise;
+        }
     }
 
     /**
@@ -410,16 +413,20 @@ export class InterventionService  {
      */
     public loadMoreResults() : Promise<any>
     {
-      console.info('chargement de plus de résultat: ', this._query);
-      this._pageIndex++;
-      
-      // on s'assure qu'on est connecté, car la recherche peut se faire au démarrage sur la query
-      let connectAndSearchPromise = this._connectionStatus.waitForReconnection().then( () =>
-      {
-        return this._connectionStatus.HubConnection.invoke('SearchInterventions', this._query, this._pageIndex );
-      });
 
-      return connectAndSearchPromise;
+        if(this._query)
+        {
+            console.info('chargement de plus de résultat: ', this._query);
+            this._pageIndex++;
+            
+            // on s'assure qu'on est connecté, car la recherche peut se faire au démarrage sur la query
+            let connectAndSearchPromise = this._connectionStatus.waitForReconnection().then( () =>
+            {
+                return this._connectionStatus.HubConnection.invoke('SearchInterventions', this._query, this._pageIndex );
+            });
+      
+            return connectAndSearchPromise;
+        }
     }
 
     /**
