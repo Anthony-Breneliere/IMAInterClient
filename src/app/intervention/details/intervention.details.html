@@ -187,7 +187,7 @@
           </tr>
 
           <tr field label="Raison non accès" *ngIf="verifAutreCheckbox?.value">
-            <reactive-textarea name="verifRaisonNonAcces" [(ngModel)]="nonAccesAuSite.AutreTexte" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{AutreTexte:$event}}})" required></reactive-textarea>
+            <reactive-textarea name="verifRaisonNonAcces" [(ngModel)]="nonAccesAuSite.Autre" (ngModelChange)="changeRapport({ArriveeSurLieux:{NonAccesAuSite:{Autre:$event}}})" required></reactive-textarea>
           </tr>
 
           <tr field label="Utilisation des moyens d'accès">
