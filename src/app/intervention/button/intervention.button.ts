@@ -106,6 +106,7 @@ export class InterventionButton implements OnInit
         let canTransfer : boolean =
           this.connected &&
           this.intervention.Etat == Etat.Creee &&
+          this.intervention?.Rapport?.ValidationStatus == RapportValidationStatusEnum.Valid &&
           this._interService.validateEmails( this.intervention?.Intervenant?.Emails );
 
         return canTransfer;
