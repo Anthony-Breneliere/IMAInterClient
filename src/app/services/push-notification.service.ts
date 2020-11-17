@@ -68,14 +68,19 @@ export class PushNotificationService {
     // On récupère la souscription existante dans le pushManager
     this.swRegistration.pushManager.getSubscription().then( subscription =>
     {
-      if (subscription == null)
-      {
+      // Suppression de la souscription obligatoire suite au changement des clés VAPID
+        if(subscription != null)
+        {
+          subscription.unsubscribe();
+        }
+
         // Si l'utilisateur n'a pas de souscription, on lui créé une souscription
         this.swRegistration.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey: applicationServerKey
         })
         .then(subscription => {
+          console.info('nouvelle souscription générée');
           this.SendSubscriptionToService(subscription);
         })
         .catch(err => {
@@ -85,12 +90,6 @@ export class PushNotificationService {
           // console.log('DOMEXCEPTION CODE: ', err.code);
           return null;
         });
-      }
-      // Si la souscription utilisateur existe deja,
-      // On envoie toute de meme les informations au cas ou celle ci n'aurait pas été envoyé au serveur
-      else {
-        this.SendSubscriptionToService(subscription);
-      }
 
       console.info("Subscription: ", subscription);
     });
