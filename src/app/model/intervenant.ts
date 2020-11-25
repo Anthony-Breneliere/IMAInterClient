@@ -5,7 +5,7 @@ export class Intervenant
     Id: string; // Guid
     Societe: string;
     Adresse: string;
-    Emails: any;
+    Emails: string[];
     Matricule : string;
     Nom : string;
     Telephones: Telephone[];

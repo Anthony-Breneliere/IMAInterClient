@@ -578,16 +578,15 @@ export class InterventionDetails
 
     public set concatenatedEmails( value : string )
     {
-      let emails = value.split( /[ ,;\n]+/ ).map( email => email.trim() );
-
+      let emails = value.split(/[ ,;\n]+/).map(email => email.trim()).filter(email => email);
+      
       // on vide les champs
-      for (let i = 0; i < this.intervenant.Emails.length; i++)
-        this.intervenant.Emails[i] = "";
+      this.intervenant.Emails = emails;
 
       // on merge les champs au cas où ya moins de mail
       Lodash.merge( this.intervenant.Emails, emails );
 
-      if ( this._concatenated != this.concatenatedEmails )
+      if ( this._concatenated != this.concatenatedEmails && this._interService.validateEmails(this.intervenant.Emails))
         this.changeIntervention({ Intervenant: {Emails: this.intervenant.Emails}});
     }
 
