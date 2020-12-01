@@ -52,6 +52,20 @@ export class PushNotificationService {
   }
 
   /**
+   * Cette fonction permet de comparer l'égalité de 2 Uint8Array
+   */
+   private uint8ArrayEqual (buf1:Uint8Array, buf2: Uint8Array)
+  {
+      if (buf1.byteLength != buf2.byteLength) return false;
+      var dv1 = new Int8Array(buf1);
+      var dv2 = new Int8Array(buf2);
+      for (var i = 0 ; i != buf1.byteLength ; i++)
+      {
+          if (dv1[i] != dv2[i]) return false;
+      }
+      return true;
+  }  
+  /**
    * Cette fonction créé une souscription, si l'utilisateur n'a pas deja une souscription, dans le pushManager du service worker
    * et envoie les infos de la souscription au serveur ImaInter
    */
@@ -63,35 +77,48 @@ export class PushNotificationService {
       return;
     }
 
-    const applicationServerKey = this.urlB64ToUint8Array(environment.applicationServerPublicKey);
-
+    const applicationServerKey = this.urlB64ToUint8Array(environment.applicationServerPublicKey);   
     // On récupère la souscription existante dans le pushManager
     this.swRegistration.pushManager.getSubscription().then( subscription =>
     {
-      // Suppression de la souscription obligatoire suite au changement des clés VAPID
-        if(subscription != null)
+      if(subscription != null)
+      {
+        // si la souscription est valide, on a rien a faire
+        if(this.uint8ArrayEqual(new Uint8Array(subscription.options.applicationServerKey),applicationServerKey))
         {
-          subscription.unsubscribe();
+            console.info("souscription récupérée valide: ", subscription);
         }
-
-        // Si l'utilisateur n'a pas de souscription, on lui créé une souscription
-        this.swRegistration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: applicationServerKey
-        })
-        .then(subscription => {
-          console.info('nouvelle souscription générée');
-          this.SendSubscriptionToService(subscription);
-        })
-        .catch(err => {
-          console.error('Erreur à la création de la souscription: ', err);
-          // console.log('DOMEXCEPTION MESSAGE: ', err.message);
-          // console.log('DOMEXCEPTION NAME: ', err.name);
-          // console.log('DOMEXCEPTION CODE: ', err.code);
-          return null;
-        });
-
-      console.info("Subscription: ", subscription);
+        // Sinon on la supprime et on en génère une nouvelle
+        else
+        {
+          console.info("la souscription récupérée ne correspond pas à celle du serveur");
+          subscription.unsubscribe();
+          this.generateSubscription(applicationServerKey);
+        }
+      }
+      // Si aucune souscription n'existe, on en créé une
+      else
+      {
+        console.info("aucune souscription existante");
+        this.generateSubscription(applicationServerKey);
+      }
+    });
+  }
+  
+  private generateSubscription(applicationServerKey: Uint8Array) {
+    // Si l'utilisateur n'a pas de souscription, on lui créé une souscription
+    this.swRegistration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: applicationServerKey
+    })
+    .then(sub => {
+      console.info('nouvelle souscription générée');
+      this.SendSubscriptionToService(sub);
+      console.info("souscription: ", sub);
+    })
+    .catch(err => {
+      console.error('Erreur à la création de la souscription: ', err);
+      return null;
     });
   }
 
