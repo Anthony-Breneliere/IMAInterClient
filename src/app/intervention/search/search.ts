@@ -81,7 +81,7 @@ export class SearchIntervention
     // on recherche les interventions à partir de 4 caractères saisis
     if ( query )
     {
-      var acceptableQuery = (query.FreeQuery && query.FreeQuery.length) > 3
+      var acceptableQuery = (query.FreeQuery && query.FreeQuery.length) > 1
         || query.StartDate != null
         || query.TypeIntervention;
 
