@@ -1,11 +1,11 @@
 
-<label>Numéro, Contrat, Intervenant, Client, Ville ou CP</label>
+<label placement="right" ngbTooltip="La recherche commence à partir de 2 caractères">Numéro, Contrat, Intervenant, Client, Ville ou CP ⓘ</label>
 <input #searchInput [(ngModel)]="Search.FreeQuery" (ngModelChangeDebounced)="searchInterventions()" />
 
-<label>Date de début</label>
+<label placement="right" ngbTooltip="La comparaison se fait uniquement avec la date de création de l'intervention">Date de début ⓘ</label>
 <date-input #dateDebut [(ngModel)]="Search.StartDate" [maxDateRequired]="maxDateRequired" (ngModelChangeDebounced)="searchInterventions()" width="265px" ></date-input>
 
-<label>Date de fin</label>
+<label placement="right" ngbTooltip="La comparaison se fait uniquement avec la date de création de l'intervention">Date de fin ⓘ</label>
 <date-input #dateFin [(ngModel)]="Search.EndDate" [minDateRequired]="Search.StartDate" [maxDateRequired]="dateNow" (ngModelChangeDebounced)="searchInterventions()" width="265px" ></date-input>
 
 <label>Type d'intervention</label>
@@ -18,4 +18,4 @@
   <option value="RondeALaDemande" >Ronde à la demande</option>
   <option value="TestReseau" >Test réseau</option>
 
-</select> 
+</select>
