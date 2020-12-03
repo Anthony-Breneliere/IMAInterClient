@@ -83,6 +83,7 @@ export class SearchIntervention
     {
       var acceptableQuery = (query.FreeQuery && query.FreeQuery.length) > 1
         || query.StartDate != null
+        || query.EndDate != null
         || query.TypeIntervention;
 
       if( acceptableQuery )
