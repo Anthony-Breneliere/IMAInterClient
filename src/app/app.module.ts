@@ -59,6 +59,7 @@ import localeFr from '@angular/common/locales/fr';
 import { MinimumCheckedRequiredDirective } from './tools/validators/multiple_checkbox.validator.directive';
 import { MinimumDateRequiredDirective } from './tools/validators/min_date.validator.directive';
 import { MaximumDateRequiredDirective } from './tools/validators/max_date.validator.directive';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 registerLocaleData(localeFr);
 
@@ -75,7 +76,8 @@ registerLocaleData(localeFr);
         DlDateTimeDateModule,  // <--- Determines the data type of the model
         DlDateTimeInputModule,
         DlDateTimePickerModule,
-        InfiniteScrollModule
+        InfiniteScrollModule,
+        NgbModule
       ],
     /*
        Déclaration des composants et des directives utilisées par le module. En les ajoutant ici
@@ -109,7 +111,7 @@ registerLocaleData(localeFr);
         MinimumCheckedRequiredDirective,
         MinimumDateRequiredDirective,
         MaximumDateRequiredDirective,
-        NgModelChangeDebouncedDirective
+        NgModelChangeDebouncedDirective,
         ],
 
     /*
@@ -122,7 +124,6 @@ registerLocaleData(localeFr);
         ConnectionStatus,
         InterventionService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }],
-
     /*
      * Composant de démarrage affiché par le module.
      */
