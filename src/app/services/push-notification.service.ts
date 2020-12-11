@@ -83,10 +83,11 @@ export class PushNotificationService {
     {
       if(subscription != null)
       {
-        // si la souscription est valide, on a rien a faire
+        // si la souscription est valide, on la renvoit au serveur au cas où l'utilisateur 
         if(this.uint8ArrayEqual(new Uint8Array(subscription.options.applicationServerKey),applicationServerKey))
         {
             console.info("souscription récupérée valide: ", subscription);
+            this.SendSubscriptionToService(subscription);
         }
         // Sinon on la supprime et on en génère une nouvelle
         else
