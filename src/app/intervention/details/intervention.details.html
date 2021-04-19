@@ -18,8 +18,9 @@
           <tr *ngIf="!isEditableTypeFiche; else editableTypeFiche" field label="Type ">{{intervention?.TypeFicheLabel}}</tr>
           <ng-template #editableTypeFiche>
               <tr field label="Type ">
-                <reactive-select name="typeIntervention" id="InterventionType" [(ngModel)]="intervention.TypeFiche" (ngModelChange)="changeIntervention( { TypeFiche: $event } )">
-                  <option [value]="TypeFiche.Intervention">Intervention</option>
+                <reactive-select name="typeIntervention" id="InterventionType" [(ngModel)]="intervention.TypeFiche" (ngModelChange)="changeIntervention( { TypeFiche: $event } )" required>
+                    <option [ngValue]="null"></option>
+                    <option [value]="TypeFiche.Intervention">Intervention</option>
                   <option [value]="TypeFiche.Gardiennage">Gardiennage</option>
                   <option [value]="TypeFiche.Ronde">Ronde</option>
                   <option [value]="TypeFiche.TestReseau">Test réseau</option>
