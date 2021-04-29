@@ -91,6 +91,16 @@ export class InterventionButton implements OnInit
         this._interService.cancel(this.intervention);
     }
 
+    affect(operateur : string) : void
+    {
+        this.intervention.Operateur = operateur;
+
+        // envoi du changement dans le rapport
+        this._interService.sendInterChange( { Id:this.intervention.Id, Operateur:operateur } );
+        // TODO GMA
+        //this._interService.affect(this.intervention);
+    }
+
     inProgress() : void
     {
         this._interService.inProgress( this.intervention );
@@ -146,6 +156,11 @@ export class InterventionButton implements OnInit
         return inProgressPossible;
     }
 
+    get OtherConnectedUsers() : string[]
+    {
+        return this._connectionStatus.OtherConnectedUsers;
+    }
+    
     // ces fonctions seront disponibles quand il y a auroa l'application mobile
 
     // public get waitingDeparture() : boolean
