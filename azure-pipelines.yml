@@ -13,7 +13,7 @@ trigger:
 
   branches:
     include:
-    - passageEnCore
+    - gma/M24163
     
 steps:
 
