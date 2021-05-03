@@ -163,8 +163,6 @@ export class InterventionButton implements OnInit
             if(item === this._connectionStatus.login) 
             otherConnectedUsers.splice(index,1);
           });
-
-        console.log("Récupération de la liste des autres utilisateurs connectés '" + otherConnectedUsers + "'");
         return otherConnectedUsers;
     }
     
