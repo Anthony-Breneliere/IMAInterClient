@@ -24,8 +24,8 @@ export class ConnectionStatus
     private _connection: HubConnection;
     public get HubConnection() { return this._connection };
 
-    private _otherConnectedUsers: string[]= [];
-    public get OtherConnectedUsers() { return this._otherConnectedUsers };
+    private _connectedUsers: string[]= [];
+    public get ConnectedUsers() { return this._connectedUsers };
 
     public get errorMessages(): [number, string][] { return this._errorMessages; }
     public addErrorMessage(mess: string) 
@@ -172,7 +172,7 @@ export class ConnectionStatus
         this._connection.on('SendConnectedUsers', (connectedUsers: string[]) => 
         {
             console.log("Récupération de la liste des utilisateurs connectés '" + connectedUsers + "'");
-            this._otherConnectedUsers = connectedUsers.filter(function(value){ return value != this._username;});
+            this._connectedUsers = connectedUsers;
         });
     }
 

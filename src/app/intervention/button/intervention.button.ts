@@ -158,7 +158,14 @@ export class InterventionButton implements OnInit
 
     get OtherConnectedUsers() : string[]
     {
-        return this._connectionStatus.OtherConnectedUsers;
+        var otherConnectedUsers :string[]= this._connectionStatus.ConnectedUsers;
+        otherConnectedUsers.forEach( (item, index) => {
+            if(item === this._connectionStatus.login) 
+            otherConnectedUsers.splice(index,1);
+          });
+
+        console.log("Récupération de la liste des autres utilisateurs connectés '" + otherConnectedUsers + "'");
+        return otherConnectedUsers;
     }
     
     // ces fonctions seront disponibles quand il y a auroa l'application mobile
