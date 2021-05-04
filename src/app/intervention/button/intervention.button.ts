@@ -96,9 +96,7 @@ export class InterventionButton implements OnInit
         this.intervention.Operateur = operateur;
 
         // envoi du changement dans le rapport
-        this._interService.sendInterChange( { Id:this.intervention.Id, Operateur:operateur } );
-        // TODO GMA
-        //this._interService.affect(this.intervention);
+        this._interService.sendInterChange( { Id:this.intervention.Id, Operateur:operateur,Affectation:true } );
     }
 
     inProgress() : void
@@ -160,7 +158,7 @@ export class InterventionButton implements OnInit
     {
         var otherConnectedUsers :string[]= this._connectionStatus.ConnectedUsers;
         otherConnectedUsers.forEach( (item, index) => {
-            if(item === this._connectionStatus.login) 
+            if(item === this.intervention.Operateur)
             otherConnectedUsers.splice(index,1);
           });
         return otherConnectedUsers;
