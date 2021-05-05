@@ -172,7 +172,7 @@ export class ConnectionStatus
         this._connection.on('SendConnectedUsers', (connectedUsers: string[]) => 
         {
             console.log("Récupération de la liste des utilisateurs connectés '" + connectedUsers + "'");
-            this._connectedUsers = connectedUsers;
+            this._connectedUsers = connectedUsers;            
         });
     }
 

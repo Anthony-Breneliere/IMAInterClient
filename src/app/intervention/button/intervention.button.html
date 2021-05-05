@@ -68,7 +68,8 @@
             Opérateur
         </ng-template>
 
-        <ng-template *ngFor="let connectedUser of OtherConnectedUsers" contextMenuItem (execute)="affect(connectedUser)">
+        <!-- On affiche les utilisateurs connecté autre que l'opérateur actuel de l'intervention -->
+        <ng-template *ngFor="let connectedUser of ConnectedUsers" [visible]="!(connectedUser === Operateur)" contextMenuItem (execute)="affect(connectedUser)">
             {{connectedUser}}
         </ng-template>
     </context-menu>
