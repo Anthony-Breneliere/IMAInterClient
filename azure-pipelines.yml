@@ -13,7 +13,7 @@ trigger:
 
   branches:
     include:
-    - gma/M24163
+    - imainterV2
     
 steps:
 
