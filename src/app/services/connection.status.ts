@@ -24,6 +24,9 @@ export class ConnectionStatus
     private _connection: HubConnection;
     public get HubConnection() { return this._connection };
 
+    private _connectedUsers: string[]= [];
+    public get ConnectedUsers() { return this._connectedUsers };
+
     public get errorMessages(): [number, string][] { return this._errorMessages; }
     public addErrorMessage(mess: string) 
     {
@@ -165,10 +168,16 @@ export class ConnectionStatus
 
             console.log("Connexion en tant qu'utilisateur '" + this._username + "'");
         });
+
+        this._connection.on('SendConnectedUsers', (connectedUsers: string[]) => 
+        {
+            console.log("Récupération de la liste des utilisateurs connectés '" + connectedUsers + "'");
+            this._connectedUsers = connectedUsers;            
+        });
     }
 
     public start(): Promise<any> {
-        let startPromise = new Promise((resolve, reject) => 
+        let startPromise = new Promise<void>((resolve, reject) => 
         {
 
             // attention le démarrage du serveur doit se faire APRES l'enregistrement des callbacks !
@@ -207,7 +216,7 @@ export class ConnectionStatus
      */
     private async startHubConnection(): Promise<any> 
     {
-        let starthubPromise = new Promise((resolve) => 
+        let starthubPromise = new Promise<void>((resolve) => 
         {
             (async () => 
             {
@@ -233,7 +242,7 @@ export class ConnectionStatus
      */
     public waitForReconnection(): Promise<any> 
     {
-        let reconnectionPromise = new Promise((resolve) => 
+        let reconnectionPromise = new Promise<void>((resolve) => 
         {
             (async () => {
                 while (!this.connected)

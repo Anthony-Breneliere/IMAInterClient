@@ -26,6 +26,7 @@ export class InterventionButton implements OnInit
     @Input() set selected(value : boolean) { this._selected = value; this.notificationChange = false };
 
     get selected(): boolean { return this._selected };
+    get Operateur(): string { return this.intervention.Operateur };
     @Input() updating: boolean;
     @Input() isMyInter: boolean;
     @Output() onSelected = new EventEmitter<InterventionButton>();
@@ -91,6 +92,14 @@ export class InterventionButton implements OnInit
         this._interService.cancel(this.intervention);
     }
 
+    affect(operateur : string) : void
+    {
+        this.intervention.Operateur = operateur;
+
+        // envoi du changement dans le rapport
+        this._interService.sendInterChange( { Id:this.intervention.Id, Operateur:operateur,Affectation:true } );
+    }
+
     inProgress() : void
     {
         this._interService.inProgress( this.intervention );
@@ -146,6 +155,11 @@ export class InterventionButton implements OnInit
         return inProgressPossible;
     }
 
+    get ConnectedUsers() : string[]
+    {
+        return this._connectionStatus.ConnectedUsers;
+    }
+    
     // ces fonctions seront disponibles quand il y a auroa l'application mobile
 
     // public get waitingDeparture() : boolean
@@ -165,7 +179,4 @@ export class InterventionButton implements OnInit
     // {
     //     return this._interService.immobilizeIntervenant( this.intervention.Id );
     // }
-
-
-
 }

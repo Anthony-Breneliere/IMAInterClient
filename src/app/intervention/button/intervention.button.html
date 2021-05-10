@@ -28,6 +28,10 @@
         Clôturer
     </ng-template>
 
+    <ng-template contextMenuItem [subMenu]="subMenuAffectation">
+		Affecter l'intervention
+	</ng-template>
+
     <ng-template [visible]="canCancel" contextMenuItem [subMenu]="subMenuCancel">
 		Annuler
 	</ng-template>
@@ -46,7 +50,7 @@
             Station
         </ng-template>
     </context-menu>
-    
+
     <context-menu #subMenuCancelClient>
         <ng-template contextMenuItem let-item passive="true">
             Accord intervenant
@@ -59,5 +63,15 @@
         </ng-template>
 	</context-menu>
 
+    <context-menu #subMenuAffectation>
+        <ng-template contextMenuItem passive="true">
+            Opérateur
+        </ng-template>
+
+        <!-- On affiche les utilisateurs connecté autre que l'opérateur actuel de l'intervention -->
+        <ng-template *ngFor="let connectedUser of ConnectedUsers" [visible]="!(connectedUser === Operateur)" contextMenuItem (execute)="affect(connectedUser)">
+            {{connectedUser}}
+        </ng-template>
+    </context-menu>
 </context-menu>
 
