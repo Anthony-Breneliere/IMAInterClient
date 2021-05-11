@@ -131,6 +131,15 @@ export class InterventionButton implements OnInit
         return canClose;
     }
 
+    get canReaffect() : Boolean
+    {
+        let canReaffect = this.connected
+        && this.intervention?.Etat != Etat.Close
+        && this.intervention?.Etat != Etat.Annulee;
+
+        return canReaffect;
+    }
+
     /**
      * this.intervention?.Rapport?.ValidationStatus === RapportValidationStatusEnum.Valid
      */

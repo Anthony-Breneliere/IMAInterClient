@@ -28,8 +28,8 @@
         Clôturer
     </ng-template>
 
-    <ng-template contextMenuItem [subMenu]="subMenuAffectation">
-		Affecter l'intervention
+    <ng-template contextMenuItem [visible]="canReaffect" [subMenu]="subMenuAffectation">
+		Réaffecter
 	</ng-template>
 
     <ng-template [visible]="canCancel" contextMenuItem [subMenu]="subMenuCancel">
