@@ -110,16 +110,21 @@
           <tr field label="Motif d'intervention">
               <reactive-select name="motifIntervention" #typeSite class="cellinput" [(ngModel)]="rapport.MotifIntervention" (ngModelChange)="changeRapport({MotifIntervention:$event})" required >
                   <option [ngValue]="null"></option>
-                  <option [value]="i" *ngFor="let type of MotifInterventionValues; let i = index">{{MotifIntervention[i]}}</option>
-              </reactive-select>
+                  <option [value]="MotifIntervention.Intrusion">Intrusion</option>
+                  <option [value]="MotifIntervention.Agression">Agression</option>
+                  <option [value]="MotifIntervention.Incendie">Incendie</option>
+                  <option [value]="MotifIntervention.Technique">Technique</option>
+                  <option [value]="MotifIntervention.GardiennageRonde">Gardiennage/Ronde</option>
+                  <!-- <option [value]="i" *ngFor="let type of MotifInterventionValues; let i = index">{{MotifIntervention[i]}}</option> -->
+              </reactive-select>            
           </tr>
 
           <tr field label="Numéro de bon">
               <reactive-input name="numeroDeBon" [(ngModel)]="rapport.NumeroBon" (ngModelChange)="changeRapport({NumeroBon:$event})" ></reactive-input>
           </tr>
 
-          <tr field label="Lieu dépôt">
-            <reactive-select name="lieuDepot" [(ngModel)]="rapport.LieuDepotBon" (ngModelChange)="changeRapport({LieuDepotBon:$event}); resetRapportValues('autreLieuDepot', rapport.autreLieuDepot, $event);" required >
+           <tr field label="Lieu dépôt">
+            <reactive-select  name="lieuDepot" [(ngModel)]="rapport.LieuDepotBon" (ngModelChange)="changeRapport({LieuDepotBon:$event}); resetRapportValues('autreLieuDepot', rapport.autreLieuDepot, $event);" [required]="rapport.MotifIntervention != 4">
                 <option [ngValue]="null" ></option>
                 <option [value]="DepotBonIntervention.BoiteAuxLettres">Boîte aux lettres</option>
                 <option [value]="DepotBonIntervention.PC">PC</option>
