@@ -46,6 +46,7 @@ import { Telephone } from '../../model/telephone';
 import { NgForm } from '@angular/forms';
 import { ReactiveCheckboxComponent } from '../reactive-components/reactive-checkbox.component';
 import { ReactiveDateInputComponent } from '../reactive-components/reactive-date.input.component';
+import { RapportIncidents } from 'app/model/rapport_incidents';
 
 
 declare var require: any;
@@ -113,6 +114,7 @@ export class InterventionDetails
     @ViewChild('verifAutreCheckbox') verifAutreCheckbox : ReactiveCheckboxComponent;
     @ViewChild('autrePieceAllumeeCheckbox') autrePieceAllumeeCheckbox : ReactiveCheckboxComponent;
     @ViewChild('autreIssueOuverteCheckbox') autreIssueOuverteCheckbox : ReactiveCheckboxComponent;
+    @ViewChild('autreIncidentCheckbox') autreIncidentCheckbox : ReactiveCheckboxComponent;
     @ViewChild('autreEffractionCheckbox') autreEffractionCheckbox : ReactiveCheckboxComponent;
     @ViewChild('autreTypePresenceCheckbox') autreTypePresenceCheckbox : ReactiveCheckboxComponent;
     @ViewChild('dateLancement') dateLancement : ReactiveDateInputComponent;
@@ -259,6 +261,15 @@ export class InterventionDetails
         return this.rapport.Verifications.QuellesEffractions;
     }
 
+    private get quelsIncidents() : RapportIncidents
+    {
+        // il se peut que le serveur mette cette valeur à null
+        if ( ! this.rapport.Verifications.QuelsIncidents )
+            this.rapport.Verifications.QuelsIncidents = new RapportIncidents();
+
+        return this.rapport.Verifications.QuelsIncidents;
+    }
+
     private get gardiennageRonde() : RapportGardiennageRonde
     {
         // il se peut que le serveur mette cette valeur à null
@@ -392,8 +403,19 @@ export class InterventionDetails
     public set AutreEffractionChecked( value : boolean )
     {
         this.changeRapport({Verifications:{QuellesEffractions:{Autre:value? '' : null}}});
-
+        // TODO GMA vérifier si la valeur "autrePresence" est correct ou si elle devrait etre remplacer par quellesEffractions
         this.resetRapportValues("autrePresence", this.quellesEffractions.Autre, value);
+    }
+
+    public get AutreIncidentChecked() : boolean
+    {
+        return this.quelsIncidents && this.quelsIncidents.Autre != null;
+    }
+
+    public set AutreIncidentChecked( value : boolean )
+    {
+        this.changeRapport({Verifications:{QuelsIncidents:{Autre:value? '' : null}}});
+        this.resetRapportValues("quelsIncidents", this.quelsIncidents.Autre, value);
     }
 
     public get AutrePresenceChecked() : boolean
@@ -734,6 +756,7 @@ export class InterventionDetails
 
             case "quellesLumieresAllumees":
             case "quellesIssuesOuvertes":
+            case "quelsIncidents":
             case "quellesEffractions":
                 // Si l'objet parent est null ou faux
                 if(!data) {
@@ -754,6 +777,9 @@ export class InterventionDetails
 
                         case "quellesEffractions":
                             this.changeRapport({Verifications:{QuellesEffractions:objectToReset}});
+                            break;
+                        case "quelsIncidents":
+                            this.changeRapport({Verifications:{QuelsIncidents:objectToReset}});
                             break;
                     }
                 }
