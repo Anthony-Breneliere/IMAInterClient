@@ -580,6 +580,11 @@ export class InterventionDetails
         } );
     }
 
+    public lieuDepotIsRequired() : boolean
+    {
+        return this.rapport.MotifIntervention != MotifIntervention.GardiennageRonde;
+    }
+
 
     /** Envoi d'un changmenent d'email au service
      *

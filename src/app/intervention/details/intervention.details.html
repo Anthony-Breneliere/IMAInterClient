@@ -124,7 +124,7 @@
           </tr>
 
            <tr field label="Lieu dépôt">
-            <reactive-select  name="lieuDepot" [(ngModel)]="rapport.LieuDepotBon" (ngModelChange)="changeRapport({LieuDepotBon:$event}); resetRapportValues('autreLieuDepot', rapport.autreLieuDepot, $event);" [required]="rapport.MotifIntervention != 4">
+            <reactive-select  name="lieuDepot" [(ngModel)]="rapport.LieuDepotBon" (ngModelChange)="changeRapport({LieuDepotBon:$event}); resetRapportValues('autreLieuDepot', rapport.autreLieuDepot, $event);" [required]="lieuDepotIsRequired()" >
                 <option [ngValue]="null" ></option>
                 <option [value]="DepotBonIntervention.BoiteAuxLettres">Boîte aux lettres</option>
                 <option [value]="DepotBonIntervention.PC">PC</option>
