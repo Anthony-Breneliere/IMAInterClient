@@ -33,7 +33,8 @@ export enum MotifIntervention {
     Intrusion,
     Agression,
     Incendie,
-    Technique
+    Technique,
+    GardiennageRonde
 }
 
 export enum Trajet {
