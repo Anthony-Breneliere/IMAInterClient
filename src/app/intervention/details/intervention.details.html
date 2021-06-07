@@ -297,15 +297,30 @@
 
         </tr>
 
-        <tr field label="Effraction(s)">
-            <reactive-select name="effraction" [(ngModel)]="verifications.Effraction" (ngModelChange)="changeRapport({Verifications:{Effraction:parseBoolean($event)}}); resetRapportValues('quellesEffractions', quellesEffractions, parseBoolean($event));" required>
+        <tr field label="Incident réel">
+            <reactive-select name="incident" [(ngModel)]="verifications.Incident" (ngModelChange)="changeRapport({Verifications:{Incident:parseBoolean($event)}}); resetRapportValues('quelsIncidents', quelsIncidents, parseBoolean($event));" required>
                 <option [ngValue]="null"></option>
                 <option [value]="true">Oui</option>
                 <option [value]="false">Non</option>
             </reactive-select>
         </tr>
 
-        <tr field label="Détail effraction" *ngIf="parseBoolean(verifications.Effraction)">
+        <tr field label="Type incident(s)" *ngIf="parseBoolean(verifications.Incident)">
+            <div ngModelGroup="typeIncident" minimumCheckedRequired="1">
+              <reactive-checkbox name="incidentIncendie" label="Incendie" [(ngModel)]="quelsIncidents.Incendie" (ngModelChange)="changeRapport({Verifications:{quelsIncidents:{Incendie:$event}}})"></reactive-checkbox>
+              <reactive-checkbox name="incidentInondation" label="Inondation" [(ngModel)]="quelsIncidents.Inondation" (ngModelChange)="changeRapport({Verifications:{quelsIncidents:{Inondation:$event}}})"></reactive-checkbox>
+              <reactive-checkbox name="incidentAgression" label="Agression" [(ngModel)]="quelsIncidents.Agression" (ngModelChange)="changeRapport({Verifications:{quelsIncidents:{Agression:$event}}})"></reactive-checkbox>
+              <reactive-checkbox name="incidentEffraction" label="Effraction" [(ngModel)]="quelsIncidents.Effraction" (ngModelChange)="changeRapport({Verifications:{quelsIncidents:{Effraction:$event}}})"></reactive-checkbox>
+              <reactive-checkbox name="incidentTentativeEffraction" label="Tentative d'effraction" [(ngModel)]="quelsIncidents.TentativeEffraction" (ngModelChange)="changeRapport({Verifications:{quelsIncidents:{TentativeEffraction:$event}}})"></reactive-checkbox>
+              <reactive-checkbox name="incidentAutre" label="Autre"  [(ngModel)]="AutreIncidentChecked" #autreIncidentCheckbox></reactive-checkbox>
+            </div>
+        </tr>
+
+        <tr field label="Autre type incident" *ngIf="autreIncidentCheckbox?.value" >
+            <reactive-textarea name="incidentQuelleAutre" [(ngModel)]="quelsIncidents.Autre" (ngModelChange)="changeRapport({Verifications:{quelsIncidents:{Autre:$event}}})" required></reactive-textarea>
+        </tr>
+
+        <tr field label="Détail effraction" *ngIf="(parseBoolean(quelsIncidents.Effraction) || parseBoolean(quelsIncidents.TentativeEffraction))">
             <div ngModelGroup="detailEffraction" minimumCheckedRequired="1">
               <reactive-checkbox name="effractionPorte" label="Porte" [(ngModel)]="quellesEffractions.Porte" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Porte:$event}}})"></reactive-checkbox>
               <reactive-checkbox name="effractionFenetre" label="Fenêtre" [(ngModel)]="quellesEffractions.Fenetre" (ngModelChange)="changeRapport({Verifications:{QuellesEffractions:{Fenetre:$event}}})"></reactive-checkbox>
@@ -411,7 +426,7 @@
                 <option [value]="OrigineConstatee.ErreurDeManipulation">Erreur de manipulation</option>
                 <option [value]="OrigineConstatee.AbsenceIdentification">Absence d'identification</option>
                 <option [value]="OrigineConstatee.RienASignaler">Rien à signaler</option>
-                <option [value]="OrigineConstatee.Effraction">Effraction</option>
+                <option [value]="OrigineConstatee.IncidentReel">Incident réel</option>
             </reactive-select>
         </tr>
 
