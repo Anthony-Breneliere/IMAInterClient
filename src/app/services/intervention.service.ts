@@ -18,6 +18,7 @@ import { SearchQuery } from './searchQuery';
 import 'signalr';
 
 import { PushNotificationService } from './push-notification.service';
+import { IInterventionService } from './iintervention.service';
 
 export enum InterventionDataType {
     Full,
@@ -26,7 +27,7 @@ export enum InterventionDataType {
 }
 
 @Injectable()
-export class InterventionService  {
+export class InterventionService extends IInterventionService {
 
 
     private loadedInterventionsDico : Collections.Dictionary<string, Intervention> = new Collections.Dictionary<string, Intervention>();
@@ -64,6 +65,8 @@ export class InterventionService  {
      */
     constructor(private _connectionStatus: ConnectionStatus, private pushNotificationService: PushNotificationService )
     {
+        super();
+
         // le chargement du script doit être effectué avant de pouvoir initialiser les callbacks de notre service InterventionService
         _connectionStatus.promiseHubScriptLoaded.then( () =>
         {
@@ -136,8 +139,8 @@ export class InterventionService  {
     private loadCurrentInterventionList() : void
     {
         this._connectionStatus.HubConnection.invoke('QueryCurrentFI')
-        .then((newInterventions : Intervention[]) => 
-        
+        .then((newInterventions : Intervention[]) =>
+
             {
                 this.onReceiveInterventionList( newInterventions );
             })
@@ -252,14 +255,14 @@ export class InterventionService  {
         let getInterPromise = new Promise<Intervention>( (resolve, reject ) =>
         {
              console.info( "Chargement de l'intervention ", numFI);
-             
+
              this._connectionStatus.HubConnection.invoke('GetIntervention',numFI, siteId)
                 .then((interventionWithDetails : Intervention) =>
                 {
                     let interventionMerged = this.onReceiveInterventionData( interventionWithDetails, InterventionDataType.Full );
                     resolve(interventionMerged);
                 })
-                .catch( ( e : any ) => 
+                .catch( ( e : any ) =>
                 {
                     this._connectionStatus.addErrorMessage( `Erreur lors de la récupération de l'intervention ${numFI}. ${e}` );
                     reject(e);
@@ -366,7 +369,7 @@ export class InterventionService  {
     {
         console.log("Envoi d'une main courante: ",
           {"login":this._connectionStatus.login, "numFi": numFi, "typeMaincour": typeMaincour, "comment":comment});
-        
+
         this._connectionStatus.HubConnection.send('AddNewMaincourante', numFi, typeMaincour, comment);
     }
 
@@ -376,11 +379,11 @@ export class InterventionService  {
      * Envoi d'un changement d'intervention
      * @param jsonInterChange : les changements
      */
-    public sendInterChange( jsonInterChange : any ) : void
+    public sendInterChange( jsonInterChange : any ) : Promise<void>
     {
         console.log("Envoi d'un changement d'intervention:", jsonInterChange);
 
-        this._connectionStatus.HubConnection.send('SendInterChange',jsonInterChange);
+        return this._connectionStatus.HubConnection.send('SendInterChange',jsonInterChange);
     }
 
     /**
@@ -394,7 +397,7 @@ export class InterventionService  {
       this._pageIndex = 1;
 
       this.clearSearchResults();
-      
+
         if(this._query)
         {
             // on s'assure qu'on est connecté, car la recherche peut se faire au démarrage sur la query
@@ -418,13 +421,13 @@ export class InterventionService  {
         {
             console.info('chargement de plus de résultat: ', this._query);
             this._pageIndex++;
-            
+
             // on s'assure qu'on est connecté, car la recherche peut se faire au démarrage sur la query
             let connectAndSearchPromise = this._connectionStatus.waitForReconnection().then( () =>
             {
                 return this._connectionStatus.HubConnection.invoke('SearchInterventions', this._query, this._pageIndex );
             });
-      
+
             return connectAndSearchPromise;
         }
     }
@@ -450,7 +453,7 @@ export class InterventionService  {
 
     public close( intervention : Intervention ) : void
     {
-        console.log(`Demande de clôture de la fiche ${intervention.Id}.`);        
+        console.log(`Demande de clôture de la fiche ${intervention.Id}.`);
 
         this._connectionStatus.HubConnection.send('Close',intervention.Id);
     }
@@ -472,7 +475,7 @@ export class InterventionService  {
     public chat( numFi : string, message : string ) : void
     {
         console.log(`Envoi messages sur FI ${numFi}, texte: ${message}`);
-        
+
         this._connectionStatus.HubConnection.send('Chat',numFi, message);
     }
 

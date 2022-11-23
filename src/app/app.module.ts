@@ -60,6 +60,7 @@ import { MinimumCheckedRequiredDirective } from './tools/validators/multiple_che
 import { MinimumDateRequiredDirective } from './tools/validators/min_date.validator.directive';
 import { MaximumDateRequiredDirective } from './tools/validators/max_date.validator.directive';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { IInterventionService } from './services/iintervention.service';
 
 registerLocaleData(localeFr);
 
@@ -123,6 +124,7 @@ registerLocaleData(localeFr);
         { provide: LOCALE_ID, useValue: 'fr-FR' },
         ConnectionStatus,
         InterventionService,
+        { provide: IInterventionService, useExisting: InterventionService },
         { provide: LocationStrategy, useClass: HashLocationStrategy }],
     /*
      * Composant de démarrage affiché par le module.
